@@ -1,9 +1,10 @@
 import koa from 'koa';
 import views from 'koa-views';
 import path from 'path';
-
 import React from 'react';
 import {renderToString} from 'react-dom/server';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 import {match, RouterContext} from 'react-router';
 import routes from '../routes';
 import reducer from '../reducers';
@@ -17,12 +18,17 @@ app.use(views(path.join(__dirname, 'views'), {
 }));
 
 app.use(function *(next) {
-  let reactString;
-  let initialState = reducer({}, {type: '@@INIT'});
+  const store = createStore(reducer);
+  let initialState = store.getState();
 
+  let reactString;
   match({routes, location: this.request.url}, (error, redirectLocation, renderProps) => {
     if (renderProps) {
-      reactString = renderToString(<RouterContext {...renderProps} />);
+      reactString = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      );
     }
   });
 
