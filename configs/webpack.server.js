@@ -29,7 +29,8 @@ module.exports = {
 	],
 	module: {
 		loaders: [
-			{test: /\.json$/, loaders: ["json"]}
+			{test: /\.json$/, loaders: ["json"]},
+			{test: /\.hbs$/, loader: "handlebars-loader"}
 		],
 		postLoaders: [
 			{test: /\.js$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/}

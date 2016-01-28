@@ -1,5 +1,4 @@
-import koa from 'koa';
-import views from 'koa-views';
+import Koa from 'koa';
 import path from 'path';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
@@ -9,32 +8,32 @@ import {match, RouterContext} from 'react-router';
 import routes from '../routes';
 import reducer from '../reducers';
 
-const app = koa();
+let template = require('./views/index.hbs');
+if (module.hot) {
+  module.hot.accept('./views/index.hbs', () => {
+    template = require('./views/index.hbs');
+  });
+}
 
-app.use(views(path.join(__dirname, 'views'), {
-  map: {
-    hbs: 'handlebars'
-  }
-}));
+const app = new Koa();
 
-app.use(function *(next) {
-  const store = createStore(reducer);
-  let initialState = store.getState();
-
-  let reactString;
-  match({routes, location: this.request.url}, (error, redirectLocation, renderProps) => {
+app.use(ctx => {
+  match({routes, location: ctx.url}, (error, redirectLocation, renderProps) => {
     if (renderProps) {
-      reactString = renderToString(
+      const store = createStore(reducer);
+      const initialState = store.getState();
+
+      const reactString = renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
         </Provider>
       );
-    }
-  });
 
-  yield this.render('index.hbs', {
-    reactString,
-    initialState: JSON.stringify(initialState)
+      ctx.body = template({
+        reactString,
+        initialState: JSON.stringify(initialState)
+      });
+    }
   });
 });
 
