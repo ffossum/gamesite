@@ -31,7 +31,7 @@ config.devServer = {
 	hot: true,
 	inline: false,
 	lazy: false,
-	quiet: true,
+	quiet: false,
 	noInfo: true,
 	headers: {"Access-Control-Allow-Origin": "*"},
 	stats: {colors: true},

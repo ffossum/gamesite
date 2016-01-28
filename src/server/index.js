@@ -1,24 +1,18 @@
-import Koa from 'koa';
-import KoaRouter from 'koa-router';
-import fs from 'fs';
+import koa from 'koa';
+import views from 'koa-views';
 import path from 'path';
-import Handlebars from 'handlebars';
 
-const app = new Koa();
-const router = new KoaRouter();
+const app = koa();
 
-const templateSource = fs.readFileSync(path.join(__dirname, 'views', 'index.hbs'), {
-  encoding: 'utf-8'
+app.use(views(path.join(__dirname, 'views'), {
+  map: {
+    hbs: 'handlebars'
+  }
+}));
+
+app.use(function *(next) {
+  yield this.render('index.hbs');
 });
-let template = Handlebars.compile(templateSource);
-
-router.get('*', ctx => {
-  ctx.body = template();
-});
-
-app
-  .use(router.routes())
-  .use(router.allowedMethods());
 
 const PORT = 8080;
 app.listen(PORT, '0.0.0.0', err => {
@@ -26,6 +20,6 @@ app.listen(PORT, '0.0.0.0', err => {
     console.log(err);
     return;
   }
-  console.log(`${process.env.NODE_ENV === 'production' ? 'Production' : 'Development'} environment`);
+  console.log(`${__DEVELOPMENT__ ? 'Development' : 'Production'} environment`);
   console.log(`Listening on port ${PORT}`);
 });
