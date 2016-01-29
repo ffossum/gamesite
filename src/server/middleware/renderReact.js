@@ -1,0 +1,49 @@
+import React from 'react';
+import {renderToString} from 'react-dom/server';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import {match, RouterContext} from 'react-router';
+import reducer from '../../reducers';
+
+let routes = require('../../routes').default;
+let template = require('../views/index.hbs');
+if (module.hot) {
+  module.hot.accept('../../routes', () => {
+    routes = require('../../routes').default;
+  });
+  module.hot.accept('../views/index.hbs', () => {
+    template = require('../views/index.hbs');
+  });
+}
+
+function matchRoutes(routes, location) {
+  return new Promise((resolve, reject) => {
+    match({routes, location}, (error, redirectLocation, renderProps) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve({redirectLocation, renderProps});
+      }
+    });
+  });
+}
+
+export default async function renderReact(ctx, next) {
+  const {redirectLocation, renderProps} = await matchRoutes(routes, ctx.url);
+  if (renderProps) {
+    const store = createStore(reducer);
+    const initialState = store.getState();
+
+    const reactString = renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    );
+
+    ctx.body = template({
+      reactString,
+      initialState: JSON.stringify(initialState)
+    });
+  }
+  await next();
+}

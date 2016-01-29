@@ -1,22 +1,9 @@
 import Koa from 'koa';
 import path from 'path';
-import React from 'react';
-import {renderToString} from 'react-dom/server';
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-import {match, RouterContext} from 'react-router';
-import routes from '../routes';
-import reducer from '../reducers';
 import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
-
-let template = require('./views/index.hbs');
-if (module.hot) {
-  module.hot.accept('./views/index.hbs', () => {
-    template = require('./views/index.hbs');
-  });
-}
+import renderReact from './middleware/renderReact';
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -33,27 +20,7 @@ router.post('/api/auth',
   }
 );
 
-router.get('*',
-  ctx => {
-    match({routes, location: ctx.url}, (error, redirectLocation, renderProps) => {
-      if (renderProps) {
-        const store = createStore(reducer);
-        const initialState = store.getState();
-
-        const reactString = renderToString(
-          <Provider store={store}>
-            <RouterContext {...renderProps} />
-          </Provider>
-        );
-
-        ctx.body = template({
-          reactString,
-          initialState: JSON.stringify(initialState)
-        });
-      }
-    });
-  }
-);
+router.get('*', renderReact);
 
 app
   .use(router.routes())
