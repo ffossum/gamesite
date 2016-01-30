@@ -1,7 +1,7 @@
 export function User() {
 }
 
-export function getUser(userId) {
+export function getUserById(userId) {
   return new Promise((resolve, reject) => {
     resolve(db[userId]);
   });

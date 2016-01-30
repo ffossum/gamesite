@@ -4,6 +4,7 @@ import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
 import renderReact from './middleware/renderReact';
+import {refreshJwtCookie, expireJwtCookie} from './middleware/jwtCookie';
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -15,10 +16,13 @@ app.use(passport.initialize());
 
 router.post('/api/login',
   passport.authenticate('local'),
+  refreshJwtCookie,
   ctx => {
-    ctx.body = ctx.isAuthenticated();
+    ctx.body = {id: ctx.req.user.id}
   }
 );
+
+router.post('/api/logout', expireJwtCookie);
 
 router.get('*', renderReact);
 
@@ -32,6 +36,6 @@ app.listen(PORT, '0.0.0.0', err => {
     console.log(err);
     return;
   }
-  console.log(`${__DEVELOPMENT__ ? 'Development' : 'Production'} environment`);
-  console.log(`Listening on port ${PORT}`);
+  console.info(`${__DEVELOPMENT__ ? 'Development' : 'Production'} environment`);
+  console.info(`Listening on port ${PORT}`);
 });
