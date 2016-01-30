@@ -1,60 +1,92 @@
 import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import actions from '../../actions/login';
-import {Field, getField} from 'react-redux-form';
-import validator from 'validator';
-
-const isRequired = (value) => !validator.isNull(value);
+import actions from 'actions/login';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      username: '',
+      password: '',
+      pending: false,
+      failed: false
+    };
+
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUsernameChange = this.handleChange.bind(this, 'username');
+    this.handlePasswordChange = this.handleChange.bind(this, 'password');
   }
   handleSubmit(e) {
     e.preventDefault();
-    const {user, authenticate} = this.props;
-    authenticate(user.username, user.password);
+    const {loggedIn} = this.props;
+    const {username, password} = this.state;
+    this.setState({
+      failed: false,
+      pending: true
+    });
+    fetch('/api/login', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({
+        username,
+        password
+      })
+    })
+    .then(async res => {
+      this.setState({pending: false});
+      if (res.ok) {
+        const json = await res.json();
+        loggedIn(json.userId);
+      } else {
+        this.setState({failed: true});
+      }
+    });
+  }
+  handleChange(field, e) {
+    this.setState({[field]: e.target.value});
   }
   render() {
-    const {user, userForm} = this.props;
+    const {formState} = this.props;
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <Field
-          model="user.username"
-          updateOn="blur">
-          <label>Username</label>
-          <input type="text" defaultValue={user.username} />
-        </Field>
 
-        <Field
-          model="user.password"
-          updateOn="blur">
-          <label>Password</label>
-          <input type="password" defaultValue={user.password} />
-        </Field>
+        <label>Username</label>
+        <input
+          type="text"
+          isRequired
+          value={this.state.username}
+          onChange={this.handleUsernameChange} />
 
-        {!userForm.valid && <div>Incorrect username/password!</div>}
-        <button disabled={userForm.pending}>
-          Log in
-        </button>
+        <label>Password</label>
+        <input
+          type="password"
+          isRequired
+          value={this.state.password}
+          onChange={this.handlePasswordChange} />
+
+        {this.state.failed && <div>Incorrect username and/or password</div>}
+        <div>
+          <button disabled={this.state.pending}>
+            Log in
+          </button>
+        </div>
       </form>
     )
   }
 }
 
 LoginForm.propTypes = {
-  user: PropTypes.object.isRequired,
-  userForm: PropTypes.object.isRequired,
-  authenticate: PropTypes.func.isRequired
+  loggedIn: PropTypes.func.isRequired
 };
 
 export default connect(
-  state => ({
-    user: state.forms.user,
-    userForm: state.forms.userForm
-  }),
+  state => ({}),
   dispatch => bindActionCreators(actions, dispatch)
 )(LoginForm);

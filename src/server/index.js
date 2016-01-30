@@ -18,7 +18,7 @@ router.post('/api/login',
   passport.authenticate('local'),
   refreshJwtCookie,
   ctx => {
-    ctx.body = {id: ctx.req.user.id}
+    ctx.body = {userId: ctx.req.user.id}
   }
 );
 
