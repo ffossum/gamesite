@@ -2,7 +2,7 @@ import React from 'react';
 import {IndexRoute, Route, Link} from 'react-router';
 
 import Main from '../components/Main';
-import LoginForm from '../components/login/LoginForm';
+import LoginForm from '../containers/forms/LoginForm';
 
 class Root extends React.Component {
   render() {

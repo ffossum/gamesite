@@ -13,7 +13,7 @@ app.use(bodyParser());
 require('./auth');
 app.use(passport.initialize());
 
-router.post('/api/auth',
+router.post('/api/login',
   passport.authenticate('local'),
   ctx => {
     ctx.body = ctx.isAuthenticated();
