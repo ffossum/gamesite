@@ -1,24 +1,34 @@
 import passport from 'koa-passport';
 import {Strategy as LocalStrategy} from 'passport-local';
-
-const user = {id: '1', username: 'test'};
+import {getUserById, getUserByName} from './db';
 
 passport.serializeUser((user, done) => {
-  done(null, user.id)
+  done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  if (id === '1') {
-    done(null, user);
-  } else {
-    done('User not found');
-  }
+passport.deserializeUser((userId, done) => {
+  getUserById(userId)
+    .then(user => {
+      done(null, user);
+    })
+    .catch(err => {
+      done(err);
+    });
 });
 
-passport.use(new LocalStrategy((username, password, done) => {
-  if (username === 'test' && password === 'test') {
-    done(null, user);
-  } else {
-    done(null, false);
+passport.use(new LocalStrategy(
+  {session: false},
+  (username, password, done) => {
+    getUserByName(username)
+    .then(user => {
+      if (user.password === password) {
+        done(null, user);
+      } else {
+        done(null, false);
+      }
+    })
+    .catch(err => {
+      done(err);
+    });
   }
-}));
+));

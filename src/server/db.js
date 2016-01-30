@@ -1,9 +1,17 @@
+import _ from 'lodash';
+
 export function User() {
 }
 
 export function getUserById(userId) {
   return new Promise((resolve, reject) => {
     resolve(db[userId]);
+  });
+}
+
+export function getUserByName(username) {
+  return new Promise((resolve, reject) => {
+    resolve(_.find(db, {username}));
   });
 }
 

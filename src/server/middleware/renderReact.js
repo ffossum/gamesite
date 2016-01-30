@@ -29,7 +29,7 @@ function matchRoutes(routes, location) {
 }
 
 export default async function renderReact(ctx, next) {
-  const {redirectLocation, renderProps} = await matchRoutes(routes, ctx.url);
+  const {renderProps} = await matchRoutes(routes, ctx.url);
   if (renderProps) {
     const store = createStore(reducer);
     const initialState = store.getState();

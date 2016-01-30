@@ -1,5 +1,4 @@
 import Koa from 'koa';
-import path from 'path';
 import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
@@ -18,7 +17,7 @@ router.post('/api/login',
   passport.authenticate('local'),
   refreshJwtCookie,
   ctx => {
-    ctx.body = {userId: ctx.req.user.id}
+    ctx.body = {userId: ctx.req.user.id};
   }
 );
 
