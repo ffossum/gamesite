@@ -6,16 +6,34 @@ import actions from 'actions/login';
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      username: props.formState.username,
+      password: props.formState.password
+    };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUsernameChange = this.handleChange.bind(this, 'username');
     this.handleUsernameBlur = this.handleBlur.bind(this, 'username');
+    this.handlePasswordChange = this.handleChange.bind(this, 'password');
     this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
+  }
+  componentWillReceiveProps(nextProps) {
+    const {username, password} = nextProps.formState;
+    this.setState({
+      username,
+      password
+    });
   }
   handleSubmit(e) {
     e.preventDefault();
-    const {logIn, formState} = this.props;
-    const {username, password} = formState;
+    const {logIn} = this.props;
+    const {username, password} = this.state;
     logIn(username, password);
+  }
+  handleChange(field, e) {
+    this.setState({
+      [field]: e.target.value
+    });
   }
   handleBlur(field, e) {
     const {updateForm} = this.props;
@@ -28,21 +46,24 @@ class LoginForm extends React.Component {
       return null;
     }
 
-    const {username, password, error, pending} = this.props.formState;
+    const {error, pending} = this.props.formState;
+    const {username, password} = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
         <label>Username</label>
         <input
           type="text"
-          isRequired
-          defaultValue={username}
+          required
+          value={username}
+          onChange={this.handleUsernameChange}
           onBlur={this.handleUsernameBlur} />
 
         <label>Password</label>
         <input
           type="password"
-          isRequired
-          defaultValue={password}
+          required
+          value={password}
+          onChange={this.handlePasswordChange}
           onBlur={this.handlePasswordBlur} />
 
         {error && <div>Incorrect username and/or password</div>}
