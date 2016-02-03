@@ -1,19 +1,15 @@
 import React from 'react';
-import {IndexRoute, Route, Link} from 'react-router';
+import {IndexRoute, Route} from 'react-router';
 
-import Main from '../components/Main';
-import LoginForm from '../containers/forms/LoginForm';
+import Main from 'components/Main';
+import LoginForm from 'containers/forms/LoginForm';
+import Nav from 'containers/Nav';
 
 class Root extends React.Component {
   render() {
     return (
       <div>
-        <nav>
-          <ul>
-            <li><Link to="/">Main</Link></li>
-            <li><Link to="/login">Login</Link></li>
-          </ul>
-        </nav>
+        <Nav />
         <div>
           {this.props.children}
         </div>

@@ -24,6 +24,6 @@ export default function configureStore(initialState) {
     });
   }
 
-  reduxRouterMiddleware.listenForReplays(store)
+  reduxRouterMiddleware.listenForReplays(store);
   return store;
 }

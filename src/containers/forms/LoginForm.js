@@ -7,86 +7,65 @@ class LoginForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      username: '',
-      password: '',
-      pending: false,
-      failed: false
-    };
-
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleUsernameChange = this.handleChange.bind(this, 'username');
-    this.handlePasswordChange = this.handleChange.bind(this, 'password');
+    this.handleUsernameBlur = this.handleBlur.bind(this, 'username');
+    this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
   }
   handleSubmit(e) {
     e.preventDefault();
-    const {loggedIn} = this.props;
-    const {username, password} = this.state;
-    this.setState({
-      failed: false,
-      pending: true
-    });
-    fetch('/api/login', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify({
-        username,
-        password
-      })
-    })
-    .then(async res => {
-      this.setState({pending: false});
-      if (res.ok) {
-        const json = await res.json();
-        loggedIn(json.userId);
-      } else {
-        this.setState({failed: true});
-      }
-    });
+    const {logIn, formState} = this.props;
+    const {username, password} = formState;
+    logIn(username, password);
   }
-  handleChange(field, e) {
-    this.setState({[field]: e.target.value});
+  handleBlur(field, e) {
+    const {updateForm} = this.props;
+    updateForm({
+      [field]: e.target.value
+    });
   }
   render() {
-    const {formState} = this.props;
+    if (this.props.loggedInUser) {
+      return null;
+    }
 
+    const {username, password, error, pending} = this.props.formState;
     return (
       <form onSubmit={this.handleSubmit}>
-
         <label>Username</label>
         <input
           type="text"
           isRequired
-          value={this.state.username}
-          onChange={this.handleUsernameChange} />
+          defaultValue={username}
+          onBlur={this.handleUsernameBlur} />
 
         <label>Password</label>
         <input
           type="password"
           isRequired
-          value={this.state.password}
-          onChange={this.handlePasswordChange} />
+          defaultValue={password}
+          onBlur={this.handlePasswordBlur} />
 
-        {this.state.failed && <div>Incorrect username and/or password</div>}
+        {error && <div>Incorrect username and/or password</div>}
         <div>
-          <button disabled={this.state.pending}>
+          <button disabled={pending}>
             Log in
           </button>
         </div>
       </form>
-    )
+    );
   }
 }
 
 LoginForm.propTypes = {
-  loggedIn: PropTypes.func.isRequired
+  formState: PropTypes.object.isRequired,
+  logIn: PropTypes.func.isRequired,
+  updateForm: PropTypes.func.isRequired
 };
 
 export default connect(
-  state => ({}),
+  state => ({
+    formState: state.forms.login,
+    loggedInUser: state.loggedInUser
+  }),
   dispatch => bindActionCreators(actions, dispatch)
 )(LoginForm);
