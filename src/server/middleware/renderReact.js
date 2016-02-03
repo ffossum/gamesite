@@ -3,11 +3,15 @@ import {renderToString} from 'react-dom/server';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {match, RouterContext} from 'react-router';
-import reducer from '../../reducers';
 
+let reducer = require('../../reducers').default;
 let routes = require('../../routes').default;
 let template = require('../views/index.hbs');
+
 if (module.hot) {
+  module.hot.accept('../../reducers', () => {
+    reducer = require('../../reducers').default;
+  });
   module.hot.accept('../../routes', () => {
     routes = require('../../routes').default;
   });
