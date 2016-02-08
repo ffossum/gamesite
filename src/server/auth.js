@@ -1,7 +1,7 @@
 import passport from 'koa-passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import {getUserById, getUserByName} from './db';
-import bcrypt from 'bcrypt';
+import {comparePassword} from './crypto';
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -27,19 +27,11 @@ passport.use(new LocalStrategy(
 ));
 
 async function authenticate(username, password) {
-  const user = await getUserByName(username);
-  const match = await comparePassword(password, user.password);
-  return match ? user : false;
-}
-
-function comparePassword(password, hash) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, hash, (err, match) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(match);
-      }
-    });
-  });
+  try {
+    const user = await getUserByName(username);
+    const match = await comparePassword(password, user.password);
+    return match ? user : false;
+  } catch (err) {
+    return false;
+  }
 }

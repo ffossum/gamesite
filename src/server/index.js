@@ -4,6 +4,7 @@ import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
 import renderReact from './middleware/renderReact';
 import {refreshJwtCookie, expireJwtCookie, authenticateJwtCookie} from './middleware/jwtCookie';
+import {checkUsernameAvailability, registerUser} from './middleware/registerUser';
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -13,15 +14,23 @@ app.use(bodyParser());
 require('./auth');
 app.use(passport.initialize());
 
+function sendUserId(ctx) {
+  ctx.body = {userId: ctx.req.user.id};
+}
+
 router.post('/api/login',
   passport.authenticate('local'),
   refreshJwtCookie,
-  ctx => {
-    ctx.body = {userId: ctx.req.user.id};
-  }
+  sendUserId
 );
 
 router.post('/api/logout', expireJwtCookie);
+
+router.post('/api/register',
+  checkUsernameAvailability,
+  registerUser,
+  refreshJwtCookie,
+  sendUserId);
 
 router.get('*',
   authenticateJwtCookie,

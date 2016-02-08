@@ -1,7 +1,6 @@
 import _ from 'lodash';
-
-export function User() {
-}
+import shortid from 'shortid';
+import {hashPassword} from './crypto';
 
 export function getUserById(userId) {
   return new Promise((resolve, reject) => {
@@ -14,6 +13,22 @@ export function getUserByName(username) {
     resolve(_.find(db, {username}));
   });
 }
+
+export async function addUser(username, password) {
+  const hashedPassword = await hashPassword(password);
+
+  const user = new User();
+
+  user.id = shortid.generate();
+  user.username = username;
+  user.password = hashedPassword;
+
+  db[user.id] = user;
+  console.log(db);
+  return user;
+}
+
+export class User {}
 
 const qwer = new User();
 qwer.id = "1";
