@@ -29,7 +29,7 @@ function logInRequest() {
   };
 }
 
-function logInSuccess(userId) {
+export function logInSuccess(userId) {
   return {
     type: LOG_IN_SUCCESS,
     payload: {

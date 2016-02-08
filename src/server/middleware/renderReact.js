@@ -3,6 +3,7 @@ import {renderToString} from 'react-dom/server';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {match, RouterContext} from 'react-router';
+import {logInSuccess} from 'actions/login';
 
 let reducer = require('../../reducers').default;
 let routes = require('../../routes').default;
@@ -36,6 +37,9 @@ export default async function renderReact(ctx, next) {
   const {renderProps} = await matchRoutes(routes, ctx.url);
   if (renderProps) {
     const store = createStore(reducer);
+    if (ctx.isAuthenticated()) {
+      store.dispatch(logInSuccess(ctx.req.user.id));
+    }
     const initialState = store.getState();
 
     const reactString = renderToString(

@@ -88,5 +88,11 @@ export default connect(
     formState: state.forms.login,
     loggedInUser: state.loggedInUser
   }),
-  dispatch => bindActionCreators(actions, dispatch)
+  dispatch => {
+    const {logIn, updateForm} = bindActionCreators(actions, dispatch);
+    return {
+      logIn,
+      updateForm
+    };
+  }
 )(LoginForm);
