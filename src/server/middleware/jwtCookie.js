@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import {getUserById} from '../db';
 
 const COOKIE_NAME = 'jwt';
 const EXPIRATION_AGE = 604800000; // 7 days
@@ -38,4 +39,29 @@ export async function expireJwtCookie(ctx, next) {
     expires: lastWeek()
   });
   ctx.status = 200;
+
+  await next();
+}
+
+export async function authenticateJwtCookie(ctx, next) {
+  const jwt = ctx.cookies.get(COOKIE_NAME);
+  try {
+    const decoded = await verifyJwt(jwt, secret);
+    const user = await getUserById(decoded.id);
+    ctx.req.user = user;
+  } catch (err) {}
+
+  await next();
+}
+
+function verifyJwt(token, secret) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(decoded);
+      }
+    });
+  });
 }

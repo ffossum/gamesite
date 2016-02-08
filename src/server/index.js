@@ -3,7 +3,7 @@ import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
 import renderReact from './middleware/renderReact';
-import {refreshJwtCookie, expireJwtCookie} from './middleware/jwtCookie';
+import {refreshJwtCookie, expireJwtCookie, authenticateJwtCookie} from './middleware/jwtCookie';
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -23,7 +23,10 @@ router.post('/api/login',
 
 router.post('/api/logout', expireJwtCookie);
 
-router.get('*', renderReact);
+router.get('*',
+  authenticateJwtCookie,
+  refreshJwtCookie,
+  renderReact);
 
 app
   .use(router.routes())
