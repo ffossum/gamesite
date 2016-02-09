@@ -44,7 +44,7 @@ app
 const PORT = 8080;
 app.listen(PORT, '0.0.0.0', err => {
   if (err) {
-    console.log(err);
+    console.error(err);
     return;
   }
   console.info(`${__DEVELOPMENT__ ? 'Development' : 'Production'} environment`);

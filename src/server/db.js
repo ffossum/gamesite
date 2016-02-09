@@ -24,7 +24,6 @@ export async function addUser(username, password) {
   user.password = hashedPassword;
 
   db[user.id] = user;
-  console.log(db);
   return user;
 }
 
