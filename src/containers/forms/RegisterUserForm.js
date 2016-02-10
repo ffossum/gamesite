@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import actions, {errors as errorTypes} from 'actions/registerUser';
-
+import {uniqueId} from 'util/uniqueId';
 
 class RegisterUserForm extends React.Component {
   constructor(props) {
@@ -12,6 +12,10 @@ class RegisterUserForm extends React.Component {
       password: props.formState.password,
       repeatPassword: props.formState.repeatPassword
     };
+
+    this.usernameId = uniqueId('username');
+    this.passwordId = uniqueId('password');
+    this.repeatPasswordId = uniqueId('repeatPassword');
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUsernameChange = this.handleChange.bind(this, 'username');
@@ -31,9 +35,11 @@ class RegisterUserForm extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    const {registerUser} = this.props;
-    const {username, password, repeatPassword} = this.state;
-    registerUser(username, password, repeatPassword);
+    const {registerUser, formState} = this.props;
+    if (!formState.pending) {
+      const {username, password, repeatPassword} = this.state;
+      registerUser(username, password, repeatPassword);
+    }
   }
   handleChange(field, e) {
     this.setState({
@@ -41,10 +47,12 @@ class RegisterUserForm extends React.Component {
     });
   }
   handleBlur(field, e) {
-    const {updateForm} = this.props;
-    updateForm({
-      [field]: e.target.value
-    });
+    const {formState, updateForm} = this.props;
+    if (formState[field] !== e.target.value) {
+      updateForm({
+        [field]: e.target.value
+      });
+    }
   }
   render() {
     if (this.props.loggedInUser) {
@@ -56,20 +64,24 @@ class RegisterUserForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div>
-          <label>Username</label>
+          <label htmlFor={this.usernameId}>Username</label>
           <input
+            id={this.usernameId}
             type="text"
             required
             disabled={pending}
             value={username}
             onChange={this.handleUsernameChange}
-            onBlur={this.handleUsernameBlur} />
+            onBlur={this.handleUsernameBlur}
+            autoFocus/>
+
           {errors.username === errorTypes.USERNAME_TAKEN && <span>Username is already taken.</span>}
         </div>
 
         <div>
-          <label>Password</label>
+          <label htmlFor={this.passwordId}>Password</label>
           <input
+            id={this.passwordId}
             type="password"
             required
             disabled={pending}
@@ -79,8 +91,9 @@ class RegisterUserForm extends React.Component {
         </div>
 
         <div>
-          <label>Repeat password</label>
+          <label htmlFor={this.repeatPasswordId}>Repeat password</label>
           <input
+            id={this.repeatPasswordId}
             type="password"
             required
             disabled={pending}

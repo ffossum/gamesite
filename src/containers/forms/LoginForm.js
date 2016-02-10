@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import actions from 'actions/login';
+import {uniqueId} from 'util/uniqueId';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -10,6 +11,9 @@ class LoginForm extends React.Component {
       username: props.formState.username,
       password: props.formState.password
     };
+
+    this.usernameId = uniqueId('username');
+    this.passwordId = uniqueId('password');
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUsernameChange = this.handleChange.bind(this, 'username');
@@ -26,9 +30,11 @@ class LoginForm extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    const {logIn} = this.props;
-    const {username, password} = this.state;
-    logIn(username, password);
+    const {logIn, formState} = this.props;
+    if (!formState.pending) {
+      const {username, password} = this.state;
+      logIn(username, password);
+    }
   }
   handleChange(field, e) {
     this.setState({
@@ -36,10 +42,12 @@ class LoginForm extends React.Component {
     });
   }
   handleBlur(field, e) {
-    const {updateForm} = this.props;
-    updateForm({
-      [field]: e.target.value
-    });
+    const {formState, updateForm} = this.props;
+    if (formState[field] != e.target.value) {
+      updateForm({
+        [field]: e.target.value
+      });
+    }
   }
   render() {
     if (this.props.loggedInUser) {
@@ -50,21 +58,28 @@ class LoginForm extends React.Component {
     const {username, password} = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>Username</label>
-        <input
-          type="text"
-          required
-          value={username}
-          onChange={this.handleUsernameChange}
-          onBlur={this.handleUsernameBlur} />
+        <div>
+          <label htmlFor={this.usernameId}>Username</label>
+          <input
+            id={this.usernameId}
+            type="text"
+            required
+            value={username}
+            onChange={this.handleUsernameChange}
+            onBlur={this.handleUsernameBlur}
+            autoFocus/>
+        </div>
 
-        <label>Password</label>
-        <input
-          type="password"
-          required
-          value={password}
-          onChange={this.handlePasswordChange}
-          onBlur={this.handlePasswordBlur} />
+        <div>
+          <label htmlFor={this.passwordId}>Password</label>
+          <input
+            id={this.passwordId}
+            type="password"
+            required
+            value={password}
+            onChange={this.handlePasswordChange}
+            onBlur={this.handlePasswordBlur} />
+        </div>
 
         {error && <div>Incorrect username and/or password</div>}
         <div>

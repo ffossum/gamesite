@@ -4,6 +4,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {match, RouterContext} from 'react-router';
 import {logInSuccess} from 'actions/login';
+import {resetCounter} from 'util/uniqueId';
 
 let reducer = require('../../reducers').default;
 let routes = require('../../routes').default;
@@ -42,6 +43,7 @@ export default async function renderReact(ctx, next) {
     }
     const initialState = store.getState();
 
+    resetCounter();
     const reactString = renderToString(
       <Provider store={store}>
         <RouterContext {...renderProps} />
