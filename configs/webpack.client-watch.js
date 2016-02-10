@@ -6,6 +6,7 @@ var port = 3000;
 config.cache = true;
 config.debug = true;
 config.devtool = "cheap-module-eval-source-map";
+config.externals = {};
 
 config.entry.unshift(
 	"webpack-dev-server/client?http://" + hostname + ":" + port,

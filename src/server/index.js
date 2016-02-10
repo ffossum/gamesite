@@ -1,4 +1,6 @@
 import Koa from 'koa';
+import convert from 'koa-convert';
+import serve from 'koa-static';
 import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
@@ -36,6 +38,9 @@ router.get('*',
   authenticateJwtCookie,
   refreshJwtCookie,
   renderReact);
+
+router.get('/static/*',
+  convert(serve('.')));
 
 app
   .use(router.routes())

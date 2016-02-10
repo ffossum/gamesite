@@ -28,6 +28,11 @@ module.exports = {
 			{test: /\.js$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/}
 		],
 		noParse: /\.min\.js/
+  },
+	externals: {
+		"lodash": "_",
+		"react": "React",
+		"react-dom": "ReactDOM"
 	},
 	resolve: {
 		modulesDirectories: [
@@ -39,6 +44,6 @@ module.exports = {
 	},
 	node: {
 		__dirname: true,
-		fs: 'empty'
+		fs: "empty"
 	}
 };

@@ -4,10 +4,23 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <script>window.__INITIAL_STATE__ = {{{initialState}}};</script>
+
+    {{#if __DEVELOPMENT__}}
     <script src="http://localhost:3000/dist/client.js" defer></script>
+    {{else}}
+    <script src="https://fb.me/react-0.14.7.min.js" defer></script>
+    <script src="https://fb.me/react-dom-0.14.7.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.min.js" defer></script>
+    <script src="/static/dist/client.js" defer></script>
+    {{/if}}
+
   </head>
   <body>
     <div id="root">{{{reactString}}}</div>
+
+    {{#if __DEVELOPMENT__}}
     <div id="dev-tools"></div>
+    {{/if}}
+
   </body>
 </html>

@@ -51,6 +51,7 @@ export default async function renderReact(ctx, next) {
     );
 
     ctx.body = template({
+      __DEVELOPMENT__,
       reactString,
       initialState: JSON.stringify(initialState)
     });
