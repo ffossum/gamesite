@@ -1,3 +1,4 @@
 dist/
 static/
 node_modules/
+test/

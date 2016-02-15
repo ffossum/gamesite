@@ -11,7 +11,11 @@
     "watch-server-start": "node node_modules/just-wait --pattern \"dist/*.js\" && npm run start",
     "watch-client": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config configs/webpack.client-watch.js",
     "watch": "node node_modules/concurrently/src/main --kill-others \"npm run watch-server-start\" \"npm run watch-server\" \"npm run watch-client\"",
-    "lint": "node node_modules/eslint/bin/eslint src"
+    "lint": "node node_modules/eslint/bin/eslint src",
+    "build-test": "node node_modules/webpack/bin/webpack --colors --config configs/webpack.test.js",
+    "watch-build-test": "node node_modules/webpack/bin/webpack --colors --config configs/webpack.test-watch.js",
+    "test": "npm run lint && npm run build-test && mocha test/test.js",
+    "watch-test": "(cd test && mocha test.js --watch)"
   },
   "author": "Fredrik Fossum <fredrik.fossum@gmail.com>",
   "license": "MIT",
@@ -53,7 +57,9 @@
     "concurrently": "^1.0.0",
     "eslint": "^1.10.1",
     "eslint-plugin-react": "^3.14.0",
+    "glob": "^7.0.0",
     "just-wait": "^1.0.3",
+    "mocha": "^2.4.5",
     "redux-devtools": "^3.0.1",
     "redux-devtools-dock-monitor": "^1.0.1",
     "redux-devtools-log-monitor": "^1.0.2",
