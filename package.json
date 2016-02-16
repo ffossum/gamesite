@@ -42,8 +42,7 @@
     "react-router-redux": "^3.0.0",
     "redux": "^3.1.1",
     "redux-thunk": "^1.0.3",
-    "shortid": "^2.2.4",
-    "webpack": "^1.12.12"
+    "shortid": "^2.2.4"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",
@@ -55,14 +54,19 @@
     "babel-preset-react-hmre": "^1.0.1",
     "babel-preset-stage-0": "^6.3.13",
     "concurrently": "^1.0.0",
+    "css-loader": "^0.23.1",
     "eslint": "^1.10.1",
     "eslint-plugin-react": "^3.14.0",
     "glob": "^7.0.0",
     "just-wait": "^1.0.3",
     "mocha": "^2.4.5",
+    "postcss-cssnext": "^2.4.0",
+    "postcss-loader": "^0.8.1",
     "redux-devtools": "^3.0.1",
     "redux-devtools-dock-monitor": "^1.0.1",
     "redux-devtools-log-monitor": "^1.0.2",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1"
   }
 }

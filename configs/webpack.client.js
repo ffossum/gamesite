@@ -1,13 +1,14 @@
 var webpack = require("webpack");
 var path = require("path");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	target: "web",
 	cache: false,
-	context: __dirname,
+	context: path.join(__dirname, '..'),
 	debug: false,
 	devtool: false,
-	entry: ["babel-polyfill", "../src/client"],
+	entry: ["babel-polyfill", "./src/client"],
 	output: {
 		path: path.join(__dirname, "../static/dist"),
 		filename: "client.js",
@@ -18,17 +19,20 @@ module.exports = {
 		new webpack.DefinePlugin({"process.env": {NODE_ENV: '"production"'}}),
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
-		new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
+		new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
+		new ExtractTextPlugin('style.css')
 	],
 	module: {
 		loaders: [
-			{test: /\.json$/, loaders: ["json"]}
-		],
-		postLoaders: [
-			{test: /\.js$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/}
+			{test: /\.json$/, loaders: ["json"]},
+			{test: /\.js$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/},
+			{test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader?modules&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader")}
 		],
 		noParse: /\.min\.js/
   },
+	postcss: function () {
+		return [require('postcss-cssnext')];
+	},
 	externals: {
 		"lodash": "_",
 		"react": "React",

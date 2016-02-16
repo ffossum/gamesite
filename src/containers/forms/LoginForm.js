@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import actions from 'actions/login';
 import {uniqueId} from 'util/uniqueId';
 
+import styles from './loginForm.css';
+
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -53,11 +55,10 @@ class LoginForm extends React.Component {
     if (this.props.loggedInUser) {
       return null;
     }
-
     const {error, pending} = this.props.formState;
     const {username, password} = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className={styles.form}>
         <div>
           <label htmlFor={this.usernameId}>Username</label>
           <input

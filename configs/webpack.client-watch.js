@@ -23,8 +23,10 @@ config.plugins = [
 	new webpack.NoErrorsPlugin()
 ];
 
-config.module.postLoaders = [
-	{test: /\.js$/, loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=stage-0&presets[]=react&presets[]=react-hmre"], exclude: /node_modules/}
+config.module.loaders = [
+	{test: /\.json$/, loaders: ["json"]},
+	{test: /\.js$/, loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=stage-0&presets[]=react&presets[]=react-hmre"], exclude: /node_modules/},
+	{test: /\.css$/, loader: "style-loader!css-loader?modules&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader"}
 ];
 
 config.devServer = {
