@@ -9,8 +9,8 @@ config.devtool = "cheap-module-eval-source-map";
 config.externals = {};
 
 config.entry.unshift(
-	"webpack-dev-server/client?http://" + hostname + ":" + port,
-	"webpack/hot/only-dev-server"
+  "webpack-dev-server/client?http://" + hostname + ":" + port,
+  "webpack/hot/only-dev-server"
 );
 
 config.output.publicPath = "http://" + hostname + ":" + port + "/dist/";
@@ -18,28 +18,28 @@ config.output.hotUpdateMainFilename = "update/[hash]/update.json";
 config.output.hotUpdateChunkFilename = "update/[hash]/[id].update.js";
 
 config.plugins = [
-	new webpack.DefinePlugin({__CLIENT__: true, __SERVER__: false, __PRODUCTION__: false,  __DEVELOPMENT__: true}),
-	new webpack.HotModuleReplacementPlugin(),
-	new webpack.NoErrorsPlugin()
+  new webpack.DefinePlugin({__CLIENT__: true, __SERVER__: false, __PRODUCTION__: false,  __DEVELOPMENT__: true}),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NoErrorsPlugin()
 ];
 
 config.module.loaders = [
-	{test: /\.json$/, loaders: ["json"]},
-	{test: /\.js$/, loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=stage-0&presets[]=react&presets[]=react-hmre"], exclude: /node_modules/},
-	{test: /\.css$/, loader: "style-loader!css-loader?modules&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader"}
+  {test: /\.json$/, loaders: ["json"]},
+  {test: /\.js$/, loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=stage-0&presets[]=react&presets[]=react-hmre"], exclude: /node_modules/},
+  {test: /\.css$/, loader: "style-loader!css-loader?modules&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader"}
 ];
 
 config.devServer = {
-	publicPath: config.output.publicPath,
-	hot: true,
-	inline: false,
-	lazy: false,
-	quiet: false,
-	noInfo: true,
-	headers: {"Access-Control-Allow-Origin": "*"},
-	stats: {colors: true},
-	host: hostname,
-	port
+  publicPath: config.output.publicPath,
+  hot: true,
+  inline: false,
+  lazy: false,
+  quiet: false,
+  noInfo: true,
+  headers: {"Access-Control-Allow-Origin": "*"},
+  stats: {colors: true},
+  host: hostname,
+  port
 };
 
 module.exports = config;
