@@ -1,5 +1,4 @@
-import jwt from 'jsonwebtoken';
-import {getUserById} from '../db';
+import {getUserByJwt, signJwt} from '../jwt';
 
 const COOKIE_NAME = 'jwt';
 const EXPIRATION_AGE = 604800000; // 7 days
@@ -8,25 +7,15 @@ function getExpirationDate() {
   return new Date(Number(new Date()) + EXPIRATION_AGE);
 }
 
-const secret = 'secret'; //TODO read from config
-
 export async function refreshJwtCookie(ctx, next) {
   if (ctx.isAuthenticated()) {
-    const jwt = await getJwt({id: ctx.req.user.id}, secret, {expiresIn: '7d'});
+    const jwt = await signJwt({id: ctx.req.user.id}, {expiresIn: '7d'});
     ctx.cookies.set(COOKIE_NAME, jwt, {
       httpOnly: true,
       expires: getExpirationDate()
     });
   }
   await next();
-}
-
-function getJwt(payload, secret, options) {
-  return new Promise((resolve, reject) => {
-    jwt.sign(payload, secret, options, token => {
-      resolve(token);
-    });
-  });
 }
 
 function lastWeek() {
@@ -46,22 +35,9 @@ export async function expireJwtCookie(ctx, next) {
 export async function authenticateJwtCookie(ctx, next) {
   const jwt = ctx.cookies.get(COOKIE_NAME);
   try {
-    const decoded = await verifyJwt(jwt, secret);
-    const user = await getUserById(decoded.id);
+    const user = await getUserByJwt(jwt);
     ctx.req.user = user;
   } catch (err) {}
 
   await next();
-}
-
-function verifyJwt(token, secret) {
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, secret, (err, decoded) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(decoded);
-      }
-    });
-  });
 }

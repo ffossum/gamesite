@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^0.8.5",
+    "cookie": "^0.2.3",
     "forever": "^0.15.1",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.1.4",
@@ -42,7 +43,9 @@
     "react-router-redux": "^3.0.0",
     "redux": "^3.1.1",
     "redux-thunk": "^1.0.3",
-    "shortid": "^2.2.4"
+    "shortid": "^2.2.4",
+    "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",

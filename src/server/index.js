@@ -7,6 +7,8 @@ import KoaRouter from 'koa-router';
 import renderReact from './middleware/renderReact';
 import {refreshJwtCookie, expireJwtCookie, authenticateJwtCookie} from './middleware/jwtCookie';
 import {checkUsernameAvailability, registerUser} from './middleware/registerUser';
+import http from 'http';
+import socketIo from 'socket.io';
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -46,8 +48,22 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
+const server = http.Server(app.callback());
+const io = socketIo(server);
+
+let handleConnection = require('./socket/handleConnection').default;
+io.on('connection', handleConnection);
+
+if (module.hot) {
+    module.hot.accept('./socket/handleConnection', () => {
+        io.sockets.removeListener('connection', handleConnection);
+        handleConnection = require('./socket/handleConnection').default;
+        io.on('connection', handleConnection);
+    });
+}
+
 const PORT = 8080;
-app.listen(PORT, '0.0.0.0', err => {
+server.listen(PORT, '0.0.0.0', err => {
   if (err) {
     console.error(err);
     return;
