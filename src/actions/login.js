@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import socket from 'client/socket';
 
 export const LOG_IN_REQUEST = 'login/LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'login/LOG_IN_SUCCESS';
@@ -44,6 +45,15 @@ function logInFailure() {
   };
 }
 
+function logOutRequest() {
+  return {
+    type: LOG_OUT,
+    meta: {
+      socket: true
+    }
+  };
+}
+
 export function logIn(username, password) {
   return dispatch => {
     dispatch(logInRequest());
@@ -61,7 +71,7 @@ export function logIn(username, password) {
     })
     .then(async res => {
       if (res.ok) {
-        require('../client/socket').reconnect();
+        socket.reconnect();
         const json = await res.json();
         dispatch(logInSuccess(json.userId));
       } else {
@@ -73,13 +83,10 @@ export function logIn(username, password) {
 
 export function logOut() {
   return dispatch => {
-    dispatch({type: LOG_OUT});
+    dispatch(logOutRequest());
     fetch('/api/logout', {
       method: 'post',
       credentials: 'same-origin'
-    })
-    .then(() => {
-      require('../client/socket').reconnect();
     });
   };
 }

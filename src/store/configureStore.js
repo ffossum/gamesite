@@ -4,13 +4,15 @@ import rootReducer from '../reducers';
 import DevTools from '../containers/DevTools';
 import {browserHistory} from 'react-router';
 import {syncHistory} from 'react-router-redux';
+import socketMiddleware from './middleware/socketMiddleware';
 
 const reduxRouterMiddleware = syncHistory(browserHistory);
 
 const finalCreateStore = compose(
   applyMiddleware(
     thunk,
-    reduxRouterMiddleware
+    reduxRouterMiddleware,
+    socketMiddleware
   ),
   DevTools.instrument()
 )(createStore);

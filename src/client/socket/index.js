@@ -3,7 +3,8 @@ import _ from 'lodash';
 let handlers = require('./handlers').default;
 
 const HOST = `${location.protocol}//${location.hostname}:8080`;
-let socket = io(HOST);
+
+let socket = __CLIENT__ ? io(HOST) : {};
 addHandlers(socket, handlers);
 
 if (module.hot) {
