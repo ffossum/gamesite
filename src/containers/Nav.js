@@ -17,10 +17,14 @@ export default class Nav extends React.Component {
         {
           this.props.loggedInUser
           ?
-          <div className={styles.user}>
-            <div>User id: {this.props.loggedInUser}</div>
-            <div><button onClick={this.props.logOut}>Log out</button></div>
-          </div>
+          <ul>
+            <li className={styles.user}>
+              User id: {this.props.loggedInUser}
+            </li>
+            <li className={styles['nav-item']}>
+              <a href="#" onClick={this.props.logOut}>Log out</a>
+            </li>
+          </ul>
           :
           <ul className={styles['nav-item']}>
             <li><Link to="/login">Login</Link></li>
