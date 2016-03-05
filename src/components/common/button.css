@@ -9,7 +9,8 @@
   background-color: var(--btn-primary);
   color: white;
 
-  &:hover {
+  &:hover,
+  &:focus {
     filter: brightness(0.9);
   }
   &:active {

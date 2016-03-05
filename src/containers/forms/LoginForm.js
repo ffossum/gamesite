@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import actions from 'actions/login';
-import {uniqueId} from 'util/uniqueId';
 import Button from 'components/common/Button';
+import TextInput from 'components/common/TextInput';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -12,9 +12,6 @@ class LoginForm extends React.Component {
       username: props.formState.username,
       password: props.formState.password
     };
-
-    this.usernameId = uniqueId('username');
-    this.passwordId = uniqueId('password');
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUsernameChange = this.handleChange.bind(this, 'username');
@@ -58,28 +55,22 @@ class LoginForm extends React.Component {
     const {username, password} = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <div>
-          <label htmlFor={this.usernameId}>Username</label>
-          <input
-            id={this.usernameId}
-            type="text"
-            required
-            value={username}
-            onChange={this.handleUsernameChange}
-            onBlur={this.handleUsernameBlur}
-            autoFocus/>
-        </div>
 
-        <div>
-          <label htmlFor={this.passwordId}>Password</label>
-          <input
-            id={this.passwordId}
-            type="password"
-            required
-            value={password}
-            onChange={this.handlePasswordChange}
-            onBlur={this.handlePasswordBlur} />
-        </div>
+        <TextInput
+          label="Username"
+          required
+          value={username}
+          onChange={this.handleUsernameChange}
+          onBlur={this.handleUsernameBlur}
+          autoFocus/>
+
+        <TextInput
+          label="Password"
+          type="password"
+          required
+          value={password}
+          onChange={this.handlePasswordChange}
+          onBlur={this.handlePasswordBlur} />
 
         {error && <div>Incorrect username and/or password</div>}
         <div>

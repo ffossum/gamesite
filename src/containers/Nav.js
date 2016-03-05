@@ -27,7 +27,7 @@ export default class Nav extends React.Component {
           </ul>
           :
           <ul className={styles['nav-item']}>
-            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/login">Log in</Link></li>
             <li><Link to="/register">Register</Link></li>
           </ul>
         }

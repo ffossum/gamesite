@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import actions, {errors as errorTypes} from 'actions/registerUser';
-import {uniqueId} from 'util/uniqueId';
 import Button from 'components/common/Button';
+import TextInput from 'components/common/TextInput';
 
 class RegisterUserForm extends React.Component {
   constructor(props) {
@@ -13,10 +13,6 @@ class RegisterUserForm extends React.Component {
       password: props.formState.password,
       repeatPassword: props.formState.repeatPassword
     };
-
-    this.usernameId = uniqueId('username');
-    this.passwordId = uniqueId('password');
-    this.repeatPasswordId = uniqueId('repeatPassword');
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUsernameChange = this.handleChange.bind(this, 'username');
@@ -64,45 +60,37 @@ class RegisterUserForm extends React.Component {
     const {username, password, repeatPassword} = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <div>
-          <label htmlFor={this.usernameId}>Username</label>
-          <input
-            id={this.usernameId}
-            type="text"
-            required
-            disabled={pending}
-            value={username}
-            onChange={this.handleUsernameChange}
-            onBlur={this.handleUsernameBlur}
-            autoFocus/>
 
-          {errors.username === errorTypes.USERNAME_TAKEN && <span>Username is already taken.</span>}
-        </div>
+        <TextInput
+          label="Username"
+          required
+          disabled={pending}
+          value={username}
+          onChange={this.handleUsernameChange}
+          onBlur={this.handleUsernameBlur}
+          autoFocus/>
 
-        <div>
-          <label htmlFor={this.passwordId}>Password</label>
-          <input
-            id={this.passwordId}
-            type="password"
-            required
-            disabled={pending}
-            value={password}
-            onChange={this.handlePasswordChange}
-            onBlur={this.handlePasswordBlur} />
-        </div>
+        {errors.username === errorTypes.USERNAME_TAKEN && <span>Username is already taken.</span>}
 
-        <div>
-          <label htmlFor={this.repeatPasswordId}>Repeat password</label>
-          <input
-            id={this.repeatPasswordId}
-            type="password"
-            required
-            disabled={pending}
-            value={repeatPassword}
-            onChange={this.handleRepeatPasswordChange}
-            onBlur={this.handleRepeatPasswordBlur} />
-          {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH && <span>Passwords do not match.</span>}
-        </div>
+        <TextInput
+          label="Password"
+          type="password"
+          required
+          disabled={pending}
+          value={password}
+          onChange={this.handlePasswordChange}
+          onBlur={this.handlePasswordBlur} />
+
+        <TextInput
+          label="Repeat password"
+          type="password"
+          required
+          disabled={pending}
+          value={repeatPassword}
+          onChange={this.handleRepeatPasswordChange}
+          onBlur={this.handleRepeatPasswordBlur} />
+
+        {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH && <span>Passwords do not match.</span>}
 
         <div>
           <Button disabled={pending}>
