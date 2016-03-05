@@ -2,10 +2,14 @@ import io from 'socket.io-client';
 import _ from 'lodash';
 let handlers = require('./handlers').default;
 
-const HOST = `${location.protocol}//${location.hostname}:8080`;
+let host;
+let socket = {};
 
-let socket = __CLIENT__ ? io(HOST) : {};
-addHandlers(socket, handlers);
+if (__CLIENT__) {
+  host = `${location.protocol}//${location.hostname}:8080`;
+  socket = io(host);
+  addHandlers(socket, handlers);
+}
 
 if (module.hot) {
   module.hot.accept('./handlers', () => {
@@ -24,7 +28,7 @@ export function on() {
 
 export function reconnect() {
   socket.disconnect();
-  socket = io(HOST, {forceNew: true});
+  socket = io(host, {forceNew: true});
   addHandlers(socket, handlers);
 }
 

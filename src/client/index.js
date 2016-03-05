@@ -6,6 +6,8 @@ import configureStore from '../store/configureStore';
 import {Provider} from 'react-redux';
 import './socket/';
 
+import './main.css';
+
 const store = configureStore(window.__INITIAL_STATE__);
 
 ReactDOM.render(

@@ -4,21 +4,28 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import actions from 'actions/login';
 
+import styles from './nav.css';
+
 export default class Nav extends React.Component {
   render() {
     return (
-      <nav>
-        <ul>
-          <li><Link to="/">Main</Link></li>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/register">Register</Link></li>
-        </ul>
+      <nav role="navigation" className={styles.navbar}>
+        <div className={styles['nav-item']}>
+          <Link to="/">Main</Link>
+        </div>
+
         {
-          this.props.loggedInUser &&
-          <div>
+          this.props.loggedInUser
+          ?
+          <div className={styles.user}>
             <div>User id: {this.props.loggedInUser}</div>
-            <button onClick={this.props.logOut}>Log out</button>
+            <div><button onClick={this.props.logOut}>Log out</button></div>
           </div>
+          :
+          <ul className={styles['nav-item']}>
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/register">Register</Link></li>
+          </ul>
         }
       </nav>
     );

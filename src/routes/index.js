@@ -5,12 +5,14 @@ import LoginForm from 'containers/forms/LoginForm';
 import RegisterUserForm from 'containers/forms/RegisterUserForm';
 import Nav from 'containers/Nav';
 
+import styles from 'client/main.css';
+
 class Root extends React.Component {
   render() {
     return (
       <div>
         <Nav />
-        <div>
+        <div className={styles.content}>
           {this.props.children}
         </div>
       </div>
