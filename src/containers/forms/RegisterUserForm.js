@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import actions, {errors as errorTypes} from 'actions/registerUser';
 import {uniqueId} from 'util/uniqueId';
+import Button from 'components/common/Button';
 
 class RegisterUserForm extends React.Component {
   constructor(props) {
@@ -104,9 +105,9 @@ class RegisterUserForm extends React.Component {
         </div>
 
         <div>
-          <button disabled={pending}>
+          <Button disabled={pending}>
             Register
-          </button>
+          </Button>
         </div>
       </form>
     );

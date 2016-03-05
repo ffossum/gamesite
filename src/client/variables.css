@@ -1,0 +1,8 @@
+:root {
+  --blue: #2980b9;
+  --green: #27ae60;
+  --red: #c0392b;
+  --orange: #f39c12;
+
+  --btn-primary: var(--blue);
+}

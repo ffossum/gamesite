@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import actions from 'actions/login';
 import {uniqueId} from 'util/uniqueId';
+import Button from 'components/common/Button';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -82,9 +83,9 @@ class LoginForm extends React.Component {
 
         {error && <div>Incorrect username and/or password</div>}
         <div>
-          <button disabled={pending}>
+          <Button disabled={pending}>
             Log in
-          </button>
+          </Button>
         </div>
       </form>
     );

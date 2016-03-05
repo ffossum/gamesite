@@ -37,7 +37,7 @@ module.exports = {
     noParse: /\.min\.js/
   },
   postcss: function () {
-    return [require('postcss-cssnext')];
+    return [require('postcss-import'), require('postcss-cssnext')];
   },
   externals: nodeModules,
   resolve: {
