@@ -15,5 +15,9 @@ export default function handleConnection(socket) {
   getUserByJwt(token)
     .then(user => {
       socket.user = user;
+      socket.emit('news', {hello: user.username});
+    })
+    .catch(err => {
+      socket.emit('news', {hello: 'guest'});
     });
 }

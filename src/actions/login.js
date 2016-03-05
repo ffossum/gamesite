@@ -61,6 +61,7 @@ export function logIn(username, password) {
     })
     .then(async res => {
       if (res.ok) {
+        require('../client/socket').reconnect();
         const json = await res.json();
         dispatch(logInSuccess(json.userId));
       } else {
@@ -76,6 +77,9 @@ export function logOut() {
     fetch('/api/logout', {
       method: 'post',
       credentials: 'same-origin'
+    })
+    .then(() => {
+      require('../client/socket').reconnect();
     });
   };
 }
