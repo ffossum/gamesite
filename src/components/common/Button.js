@@ -8,6 +8,6 @@ export default class Button extends React.Component {
       <button {...this.props} className={styles.btn}>
         {this.props.children}
       </button>
-    )
+    );
   }
 }

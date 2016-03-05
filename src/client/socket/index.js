@@ -36,7 +36,7 @@ export default {
   emit,
   on,
   reconnect
-}
+};
 
 function addHandlers(socket, handlers) {
   _.forEach(handlers, (handler, event) => {
