@@ -6,7 +6,7 @@ import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
 import renderReact from './middleware/renderReact';
 import {refreshJwtCookie, expireJwtCookie, authenticateJwtCookie} from './middleware/jwtCookie';
-import {checkUsernameAvailability, registerUser} from './middleware/registerUser';
+import {validateUsername, validateEmail, registerUser} from './middleware/registerUser';
 import http from 'http';
 import socketIo from 'socket.io';
 
@@ -31,7 +31,8 @@ router.post('/api/login',
 router.post('/api/logout', expireJwtCookie);
 
 router.post('/api/register',
-  checkUsernameAvailability,
+  validateUsername,
+  validateEmail,
   registerUser,
   refreshJwtCookie,
   sendUserId);

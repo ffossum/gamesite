@@ -9,12 +9,15 @@ class RegisterUserForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      email: props.formState.email,
       username: props.formState.username,
       password: props.formState.password,
       repeatPassword: props.formState.repeatPassword
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEmailChange = this.handleChange.bind(this, 'email');
+    this.handleEmailBlur = this.handleBlur.bind(this, 'email');
     this.handleUsernameChange = this.handleChange.bind(this, 'username');
     this.handleUsernameBlur = this.handleBlur.bind(this, 'username');
     this.handlePasswordChange = this.handleChange.bind(this, 'password');
@@ -23,8 +26,9 @@ class RegisterUserForm extends React.Component {
     this.handleRepeatPasswordBlur = this.handleBlur.bind(this, 'repeatPassword');
   }
   componentWillReceiveProps(nextProps) {
-    const {username, password, repeatPassword} = nextProps.formState;
+    const {email, username, password, repeatPassword} = nextProps.formState;
     this.setState({
+      email,
       username,
       password,
       repeatPassword
@@ -34,8 +38,8 @@ class RegisterUserForm extends React.Component {
     e.preventDefault();
     const {registerUser, formState} = this.props;
     if (!formState.pending) {
-      const {username, password, repeatPassword} = this.state;
-      registerUser(username, password, repeatPassword);
+      const {email, username, password, repeatPassword} = this.state;
+      registerUser(email, username, password, repeatPassword);
     }
   }
   handleChange(field, e) {
@@ -57,9 +61,22 @@ class RegisterUserForm extends React.Component {
     }
 
     const {errors, pending} = this.props.formState;
-    const {username, password, repeatPassword} = this.state;
+    const {email, username, password, repeatPassword} = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
+
+        <TextInput
+         label="Email"
+         type="email"
+         required
+         disabled={pending}
+         value={email}
+         onChange={this.handleEmailChange}
+         onBlur={this.handleEmailBlur}
+         autoFocus />
+
+        {errors.email === errorTypes.EMAIL_TAKEN && <span>A user with this email already exists.</span>}
+        {errors.email === errorTypes.INVALID_EMAIL && <span>Invalid email</span>}
 
         <TextInput
           label="Username"
@@ -67,8 +84,7 @@ class RegisterUserForm extends React.Component {
           disabled={pending}
           value={username}
           onChange={this.handleUsernameChange}
-          onBlur={this.handleUsernameBlur}
-          autoFocus/>
+          onBlur={this.handleUsernameBlur} />
 
         {errors.username === errorTypes.USERNAME_TAKEN && <span>Username is already taken.</span>}
 

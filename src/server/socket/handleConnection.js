@@ -13,7 +13,7 @@ function getJwt(request) {
 }
 
 function getPublicUserData(user) {
-  return _.pick(user, ['id', 'username']);
+  return _.pick(user, ['id', 'emailHash', 'username']);
 }
 
 export default function handleConnection(socket) {

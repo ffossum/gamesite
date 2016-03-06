@@ -4,6 +4,7 @@ import {types} from 'actions/registerUser';
 const initialState = {
   errors: {},
   pending: false,
+  email: '',
   username: '',
   password: '',
   repeatPassword: ''

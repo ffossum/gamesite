@@ -21,7 +21,3 @@ export default class TextInput extends React.Component {
     );
   }
 }
-
-TextInput.propTypes = {
-  type: PropTypes.oneOf(['text', 'password'])
-};
