@@ -9,7 +9,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         [user.id]: user
-      }
+      };
     }
     default: return state;
   }

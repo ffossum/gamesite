@@ -1,4 +1,4 @@
-import {getUserByName, addUser, isUsernameAvailable, isEmailAvailable} from '../db';
+import {addUser, isUsernameAvailable, isEmailAvailable} from '../db';
 import validator from 'validator';
 import _ from 'lodash';
 import {errors as registerUserErrors} from 'actions/registerUser';

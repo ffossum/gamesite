@@ -61,7 +61,7 @@ asdf.password = "$2a$10$hlW/XFsfuoU4Vsroy6.ECuqMqvpXtlIXFGzKIjVm.3TfLfmZ4wGmO";
 
 const zxcv = new User();
 zxcv.id = "3";
-zxcv.email = "zxcv@zxcv.com"
+zxcv.email = "zxcv@zxcv.com";
 zxcv.emailHash = "46e3bfea63ce5e692e532d1b374b9e79";
 zxcv.username = "zxcv";
 zxcv.password = "$2a$10$lBWHGGB0x3NdUM5gqeqIBe8clEs8X/BtvXNCuaTOyYJnqLm6lXWfO";

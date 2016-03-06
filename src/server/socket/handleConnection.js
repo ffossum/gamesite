@@ -1,6 +1,5 @@
 import cookie from 'cookie';
 import {getUserByJwt} from '../jwt';
-import {getConnectedUsers} from './index';
 import _ from 'lodash';
 import {LOG_OUT, LOG_IN_SUCCESS} from 'actions/login';
 

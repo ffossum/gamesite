@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {uniqueId} from 'util/uniqueId';
 
 import styles from './textInput.css';
