@@ -56,11 +56,11 @@ let handleConnection = require('./socket/handleConnection').default;
 io.on('connection', handleConnection);
 
 if (module.hot) {
-    module.hot.accept('./socket/handleConnection', () => {
-        io.sockets.removeListener('connection', handleConnection);
-        handleConnection = require('./socket/handleConnection').default;
-        io.on('connection', handleConnection);
-    });
+  module.hot.accept('./socket/handleConnection', () => {
+    io.sockets.removeListener('connection', handleConnection);
+    handleConnection = require('./socket/handleConnection').default;
+    io.on('connection', handleConnection);
+  });
 }
 
 const PORT = 8080;
