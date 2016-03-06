@@ -1,21 +1,23 @@
 import io from 'socket.io-client';
 import _ from 'lodash';
-let handlers = require('./handlers').default;
 
 let host;
-let socket = {};
+let socket;
+let handlers;
 
-if (__CLIENT__) {
+function init(store) {
   host = `${location.protocol}//${location.hostname}:8080`;
   socket = io(host);
-  addHandlers(socket, handlers);
-}
+  handlers = require('./handlers').createHandlers(store);
 
-if (module.hot) {
-  module.hot.accept('./handlers', () => {
-    handlers = require('./handlers').default;
-    replaceHandlers(socket, handlers);
-  });
+  addHandlers(socket, handlers);
+
+  if (module.hot) {
+    module.hot.accept('./handlers', () => {
+      handlers = require('./handlers').createHandlers(store);
+      replaceHandlers(socket, handlers);
+    });
+  }
 }
 
 export function emit() {
@@ -33,6 +35,7 @@ export function reconnect() {
 }
 
 export default {
+  init: _.once(init),
   emit,
   on,
   reconnect

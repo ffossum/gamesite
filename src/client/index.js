@@ -4,9 +4,11 @@ import {Router, browserHistory} from 'react-router';
 import routes from '../routes/';
 import {Provider} from 'react-redux';
 import store from './store';
-import './socket/';
+import socket from './socket/';
 
 import './main.css';
+
+socket.init(store);
 
 ReactDOM.render(
   <Provider store={store}>

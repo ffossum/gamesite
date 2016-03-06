@@ -1,5 +1,7 @@
-export default {
-  'news': data => {
-    console.log(data);
-  }
-};
+export function createHandlers(store) {
+  return {
+    'news': data => {
+      console.log(data);
+    }
+  };
+}
