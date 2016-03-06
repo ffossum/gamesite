@@ -72,8 +72,6 @@ export function logIn(username, password) {
     .then(async res => {
       if (res.ok) {
         socket.reconnect();
-        const json = await res.json();
-        dispatch(logInSuccess(json.userId));
       } else {
         dispatch(logInFailure());
       }
