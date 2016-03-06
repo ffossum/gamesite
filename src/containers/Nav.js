@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import actions from 'actions/login';
+import Gravatar from 'components/common/Gravatar';
 
 import styles from './nav.css';
 
@@ -19,6 +20,7 @@ export default class Nav extends React.Component {
           ?
           <ul>
             <li className={styles.user}>
+              <Gravatar emailHash={this.props.user.emailHash} />
               {this.props.user.username}
             </li>
             <li className={styles['nav-item']}>
