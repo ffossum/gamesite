@@ -11,9 +11,11 @@ export default class Nav extends React.Component {
   render() {
     return (
       <nav role="navigation" className={styles.navbar}>
-        <div className={styles['nav-item']}>
-          <Link to="/">Main</Link>
-        </div>
+        <ul className={styles['nav-item']}>
+          <li><Link to="/">Main</Link></li>
+          <li><Link to="/play">Play</Link></li>
+          <li><Link to="/about">About</Link></li>
+        </ul>
 
         {
           this.props.user

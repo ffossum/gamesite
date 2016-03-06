@@ -1,10 +1,10 @@
 import React from 'react';
 
-export default class Main extends React.Component {
+export default class Play extends React.Component {
   render() {
     return (
     <div>
-      <h1>Main page</h1>
+      <h1>Play</h1>
     </div>
     );
   }
