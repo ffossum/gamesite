@@ -39,7 +39,7 @@ export default async function renderReact(ctx, next) {
   if (renderProps) {
     const store = createStore(reducer);
     if (ctx.isAuthenticated()) {
-      store.dispatch(logInSuccess(ctx.req.user.id));
+      store.dispatch(logInSuccess(ctx.req.user));
     }
     const initialState = store.getState();
 

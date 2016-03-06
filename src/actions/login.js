@@ -30,11 +30,11 @@ function logInRequest() {
   };
 }
 
-export function logInSuccess(userId) {
+export function logInSuccess(user) {
   return {
     type: LOG_IN_SUCCESS,
     payload: {
-      userId
+      user
     }
   };
 }

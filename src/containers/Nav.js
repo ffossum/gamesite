@@ -15,11 +15,11 @@ export default class Nav extends React.Component {
         </div>
 
         {
-          this.props.loggedInUser
+          this.props.user
           ?
           <ul>
             <li className={styles.user}>
-              User id: {this.props.loggedInUser}
+              {this.props.user.username}
             </li>
             <li className={styles['nav-item']}>
               <a href="#" onClick={this.props.logOut}>Log out</a>
@@ -37,13 +37,19 @@ export default class Nav extends React.Component {
 }
 
 Nav.propTypes = {
-  loggedInUser: PropTypes.string,
+  user: PropTypes.object,
   logOut: PropTypes.func.isRequired
 };
 
 export default connect(
-  state => ({
-    loggedInUser: state.loggedInUser
-  }),
+  state => {
+    if (state.loggedInUser) {
+      return {
+        user: state.data.users[state.loggedInUser]
+      };
+    } else {
+      return {};
+    }
+  },
   dispatch => bindActionCreators(actions, dispatch)
 )(Nav);

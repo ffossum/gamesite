@@ -1,4 +1,5 @@
 import {logInSuccess} from './login';
+import socket from 'client/socket';
 
 export const REGISTER_USER_REQUEST = 'registerUser/REGISTER_USER_REQUEST';
 export const REGISTER_USER_FAILURE = 'registerUser/REGISTER_USER_FAILURE';
@@ -48,7 +49,7 @@ export function registerUser(username, password, repeatPassword) {
       .then(async res => {
         const json = await res.json();
         if (res.ok) {
-          dispatch(logInSuccess(json.userId));
+          socket.reconnect();
         } else {
           dispatch(registerUserFailure(json.errors));
         }
