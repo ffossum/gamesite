@@ -1,5 +1,6 @@
 import cookie from 'cookie';
 import {getUserByJwt} from '../jwt';
+import {getConnectedUsers} from './index';
 import _ from 'lodash';
 import {LOG_OUT, LOG_IN_SUCCESS} from 'actions/login';
 
@@ -21,9 +22,16 @@ export default function handleConnection(socket) {
   getUserByJwt(token)
     .then(user => {
       socket.user = user;
+
+      socket.join('users');
+      socket.join(user.id);
+
       socket.emit('news', {hello: user.username});
       socket.emit(LOG_IN_SUCCESS, {user: getPublicUserData(socket.user)});
+
       socket.on(LOG_OUT, () => {
+        socket.leave('users');
+        socket.leave(socket.user.id);
         delete socket.user;
       });
     })

@@ -8,7 +8,7 @@ import renderReact from './middleware/renderReact';
 import {refreshJwtCookie, expireJwtCookie, authenticateJwtCookie} from './middleware/jwtCookie';
 import {validateUsername, validateEmail, registerUser} from './middleware/registerUser';
 import http from 'http';
-import socketIo from 'socket.io';
+import socket from './socket/';
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -50,18 +50,7 @@ app
   .use(router.allowedMethods());
 
 const server = http.Server(app.callback());
-const io = socketIo(server);
-
-let handleConnection = require('./socket/handleConnection').default;
-io.on('connection', handleConnection);
-
-if (module.hot) {
-  module.hot.accept('./socket/handleConnection', () => {
-    io.sockets.removeListener('connection', handleConnection);
-    handleConnection = require('./socket/handleConnection').default;
-    io.on('connection', handleConnection);
-  });
-}
+socket.init(server);
 
 const PORT = 8080;
 server.listen(PORT, '0.0.0.0', err => {
