@@ -1,6 +1,10 @@
 .gravatar {
 
-  margin: -0.5rem 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+
+  margin-top: -0.65rem;
+  margin-bottom: -0.35rem;
   height: 1.5rem;
 
   border-radius:50%;
