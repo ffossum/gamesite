@@ -18,7 +18,7 @@ module.exports = {
   context: path.join(__dirname, '..'),
   debug: false,
   devtool: "source-map",
-  entry: ["babel-polyfill", "./src/server"],
+  entry: ["babel-polyfill", "./src/bluebirdPolyfill", "./src/server"],
   output: {
     path: path.join(__dirname, "../dist"),
     filename: "server.js"

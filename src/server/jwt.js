@@ -3,24 +3,12 @@ import {getUserById} from './db';
 
 const secret = 'secret'; //TODO read from config
 
-export function signJwt(payload, options) {
-  return new Promise((resolve, reject) => {
-    jwt.sign(payload, secret, options, token => {
-      resolve(token);
-    });
-  });
+export async function signJwt(payload, options) {
+  return await jwt.signAsync(payload, secret, options);
 }
 
-export function verifyJwt(token) {
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, secret, (err, decoded) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(decoded);
-      }
-    });
-  });
+export async function verifyJwt(token) {
+  return await jwt.verifyAsync(token, secret);
 }
 
 export async function getUserByJwt(token) {

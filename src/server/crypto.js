@@ -2,26 +2,10 @@ import bcrypt from 'bcrypt';
 
 const BCRYPT_SALT_ROUNDS = 10;
 
-export function hashPassword(password) {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, BCRYPT_SALT_ROUNDS, (err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res);
-      }
-    });
-  });
+export async function hashPassword(password) {
+  return await bcrypt.hashAsync(password, BCRYPT_SALT_ROUNDS);
 }
 
-export function comparePassword(password, hash) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, hash, (err, match) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(match);
-      }
-    });
-  });
+export async function comparePassword(password, hash) {
+  return await bcrypt.compareAsync(password, hash);
 }

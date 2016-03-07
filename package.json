@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^0.8.5",
+    "bluebird": "^3.3.3",
     "cookie": "^0.2.3",
     "forever": "^0.15.1",
     "handlebars": "^4.0.5",
