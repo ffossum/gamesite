@@ -5,6 +5,9 @@
   --green: #27ae60;
   --red: #c0392b;
   --orange: #f39c12;
+  --gray: #ccc;
+
+  --border: 1px solid var(--gray);
 
   --btn-primary: var(--blue);
   --btn-primary-hover: var(--darker-blue);

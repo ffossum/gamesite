@@ -5,6 +5,8 @@ import Gravatar from 'components/common/Gravatar';
 import _ from 'lodash';
 import moment from 'moment';
 
+import styles from './chat.css';
+
 export default class Chat extends React.Component {
   constructor() {
     super();
@@ -29,25 +31,31 @@ export default class Chat extends React.Component {
   render() {
     const {messages} = this.props;
     return (
-      <div>
-        <div>
-          {
-            _.map(messages, msg => {
-              return (
-                <div key={`${msg.user.username}${msg.time}`}>
-                  {moment(msg.time).format('dddd MMMM Do, hh:mm:ss')} <Gravatar emailHash={msg.user.emailHash} /> {msg.user.username}: {msg.text}
-                </div>
-              );
-            })
-          }
-        </div>
-        <form onSubmit={this.handleSubmit}>
-          <TextInput
-            value={this.state.message}
-            onChange={this.handleChange}
-            placeholder="Say something..."/>
+      <div className={styles.container}>
+        <div className={styles.messagesContainer}>
+          <div className={styles.messages}>
+            {
+              _.map(messages, msg => {
+                return (
+                  <div key={`${msg.user.username}${msg.time}`} className={styles.message}>
+                    {moment(msg.time).format('dddd MMMM Do, hh:mm:ss')} <Gravatar emailHash={msg.user.emailHash} /> {msg.user.username}: {msg.text}
+                  </div>
+                );
+              })
+            }
+          </div>
 
-          <Button>Send</Button>
+        </div>
+        <form className={styles.chatForm} onSubmit={this.handleSubmit}>
+          <div className={styles.messageInput}>
+            <TextInput
+              value={this.state.message}
+              onChange={this.handleChange}
+              placeholder="Say something..."/>
+          </div>
+          <div>
+            <Button>Send</Button>
+          </div>
         </form>
 
       </div>
