@@ -1,8 +1,12 @@
 :root {
   --blue: #2980b9;
+  --darker-blue: #1e6390;
+  --darkest-blue: #123f5c;
   --green: #27ae60;
   --red: #c0392b;
   --orange: #f39c12;
 
   --btn-primary: var(--blue);
+  --btn-primary-hover: var(--darker-blue);
+  --btn-primary-active: var(--darkest-blue);
 }

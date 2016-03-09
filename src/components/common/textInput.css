@@ -1,7 +1,10 @@
-.input {
-  & label {
-    display: block;
+.group {
+  margin-bottom: 0.75rem;
+
+  & input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 3px;
+    border: 1px solid #ccc;
   }
-  margin-top: 0.3rem;
-  margin-bottom: 0.3rem;
 }

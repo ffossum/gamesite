@@ -14,7 +14,7 @@ export default class TextInput extends React.Component {
     otherProps.type = otherProps.type || 'text';
 
     return (
-      <div className={styles.input}>
+      <div className={styles.group}>
         {label && <label htmlFor={this.inputId}>{label}</label>}
         <input id={this.inputId} {...otherProps} />
       </div>
