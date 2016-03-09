@@ -35,6 +35,7 @@ module.exports = {
   },
   externals: {
     "lodash": "_",
+    "moment": "moment",
     "react": "React",
     "react-dom": "ReactDOM"
   },

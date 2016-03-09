@@ -3,6 +3,7 @@ import TextInput from 'components/common/TextInput';
 import Button from 'components/common/Button';
 import Gravatar from 'components/common/Gravatar';
 import _ from 'lodash';
+import moment from 'moment';
 
 export default class Chat extends React.Component {
   constructor() {
@@ -34,7 +35,7 @@ export default class Chat extends React.Component {
             _.map(messages, msg => {
               return (
                 <div key={`${msg.user.username}${msg.time}`}>
-                  {msg.time} <Gravatar emailHash={msg.user.emailHash} /> {msg.user.username}: {msg.text}
+                  {moment(msg.time).format('dddd MMMM Do, hh:mm:ss')} <Gravatar emailHash={msg.user.emailHash} /> {msg.user.username}: {msg.text}
                 </div>
               );
             })
