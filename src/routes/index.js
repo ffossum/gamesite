@@ -1,6 +1,6 @@
 import React from 'react';
 import {IndexRoute, Route} from 'react-router';
-import Main from 'components/Main';
+import Main from 'containers/Main';
 import Play from 'components/Play';
 import About from 'components/About';
 import LoginForm from 'containers/forms/LoginForm';
