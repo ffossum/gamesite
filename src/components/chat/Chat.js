@@ -31,7 +31,7 @@ export default class Chat extends React.Component {
   render() {
     const {messages} = this.props;
     return (
-      <div className={styles.container}>
+      <div className={styles.chat}>
         <div className={styles.messagesContainer}>
           <div className={styles.messages}>
             {
@@ -44,7 +44,6 @@ export default class Chat extends React.Component {
               })
             }
           </div>
-
         </div>
         <form className={styles.chatForm} onSubmit={this.handleSubmit}>
           <div className={styles.messageInput}>
