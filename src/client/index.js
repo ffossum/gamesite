@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, browserHistory} from 'react-router';
+import {syncHistoryWithStore} from 'react-router-redux';
 import routes from '../routes/';
 import {Provider} from 'react-redux';
 import store from './store';
@@ -10,9 +11,11 @@ import './client.css';
 
 socket.init(store);
 
+const history = syncHistoryWithStore(browserHistory, store);
+
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={history}>
       {routes}
     </Router>
   </Provider>,

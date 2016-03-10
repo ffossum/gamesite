@@ -2,16 +2,11 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 import DevTools from '../containers/DevTools';
-import {browserHistory} from 'react-router';
-import {syncHistory} from 'react-router-redux';
 import socketMiddleware from './middleware/socketMiddleware';
-
-const reduxRouterMiddleware = syncHistory(browserHistory);
 
 const finalCreateStore = compose(
   applyMiddleware(
     thunk,
-    reduxRouterMiddleware,
     socketMiddleware
   ),
   DevTools.instrument()
@@ -26,6 +21,5 @@ export default function configureStore(initialState) {
     });
   }
 
-  reduxRouterMiddleware.listenForReplays(store);
   return store;
 }
