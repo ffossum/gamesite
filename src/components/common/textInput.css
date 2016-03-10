@@ -8,5 +8,10 @@
     padding: 0.5rem;
     border-radius: 3px;
     border: var(--border);
+
+    &[disabled] {
+      background-color: #f2f2f2;
+      opacity:0.5;
+    }
   }
 }

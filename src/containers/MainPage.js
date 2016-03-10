@@ -12,7 +12,10 @@ class Main extends React.Component {
       <div>
         <h1>Main page</h1>
         <div className={styles.chat}>
-          <Chat sendMessage={this.props.sendMessage} messages={this.props.messages} />
+          <Chat
+            sendMessage={this.props.sendMessage}
+            messages={this.props.messages}
+            readOnly={!this.props.loggedInUser} />
         </div>
       </div>
     );
@@ -20,6 +23,9 @@ class Main extends React.Component {
 }
 
 export default connect(
-  state => state.mainChat,
+  state => ({
+    ...state.mainChat,
+    loggedInUser: state.loggedInUser
+  }),
   dispatch => bindActionCreators(actions, dispatch)
 )(Main);

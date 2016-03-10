@@ -26,8 +26,10 @@ export default class Chat extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.sendMessage(this.state.message);
-    this.setState({message: ''});
+    if (!_.isEmpty(this.state.message)) {
+      this.props.sendMessage(this.state.message);
+      this.setState({message: ''});
+    }
   }
 
   componentWillUpdate() {
@@ -48,7 +50,7 @@ export default class Chat extends React.Component {
   }
 
   render() {
-    const {messages} = this.props;
+    const {messages, readOnly} = this.props;
     return (
       <div className={styles.chat}>
         <div className={styles.messagesContainer}>
@@ -69,10 +71,11 @@ export default class Chat extends React.Component {
             <TextInput
               value={this.state.message}
               onChange={this.handleChange}
-              placeholder="Say something..."/>
+              placeholder="Say something..."
+              disabled={readOnly}/>
           </div>
           <div>
-            <Button>Send</Button>
+            <Button disabled={readOnly}>Send</Button>
           </div>
         </form>
 
@@ -83,5 +86,6 @@ export default class Chat extends React.Component {
 
 Chat.propTypes = {
   sendMessage: PropTypes.func.isRequired,
-  messages: PropTypes.array.isRequired
+  messages: PropTypes.array.isRequired,
+  readOnly: PropTypes.bool
 };

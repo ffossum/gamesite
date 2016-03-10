@@ -17,4 +17,11 @@
   &:active {
     background-color: var(--btn-primary-active);
   }
+
+  &[disabled] {
+    opacity:0.5;
+    &:hover {
+      background-color: var(--btn-primary);
+    }
+  }
 }
