@@ -17,6 +17,7 @@ export default class Chat extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.scrollBottom = this.scrollBottom.bind(this);
   }
   handleChange(e) {
     this.setState({
@@ -28,12 +29,30 @@ export default class Chat extends React.Component {
     this.props.sendMessage(this.state.message);
     this.setState({message: ''});
   }
+
+  componentWillUpdate() {
+    const node = this.refs.chatMessages;
+    this.shouldScrollBottom = node.scrollTop + node.offsetHeight - node.scrollHeight > -10;
+  }
+  componentDidUpdate() {
+    if (this.shouldScrollBottom) {
+      this.scrollBottom();
+    }
+  }
+  componentDidMount() {
+    this.scrollBottom();
+  }
+  scrollBottom() {
+    const node = this.refs.chatMessages;
+    node.scrollTop = node.scrollHeight;
+  }
+
   render() {
     const {messages} = this.props;
     return (
       <div className={styles.chat}>
         <div className={styles.messagesContainer}>
-          <div className={styles.messages}>
+          <div className={styles.messages} ref="chatMessages">
             {
               _.map(messages, msg => {
                 return (
