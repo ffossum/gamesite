@@ -10,7 +10,7 @@ export function promisifyValueFirst(fn) {
       args.push(resolve);
       fn.apply(this, args);
     });
-  }
+  };
 }
 
 Promise.promisifyAll(bcrypt);
