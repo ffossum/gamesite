@@ -6,7 +6,7 @@ import {Provider} from 'react-redux';
 import store from './store';
 import socket from './socket/';
 
-import './main.css';
+import './client.css';
 
 socket.init(store);
 
