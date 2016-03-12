@@ -2,26 +2,39 @@
 
 .btn {
   appearance: none;
-  border: 1px solid var(--btn-primary-hover);
+  border: var(--border);
+  background-color: white;
+
   border-radius: 3px;
   padding: 0.5rem;
   min-width: 5rem;
 
-  background-color: var(--btn-primary);
-  color: white;
+  &:focus,
+  &:hover {
+    background-color: var(--btn-default-hover);
+  }
+  &:active {
+    background-color: var(--btn-default-active);
+  }
 
-  &:hover,
-  &:focus {
+  &[disabled] {
+    opacity:0.5;
+    background-color: white;
+  }
+}
+
+.primary {
+  color: white;
+  background-color: var(--btn-primary);
+
+  &:focus,
+  &:hover {
     background-color: var(--btn-primary-hover);
   }
   &:active {
     background-color: var(--btn-primary-active);
   }
-
   &[disabled] {
-    opacity:0.5;
-    &:hover {
-      background-color: var(--btn-primary);
-    }
+    background-color: var(--btn-primary);
   }
 }

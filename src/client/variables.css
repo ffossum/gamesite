@@ -5,9 +5,16 @@
   --green: #27ae60;
   --red: #c0392b;
   --orange: #f39c12;
+  --light-gray: #eee;
   --gray: #ccc;
+  --darker-gray: #969696;
+  --darkest-gray: #494949;
 
   --border: 1px solid var(--gray);
+
+  --btn-default: white;
+  --btn-default-hover: var(--light-gray);
+  --btn-default-active: var(--gray);
 
   --btn-primary: var(--blue);
   --btn-primary-hover: var(--darker-blue);

@@ -74,7 +74,7 @@ class LoginForm extends React.Component {
 
         {error && <div>Incorrect username and/or password</div>}
         <div>
-          <Button disabled={pending}>
+          <Button type="primary" disabled={pending}>
             Log in
           </Button>
         </div>
