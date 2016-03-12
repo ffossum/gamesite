@@ -5,10 +5,10 @@ import styles from './button.css';
 
 export default class Button extends React.Component {
   render() {
-    const {type} = this.props;
+    const {btnStyle} = this.props;
 
     const buttonClassNames = classNames({
-      [styles[type]]: type
+      [styles[btnStyle]]: btnStyle
     }, styles.btn);
 
     return (
@@ -20,5 +20,5 @@ export default class Button extends React.Component {
 }
 
 Button.propTypes = {
-  type: PropTypes.oneOf(['primary'])
+  btnStyle: PropTypes.oneOf(['primary'])
 };

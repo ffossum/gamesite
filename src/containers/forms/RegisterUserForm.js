@@ -109,7 +109,7 @@ class RegisterUserForm extends React.Component {
         {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH && <span>Passwords do not match.</span>}
 
         <div>
-          <Button type="primary" disabled={pending}>
+          <Button btnStyle="primary" disabled={pending}>
             Register
           </Button>
         </div>

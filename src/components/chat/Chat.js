@@ -76,7 +76,7 @@ export default class Chat extends React.Component {
           </div>
           <div>
             <Button
-              type="primary"
+              btnStyle="primary"
               disabled={readOnly}>
               Send
             </Button>
