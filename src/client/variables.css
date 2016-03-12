@@ -12,6 +12,8 @@
 
   --border: 1px solid var(--gray);
 
+  --link-color: var(--blue);
+
   --btn-default: white;
   --btn-default-hover: var(--light-gray);
   --btn-default-active: var(--gray);
