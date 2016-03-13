@@ -1,4 +1,5 @@
-import {getUserByJwt, signJwt} from '../jwt';
+import {verifyJwt, signJwt} from '../jwt';
+import {getUserById} from '../db';
 
 const COOKIE_NAME = 'jwt';
 const EXPIRATION_AGE = 604800000; // 7 days
@@ -35,9 +36,26 @@ export async function expireJwtCookie(ctx, next) {
 export async function authenticateJwtCookie(ctx, next) {
   const jwt = ctx.cookies.get(COOKIE_NAME);
   try {
-    const user = await getUserByJwt(jwt);
-    ctx.req.user = user;
+    const decoded = await verifyJwt(jwt);
+    ctx.req.user = decoded;
   } catch (err) {}
+
+  await next();
+}
+
+export async function requireAuthentication(ctx, next) {
+  if (ctx.isAuthenticated()) {
+    await next();
+  } else {
+    ctx.status = 401;
+  }
+}
+
+export async function fetchAuthenticatedUserData(ctx, next) {
+  if (ctx.isAuthenticated()) {
+    const user = await getUserById(ctx.req.user.id);
+    ctx.req.user = user;
+  }
 
   await next();
 }

@@ -5,7 +5,12 @@ import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
 import renderReact from './middleware/renderReact';
-import {refreshJwtCookie, expireJwtCookie, authenticateJwtCookie} from './middleware/jwtCookie';
+import {
+  refreshJwtCookie,
+  expireJwtCookie,
+  authenticateJwtCookie,
+  fetchAuthenticatedUserData
+} from './middleware/jwtCookie';
 import {validateUsername, validateEmail, registerUser} from './middleware/registerUser';
 import http from 'http';
 import socket from './socket/';
@@ -39,6 +44,7 @@ router.post('/api/register',
 
 router.get('*',
   authenticateJwtCookie,
+  fetchAuthenticatedUserData,
   refreshJwtCookie,
   renderReact);
 
