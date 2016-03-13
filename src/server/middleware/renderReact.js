@@ -5,6 +5,7 @@ import {Provider} from 'react-redux';
 import {match, RouterContext} from 'react-router';
 import {logInSuccess} from 'actions/login';
 import {resetCounter} from 'util/uniqueId';
+import getPublicUserData from '../../util/getPublicUserData';
 
 let reducer = require('../../reducers').default;
 let routes = require('../../routes').default;
@@ -39,7 +40,7 @@ export default async function renderReact(ctx, next) {
   if (renderProps) {
     const store = createStore(reducer);
     if (ctx.isAuthenticated()) {
-      store.dispatch(logInSuccess(ctx.req.user));
+      store.dispatch(logInSuccess(getPublicUserData(ctx.req.user)));
     }
     const initialState = store.getState();
 

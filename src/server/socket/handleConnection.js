@@ -1,6 +1,6 @@
 import cookie from 'cookie';
 import {getUserByJwt} from '../jwt';
-import _ from 'lodash';
+import getPublicUserData from '../../util/getPublicUserData';
 import {LOG_OUT, LOG_IN_SUCCESS} from 'actions/login';
 import {SEND_MESSAGE, NEW_MESSAGE} from 'actions/mainChat';
 
@@ -11,10 +11,6 @@ function getJwt(request) {
     : {};
 
   return cookies.jwt;
-}
-
-function getPublicUserData(user) {
-  return _.pick(user, ['id', 'emailHash', 'username']);
 }
 
 export default function handleConnection(socket) {
