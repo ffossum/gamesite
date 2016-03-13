@@ -11,7 +11,9 @@ import './client.css';
 
 socket.init(store);
 
-const history = syncHistoryWithStore(browserHistory, store);
+const history = syncHistoryWithStore(browserHistory, store, {
+  selectLocationState: state => state.get('routing')
+});
 
 ReactDOM.render(
   <Provider store={store}>

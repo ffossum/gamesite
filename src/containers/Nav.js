@@ -45,15 +45,25 @@ Nav.propTypes = {
   logOut: PropTypes.func.isRequired
 };
 
+class Wrapper extends React.Component {
+  render() {
+    const props = {
+      ...this.props,
+      user: this.props.user && this.props.user.toJS()
+    };
+
+    return <Nav {...props} />;
+  }
+}
+
 export default connect(
   state => {
-    if (state.loggedInUser) {
-      return {
-        user: state.data.users[state.loggedInUser]
-      };
-    } else {
-      return {};
-    }
+    const loggedInUser = state.get('loggedInUser');
+
+    return {
+      loggedInUser,
+      user: state.getIn(['data', 'users', loggedInUser])
+    };
   },
   dispatch => bindActionCreators(actions, dispatch)
-)(Nav);
+)(Wrapper);

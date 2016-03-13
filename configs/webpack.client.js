@@ -37,7 +37,8 @@ module.exports = {
     "lodash": "_",
     "moment": "moment",
     "react": "React",
-    "react-dom": "ReactDOM"
+    "react-dom": "ReactDOM",
+    "immutable": "Immutable"
   },
   resolve: {
     modulesDirectories: [

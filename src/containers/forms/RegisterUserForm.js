@@ -59,7 +59,6 @@ class RegisterUserForm extends React.Component {
     if (this.props.loggedInUser) {
       return null;
     }
-
     const {errors, pending} = this.props.formState;
     const {email, username, password, repeatPassword} = this.state;
     return (
@@ -124,10 +123,21 @@ RegisterUserForm.propTypes = {
   updateForm: PropTypes.func.isRequired
 };
 
+class Wrapper extends React.Component {
+  render() {
+    const props = {
+      ...this.props,
+      formState: this.props.formState.toJS()
+    };
+
+    return <RegisterUserForm {...props} />;
+  }
+}
+
 export default connect(
   state => ({
-    formState: state.forms.registerUser,
-    loggedInUser: state.loggedInUser
+    formState: state.getIn(['forms', 'registerUser']),
+    loggedInUser: state.get('loggedInUser')
   }),
   dispatch => {
     const {registerUser, updateForm} = bindActionCreators(actions, dispatch);
@@ -136,4 +146,4 @@ export default connect(
       updateForm
     };
   }
-)(RegisterUserForm);
+)(Wrapper);

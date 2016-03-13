@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import {combineReducers} from 'redux-immutablejs';
 import {routerReducer as routing} from 'react-router-redux';
 import forms from './forms';
 import loggedInUser from './loggedInUserReducer';

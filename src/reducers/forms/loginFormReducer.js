@@ -1,30 +1,23 @@
 import {types} from 'actions/login';
+import Immutable from 'immutable';
 
-const initialState = {
+const initialState = Immutable.fromJS({
   pending: false,
   error: false,
   username: '',
   password: ''
-};
+});
 export default function(state = initialState, action) {
   switch (action.type) {
     case types.UPDATE_FORM: {
-      return {
-        ...state,
-        ...action.payload.values
-      };
+      const newState = Immutable.fromJS(action.payload.values);
+      return state.merge(newState);
     }
     case types.LOG_IN_REQUEST: {
-      return {
-        ...state,
-        ...{pending: true, error: false}
-      };
+      return state.merge({pending: true, error: false});
     }
     case types.LOG_IN_FAILURE: {
-      return {
-        ...state,
-        ...{pending: false, error: true}
-      };
+      return state.merge({pending: false, error: true});
     }
 
     case types.LOG_IN_SUCCESS: return initialState;

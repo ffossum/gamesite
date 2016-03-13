@@ -6,26 +6,39 @@ import Chat from 'components/chat/Chat';
 
 import styles from './mainPage.css';
 
-class Main extends React.Component {
+class MainPage extends React.Component {
   render() {
+    const {messages, loggedInUser} = this.props;
+
     return (
       <div>
         <h1>Main page</h1>
         <div className={styles.chat}>
           <Chat
             sendMessage={this.props.sendMessage}
-            messages={this.props.messages}
-            readOnly={!this.props.loggedInUser} />
+            messages={messages}
+            readOnly={!loggedInUser} />
         </div>
       </div>
     );
   }
 }
 
+class Wrapper extends React.Component {
+  render() {
+    const props = {
+      ...this.props,
+      messages: this.props.mainChat.get('messages').toJS()
+    };
+
+    return <MainPage {...props} />;
+  }
+}
+
 export default connect(
   state => ({
-    ...state.mainChat,
-    loggedInUser: state.loggedInUser
+    mainChat: state.get('mainChat'),
+    loggedInUser: state.get('loggedInUser')
   }),
   dispatch => bindActionCreators(actions, dispatch)
-)(Main);
+)(Wrapper);

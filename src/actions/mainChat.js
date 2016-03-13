@@ -4,7 +4,8 @@ export const NEW_MESSAGE = 'mainChat/NEW_MESSAGE';
 export function sendMessage(text) {
   return (dispatch, getState) => {
     const state = getState();
-    if (state.loggedInUser) {
+    const loggedInUser = state.get('loggedInUser');
+    if (loggedInUser) {
 
       dispatch({
         type: SEND_MESSAGE,
@@ -16,13 +17,13 @@ export function sendMessage(text) {
         }
       });
 
-      const user = state.data.users[state.loggedInUser];
+      const user = state.getIn(['data', 'users', loggedInUser]);
       const message = {
         text,
         time: new Date().toJSON(),
         user: {
-          emailHash: user.emailHash,
-          username: user.username
+          emailHash: user.get('emailHash'),
+          username: user.get('username')
         }
       };
 

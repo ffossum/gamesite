@@ -89,10 +89,21 @@ LoginForm.propTypes = {
   updateForm: PropTypes.func.isRequired
 };
 
+class Wrapper extends React.Component {
+  render() {
+    const props = {
+      ...this.props,
+      formState: this.props.formState.toJS()
+    };
+
+    return <LoginForm {...props} />;
+  }
+}
+
 export default connect(
   state => ({
-    formState: state.forms.login,
-    loggedInUser: state.loggedInUser
+    formState: state.getIn(['forms', 'login']),
+    loggedInUser: state.get('loggedInUser')
   }),
   dispatch => {
     const {logIn, updateForm} = bindActionCreators(actions, dispatch);
@@ -101,4 +112,4 @@ export default connect(
       updateForm
     };
   }
-)(LoginForm);
+)(Wrapper);
