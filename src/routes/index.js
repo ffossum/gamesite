@@ -1,5 +1,5 @@
-import React from 'react';
-import {IndexRoute, Route} from 'react-router';
+import React, { PropTypes } from 'react';
+import { IndexRoute, Route } from 'react-router';
 import MainPage from 'containers/MainPage';
 import Play from 'components/Play';
 import About from 'components/About';
@@ -21,6 +21,10 @@ class Root extends React.Component {
     );
   }
 }
+
+Root.propTypes = {
+  children: PropTypes.node,
+};
 
 export default (
   <Route path="/" component={Root}>

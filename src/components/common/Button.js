@@ -1,14 +1,14 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 
 import styles from './button.css';
 
 export default class Button extends React.Component {
   render() {
-    const {btnStyle} = this.props;
+    const { btnStyle } = this.props;
 
     const buttonClassNames = classNames({
-      [styles[btnStyle]]: btnStyle
+      [styles[btnStyle]]: btnStyle,
     }, styles.btn);
 
     return (
@@ -20,5 +20,6 @@ export default class Button extends React.Component {
 }
 
 Button.propTypes = {
-  btnStyle: PropTypes.oneOf(['primary'])
+  btnStyle: PropTypes.oneOf(['primary']),
+  children: PropTypes.node.isRequired,
 };

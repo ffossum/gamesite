@@ -1,14 +1,16 @@
+/* eslint no-param-reassign: 0 */
+
 import React from 'react';
-import {renderToString} from 'react-dom/server';
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-import {match, RouterContext} from 'react-router';
-import {logInSuccess} from 'actions/login';
-import {resetCounter} from 'util/uniqueId';
+import { renderToString } from 'react-dom/server';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { match, RouterContext } from 'react-router';
+import { logInSuccess } from 'actions/login';
+import { resetCounter } from 'util/uniqueId';
 import getPublicUserData from '../../util/getPublicUserData';
 
 let reducer = require('../../reducers').default;
-let routes = require('../../routes').default;
+let appRoutes = require('../../routes').default;
 let template = require('../views/index.hbs');
 
 if (module.hot) {
@@ -16,7 +18,7 @@ if (module.hot) {
     reducer = require('../../reducers').default;
   });
   module.hot.accept('../../routes', () => {
-    routes = require('../../routes').default;
+    appRoutes = require('../../routes').default;
   });
   module.hot.accept('../views/index.hbs', () => {
     template = require('../views/index.hbs');
@@ -25,18 +27,18 @@ if (module.hot) {
 
 function matchRoutes(routes, location) {
   return new Promise((resolve, reject) => {
-    match({routes, location}, (error, redirectLocation, renderProps) => {
+    match({ routes, location }, (error, redirectLocation, renderProps) => {
       if (error) {
         reject(error);
       } else {
-        resolve({redirectLocation, renderProps});
+        resolve({ redirectLocation, renderProps });
       }
     });
   });
 }
 
 export default async function renderReact(ctx, next) {
-  const {renderProps} = await matchRoutes(routes, ctx.url);
+  const { renderProps } = await matchRoutes(appRoutes, ctx.url);
   if (renderProps) {
     const store = createStore(reducer);
     if (ctx.isAuthenticated()) {
@@ -54,7 +56,7 @@ export default async function renderReact(ctx, next) {
     ctx.body = template({
       __DEVELOPMENT__,
       reactString,
-      initialState: JSON.stringify(initialState)
+      initialState: JSON.stringify(initialState),
     });
   }
   await next();

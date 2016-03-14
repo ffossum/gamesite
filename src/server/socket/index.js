@@ -22,7 +22,7 @@ function init(server) {
 
 export function getConnectedUsers() {
   const room = io.sockets.adapter.rooms.users || {};
-  let socketIds = _.keys(room.sockets);
+  const socketIds = _.keys(room.sockets);
 
   const sockets = io.sockets.sockets;
   let users = _.map(socketIds, socketId => sockets[socketId].user);
@@ -32,5 +32,5 @@ export function getConnectedUsers() {
 }
 
 export default {
-  init: _.once(init)
+  init: _.once(init),
 };

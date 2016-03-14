@@ -1,13 +1,15 @@
 import {
-  LOG_IN_SUCCESS, logInSuccess
+  LOG_IN_SUCCESS,
+  logInSuccess,
 } from 'actions/login';
 import {
-  NEW_MESSAGE, newMessage
+  NEW_MESSAGE,
+  newMessage,
 } from 'actions/mainChat';
 
 export function createHandlers(store) {
   return {
-    'news': data => {
+    news: data => {
       console.log(data);
     },
     [NEW_MESSAGE]: message => {
@@ -15,6 +17,6 @@ export function createHandlers(store) {
     },
     [LOG_IN_SUCCESS]: data => {
       store.dispatch(logInSuccess(data.user));
-    }
+    },
   };
 }

@@ -1,7 +1,7 @@
 import passport from 'koa-passport';
-import {Strategy as LocalStrategy} from 'passport-local';
-import {getUserById, getUserByName} from './db';
-import {comparePassword} from './crypto';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { getUserById, getUserByName } from './db';
+import { comparePassword } from './crypto';
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -17,15 +17,6 @@ passport.deserializeUser((userId, done) => {
     });
 });
 
-passport.use(new LocalStrategy(
-  {session: false},
-  (username, password, done) => {
-    authenticate(username, password)
-    .then(user => done(null, user))
-    .catch(err => done(err));
-  }
-));
-
 async function authenticate(username, password) {
   try {
     const user = await getUserByName(username);
@@ -35,3 +26,12 @@ async function authenticate(username, password) {
     return false;
   }
 }
+
+passport.use(new LocalStrategy(
+  { session: false },
+  (username, password, done) => {
+    authenticate(username, password)
+    .then(user => done(null, user))
+    .catch(err => done(err));
+  }
+));

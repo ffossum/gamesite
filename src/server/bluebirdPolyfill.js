@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 global.Promise = bluebird;
 
 export function promisifyValueFirst(fn) {
-  return function(...args) {
+  return function promisified(...args) {
     return new Promise(resolve => {
       args.push(resolve);
       fn.apply(this, args);

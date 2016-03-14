@@ -1,11 +1,13 @@
+/* eslint no-param-reassign: 0 */
+
 import cookie from 'cookie';
-import {getUserByJwt} from '../jwt';
+import { getUserByJwt } from '../jwt';
 import getPublicUserData from '../../util/getPublicUserData';
-import {LOG_OUT, LOG_IN_SUCCESS} from 'actions/login';
-import {SEND_MESSAGE, NEW_MESSAGE} from 'actions/mainChat';
+import { LOG_OUT, LOG_IN_SUCCESS } from 'actions/login';
+import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
 
 function getJwt(request) {
-  const {headers} = request;
+  const { headers } = request;
   const cookies = headers.cookie
     ? cookie.parse(headers.cookie)
     : {};
@@ -22,8 +24,10 @@ export default function handleConnection(socket) {
       socket.join('users');
       socket.join(user.id);
 
-      socket.emit('news', {hello: user.username});
-      socket.emit(LOG_IN_SUCCESS, {user: getPublicUserData(socket.user)});
+      socket.emit('news', { hello: user.username });
+      socket.emit(LOG_IN_SUCCESS, {
+        user: getPublicUserData(socket.user),
+      });
 
       socket.on(SEND_MESSAGE, message => {
         socket.broadcast.emit(NEW_MESSAGE, {
@@ -31,8 +35,8 @@ export default function handleConnection(socket) {
           time: new Date().toJSON(),
           user: {
             emailHash: socket.user.emailHash,
-            username: socket.user.username
-          }
+            username: socket.user.username,
+          },
         });
       });
       socket.on(LOG_OUT, () => {
@@ -41,7 +45,7 @@ export default function handleConnection(socket) {
         delete socket.user;
       });
     })
-    .catch(err => {
-      socket.emit('news', {hello: 'guest'});
+    .catch(() => {
+      socket.emit('news', { hello: 'guest' });
     });
 }

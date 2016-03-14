@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import {getUserById} from './db';
+import { getUserById } from './db';
 
-const secret = 'secret'; //TODO read from config
+const secret = 'secret'; // TODO read from config
 
 export async function signJwt(payload, options) {
   return await jwt.signAsync(payload, secret, options);

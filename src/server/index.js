@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 import Koa from 'koa';
 import convert from 'koa-convert';
 import serve from 'koa-static';
@@ -9,9 +11,14 @@ import {
   refreshJwtCookie,
   expireJwtCookie,
   authenticateJwtCookie,
-  fetchAuthenticatedUserData
+  fetchAuthenticatedUserData,
 } from './middleware/jwtCookie';
-import {validateUsername, validateEmail, registerUser} from './middleware/registerUser';
+import {
+  validateUsername,
+  validateEmail,
+  registerUser,
+  sendUserId,
+} from './middleware/registerUser';
 import http from 'http';
 import socket from './socket/';
 
@@ -22,10 +29,6 @@ app.use(bodyParser());
 
 require('./auth');
 app.use(passport.initialize());
-
-function sendUserId(ctx) {
-  ctx.body = {userId: ctx.req.user.id};
-}
 
 router.post('/api/login',
   passport.authenticate('local'),
@@ -55,7 +58,7 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
-const server = http.Server(app.callback());
+const server = new http.Server(app.callback());
 socket.init(server);
 
 const PORT = 8080;

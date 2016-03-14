@@ -1,6 +1,6 @@
-import React, {PropTypes} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import actions from 'actions/login';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
@@ -10,7 +10,7 @@ class LoginForm extends React.Component {
     super(props);
     this.state = {
       username: props.formState.username,
-      password: props.formState.password
+      password: props.formState.password,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,30 +20,30 @@ class LoginForm extends React.Component {
     this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
   }
   componentWillReceiveProps(nextProps) {
-    const {username, password} = nextProps.formState;
+    const { username, password } = nextProps.formState;
     this.setState({
       username,
-      password
+      password,
     });
   }
   handleSubmit(e) {
     e.preventDefault();
-    const {logIn, formState} = this.props;
+    const { logIn, formState } = this.props;
     if (!formState.pending) {
-      const {username, password} = this.state;
+      const { username, password } = this.state;
       logIn(username, password);
     }
   }
   handleChange(field, e) {
     this.setState({
-      [field]: e.target.value
+      [field]: e.target.value,
     });
   }
   handleBlur(field, e) {
-    const {formState, updateForm} = this.props;
-    if (formState[field] != e.target.value) {
+    const { formState, updateForm } = this.props;
+    if (formState[field] !== e.target.value) {
       updateForm({
-        [field]: e.target.value
+        [field]: e.target.value,
       });
     }
   }
@@ -51,8 +51,8 @@ class LoginForm extends React.Component {
     if (this.props.loggedInUser) {
       return null;
     }
-    const {error, pending} = this.props.formState;
-    const {username, password} = this.state;
+    const { error, pending } = this.props.formState;
+    const { username, password } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
 
@@ -62,7 +62,8 @@ class LoginForm extends React.Component {
           value={username}
           onChange={this.handleUsernameChange}
           onBlur={this.handleUsernameBlur}
-          autoFocus/>
+          autoFocus
+        />
 
         <TextInput
           label="Password"
@@ -70,7 +71,8 @@ class LoginForm extends React.Component {
           required
           value={password}
           onChange={this.handlePasswordChange}
-          onBlur={this.handlePasswordBlur} />
+          onBlur={this.handlePasswordBlur}
+        />
 
         {error && <div>Incorrect username and/or password</div>}
         <div>
@@ -86,30 +88,34 @@ class LoginForm extends React.Component {
 LoginForm.propTypes = {
   formState: PropTypes.object.isRequired,
   logIn: PropTypes.func.isRequired,
-  updateForm: PropTypes.func.isRequired
+  updateForm: PropTypes.func.isRequired,
+  loggedInUser: PropTypes.string,
 };
 
 class Wrapper extends React.Component {
   render() {
     const props = {
       ...this.props,
-      formState: this.props.formState.toJS()
+      formState: this.props.formState.toJS(),
     };
-
     return <LoginForm {...props} />;
   }
 }
 
+Wrapper.propTypes = {
+  formState: PropTypes.object.isRequired,
+};
+
 export default connect(
   state => ({
     formState: state.getIn(['forms', 'login']),
-    loggedInUser: state.get('loggedInUser')
+    loggedInUser: state.get('loggedInUser'),
   }),
   dispatch => {
-    const {logIn, updateForm} = bindActionCreators(actions, dispatch);
+    const { logIn, updateForm } = bindActionCreators(actions, dispatch);
     return {
       logIn,
-      updateForm
+      updateForm,
     };
   }
 )(Wrapper);

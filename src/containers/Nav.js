@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import actions from 'actions/login';
 import Gravatar from 'components/common/Gravatar';
 
@@ -42,19 +42,23 @@ export default class Nav extends React.Component {
 
 Nav.propTypes = {
   user: PropTypes.object,
-  logOut: PropTypes.func.isRequired
+  logOut: PropTypes.func.isRequired,
 };
 
 class Wrapper extends React.Component {
   render() {
     const props = {
       ...this.props,
-      user: this.props.user && this.props.user.toJS()
+      user: this.props.user && this.props.user.toJS(),
     };
 
     return <Nav {...props} />;
   }
 }
+
+Wrapper.propTypes = {
+  user: PropTypes.object,
+};
 
 export default connect(
   state => {
@@ -62,7 +66,7 @@ export default connect(
 
     return {
       loggedInUser,
-      user: state.getIn(['data', 'users', loggedInUser])
+      user: state.getIn(['data', 'users', loggedInUser]),
     };
   },
   dispatch => bindActionCreators(actions, dispatch)

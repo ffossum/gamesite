@@ -1,20 +1,26 @@
 export const SEND_MESSAGE = 'mainChat/SEND_MESSAGE';
 export const NEW_MESSAGE = 'mainChat/NEW_MESSAGE';
 
+export function newMessage(message) {
+  return {
+    type: NEW_MESSAGE,
+    payload: message,
+  };
+}
+
 export function sendMessage(text) {
   return (dispatch, getState) => {
     const state = getState();
     const loggedInUser = state.get('loggedInUser');
     if (loggedInUser) {
-
       dispatch({
         type: SEND_MESSAGE,
         payload: {
-          text
+          text,
         },
         meta: {
-          socket: true
-        }
+          socket: true,
+        },
       });
 
       const user = state.getIn(['data', 'users', loggedInUser]);
@@ -23,8 +29,8 @@ export function sendMessage(text) {
         time: new Date().toJSON(),
         user: {
           emailHash: user.get('emailHash'),
-          username: user.get('username')
-        }
+          username: user.get('username'),
+        },
       };
 
       dispatch(newMessage(message));
@@ -32,14 +38,7 @@ export function sendMessage(text) {
   };
 }
 
-export function newMessage(message) {
-  return {
-    type: NEW_MESSAGE,
-    payload: message
-  };
-}
-
 export default {
   sendMessage,
-  newMessage
+  newMessage,
 };

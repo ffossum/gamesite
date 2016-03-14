@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: 0 */
+
 import socket from 'client/socket';
 
 export default store => next => action => {

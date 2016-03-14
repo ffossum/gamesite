@@ -1,5 +1,5 @@
-import React from 'react';
-import {uniqueId} from 'util/uniqueId';
+import React, { PropTypes } from 'react';
+import { uniqueId } from 'util/uniqueId';
 
 import styles from './textInput.css';
 
@@ -10,7 +10,7 @@ export default class TextInput extends React.Component {
     this.inputId = uniqueId('text');
   }
   render() {
-    const {label, ...otherProps} = this.props;
+    const { label, ...otherProps } = this.props;
     otherProps.type = otherProps.type || 'text';
 
     return (
@@ -21,3 +21,7 @@ export default class TextInput extends React.Component {
     );
   }
 }
+
+TextInput.propTypes = {
+  label: PropTypes.string,
+};

@@ -1,9 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router, browserHistory} from 'react-router';
-import {syncHistoryWithStore} from 'react-router-redux';
+import {
+  Router,
+  browserHistory,
+} from 'react-router';
+import {
+  syncHistoryWithStore,
+} from 'react-router-redux';
 import routes from '../routes/';
-import {Provider} from 'react-redux';
+import {
+  Provider,
+} from 'react-redux';
 import store from './store';
 import socket from './socket/';
 
@@ -12,7 +19,7 @@ import './client.css';
 socket.init(store);
 
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: state => state.get('routing')
+  selectLocationState: state => state.get('routing'),
 });
 
 ReactDOM.render(

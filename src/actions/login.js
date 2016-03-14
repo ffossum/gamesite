@@ -12,21 +12,21 @@ export const types = {
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
   LOG_OUT,
-  UPDATE_FORM
+  UPDATE_FORM,
 };
 
 export function updateForm(values) {
   return {
     type: UPDATE_FORM,
     payload: {
-      values
-    }
+      values,
+    },
   };
 }
 
 function logInRequest() {
   return {
-    type: LOG_IN_REQUEST
+    type: LOG_IN_REQUEST,
   };
 }
 
@@ -34,14 +34,14 @@ export function logInSuccess(user) {
   return {
     type: LOG_IN_SUCCESS,
     payload: {
-      user
-    }
+      user,
+    },
   };
 }
 
 function logInFailure() {
   return {
-    type: LOG_IN_FAILURE
+    type: LOG_IN_FAILURE,
   };
 }
 
@@ -49,8 +49,8 @@ function logOutRequest() {
   return {
     type: LOG_OUT,
     meta: {
-      socket: true
-    }
+      socket: true,
+    },
   };
 }
 
@@ -60,14 +60,14 @@ export function logIn(username, password) {
     fetch('/api/login', {
       method: 'post',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       credentials: 'same-origin',
       body: JSON.stringify({
         username,
-        password
-      })
+        password,
+      }),
     })
     .then(async res => {
       if (res.ok) {
@@ -84,7 +84,7 @@ export function logOut() {
     dispatch(logOutRequest());
     fetch('/api/logout', {
       method: 'post',
-      credentials: 'same-origin'
+      credentials: 'same-origin',
     });
   };
 }
@@ -92,5 +92,5 @@ export function logOut() {
 export default {
   updateForm,
   logIn,
-  logOut
+  logOut,
 };

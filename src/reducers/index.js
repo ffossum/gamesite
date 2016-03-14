@@ -1,5 +1,5 @@
-import {combineReducers} from 'redux-immutablejs';
-import {routerReducer as routing} from 'react-router-redux';
+import { combineReducers } from 'redux-immutablejs';
+import { routerReducer as routing } from 'react-router-redux';
 import forms from './forms';
 import loggedInUser from './loggedInUserReducer';
 import data from './data/dataReducer';
@@ -10,5 +10,5 @@ export default combineReducers({
   data,
   mainChat,
   forms,
-  loggedInUser
+  loggedInUser,
 });

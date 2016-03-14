@@ -9,7 +9,7 @@ export const UPDATE_FORM = 'registerUser/UPDATE_FORM';
 export const types = {
   REGISTER_USER_REQUEST,
   REGISTER_USER_FAILURE,
-  UPDATE_FORM
+  UPDATE_FORM,
 };
 
 const USERNAME_TAKEN = 'registerUser/USERNAME_TAKEN';
@@ -21,40 +21,59 @@ export const errors = {
   USERNAME_TAKEN,
   PASSWORDS_DO_NOT_MATCH,
   INVALID_EMAIL,
-  EMAIL_TAKEN
+  EMAIL_TAKEN,
 };
 
 export function updateForm(values) {
   return {
     type: UPDATE_FORM,
     payload: {
-      values
-    }
+      values,
+    },
+  };
+}
+
+function registerUserRequest() {
+  return {
+    type: REGISTER_USER_REQUEST,
+  };
+}
+
+function registerUserFailure(registrationErrors) {
+  return {
+    type: REGISTER_USER_FAILURE,
+    payload: {
+      errors: registrationErrors,
+    },
   };
 }
 
 export function registerUser(email, username, password, repeatPassword) {
   return dispatch => {
-    const errors = {};
+    const registrationErrors = {};
     if (password !== repeatPassword) {
-      errors.repeatPassword = PASSWORDS_DO_NOT_MATCH;
+      registrationErrors.repeatPassword = PASSWORDS_DO_NOT_MATCH;
     }
     if (!validator.isEmail(email)) {
-      errors.email = INVALID_EMAIL;
+      registrationErrors.email = INVALID_EMAIL;
     }
 
-    if (!_.isEmpty(errors)) {
-      dispatch(registerUserFailure(errors));
+    if (!_.isEmpty(registrationErrors)) {
+      dispatch(registerUserFailure(registrationErrors));
     } else {
       dispatch(registerUserRequest());
       fetch('/api/register', {
         method: 'post',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         credentials: 'same-origin',
-        body: JSON.stringify({email, username, password})
+        body: JSON.stringify({
+          email,
+          username,
+          password,
+        }),
       })
       .then(async res => {
         const json = await res.json();
@@ -68,22 +87,7 @@ export function registerUser(email, username, password, repeatPassword) {
   };
 }
 
-function registerUserRequest() {
-  return {
-    type: REGISTER_USER_REQUEST
-  };
-}
-
-function registerUserFailure(errors) {
-  return {
-    type: REGISTER_USER_FAILURE,
-    payload: {
-      errors
-    }
-  };
-}
-
 export default {
   registerUser,
-  updateForm
+  updateForm,
 };

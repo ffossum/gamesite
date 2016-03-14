@@ -1,5 +1,5 @@
-import {types as login} from 'actions/login';
-import {types} from 'actions/registerUser';
+import { types as login } from 'actions/login';
+import { types } from 'actions/registerUser';
 import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
@@ -8,10 +8,10 @@ const initialState = Immutable.fromJS({
   email: '',
   username: '',
   password: '',
-  repeatPassword: ''
+  repeatPassword: '',
 });
 
-export default function(state = initialState, action) {
+export default function registerUserFormReducer(state = initialState, action) {
   switch (action.type) {
     case types.UPDATE_FORM: {
       const newState = Immutable.fromJS(action.payload.values);
@@ -20,14 +20,14 @@ export default function(state = initialState, action) {
     case types.REGISTER_USER_REQUEST: {
       const newState = Immutable.fromJS({
         errors: {},
-        pending: true
+        pending: true,
       });
       return state.merge(newState);
     }
     case types.REGISTER_USER_FAILURE: {
       const newState = Immutable.fromJS({
         errors: action.payload.errors,
-        pending: false
+        pending: false,
       });
       return state.merge(newState);
     }

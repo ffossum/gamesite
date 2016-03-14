@@ -25,6 +25,7 @@
 
 .primary {
   color: white;
+  border-color: var(--btn-primary-active);
   background-color: var(--btn-primary);
 
   &:focus,

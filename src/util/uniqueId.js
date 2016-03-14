@@ -11,5 +11,5 @@ export function resetCounter() {
 
 export default {
   uniqueId,
-  resetCounter
+  resetCounter,
 };
