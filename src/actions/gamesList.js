@@ -6,6 +6,8 @@ export const LEAVE_LOBBY = 'games/LEAVE_LOBBY';
 export const CREATE_GAME = 'games/CREATE_GAME';
 export const CREATE_GAME_SUCCESS = 'games/CREATE_GAME_SUCCESS';
 
+export const GAME_CREATED = 'games/GAME_CREATED';
+
 export function joinLobby() {
   return {
     type: JOIN_LOBBY,
@@ -24,9 +26,15 @@ export function leaveLobby() {
   };
 }
 
-function createGameSuccess(game) {
+function createGameSuccess() {
   return {
     type: CREATE_GAME_SUCCESS,
+  };
+}
+
+export function gameCreated(game) {
+  return {
+    type: GAME_CREATED,
     payload: {
       game,
     },

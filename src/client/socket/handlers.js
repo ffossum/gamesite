@@ -6,6 +6,10 @@ import {
   NEW_MESSAGE,
   newMessage,
 } from 'actions/mainChat';
+import {
+  GAME_CREATED,
+  gameCreated,
+} from 'actions/gamesList';
 
 export function createHandlers(store) {
   return {
@@ -17,6 +21,9 @@ export function createHandlers(store) {
     },
     [LOG_IN_SUCCESS]: data => {
       store.dispatch(logInSuccess(data.user));
+    },
+    [GAME_CREATED]: data => {
+      store.dispatch(gameCreated(data.game));
     },
   };
 }

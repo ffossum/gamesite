@@ -33,4 +33,7 @@ export function getConnectedUsers() {
 
 export default {
   init: _.once(init),
+  to(room) {
+    return io.to(room);
+  },
 };
