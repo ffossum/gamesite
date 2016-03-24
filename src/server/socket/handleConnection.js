@@ -5,7 +5,8 @@ import { getUserByJwt } from '../jwt';
 import getPublicUserData from '../../util/getPublicUserData';
 import { LOG_OUT, LOG_IN_SUCCESS } from 'actions/login';
 import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
-import { JOIN_LOBBY, LEAVE_LOBBY } from 'actions/gamesList';
+import { JOIN_LOBBY, LEAVE_LOBBY, REFRESH_LOBBY } from 'actions/gamesList';
+import games from '../games';
 
 function getJwt(request) {
   const { headers } = request;
@@ -56,6 +57,9 @@ export default function handleConnection(socket) {
 
   socket.on(JOIN_LOBBY, () => {
     socket.join('lobby');
+    socket.emit(REFRESH_LOBBY, {
+      games: games.getJoinable(),
+    });
   });
 
   socket.on(LEAVE_LOBBY, () => {

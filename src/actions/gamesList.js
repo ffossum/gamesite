@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 
 export const JOIN_LOBBY = 'games/JOIN_LOBBY';
 export const LEAVE_LOBBY = 'games/LEAVE_LOBBY';
+export const REFRESH_LOBBY = 'games/REFRESH_LOBBY';
 
 export const CREATE_GAME = 'games/CREATE_GAME';
 export const CREATE_GAME_SUCCESS = 'games/CREATE_GAME_SUCCESS';
@@ -22,6 +23,15 @@ export function leaveLobby() {
     type: LEAVE_LOBBY,
     meta: {
       socket: true,
+    },
+  };
+}
+
+export function refreshLobby(games) {
+  return {
+    type: REFRESH_LOBBY,
+    payload: {
+      games,
     },
   };
 }
