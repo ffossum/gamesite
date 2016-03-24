@@ -5,6 +5,7 @@ import { getUserByJwt } from '../jwt';
 import getPublicUserData from '../../util/getPublicUserData';
 import { LOG_OUT, LOG_IN_SUCCESS } from 'actions/login';
 import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
+import { JOIN_LOBBY, LEAVE_LOBBY } from 'actions/gamesList';
 
 function getJwt(request) {
   const { headers } = request;
@@ -15,6 +16,10 @@ function getJwt(request) {
   return cookies.jwt;
 }
 
+function getUserChannelName(userId) {
+  return `user:${userId}`;
+}
+
 export default function handleConnection(socket) {
   const token = getJwt(socket.request);
   getUserByJwt(token)
@@ -22,7 +27,7 @@ export default function handleConnection(socket) {
       socket.user = user;
 
       socket.join('users');
-      socket.join(user.id);
+      socket.join(getUserChannelName(user.id));
 
       socket.emit('news', { hello: user.username });
       socket.emit(LOG_IN_SUCCESS, {
@@ -41,11 +46,19 @@ export default function handleConnection(socket) {
       });
       socket.on(LOG_OUT, () => {
         socket.leave('users');
-        socket.leave(socket.user.id);
+        socket.leave(getUserChannelName(socket.user.id));
         delete socket.user;
       });
     })
     .catch(() => {
       socket.emit('news', { hello: 'guest' });
     });
+
+  socket.on(JOIN_LOBBY, () => {
+    socket.join('lobby');
+  });
+
+  socket.on(LEAVE_LOBBY, () => {
+    socket.leave('lobby');
+  });
 }
