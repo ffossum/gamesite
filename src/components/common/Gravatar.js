@@ -4,15 +4,20 @@ import styles from './gravatar.css';
 export default class Gravatar extends React.Component {
   render() {
     const { emailHash } = this.props;
+
+    const gravatarUrl = emailHash
+      ? `http://www.gravatar.com/avatar/${emailHash}?d=retro`
+      : 'http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y';
+
     return (
       <img
         className={styles.gravatar}
-        src={`http://www.gravatar.com/avatar/${emailHash}?d=retro`}
+        src={gravatarUrl}
       />
     );
   }
 }
 
 Gravatar.propTypes = {
-  emailHash: PropTypes.string.isRequired,
+  emailHash: PropTypes.string,
 };
