@@ -17,6 +17,15 @@ function create(options) {
   return game;
 }
 
+function join(gameId, userId) {
+  const game = notStarted[gameId];
+  if (game) {
+    game.users.push(userId);
+  }
+
+  return game;
+}
+
 function get(gameId) {
   return notStarted[gameId] || inProgress[gameId];
 }
@@ -31,6 +40,7 @@ function getAll() {
 
 export default {
   create,
+  join,
   get,
   getJoinable,
   getAll,

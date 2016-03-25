@@ -1,34 +1,46 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import actions from 'actions/gamesList';
+import actions from 'actions/gameRoom';
 import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
+import Button from 'components/common/Button';
 import _ from 'lodash';
 
 import styles from './gameRoom.css';
 
 class GameRoom extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleJoinClicked = this.handleJoinClicked.bind(this, props.game.id);
+  }
+  handleJoinClicked(gameId) {
+    this.props.joinGame(gameId);
+  }
   render() {
     const sendMessage = () => {}; // TODO
 
-    const { game } = this.props;
+    const { game, user } = this.props;
     const { messages, users } = game;
+
+    const inGame = user && _.some(users, gameUser => gameUser.id === user.id);
 
     return (
       <div>
         <h1>Game room</h1>
+        {!inGame && user && <Button onClick={this.handleJoinClicked}>Join game</Button>}
         <ul className={styles.playerList}>
           {
-            _.map(users, user => (
-              <li key={user.id}>
-                <Gravatar emailHash={user.emailHash} />
-                {user.username}
+            _.map(users, gameUser => (
+              <li key={gameUser.id}>
+                <Gravatar emailHash={gameUser.emailHash} />
+                {gameUser.username}
               </li>
             ))
           }
         </ul>
-        <Chat messages={messages} sendMessage={sendMessage} />
+        <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />
       </div>
     );
   }
@@ -37,6 +49,7 @@ class GameRoom extends React.Component {
 GameRoom.propTypes = {
   user: PropTypes.object,
   game: PropTypes.object,
+  joinGame: PropTypes.func.isRequired,
 };
 
 class Wrapper extends React.Component {
@@ -65,6 +78,7 @@ Wrapper.propTypes = {
   user: PropTypes.object,
   userData: PropTypes.object.isRequired,
   game: PropTypes.object,
+  joinGame: PropTypes.func.isRequired,
 };
 
 export default connect(
