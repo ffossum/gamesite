@@ -8,6 +8,7 @@ function create(options) {
   const game = {
     id: gameId,
     host: options.host,
+    users: [options.host],
     messages: [],
   };
 

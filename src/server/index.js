@@ -20,6 +20,9 @@ import {
   registerUser,
   sendUserId,
 } from './middleware/registerUser';
+import {
+  getUsers,
+} from './middleware/users';
 import { createGame } from './middleware/games';
 import http from 'http';
 import socket from './socket/';
@@ -51,6 +54,8 @@ router.post('/api/games',
   authenticateJwtCookie,
   requireAuthentication,
   createGame);
+
+router.get('/api/users', getUsers);
 
 router.get('*',
   authenticateJwtCookie,

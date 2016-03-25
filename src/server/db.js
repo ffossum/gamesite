@@ -38,6 +38,18 @@ export function getUserById(userId) {
   });
 }
 
+export function getUsersByIds(userIds) {
+  return new Promise(resolve => {
+    const users = _.chain(userIds)
+      .map(id => db[id])
+      .omitBy(_.isNull)
+      .omitBy(_.isUndefined)
+      .value();
+
+    resolve(users);
+  });
+}
+
 export function getUserByName(username) {
   return new Promise(resolve => {
     resolve(_.find(db, { username }));

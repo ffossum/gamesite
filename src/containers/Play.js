@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from 'actions/gamesList';
 import _ from 'lodash';
+import Gravatar from 'components/common/Gravatar';
 
 import styles from './play.css';
 
@@ -27,7 +28,20 @@ export default class Play extends React.Component {
       <section>
         <h2>{ `${gameCount} available game${gameCount !== 1 ? 's' : ''}` }</h2>
         <ul className={styles.availableGames}>
-         {_.map(games, game => <li key={game.id}>{game.id}</li>)}
+         {
+           _.map(games, game => (
+             <li key={game.id}>
+              {
+                _.map(game.users, user => (
+                  <span key={user.id || ''}>
+                    <Gravatar emailHash={user.emailHash} />
+                    {user.username}
+                  </span>
+                ))
+              }
+             </li>
+           ))
+         }
         </ul>
       </section>
     </div>
@@ -44,10 +58,17 @@ Play.propTypes = {
 
 class Wrapper extends React.Component {
   render() {
+    const { userData } = this.props;
+
+    const games = this.props.games.map(
+      game => game.update('users',
+        users => users.map(
+          userId => userData.get(userId) || {})));
+
     const props = {
       ...this.props,
       user: this.props.user && this.props.user.toJS(),
-      games: this.props.games.toJS(),
+      games: games.toJS(),
     };
 
     return <Play {...props} />;
@@ -56,6 +77,7 @@ class Wrapper extends React.Component {
 
 Wrapper.propTypes = {
   user: PropTypes.object,
+  userData: PropTypes.object.isRequired,
   games: PropTypes.object.isRequired,
 };
 
@@ -66,6 +88,7 @@ export default connect(
     return {
       loggedInUser,
       user: state.getIn(['data', 'users', loggedInUser]),
+      userData: state.getIn(['data', 'users']),
       games: state.getIn(['games', 'notStarted']),
     };
   },
