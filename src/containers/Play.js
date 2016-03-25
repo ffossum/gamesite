@@ -54,7 +54,20 @@ Play.propTypes = {
   children: PropTypes.node,
   joinLobby: PropTypes.func.isRequired,
   leaveLobby: PropTypes.func.isRequired,
-  games: PropTypes.object.isRequired,
+  games: PropTypes.objectOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      host: PropTypes.string.isRequired,
+      messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+      users: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          emailHash: PropTypes.string,
+          username: PropTypes.string,
+        }),
+      ).isRequired,
+    })
+  ).isRequired,
 };
 
 class Wrapper extends React.Component {
@@ -63,7 +76,7 @@ class Wrapper extends React.Component {
 
     const games = this.props.games.map(game => (
       game.update('users', users => (
-        users.map(userId => userData.get(userId) || {})
+        users.map(userId => userData.get(userId) || { id: userId })
       ))
     ));
 

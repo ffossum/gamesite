@@ -48,7 +48,18 @@ class GameRoom extends React.Component {
 
 GameRoom.propTypes = {
   user: PropTypes.object,
-  game: PropTypes.object,
+  game: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+    users: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        emailHash: PropTypes.string,
+        username: PropTypes.string,
+      }),
+    ).isRequired,
+  }).isRequired,
   joinGame: PropTypes.func.isRequired,
 };
 
@@ -61,7 +72,7 @@ class Wrapper extends React.Component {
 
     const { userData } = this.props;
     game = this.props.game.update('users', users => (
-      users.map(userId => userData.get(userId) || {})
+      users.map(userId => userData.get(userId) || { id: userId })
     ));
 
     const props = {
