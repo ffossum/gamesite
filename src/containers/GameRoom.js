@@ -14,9 +14,28 @@ class GameRoom extends React.Component {
     super(props);
 
     this.handleJoinClicked = this.handleJoinClicked.bind(this, props.game.id);
+    this.isInGame = this.isInGame.bind(this);
+  }
+  componentDidMount() {
+    const inGame = this.isInGame();
+    if (!inGame) {
+      this.props.enterRoom(this.props.game.id);
+    }
+  }
+  componentWillUnmount() {
+    const inGame = this.isInGame();
+    if (!inGame) {
+      this.props.leaveRoom(this.props.game.id);
+    }
   }
   handleJoinClicked(gameId) {
     this.props.joinGame(gameId);
+  }
+  isInGame() {
+    const { game, user } = this.props;
+    const { users } = game;
+
+    return user && _.some(users, gameUser => gameUser.id === user.id);
   }
   render() {
     const sendMessage = () => {}; // TODO
@@ -24,7 +43,7 @@ class GameRoom extends React.Component {
     const { game, user } = this.props;
     const { messages, users } = game;
 
-    const inGame = user && _.some(users, gameUser => gameUser.id === user.id);
+    const inGame = this.isInGame();
 
     return (
       <div>
@@ -61,6 +80,8 @@ GameRoom.propTypes = {
     ).isRequired,
   }).isRequired,
   joinGame: PropTypes.func.isRequired,
+  enterRoom: PropTypes.func.isRequired,
+  leaveRoom: PropTypes.func.isRequired,
 };
 
 class Wrapper extends React.Component {
@@ -90,6 +111,8 @@ Wrapper.propTypes = {
   userData: PropTypes.object.isRequired,
   game: PropTypes.object,
   joinGame: PropTypes.func.isRequired,
+  enterRoom: PropTypes.func.isRequired,
+  leaveRoom: PropTypes.func.isRequired,
 };
 
 export default connect(

@@ -9,6 +9,9 @@ import { JOIN_LOBBY, LEAVE_LOBBY, REFRESH_LOBBY } from 'actions/gamesList';
 import {
   JOIN_GAME,
   PLAYER_JOINED,
+  ENTER_ROOM,
+  LEAVE_ROOM,
+  REFRESH_GAME,
 } from 'actions/gameRoom';
 import games from '../games';
 
@@ -80,6 +83,16 @@ export default function handleConnection(socket) {
     } else {
       fn(false);
     }
+  });
+
+  socket.on(ENTER_ROOM, gameId => {
+    socket.join(getGameChannelName(gameId));
+    const game = games.get(gameId);
+    socket.emit(REFRESH_GAME, { game });
+  });
+
+  socket.on(LEAVE_ROOM, gameId => {
+    socket.leave(getGameChannelName(gameId));
   });
 
   socket.on(JOIN_LOBBY, () => {
