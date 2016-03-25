@@ -30,19 +30,13 @@ export function leaveLobby() {
 }
 
 export function refreshLobby(games) {
-  return (dispatch, getState) => {
-    const stateUsers = getState().getIn(['data', 'users']);
-
-    const newUsers = _.chain(games)
+  return dispatch => {
+    const users = _.chain(games)
       .map(game => game.users)
       .flatten()
-      .filter(userId => !stateUsers.has(userId))
       .value();
 
-    if (!_.isEmpty(newUsers)) {
-      dispatch(getUserData(...newUsers));
-    }
-
+    dispatch(getUserData(...users));
     dispatch({
       type: REFRESH_LOBBY,
       payload: {
