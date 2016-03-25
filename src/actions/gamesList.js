@@ -46,9 +46,15 @@ export function refreshLobby(games) {
   };
 }
 
-function createGameSuccess() {
+function createGameSuccess(gameId) {
   return {
     type: CREATE_GAME_SUCCESS,
+    meta: {
+      history: {
+        method: 'push',
+        args: [`/game/${gameId}`],
+      },
+    },
   };
 }
 
@@ -79,7 +85,8 @@ export function createGame(options) {
     })
     .then(async res => {
       if (res.ok) {
-        dispatch(createGameSuccess());
+        const json = await res.json();
+        dispatch(createGameSuccess(json.game.id));
       }
     });
   };

@@ -21,7 +21,7 @@ class GameRoom extends React.Component {
         <ul className={styles.playerList}>
           {
             _.map(users, user => (
-              <li>
+              <li key={user.id}>
                 <Gravatar emailHash={user.emailHash} />
                 {user.username}
               </li>
@@ -35,13 +35,19 @@ class GameRoom extends React.Component {
 }
 
 GameRoom.propTypes = {
-  game: PropTypes.object.isRequired,
+  user: PropTypes.object,
+  game: PropTypes.object,
 };
 
 class Wrapper extends React.Component {
   render() {
+    let { game } = this.props;
+    if (!game) {
+      return null; // TODO show spinner
+    }
+
     const { userData } = this.props;
-    const game = this.props.game.update('users', users => (
+    game = this.props.game.update('users', users => (
       users.map(userId => userData.get(userId) || {})
     ));
 
@@ -58,7 +64,7 @@ class Wrapper extends React.Component {
 Wrapper.propTypes = {
   user: PropTypes.object,
   userData: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
+  game: PropTypes.object,
 };
 
 export default connect(

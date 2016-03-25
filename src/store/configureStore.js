@@ -3,13 +3,15 @@ import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 import DevTools from '../containers/DevTools';
 import socketMiddleware from './middleware/socketMiddleware';
+import historyMiddleware from './middleware/historyMiddleware';
 
 const finalCreateStore = compose(
   applyMiddleware(
     thunk,
-    socketMiddleware
+    socketMiddleware,
+    historyMiddleware,
   ),
-  DevTools.instrument()
+  DevTools.instrument(),
 )(createStore);
 
 export default function configureStore(initialState) {

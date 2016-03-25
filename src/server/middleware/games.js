@@ -6,7 +6,6 @@ import games from '../games';
 
 export async function createGame(ctx) {
   const userId = ctx.req.user.id;
-  console.log(`${userId} created a new game!`);
 
   const game = games.create({
     host: userId,
