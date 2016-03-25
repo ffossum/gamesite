@@ -60,10 +60,11 @@ class Wrapper extends React.Component {
   render() {
     const { userData } = this.props;
 
-    const games = this.props.games.map(
-      game => game.update('users',
-        users => users.map(
-          userId => userData.get(userId) || {})));
+    const games = this.props.games.map(game => (
+      game.update('users', users => (
+        users.map(userId => userData.get(userId) || {})
+      ))
+    ));
 
     const props = {
       ...this.props,

@@ -79,8 +79,7 @@ export function createGame(options) {
     })
     .then(async res => {
       if (res.ok) {
-        const json = await res.json();
-        dispatch(createGameSuccess(json.game));
+        dispatch(createGameSuccess());
       }
     });
   };

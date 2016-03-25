@@ -39,10 +39,7 @@ export default function handleConnection(socket) {
         socket.broadcast.emit(NEW_MESSAGE, {
           text: message.text,
           time: new Date().toJSON(),
-          user: {
-            emailHash: socket.user.emailHash,
-            username: socket.user.username,
-          },
+          user: socket.user.id,
         });
       });
       socket.on(LOG_OUT, () => {

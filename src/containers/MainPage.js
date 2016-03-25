@@ -33,9 +33,16 @@ MainPage.propTypes = {
 
 class Wrapper extends React.Component {
   render() {
+    const { userData } = this.props;
+    let messages = this.props.mainChat.get('messages');
+    messages = messages.map(message => {
+      const userId = message.get('user');
+      return message.set('user', userData.get(userId) || {});
+    });
+
     const props = {
       ...this.props,
-      messages: this.props.mainChat.get('messages').toJS(),
+      messages: messages.toJS(),
     };
 
     return <MainPage {...props} />;
@@ -44,12 +51,14 @@ class Wrapper extends React.Component {
 
 Wrapper.propTypes = {
   mainChat: PropTypes.object.isRequired,
+  userData: PropTypes.object.isRequired,
 };
 
 export default connect(
   state => ({
     mainChat: state.get('mainChat'),
     loggedInUser: state.get('loggedInUser'),
+    userData: state.getIn(['data', 'users']),
   }),
   dispatch => bindActionCreators(actions, dispatch)
 )(Wrapper);

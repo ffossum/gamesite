@@ -1,10 +1,15 @@
+import { getUserData } from './userData';
+
 export const SEND_MESSAGE = 'mainChat/SEND_MESSAGE';
 export const NEW_MESSAGE = 'mainChat/NEW_MESSAGE';
 
 export function newMessage(message) {
-  return {
-    type: NEW_MESSAGE,
-    payload: message,
+  return dispatch => {
+    dispatch(getUserData(message.user));
+    dispatch({
+      type: NEW_MESSAGE,
+      payload: message,
+    });
   };
 }
 
@@ -27,10 +32,7 @@ export function sendMessage(text) {
       const message = {
         text,
         time: new Date().toJSON(),
-        user: {
-          emailHash: user.get('emailHash'),
-          username: user.get('username'),
-        },
+        user: user.get('id'),
       };
 
       dispatch(newMessage(message));
