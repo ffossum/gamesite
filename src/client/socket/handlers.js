@@ -10,6 +10,9 @@ import {
   GAME_CREATED, gameCreated,
   REFRESH_LOBBY, refreshLobby,
 } from 'actions/gamesList';
+import {
+  PLAYER_JOINED, playerJoined,
+} from 'actions/gameRoom';
 
 export function createHandlers(store) {
   return {
@@ -20,5 +23,6 @@ export function createHandlers(store) {
     [LOG_IN_SUCCESS]: data => store.dispatch(logInSuccess(data.user)),
     [GAME_CREATED]: data => store.dispatch(gameCreated(data.game)),
     [REFRESH_LOBBY]: data => store.dispatch(refreshLobby(data.games)),
+    [PLAYER_JOINED]: data => store.dispatch(playerJoined(data.game.id, data.user.id)),
   };
 }

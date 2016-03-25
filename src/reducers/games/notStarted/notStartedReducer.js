@@ -5,6 +5,7 @@ import {
 } from 'actions/gamesList';
 import {
   JOIN_GAME_SUCCESS,
+  PLAYER_JOINED,
 } from 'actions/gameRoom';
 
 const initialState = Immutable.fromJS({});
@@ -18,6 +19,7 @@ export default function notStartedReducer(state = initialState, action) {
     case REFRESH_LOBBY: {
       return Immutable.fromJS(action.payload.games);
     }
+    case PLAYER_JOINED:
     case JOIN_GAME_SUCCESS: {
       const { game, user } = action.payload;
       return state.updateIn([game.id, 'users'], users => users.push(user.id));
