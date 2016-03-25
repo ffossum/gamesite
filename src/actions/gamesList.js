@@ -53,11 +53,14 @@ function createGameSuccess() {
 }
 
 export function gameCreated(game) {
-  return {
-    type: GAME_CREATED,
-    payload: {
-      game,
-    },
+  return dispatch => {
+    dispatch(getUserData(...game.users));
+    dispatch({
+      type: GAME_CREATED,
+      payload: {
+        game,
+      },
+    });
   };
 }
 
