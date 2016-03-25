@@ -31,6 +31,7 @@ export default class Play extends React.Component {
          {
            _.map(games, game => (
              <li key={game.id}>
+              <Link to={`/game/${game.id}`}>Go to</Link>
               {
                 _.map(game.users, user => (
                   <span key={user.id || ''}>

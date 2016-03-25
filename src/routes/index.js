@@ -7,6 +7,7 @@ import LoginForm from 'containers/forms/LoginForm';
 import RegisterUserForm from 'containers/forms/RegisterUserForm';
 import Nav from 'containers/Nav';
 import CreateGame from 'containers/CreateGame';
+import GameRoom from 'containers/GameRoom';
 
 import styles from 'client/client.css';
 
@@ -33,6 +34,7 @@ export default (
     <Route path="play" component={Play}>
       <Route path="create" component={CreateGame} />
     </Route>
+    <Route path="game/:id" component={GameRoom} />
     <Route path="about" component={About} />
 
     <Route path="login" component={LoginForm} />
