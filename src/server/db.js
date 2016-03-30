@@ -32,28 +32,20 @@ const db = {
   [zxcv.id]: zxcv,
 };
 
-export function getUserById(userId) {
-  return new Promise(resolve => {
-    resolve(db[userId]);
-  });
+export async function getUserById(userId) {
+  return db[userId];
 }
 
-export function getUsersByIds(userIds) {
-  return new Promise(resolve => {
-    const users = _.chain(userIds)
-      .map(id => db[id])
-      .omitBy(_.isNull)
-      .omitBy(_.isUndefined)
-      .value();
-
-    resolve(users);
-  });
+export async function getUsersByIds(userIds) {
+  return _.chain(userIds)
+    .map(id => db[id])
+    .omitBy(_.isNull)
+    .omitBy(_.isUndefined)
+    .value();
 }
 
-export function getUserByName(username) {
-  return new Promise(resolve => {
-    resolve(_.find(db, { username }));
-  });
+export async function getUserByName(username) {
+  return _.find(db, { username });
 }
 
 export async function addUser(email, username, password) {
@@ -72,14 +64,10 @@ export async function addUser(email, username, password) {
   return user;
 }
 
-export function isUsernameAvailable(username) {
-  return new Promise(resolve => {
-    resolve(!_.some(db, user => user.username === username));
-  });
+export async function isUsernameAvailable(username) {
+  return !_.some(db, user => user.username === username);
 }
 
 export function isEmailAvailable(email) {
-  return new Promise(resolve => {
-    resolve(!_.some(db, user => user.email === email));
-  });
+  return !_.some(db, user => user.email === email);
 }
