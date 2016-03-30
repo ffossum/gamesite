@@ -68,6 +68,6 @@ export async function isUsernameAvailable(username) {
   return !_.some(db, user => user.username === username);
 }
 
-export function isEmailAvailable(email) {
+export async function isEmailAvailable(email) {
   return !_.some(db, user => user.email === email);
 }
