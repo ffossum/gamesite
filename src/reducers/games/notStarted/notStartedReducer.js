@@ -22,10 +22,14 @@ export default function notStartedReducer(state = initialState, action) {
     case GAME_CREATED:
     case REFRESH_GAME: {
       const { game } = action.payload;
-      return state.set(game.id, Immutable.fromJS(game));
+
+      let gameState = Immutable.fromJS(game);
+      gameState = gameState.set('messages', Immutable.fromJS([]));
+      return state.set(game.id, gameState);
     }
     case REFRESH_LOBBY: {
-      return Immutable.fromJS(action.payload.games);
+      const newGames = Immutable.fromJS(action.payload.games);
+      return newGames.map((value, key) => state.get(key).merge(value));
     }
     case PLAYER_JOINED:
     case JOIN_GAME_SUCCESS: {

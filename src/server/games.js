@@ -13,7 +13,6 @@ function create(options) {
     id: gameId,
     host: options.host,
     users: [options.host],
-    messages: [],
   };
 
   notStarted[game.id] = game;
