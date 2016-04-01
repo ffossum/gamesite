@@ -69,7 +69,7 @@ export function logIn(username, password) {
         password,
       }),
     })
-    .then(async res => {
+    .then(res => {
       if (res.ok) {
         socket.reconnect();
       } else {
@@ -85,6 +85,9 @@ export function logOut() {
     fetch('/api/logout', {
       method: 'post',
       credentials: 'same-origin',
+    })
+    .then(() => {
+      socket.reconnect();
     });
   };
 }

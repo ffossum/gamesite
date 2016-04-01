@@ -84,6 +84,7 @@ export default async function handleConnection(socket) {
     socket.leave('users');
     socket.leave(getUserChannelName(socket.user.id));
     delete socket.user;
+    socket.disconnect(true);
   });
 
   socket.on(CREATE_GAME, (data, fn) => {
