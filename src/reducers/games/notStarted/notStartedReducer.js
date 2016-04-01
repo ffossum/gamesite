@@ -29,7 +29,12 @@ export default function notStartedReducer(state = initialState, action) {
     }
     case REFRESH_LOBBY: {
       const newGames = Immutable.fromJS(action.payload.games);
-      return newGames.map((value, key) => state.get(key).merge(value));
+      return newGames.map((newGameState, gameId) => {
+        const gameState = state.get(gameId);
+        return gameState
+          ? gameState.merge(newGameState)
+          : newGameState.set('messages', Immutable.fromJS([]));
+      });
     }
     case PLAYER_JOINED:
     case JOIN_GAME_SUCCESS: {
