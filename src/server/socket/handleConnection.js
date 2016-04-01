@@ -5,7 +5,13 @@ import { getUserByJwt } from '../jwt';
 import getPublicUserData from '../../util/getPublicUserData';
 import { LOG_OUT, LOG_IN_SUCCESS } from 'actions/login';
 import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
-import { JOIN_LOBBY, LEAVE_LOBBY, REFRESH_LOBBY } from 'actions/gamesList';
+import {
+  JOIN_LOBBY,
+  LEAVE_LOBBY,
+  REFRESH_LOBBY,
+  CREATE_GAME,
+  GAME_CREATED,
+} from 'actions/gamesList';
 import {
   JOIN_GAME,
   PLAYER_JOINED,
@@ -78,6 +84,19 @@ export default async function handleConnection(socket) {
     socket.leave('users');
     socket.leave(getUserChannelName(socket.user.id));
     delete socket.user;
+  });
+
+  socket.on(CREATE_GAME, (data, fn) => {
+    if (socket.user) {
+      const game = games.create({
+        host: socket.user.id,
+      });
+
+      socket.join(getGameChannelName(game.id));
+      socket.broadcast.to('lobby').emit(GAME_CREATED, { game });
+
+      fn({ game });
+    }
   });
 
   socket.on(JOIN_GAME, (data, fn) => {

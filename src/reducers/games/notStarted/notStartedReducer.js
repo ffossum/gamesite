@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 import {
+  CREATE_GAME_SUCCESS,
   GAME_CREATED,
   REFRESH_LOBBY,
 } from 'actions/gamesList';
@@ -13,6 +14,7 @@ const initialState = Immutable.fromJS({});
 
 export default function notStartedReducer(state = initialState, action) {
   switch (action.type) {
+    case CREATE_GAME_SUCCESS:
     case GAME_CREATED:
     case REFRESH_GAME: {
       const { game } = action.payload;

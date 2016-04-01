@@ -1,4 +1,3 @@
-import fetch from 'isomorphic-fetch';
 import { getUserData } from './userData';
 import _ from 'lodash';
 
@@ -46,15 +45,34 @@ export function refreshLobby(games) {
   };
 }
 
-function createGameSuccess(gameId) {
+function createGameSuccess(game) {
   return {
     type: CREATE_GAME_SUCCESS,
+    payload: {
+      game,
+    },
     meta: {
       history: {
         method: 'push',
-        args: [`/game/${gameId}`],
+        args: [`/game/${game.id}`],
       },
     },
+  };
+}
+
+export function createGame(options) {
+  return dispatch => {
+    dispatch({
+      type: CREATE_GAME,
+      payload: options,
+      meta: {
+        socket: res => {
+          if (res.game) {
+            dispatch(createGameSuccess(res.game));
+          }
+        },
+      },
+    });
   };
 }
 
@@ -66,28 +84,6 @@ export function gameCreated(game) {
       payload: {
         game,
       },
-    });
-  };
-}
-
-export function createGame(options) {
-  return dispatch => {
-    fetch('/api/games', {
-      method: 'post',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify({
-        options,
-      }),
-    })
-    .then(async res => {
-      if (res.ok) {
-        const json = await res.json();
-        dispatch(createGameSuccess(json.game.id));
-      }
     });
   };
 }

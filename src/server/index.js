@@ -11,7 +11,6 @@ import {
   refreshJwtCookie,
   expireJwtCookie,
   authenticateJwtCookie,
-  requireAuthentication,
   fetchAuthenticatedUserData,
 } from './middleware/jwtCookie';
 import {
@@ -23,9 +22,6 @@ import {
 import {
   getUsers,
 } from './middleware/users';
-import {
-  createGame,
-} from './middleware/games';
 import http from 'http';
 import socket from './socket/';
 
@@ -51,11 +47,6 @@ router.post('/api/register',
   registerUser,
   refreshJwtCookie,
   sendUserId);
-
-router.post('/api/games',
-  authenticateJwtCookie,
-  requireAuthentication,
-  createGame);
 
 router.get('/api/users', getUsers);
 
