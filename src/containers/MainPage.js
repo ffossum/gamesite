@@ -25,7 +25,7 @@ class MainPage extends React.Component {
 }
 
 MainPage.propTypes = {
-  messages: PropTypes.array.isRequired,
+  messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   sendMessage: PropTypes.func.isRequired,
   loggedInUser: PropTypes.string,
 };

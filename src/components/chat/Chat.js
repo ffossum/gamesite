@@ -94,6 +94,16 @@ export default class Chat extends React.Component {
 
 Chat.propTypes = {
   sendMessage: PropTypes.func.isRequired,
-  messages: PropTypes.array.isRequired,
+  messages: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: PropTypes.string,
+      time: PropTypes.string,
+      user: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        emailHash: PropTypes.string,
+        username: PropTypes.string,
+      }),
+    }),
+  ).isRequired,
   readOnly: PropTypes.bool,
 };
