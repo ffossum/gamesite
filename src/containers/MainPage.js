@@ -9,7 +9,6 @@ import styles from './mainPage.css';
 class MainPage extends React.Component {
   render() {
     const { messages, loggedInUser } = this.props;
-
     return (
       <div>
         <h1>Main page</h1>
@@ -37,7 +36,7 @@ class Wrapper extends React.Component {
     let messages = this.props.mainChat.get('messages');
     messages = messages.map(message => {
       const userId = message.get('user');
-      return message.set('user', userData.get(userId) || {});
+      return message.set('user', userData.get(userId) || { id: userId });
     });
 
     const props = {

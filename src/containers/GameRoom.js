@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import actions from 'actions/gameRoom';
+import gameRoomActions from 'actions/gameRoom';
+import gameChatActions from 'actions/gameChat';
 import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
 import Button from 'components/common/Button';
@@ -15,6 +16,7 @@ class GameRoom extends React.Component {
 
     this.handleJoinClicked = this.handleJoinClicked.bind(this, props.game.id);
     this.isInGame = this.isInGame.bind(this);
+    this.sendGameMessage = props.sendGameMessage.bind(this, props.game.id);
   }
   componentDidMount() {
     const inGame = this.isInGame();
@@ -38,13 +40,10 @@ class GameRoom extends React.Component {
     return user && _.some(users, gameUser => gameUser.id === user.id);
   }
   render() {
-    const sendMessage = () => {}; // TODO
-
     const { game, user } = this.props;
     const { messages, users } = game;
 
     const inGame = this.isInGame();
-
     return (
       <div>
         <h1>Game room</h1>
@@ -59,7 +58,7 @@ class GameRoom extends React.Component {
             ))
           }
         </ul>
-        <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />
+        <Chat messages={messages} sendMessage={this.sendGameMessage} readOnly={!inGame} />
       </div>
     );
   }
@@ -82,6 +81,7 @@ GameRoom.propTypes = {
   joinGame: PropTypes.func.isRequired,
   enterRoom: PropTypes.func.isRequired,
   leaveRoom: PropTypes.func.isRequired,
+  sendGameMessage: PropTypes.func.isRequired,
 };
 
 class Wrapper extends React.Component {
@@ -92,8 +92,14 @@ class Wrapper extends React.Component {
     }
 
     const { userData } = this.props;
-    game = this.props.game.update('users', users => (
+    game = game.update('users', users => (
       users.map(userId => userData.get(userId) || { id: userId })
+    ));
+    game = game.update('messages', messages => (
+      messages.map(message => {
+        const userId = message.get('user');
+        return message.set('user', userData.get(userId) || { id: userId });
+      })
     ));
 
     const props = {
@@ -113,6 +119,12 @@ Wrapper.propTypes = {
   joinGame: PropTypes.func.isRequired,
   enterRoom: PropTypes.func.isRequired,
   leaveRoom: PropTypes.func.isRequired,
+  sendGameMessage: PropTypes.func.isRequired,
+};
+
+const actions = {
+  ...gameRoomActions,
+  ...gameChatActions,
 };
 
 export default connect(

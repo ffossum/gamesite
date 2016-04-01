@@ -9,6 +9,10 @@ import {
   PLAYER_JOINED,
   REFRESH_GAME,
 } from 'actions/gameRoom';
+import {
+  NEW_MESSAGE,
+} from 'actions/gameChat';
+import gameReducer from '../gameReducer';
 
 const initialState = Immutable.fromJS({});
 
@@ -27,6 +31,10 @@ export default function notStartedReducer(state = initialState, action) {
     case JOIN_GAME_SUCCESS: {
       const { game, user } = action.payload;
       return state.updateIn([game.id, 'users'], users => users.push(user.id));
+    }
+    case NEW_MESSAGE: {
+      const { gameId } = action.payload;
+      return state.update(gameId, game => gameReducer(game, action));
     }
     default: return state;
   }
