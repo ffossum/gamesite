@@ -14,6 +14,10 @@ import {
   REFRESH_GAME,
 } from 'actions/gameRoom';
 import games from '../games';
+import {
+  getUserGames,
+} from '../games';
+import _ from 'lodash';
 
 function getJwt(request) {
   const { headers } = request;
@@ -32,23 +36,35 @@ function getGameChannelName(gameId) {
   return `game:${gameId}`;
 }
 
-export default function handleConnection(socket) {
-  const token = getJwt(socket.request);
-  getUserByJwt(token)
-    .then(user => {
-      socket.user = user;
-
-      socket.join('users');
-      socket.join(getUserChannelName(user.id));
-
-      socket.emit('news', { hello: user.username });
-      socket.emit(LOG_IN_SUCCESS, {
-        user: getPublicUserData(socket.user),
-      });
-    })
-    .catch(() => {
-      socket.emit('news', { hello: 'guest' });
+async function joinGameChannels(socket, userId) {
+  try {
+    const gameIds = await getUserGames(userId);
+    _.forEach(gameIds, gameId => {
+      socket.join(getGameChannelName(gameId));
     });
+  } catch (e) {
+    // do nothing
+  }
+}
+
+export default async function handleConnection(socket) {
+  const token = getJwt(socket.request);
+  try {
+    const user = await getUserByJwt(token);
+    socket.user = user;
+
+    socket.join('users');
+    socket.join(getUserChannelName(user.id));
+
+    joinGameChannels(socket, user.id);
+
+    socket.emit('news', { hello: user.username });
+    socket.emit(LOG_IN_SUCCESS, {
+      user: getPublicUserData(socket.user),
+    });
+  } catch (e) {
+    socket.emit('news', { hello: 'guest' });
+  }
 
   socket.on(SEND_MESSAGE, message => {
     socket.broadcast.emit(NEW_MESSAGE, {

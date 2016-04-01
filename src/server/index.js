@@ -23,7 +23,9 @@ import {
 import {
   getUsers,
 } from './middleware/users';
-import { createGame } from './middleware/games';
+import {
+  createGame,
+} from './middleware/games';
 import http from 'http';
 import socket from './socket/';
 
