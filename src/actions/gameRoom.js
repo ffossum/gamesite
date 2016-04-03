@@ -79,13 +79,15 @@ export function leaveRoom(gameId) {
 }
 
 export function playerJoined(gameId, userId) {
-  // TODO Fetch user data
-  return {
-    type: PLAYER_JOINED,
-    payload: {
-      game: { id: gameId },
-      user: { id: userId },
-    },
+  return dispatch => {
+    dispatch(getUserData(userId));
+    dispatch({
+      type: PLAYER_JOINED,
+      payload: {
+        game: { id: gameId },
+        user: { id: userId },
+      },
+    });
   };
 }
 
