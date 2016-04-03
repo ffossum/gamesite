@@ -7,15 +7,15 @@
     <script>window.__INITIAL_STATE__ = {{{initialState}}};</script>
 
     {{#if __DEVELOPMENT__}}
-    <script src="http://localhost:3000/dist/client.js" defer></script>
+      <script src="http://localhost:3000/dist/client.js" defer></script>
     {{else}}
-    <link href="/static/dist/style.css" rel="stylesheet"/>
-    <script src="https://fb.me/react-0.14.7.min.js" defer></script>
-    <script src="https://fb.me/react-dom-0.14.7.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/immutable.js/3/immutable.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/lodash/4/lodash.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/momentjs/2/moment.min.js" defer></script>
-    <script src="/static/dist/client.js" defer></script>
+      <link href="/static/dist/style.css" rel="stylesheet"/>
+      <script src="https://fb.me/react-0.14.7.min.js" defer></script>
+      <script src="https://fb.me/react-dom-0.14.7.min.js" defer></script>
+      <script src="https://cdn.jsdelivr.net/immutable.js/3/immutable.min.js" defer></script>
+      <script src="https://cdn.jsdelivr.net/lodash/4/lodash.min.js" defer></script>
+      <script src="https://cdn.jsdelivr.net/momentjs/2/moment.min.js" defer></script>
+      <script src="/static/dist/client.js" defer></script>
     {{/if}}
 
   </head>
@@ -23,7 +23,7 @@
     <div id="root">{{{reactString}}}</div>
 
     {{#if __DEVELOPMENT__}}
-    <div id="dev-tools"></div>
+      <div id="dev-tools"></div>
     {{/if}}
 
   </body>
