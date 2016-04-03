@@ -13,16 +13,17 @@ export function getUserData(...userIds) {
     }
 
     fetch(`/api/users?id=${missingUserIds.join(',')}`)
-      .then(async res => {
-        if (res.ok) {
-          const json = await res.json();
-          dispatch({
-            type: GET_USER_DATA,
-            payload: {
-              users: json.users,
-            },
-          });
-        }
+      .then(res => {
+        res.json().then(json => {
+          if (res.ok) {
+            dispatch({
+              type: GET_USER_DATA,
+              payload: {
+                users: json.users,
+              },
+            });
+          }
+        });
       });
   };
 }

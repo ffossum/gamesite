@@ -75,13 +75,14 @@ export function registerUser(email, username, password, repeatPassword) {
           password,
         }),
       })
-      .then(async res => {
-        const json = await res.json();
-        if (res.ok) {
-          socket.reconnect();
-        } else {
-          dispatch(registerUserFailure(json.errors));
-        }
+      .then(res => {
+        res.json().then(json => {
+          if (res.ok) {
+            socket.reconnect();
+          } else {
+            dispatch(registerUserFailure(json.errors));
+          }
+        });
       });
     }
   };

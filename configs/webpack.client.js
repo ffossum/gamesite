@@ -8,7 +8,7 @@ module.exports = {
   context: path.join(__dirname, '..'),
   debug: false,
   devtool: false,
-  entry: ["babel-polyfill", "./src/client"],
+  entry: ["./src/client"],
   output: {
     path: path.join(__dirname, "../static/dist"),
     filename: "client.js",
