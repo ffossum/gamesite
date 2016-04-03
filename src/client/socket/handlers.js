@@ -10,7 +10,6 @@ import {
 } from 'actions/gamesList';
 import {
   PLAYER_JOINED, playerJoined,
-  REFRESH_GAME, refreshGame,
 } from 'actions/gameRoom';
 import {
   NEW_GAME_MESSAGE, newGameMessage,
@@ -24,8 +23,7 @@ export function createHandlers(store) {
     [LOG_IN_SUCCESS]: data => store.dispatch(logInSuccess(data.user)),
     [GAME_CREATED]: data => store.dispatch(gameCreated(data.game)),
     [REFRESH_LOBBY]: data => store.dispatch(refreshLobby(data.games)),
-    [PLAYER_JOINED]: data => store.dispatch(playerJoined(data.game.id, data.user.id)),
-    [REFRESH_GAME]: data => store.dispatch(refreshGame(data.game)),
+    [PLAYER_JOINED]: ({ game, user }) => store.dispatch(playerJoined(game.id, user.id)),
     [NEW_GAME_MESSAGE]: ({ game, message }) => store.dispatch(newGameMessage(game.id, message)),
   };
 }

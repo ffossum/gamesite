@@ -85,10 +85,18 @@ GameRoom.propTypes = {
 };
 
 class Wrapper extends React.Component {
+  componentDidMount() {
+    const { game, gameId } = this.props;
+    if (game === undefined) {
+      this.props.getGameData(gameId);
+    }
+  }
   render() {
     let { game } = this.props;
-    if (!game) {
-      return null; // TODO show spinner
+    if (game === null) {
+      return <div>Game not found</div>;
+    } else if (game === undefined) {
+      return <div>Fetching game data...</div>;
     }
 
     const { userData } = this.props;
@@ -116,10 +124,12 @@ Wrapper.propTypes = {
   user: PropTypes.object,
   userData: PropTypes.object.isRequired,
   game: PropTypes.object,
+  gameId: PropTypes.string.isRequired,
   joinGame: PropTypes.func.isRequired,
   enterRoom: PropTypes.func.isRequired,
   leaveRoom: PropTypes.func.isRequired,
   sendGameMessage: PropTypes.func.isRequired,
+  getGameData: PropTypes.func.isRequired,
 };
 
 const actions = {
@@ -136,7 +146,9 @@ export default connect(
       loggedInUser,
       user: state.getIn(['data', 'users', loggedInUser]),
       userData: state.getIn(['data', 'users']),
-      game: state.getIn(['games', 'notStarted', gameId]),
+      gameId,
+      game: state.getIn(['games', 'notStarted', gameId]) ||
+        state.getIn(['games', 'notFound', gameId]),
     };
   },
   dispatch => bindActionCreators(actions, dispatch)

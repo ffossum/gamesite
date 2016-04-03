@@ -21,7 +21,7 @@ import {
   PLAYER_JOINED,
   ENTER_ROOM,
   LEAVE_ROOM,
-  REFRESH_GAME,
+  GET_GAME_DATA,
 } from 'actions/gameRoom';
 import games from '../games';
 import {
@@ -115,7 +115,7 @@ export default async function handleConnection(socket) {
       socket.join(getGameChannelName(game.id));
       socket.broadcast.to('lobby').emit(GAME_CREATED, { game });
 
-      fn({ game });
+      fn(game);
     }
   });
 
@@ -140,10 +140,15 @@ export default async function handleConnection(socket) {
     }
   });
 
-  socket.on(ENTER_ROOM, gameId => {
+  socket.on(GET_GAME_DATA, (gameId, fn) => {
+    const game = games.get(gameId);
+    fn(game);
+  });
+
+  socket.on(ENTER_ROOM, (gameId, fn) => {
     socket.join(getGameChannelName(gameId));
     const game = games.get(gameId);
-    socket.emit(REFRESH_GAME, { game });
+    fn(game);
   });
 
   socket.on(LEAVE_ROOM, gameId => {

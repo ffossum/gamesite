@@ -8,26 +8,8 @@ export const LEAVE_GAME = 'gameRoom/LEAVE_GAME';
 export const ENTER_ROOM = 'gameRoom/ENTER_ROOM';
 export const LEAVE_ROOM = 'gameRoom/LEAVE_ROOM';
 export const REFRESH_GAME = 'gameRoom/REFRESH';
-
-export function enterRoom(gameId) {
-  return {
-    type: ENTER_ROOM,
-    payload: gameId,
-    meta: {
-      socket: true,
-    },
-  };
-}
-
-export function leaveRoom(gameId) {
-  return {
-    type: LEAVE_ROOM,
-    payload: gameId,
-    meta: {
-      socket: true,
-    },
-  };
-}
+export const GAME_NOT_FOUND = 'gameRoom/NOT_FOUND';
+export const GET_GAME_DATA = 'gameRoom/GET_DATA';
 
 export function refreshGame(game) {
   return dispatch => {
@@ -38,6 +20,61 @@ export function refreshGame(game) {
         game,
       },
     });
+  };
+}
+
+function gameNotFound(gameId) {
+  return {
+    type: GAME_NOT_FOUND,
+    payload: {
+      game: { id: gameId },
+    },
+  };
+}
+
+export function getGameData(gameId) {
+  return dispatch => {
+    dispatch({
+      type: GET_GAME_DATA,
+      payload: gameId,
+      meta: {
+        socket: game => {
+          if (game) {
+            dispatch(refreshGame(game));
+          } else {
+            dispatch(gameNotFound(gameId));
+          }
+        },
+      },
+    });
+  };
+}
+
+export function enterRoom(gameId) {
+  return dispatch => {
+    dispatch({
+      type: ENTER_ROOM,
+      payload: gameId,
+      meta: {
+        socket: game => {
+          if (game) {
+            dispatch(refreshGame(game));
+          } else {
+            dispatch(gameNotFound(gameId));
+          }
+        },
+      },
+    });
+  };
+}
+
+export function leaveRoom(gameId) {
+  return {
+    type: LEAVE_ROOM,
+    payload: gameId,
+    meta: {
+      socket: true,
+    },
   };
 }
 
@@ -91,4 +128,5 @@ export default {
   playerJoined,
   enterRoom,
   leaveRoom,
+  getGameData,
 };
