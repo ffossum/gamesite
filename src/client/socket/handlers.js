@@ -1,10 +1,8 @@
 import {
-  LOG_IN_SUCCESS,
-  logInSuccess,
+  LOG_IN_SUCCESS, logInSuccess,
 } from 'actions/login';
 import {
-  NEW_MESSAGE,
-  newMessage,
+  NEW_MESSAGE, newMessage,
 } from 'actions/mainChat';
 import {
   GAME_CREATED, gameCreated,
@@ -14,7 +12,9 @@ import {
   PLAYER_JOINED, playerJoined,
   REFRESH_GAME, refreshGame,
 } from 'actions/gameRoom';
-
+import {
+  NEW_GAME_MESSAGE, newGameMessage,
+} from 'actions/gameChat';
 export function createHandlers(store) {
   return {
     news: data => {
@@ -26,5 +26,6 @@ export function createHandlers(store) {
     [REFRESH_LOBBY]: data => store.dispatch(refreshLobby(data.games)),
     [PLAYER_JOINED]: data => store.dispatch(playerJoined(data.game.id, data.user.id)),
     [REFRESH_GAME]: data => store.dispatch(refreshGame(data.game)),
+    [NEW_GAME_MESSAGE]: ({ game, message }) => store.dispatch(newGameMessage(game.id, message)),
   };
 }

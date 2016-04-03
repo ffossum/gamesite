@@ -1,13 +1,13 @@
 import { getUserData } from './userData';
 
 export const SEND_GAME_MESSAGE = 'gameChat/SEND_MSG';
-export const NEW_MESSAGE = 'gameChat/NEW_MSG';
+export const NEW_GAME_MESSAGE = 'gameChat/NEW_MSG';
 
 export function newGameMessage(gameId, message) {
   return dispatch => {
     dispatch(getUserData(message.user));
     dispatch({
-      type: NEW_MESSAGE,
+      type: NEW_GAME_MESSAGE,
       payload: {
         gameId,
         message,

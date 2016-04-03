@@ -10,7 +10,7 @@ import {
   REFRESH_GAME,
 } from 'actions/gameRoom';
 import {
-  NEW_MESSAGE,
+  NEW_GAME_MESSAGE,
 } from 'actions/gameChat';
 import gameReducer from '../gameReducer';
 
@@ -41,7 +41,7 @@ export default function notStartedReducer(state = initialState, action) {
       const { game, user } = action.payload;
       return state.updateIn([game.id, 'users'], users => users.push(user.id));
     }
-    case NEW_MESSAGE: {
+    case NEW_GAME_MESSAGE: {
       const { gameId } = action.payload;
       return state.update(gameId, game => gameReducer(game, action));
     }

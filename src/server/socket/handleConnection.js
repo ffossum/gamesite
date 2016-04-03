@@ -6,6 +6,10 @@ import getPublicUserData from '../../util/getPublicUserData';
 import { LOG_OUT, LOG_IN_SUCCESS } from 'actions/login';
 import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
 import {
+  SEND_GAME_MESSAGE,
+  NEW_GAME_MESSAGE,
+} from 'actions/gameChat';
+import {
   JOIN_LOBBY,
   LEAVE_LOBBY,
   REFRESH_LOBBY,
@@ -73,11 +77,26 @@ export default async function handleConnection(socket) {
   }
 
   socket.on(SEND_MESSAGE, message => {
-    socket.broadcast.emit(NEW_MESSAGE, {
-      text: message.text,
-      time: new Date().toJSON(),
-      user: socket.user.id,
-    });
+    if (socket.user) {
+      socket.broadcast.emit(NEW_MESSAGE, {
+        text: message.text,
+        time: new Date().toJSON(),
+        user: socket.user.id,
+      });
+    }
+  });
+
+  socket.on(SEND_GAME_MESSAGE, message => {
+    if (socket.user) {
+      socket.broadcast.to(getGameChannelName(message.gameId)).emit(NEW_GAME_MESSAGE, {
+        game: { id: message.gameId },
+        message: {
+          text: message.text,
+          time: new Date().toJSON(),
+          user: socket.user.id,
+        },
+      });
+    }
   });
 
   socket.on(LOG_OUT, () => {
