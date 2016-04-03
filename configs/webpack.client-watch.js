@@ -5,7 +5,7 @@ var port = 3000;
 
 config.cache = true;
 config.debug = true;
-config.devtool = "cheap-module-eval-source-map";
+config.devtool = "cheap-module-source-map";
 config.externals = {};
 
 config.entry.unshift(
