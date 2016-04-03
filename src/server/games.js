@@ -2,7 +2,9 @@ import shortid from 'shortid';
 import {
   getUserById,
   addGameToUser,
+  removeGameFromUser,
 } from './db';
+import _ from 'lodash';
 
 const notStarted = {};
 const inProgress = {};
@@ -32,6 +34,16 @@ function join(gameId, userId) {
   return game;
 }
 
+function leave(gameId, userId) {
+  const game = notStarted[gameId];
+  if (game) {
+    game.users = _.without(game.users, userId);
+    removeGameFromUser(userId, gameId);
+  }
+
+  return game;
+}
+
 export async function getUserGames(userId) {
   const user = await getUserById(userId);
   return [...user.games];
@@ -52,6 +64,7 @@ function getAll() {
 export default {
   create,
   join,
+  leave,
   get,
   getJoinable,
   getAll,

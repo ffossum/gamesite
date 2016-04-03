@@ -5,8 +5,8 @@ import {
   REFRESH_LOBBY,
 } from 'actions/gamesList';
 import {
-  JOIN_GAME_SUCCESS,
   PLAYER_JOINED,
+  PLAYER_LEFT,
   REFRESH_GAME,
 } from 'actions/gameRoom';
 import {
@@ -36,10 +36,15 @@ export default function notStartedReducer(state = initialState, action) {
           : newGameState.set('messages', Immutable.fromJS([]));
       });
     }
-    case PLAYER_JOINED:
-    case JOIN_GAME_SUCCESS: {
+    case PLAYER_JOINED: {
       const { game, user } = action.payload;
       return state.updateIn([game.id, 'users'], users => users.push(user.id));
+    }
+    case PLAYER_LEFT: {
+      const { game, user } = action.payload;
+      return state.updateIn([game.id, 'users'], users => (
+        users.filterNot(userId => userId === user.id)
+      ));
     }
     case NEW_GAME_MESSAGE: {
       const { gameId } = action.payload;

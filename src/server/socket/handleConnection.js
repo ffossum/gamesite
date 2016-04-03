@@ -19,6 +19,8 @@ import {
 import {
   JOIN_GAME,
   PLAYER_JOINED,
+  LEAVE_GAME,
+  PLAYER_LEFT,
   ENTER_ROOM,
   LEAVE_ROOM,
   GET_GAME_DATA,
@@ -119,10 +121,10 @@ export default async function handleConnection(socket) {
     }
   });
 
-  socket.on(JOIN_GAME, (data, fn) => {
+  socket.on(JOIN_GAME, async (data, fn) => {
     if (socket.user) {
       const gameId = data.game.id;
-      const joined = games.join(gameId, socket.user.id);
+      const joined = await games.join(gameId, socket.user.id);
 
       if (joined) {
         socket.join(getGameChannelName(gameId));
@@ -135,6 +137,28 @@ export default async function handleConnection(socket) {
         socket.broadcast.to(getGameChannelName(gameId)).emit(PLAYER_JOINED, emitData);
       }
       fn(!!joined);
+    } else {
+      fn(false);
+    }
+  });
+
+  socket.on(LEAVE_GAME, async (data, fn) => {
+    if (socket.user) {
+      const gameId = data.game.id;
+      const left = await games.leave(gameId, socket.user.id);
+
+      if (left) {
+        socket.join(getGameChannelName(gameId));
+
+        const emitData = {
+          user: { id: socket.user.id },
+          game: { id: gameId },
+        };
+        socket.broadcast.to('lobby').emit(PLAYER_LEFT, emitData);
+        socket.broadcast.to(getGameChannelName(gameId)).emit(PLAYER_LEFT, emitData);
+      }
+
+      fn(!!left);
     } else {
       fn(false);
     }

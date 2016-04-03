@@ -1,9 +1,9 @@
 import { getUserData } from './userData';
 
 export const JOIN_GAME = 'gameRoom/JOIN_GAME';
-export const JOIN_GAME_SUCCESS = 'gameRoom/JOIN_GAME_SUCCESS';
 export const PLAYER_JOINED = 'gameRoom/PLAYER_JOINED';
 export const LEAVE_GAME = 'gameRoom/LEAVE_GAME';
+export const PLAYER_LEFT = 'gameRoom/PLAYER_LEFT';
 
 export const ENTER_ROOM = 'gameRoom/ENTER_ROOM';
 export const LEAVE_ROOM = 'gameRoom/LEAVE_ROOM';
@@ -79,18 +79,9 @@ export function leaveRoom(gameId) {
 }
 
 export function playerJoined(gameId, userId) {
+  // TODO Fetch user data
   return {
     type: PLAYER_JOINED,
-    payload: {
-      game: { id: gameId },
-      user: { id: userId },
-    },
-  };
-}
-
-function joinGameSuccess(gameId, userId) {
-  return {
-    type: JOIN_GAME_SUCCESS,
     payload: {
       game: { id: gameId },
       user: { id: userId },
@@ -115,7 +106,42 @@ export function joinGame(gameId) {
       meta: {
         socket: joined => {
           if (joined) {
-            dispatch(joinGameSuccess(gameId, userId));
+            dispatch(playerJoined(gameId, userId));
+          }
+        },
+      },
+    });
+  };
+}
+
+export function playerLeft(gameId, userId) {
+  return {
+    type: PLAYER_LEFT,
+    payload: {
+      game: { id: gameId },
+      user: { id: userId },
+    },
+  };
+}
+
+export function leaveGame(gameId) {
+  return (dispatch, getState) => {
+    const userId = getState().get('loggedInUser');
+    if (!userId) {
+      return;
+    }
+
+    dispatch({
+      type: LEAVE_GAME,
+      payload: {
+        game: {
+          id: gameId,
+        },
+      },
+      meta: {
+        socket: left => {
+          if (left) {
+            dispatch(playerLeft(gameId, userId));
           }
         },
       },
@@ -126,6 +152,8 @@ export function joinGame(gameId) {
 export default {
   joinGame,
   playerJoined,
+  leaveGame,
+  playerLeft,
   enterRoom,
   leaveRoom,
   getGameData,

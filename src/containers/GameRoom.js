@@ -14,7 +14,8 @@ class GameRoom extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleJoinClicked = this.handleJoinClicked.bind(this, props.game.id);
+    this.handleJoinClicked = this.props.joinGame.bind(this, props.game.id);
+    this.handleLeaveClicked = this.props.leaveGame.bind(this, props.game.id);
     this.isInGame = this.isInGame.bind(this);
     this.sendGameMessage = props.sendGameMessage.bind(this, props.game.id);
   }
@@ -29,9 +30,6 @@ class GameRoom extends React.Component {
     if (!inGame) {
       this.props.leaveRoom(this.props.game.id);
     }
-  }
-  handleJoinClicked(gameId) {
-    this.props.joinGame(gameId);
   }
   isInGame() {
     const { game, user } = this.props;
@@ -48,6 +46,10 @@ class GameRoom extends React.Component {
       <div>
         <h1>Game room</h1>
         {!inGame && user && <Button onClick={this.handleJoinClicked}>Join game</Button>}
+        {
+          inGame && game.host !== user.id &&
+            <Button onClick={this.handleLeaveClicked}>Leave game</Button>
+        }
         <ul className={styles.playerList}>
           {
             _.map(users, gameUser => (
@@ -79,6 +81,7 @@ GameRoom.propTypes = {
     ).isRequired,
   }).isRequired,
   joinGame: PropTypes.func.isRequired,
+  leaveGame: PropTypes.func.isRequired,
   enterRoom: PropTypes.func.isRequired,
   leaveRoom: PropTypes.func.isRequired,
   sendGameMessage: PropTypes.func.isRequired,
@@ -126,6 +129,7 @@ Wrapper.propTypes = {
   game: PropTypes.object,
   gameId: PropTypes.string.isRequired,
   joinGame: PropTypes.func.isRequired,
+  leaveGame: PropTypes.func.isRequired,
   enterRoom: PropTypes.func.isRequired,
   leaveRoom: PropTypes.func.isRequired,
   sendGameMessage: PropTypes.func.isRequired,

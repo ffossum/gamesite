@@ -79,3 +79,7 @@ export async function isEmailAvailable(email) {
 export async function addGameToUser(userId, gameId) {
   return db[userId].games.add(gameId);
 }
+
+export async function removeGameFromUser(userId, gameId) {
+  return db[userId].games.delete(gameId);
+}
