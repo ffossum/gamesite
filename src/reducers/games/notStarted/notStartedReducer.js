@@ -23,12 +23,16 @@ export default function notStartedReducer(state = initialState, action) {
     case REFRESH_GAME: {
       const { game } = action.payload;
 
-      let gameState = Immutable.fromJS(game);
-      gameState = gameState.set('messages', Immutable.fromJS([]));
+      const gameState = Immutable.fromJS(game)
+        .set('messages', Immutable.fromJS([]))
+        .update('users', users => users.toSet());
+
       return state.set(game.id, gameState);
     }
     case REFRESH_LOBBY: {
-      const newGames = Immutable.fromJS(action.payload.games);
+      const newGames = Immutable.fromJS(action.payload.games)
+        .map(newGameState => newGameState.update('users', users => users.toSet()));
+
       return newGames.map((newGameState, gameId) => {
         const gameState = state.get(gameId);
         return gameState
@@ -38,13 +42,11 @@ export default function notStartedReducer(state = initialState, action) {
     }
     case PLAYER_JOINED: {
       const { game, user } = action.payload;
-      return state.updateIn([game.id, 'users'], users => users.push(user.id));
+      return state.updateIn([game.id, 'users'], users => users.add(user.id));
     }
     case PLAYER_LEFT: {
       const { game, user } = action.payload;
-      return state.updateIn([game.id, 'users'], users => (
-        users.filterNot(userId => userId === user.id)
-      ));
+      return state.updateIn([game.id, 'users'], users => users.delete(user.id));
     }
     case NEW_GAME_MESSAGE: {
       const { gameId } = action.payload;
