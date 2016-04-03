@@ -6,7 +6,10 @@ import serve from 'koa-static';
 import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
-import renderReact from './middleware/renderReact';
+import {
+  renderReact,
+  initializeReduxStore,
+} from './middleware/renderReact';
 import {
   refreshJwtCookie,
   expireJwtCookie,
@@ -46,7 +49,8 @@ router.post('/api/register',
   validateEmail,
   registerUser,
   refreshJwtCookie,
-  sendUserId);
+  sendUserId,
+);
 
 router.get('/api/users', getUsers);
 
@@ -54,10 +58,13 @@ router.get('*',
   authenticateJwtCookie,
   fetchAuthenticatedUserData,
   refreshJwtCookie,
-  renderReact);
+  initializeReduxStore,
+  renderReact,
+);
 
 router.get('/static/*',
-  convert(serve('.')));
+  convert(serve('.')),
+);
 
 app
   .use(router.routes())

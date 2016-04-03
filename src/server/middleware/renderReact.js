@@ -37,14 +37,20 @@ function matchRoutes(routes, location) {
   });
 }
 
-export default async function renderReact(ctx, next) {
+export async function initializeReduxStore(ctx, next) {
+  const store = createStore(reducer);
+  if (ctx.isAuthenticated()) {
+    store.dispatch(logInSuccess(getPublicUserData(ctx.req.user)));
+  }
+
+  ctx.state.store = store;
+  await next();
+}
+
+export async function renderReact(ctx, next) {
   const { renderProps } = await matchRoutes(appRoutes, ctx.url);
   if (renderProps) {
-    const store = createStore(reducer);
-    if (ctx.isAuthenticated()) {
-      store.dispatch(logInSuccess(getPublicUserData(ctx.req.user)));
-    }
-    const initialState = store.getState();
+    const { store } = ctx.state;
 
     resetCounter();
     const reactString = renderToString(
@@ -56,7 +62,7 @@ export default async function renderReact(ctx, next) {
     ctx.body = template({
       __DEVELOPMENT__,
       reactString,
-      initialState: JSON.stringify(initialState),
+      initialState: JSON.stringify(store.getState()),
     });
   }
   await next();
