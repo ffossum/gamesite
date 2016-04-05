@@ -45,7 +45,7 @@ function logInFailure() {
   };
 }
 
-function logOutRequest() {
+export function logOutRequest() {
   return {
     type: LOG_OUT,
     meta: {
