@@ -67,6 +67,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "chai": "^3.5.0",
     "concurrently": "^1.0.0",
+    "coveralls": "^2.11.9",
     "css-loader": "^0.23.1",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.1.0",

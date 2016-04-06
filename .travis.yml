@@ -12,3 +12,6 @@ addons:
     - g++-4.8
 env:
   - CXX=g++-4.8
+
+after_success:
+  - 'cat ./test/coverage/lcov.info | ./node_modules/.bin/coveralls'
