@@ -14,7 +14,7 @@
     "lint": "node node_modules/eslint/bin/eslint src",
     "build-test": "node node_modules/webpack/bin/webpack --colors --config configs/webpack.test.js",
     "watch-build-test": "node node_modules/webpack/bin/webpack --colors --config configs/webpack.test-watch.js",
-    "test": "npm run lint && npm run build-test && mocha test/test.js",
+    "test": "npm run lint && npm run coverage",
     "coverage": "npm run build-test && (cd test && node ../node_modules/istanbul/lib/cli.js cover ../node_modules/mocha/bin/_mocha test.js)",
     "watch-test": "(cd test && mocha test.js --watch)"
   },
