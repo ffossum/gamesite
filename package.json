@@ -26,8 +26,6 @@
     "classnames": "^2.2.3",
     "cookie": "^0.2.3",
     "forever": "^0.15.1",
-    "handlebars": "^4.0.5",
-    "handlebars-loader": "^1.1.4",
     "history": "^2.0.0",
     "immutable": "3.7.6",
     "isomorphic-fetch": "^2.2.1",

@@ -31,7 +31,6 @@ module.exports = {
     loaders: [
       {test: /\.json$/, loaders: ["json"]},
       {test: /\.js$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/},
-      {test: /\.hbs$/, loader: "handlebars-loader"},
       {test: /\.css$/, loader: "css-loader/locals?modules&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader"}
     ],
     noParse: /\.min\.js/

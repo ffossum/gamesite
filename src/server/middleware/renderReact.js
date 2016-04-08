@@ -11,7 +11,7 @@ import getPublicUserData from '../../util/getPublicUserData';
 
 let reducer = require('../../reducers').default;
 let appRoutes = require('../../routes').default;
-let template = require('../views/index.hbs');
+let template = require('../views/template').default;
 
 if (module.hot) {
   module.hot.accept('../../reducers', () => {
@@ -20,8 +20,8 @@ if (module.hot) {
   module.hot.accept('../../routes', () => {
     appRoutes = require('../../routes').default;
   });
-  module.hot.accept('../views/index.hbs', () => {
-    template = require('../views/index.hbs');
+  module.hot.accept('../views/template', () => {
+    template = require('../views/template').default;
   });
 }
 
