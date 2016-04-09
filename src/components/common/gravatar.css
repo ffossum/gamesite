@@ -1,11 +1,20 @@
+.s {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.m {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
 .gravatar {
+  border-radius: 15%;
+}
 
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-
+.inline {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
   margin-top: -0.65rem;
   margin-bottom: -0.35rem;
-  height: 1.5rem;
-
-  border-radius:50%;
 }

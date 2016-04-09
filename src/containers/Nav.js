@@ -22,7 +22,7 @@ export default class Nav extends React.Component {
           ?
           <ul>
             <li className={styles.user}>
-              <Gravatar emailHash={this.props.user.emailHash} />
+              <Gravatar inline emailHash={this.props.user.emailHash} />
               {this.props.user.username}
             </li>
             <li className={styles['nav-item']}>

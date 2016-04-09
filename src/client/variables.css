@@ -10,6 +10,8 @@
   --darker-gray: #969696;
   --darkest-gray: #494949;
 
+  --faint-text: var(--gray);
+
   --border: 1px solid var(--gray);
 
   --link-color: var(--blue);

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Gravatar from 'components/common/Gravatar';
 import moment from 'moment';
 
-import styles from './chat.css';
+import styles from './message.css';
 
 export default class Message extends React.Component {
   render() {
@@ -14,9 +14,16 @@ export default class Message extends React.Component {
 
     return (
       <div className={styles.message}>
-        {moment(time).format('dddd MMMM Do, hh:mm:ss')}
-        {' '}
-        <Gravatar emailHash={user.emailHash} /> {user.username}: {text}
+        <div className={styles.avatar}>
+          <Gravatar size="m" emailHash={user.emailHash} />
+        </div>
+        <div>
+          <div>
+            <span className={styles.username}>{user.username} </span>
+            <span className={styles.time}>{moment(time).format('hh:mm')}</span>
+          </div>
+          <div>{text}</div>
+        </div>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import moment from 'moment';
 import getText from './getText';
 
-import styles from './chat.css';
+import styles from './message.css';
 
 export default class InfoMessage extends React.Component {
   render() {

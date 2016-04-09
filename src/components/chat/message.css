@@ -1,0 +1,19 @@
+@import "../../client/variables.css";
+
+.message {
+  display: flex;
+  min-height: 1.5rem;
+}
+
+.avatar {
+  margin-right: 0.5rem;
+}
+
+.username {
+  font-weight: 700;
+}
+
+.time {
+  font-size: 0.75rem;
+  color: var(--faint-text);
+}
