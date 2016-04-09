@@ -10,7 +10,7 @@ export default class Message extends React.Component {
       user,
       time,
       text,
-    } = this.props;
+    } = this.props.message;
 
     return (
       <div className={styles.message}>
@@ -23,10 +23,12 @@ export default class Message extends React.Component {
 }
 
 Message.propTypes = {
-  user: PropTypes.shape({
-    emailHash: PropTypes.string,
-    username: PropTypes.string,
+  message: PropTypes.shape({
+    user: PropTypes.shape({
+      emailHash: PropTypes.string,
+      username: PropTypes.string,
+    }).isRequired,
+    time: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
   }).isRequired,
-  time: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
 };

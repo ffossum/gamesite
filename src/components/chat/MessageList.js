@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import Message from './Message';
+import InfoMessage from './InfoMessage';
 
 import styles from './chat.css';
 
@@ -32,9 +33,9 @@ export default class MessagesList extends React.Component {
         <div className={styles.messages} ref="chatMessages">
           {
             _.map(messages, msg => (
-              <Message key={`${msg.user.username}${msg.time}`}
-                user={msg.user} time={msg.time} text={msg.text}
-              />
+              msg.key
+              ? <InfoMessage key={`${msg.key}${msg.time}`} message={msg} />
+              : <Message key={`${msg.user.id}${msg.time}`} message={msg} />
             ))
           }
         </div>

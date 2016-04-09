@@ -13,11 +13,33 @@ export default function notStartedReducer(state = initialState, action) {
   switch (action.type) {
     case PLAYER_JOINED: {
       const { user } = action.payload;
-      return state.update('users', users => users.add(user.id));
+
+      const message = {
+        time: new Date().toJSON(),
+        key: PLAYER_JOINED,
+        args: [
+          { user: user.id },
+        ],
+      };
+
+      return state
+        .update('users', users => users.add(user.id))
+        .update('messages', messages => messages.push(Immutable.fromJS(message)));
     }
     case PLAYER_LEFT: {
       const { user } = action.payload;
-      return state.update('users', users => users.delete(user.id));
+
+      const message = {
+        time: new Date().toJSON(),
+        key: PLAYER_LEFT,
+        args: [
+          { user: user.id },
+        ],
+      };
+
+      return state
+        .update('users', users => users.delete(user.id))
+        .update('messages', messages => messages.push(Immutable.fromJS(message)));
     }
     case NEW_GAME_MESSAGE: {
       const { message } = action.payload;

@@ -107,10 +107,16 @@ class Wrapper extends React.Component {
       users.map(userId => userData.get(userId) || { id: userId })
     ));
     game = game.update('messages', messages => (
-      messages.map(message => {
-        const userId = message.get('user');
-        return message.set('user', userData.get(userId) || { id: userId });
-      })
+      messages.map(message => (
+        message
+          .update('user', userId => userData.get(userId) || { id: userId })
+          .update('args', args => (
+            args && args.map(arg => {
+              const userId = arg.get('user');
+              return userData.getIn([userId, 'username']);
+            })
+          ))
+      ))
     ));
 
     const props = {
