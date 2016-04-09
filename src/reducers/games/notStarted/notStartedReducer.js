@@ -40,17 +40,11 @@ export default function notStartedReducer(state = initialState, action) {
           : newGameState.set('messages', Immutable.fromJS([]));
       });
     }
-    case PLAYER_JOINED: {
-      const { game, user } = action.payload;
-      return state.updateIn([game.id, 'users'], users => users.add(user.id));
-    }
-    case PLAYER_LEFT: {
-      const { game, user } = action.payload;
-      return state.updateIn([game.id, 'users'], users => users.delete(user.id));
-    }
+    case PLAYER_JOINED:
+    case PLAYER_LEFT:
     case NEW_GAME_MESSAGE: {
-      const { gameId } = action.payload;
-      return state.update(gameId, game => gameReducer(game, action));
+      const { game } = action.payload;
+      return state.update(game.id, gameState => gameReducer(gameState, action));
     }
     default: return state;
   }

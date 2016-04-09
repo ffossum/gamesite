@@ -9,7 +9,7 @@ export function newGameMessage(gameId, message) {
     dispatch({
       type: NEW_GAME_MESSAGE,
       payload: {
-        gameId,
+        game: { id: gameId },
         message,
       },
     });
@@ -24,7 +24,7 @@ export function sendGameMessage(gameId, text) {
       dispatch({
         type: SEND_GAME_MESSAGE,
         payload: {
-          gameId,
+          game: { id: gameId },
           text,
         },
         meta: {

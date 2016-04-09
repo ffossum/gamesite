@@ -90,7 +90,7 @@ export default async function handleConnection(socket) {
 
   socket.on(SEND_GAME_MESSAGE, message => {
     if (socket.user) {
-      socket.broadcast.to(getGameChannelName(message.gameId)).emit(NEW_GAME_MESSAGE, {
+      socket.broadcast.to(getGameChannelName(message.game.Id)).emit(NEW_GAME_MESSAGE, {
         game: { id: message.gameId },
         message: {
           text: message.text,
