@@ -14,7 +14,11 @@ export default class InfoMessage extends React.Component {
 
     return (
       <div className={styles.message}>
-        {moment(time).format('dddd MMMM Do, hh:mm:ss')} {getText(key, ...args)}
+        <div>
+          <span className={styles.info}>{getText(key, ...args)}</span>
+          {' '}
+          <span className={styles.time}>{moment(time).format('hh:mm')}</span>
+        </div>
       </div>
     );
   }
