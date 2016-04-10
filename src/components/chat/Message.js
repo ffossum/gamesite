@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import Gravatar from 'components/common/Gravatar';
-import moment from 'moment';
-
+import getTimestamp from './getTimestamp';
 import styles from './message.css';
 
 export default class Message extends React.Component {
@@ -20,7 +19,7 @@ export default class Message extends React.Component {
         <div>
           <div>
             <span className={styles.username}>{user.username} </span>
-            <span className={styles.time}>{moment(time).format('hh:mm')}</span>
+            <span className={styles.time}>{getTimestamp(time)}</span>
           </div>
           <div>{text}</div>
         </div>

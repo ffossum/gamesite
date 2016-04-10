@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import moment from 'moment';
+import getTimestamp from './getTimestamp';
 import getText from './getText';
 
 import styles from './message.css';
@@ -17,7 +17,7 @@ export default class InfoMessage extends React.Component {
         <div>
           <span className={styles.info}>{getText(key, ...args)}</span>
           {' '}
-          <span className={styles.time}>{moment(time).format('hh:mm')}</span>
+          <span className={styles.time}>{getTimestamp(time)}</span>
         </div>
       </div>
     );
