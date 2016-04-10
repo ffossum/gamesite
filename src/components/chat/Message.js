@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import Gravatar from 'components/common/Gravatar';
 import getTimestamp from './getTimestamp';
 import styles from './message.css';
+import _ from 'lodash';
 
 export default class Message extends React.Component {
   render() {
@@ -21,7 +22,13 @@ export default class Message extends React.Component {
             <span className={styles.username}>{user.username} </span>
             <span className={styles.time}>{getTimestamp(time)}</span>
           </div>
-          <div>{text}</div>
+          <div>
+            {
+              _.isArray(text)
+                ? _.map(text, (line, index) => <div key={index}>{line}</div>)
+                : text
+            }
+          </div>
         </div>
       </div>
     );
@@ -35,6 +42,9 @@ Message.propTypes = {
       username: PropTypes.string,
     }).isRequired,
     time: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
+    text: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string),
+    ]).isRequired,
   }).isRequired,
 };
