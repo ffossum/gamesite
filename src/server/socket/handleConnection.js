@@ -59,7 +59,28 @@ async function joinGameChannels(socket, userId) {
   }
 }
 
+const lobbyRegex = /\/play/;
+const gameRegex = /\/game\/([^/]+)/;
+
+/*
+Join channels based on url.
+Useful when socket reconnects without page refresh.
+*/
+function joinUrlChannels(socket) {
+  const { referer } = socket.request.headers;
+  if (referer.match(lobbyRegex)) {
+    socket.join('lobby');
+  }
+  const game = referer.match(gameRegex);
+  if (game) {
+    const gameId = game[1];
+    socket.join(getGameChannelName(gameId));
+  }
+}
+
 export default async function handleConnection(socket) {
+  joinUrlChannels(socket);
+
   const token = getJwt(socket.request);
   try {
     const user = await getUserByJwt(token);
