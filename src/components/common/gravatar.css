@@ -9,6 +9,7 @@
 }
 
 .gravatar {
+  vertical-align: middle;
   border-radius: 15%;
 }
 
