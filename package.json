@@ -82,6 +82,7 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-webpack": "^1.7.0",
     "mocha": "^2.4.5",
+    "phantomjs-prebuilt": "^2.1.7",
     "postcss-cssnext": "^2.4.0",
     "postcss-loader": "^0.8.1",
     "redux-devtools": "^3.2.0",
