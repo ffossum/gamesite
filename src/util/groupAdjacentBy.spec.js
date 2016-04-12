@@ -4,7 +4,7 @@
 import groupAdjacentBy from './groupAdjacentBy';
 import { expect } from 'chai';
 
-describe.only('groupAdjacentBy', () => {
+describe('groupAdjacentBy', () => {
   it('groups equal adjacent items', () => {
     const before = ['a', 'a', 'b', 'c', 'b'];
     const after = groupAdjacentBy(before);
