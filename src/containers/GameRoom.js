@@ -96,7 +96,7 @@ class Wrapper extends React.Component {
   }
   render() {
     let { game } = this.props;
-    if (game === null) {
+    if (this.props.notFound) {
       return <div>Game not found</div>;
     } else if (game === undefined) {
       return <div>Fetching game data...</div>;
@@ -140,6 +140,7 @@ Wrapper.propTypes = {
   leaveRoom: PropTypes.func.isRequired,
   sendGameMessage: PropTypes.func.isRequired,
   getGameData: PropTypes.func.isRequired,
+  notFound: PropTypes.bool,
 };
 
 const actions = {
@@ -157,8 +158,8 @@ export default connect(
       user: state.getIn(['data', 'users', loggedInUser]),
       userData: state.getIn(['data', 'users']),
       gameId,
-      game: state.getIn(['games', 'notStarted', gameId]) ||
-        state.getIn(['games', 'notFound', gameId]),
+      game: state.getIn(['data', 'games', gameId]),
+      notFound: state.getIn(['games', 'notFound']).has(gameId),
     };
   },
   dispatch => bindActionCreators(actions, dispatch)

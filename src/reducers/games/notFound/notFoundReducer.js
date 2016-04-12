@@ -1,16 +1,15 @@
-import Immutable from 'immutable';
+import { Set } from 'immutable';
 import {
   GAME_NOT_FOUND,
 } from 'actions/gameRoom';
 
-const initialState = Immutable.fromJS({});
+const initialState = new Set();
 
 export default function notFoundReducer(state = initialState, action) {
   switch (action.type) {
     case GAME_NOT_FOUND: {
-      const { game } = action.payload;
-      return state.set(game.id, null);
+      return state.add(action.payload.game.id);
     }
-    default: return state;
+    default: return state.toSet();
   }
 }

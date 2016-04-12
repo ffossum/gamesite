@@ -54,7 +54,7 @@ Play.propTypes = {
   children: PropTypes.node,
   joinLobby: PropTypes.func.isRequired,
   leaveLobby: PropTypes.func.isRequired,
-  games: PropTypes.objectOf(
+  games: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       host: PropTypes.string.isRequired,
@@ -72,10 +72,10 @@ Play.propTypes = {
 
 class Wrapper extends React.Component {
   render() {
-    const { userData } = this.props;
+    const { userData, gameData } = this.props;
 
-    const games = this.props.games.map(game => (
-      game.update('users', users => (
+    const games = this.props.games.map(gameId => (
+      gameData.get(gameId).update('users', users => (
         users.map(userId => userData.get(userId) || { id: userId })
       ))
     ));
@@ -93,6 +93,7 @@ class Wrapper extends React.Component {
 Wrapper.propTypes = {
   user: PropTypes.object,
   userData: PropTypes.object.isRequired,
+  gameData: PropTypes.object.isRequired,
   games: PropTypes.object.isRequired,
 };
 
@@ -104,6 +105,7 @@ export default connect(
       loggedInUser,
       user: state.getIn(['data', 'users', loggedInUser]),
       userData: state.getIn(['data', 'users']),
+      gameData: state.getIn(['data', 'games']),
       games: state.getIn(['games', 'notStarted']),
     };
   },

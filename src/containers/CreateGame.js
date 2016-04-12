@@ -41,6 +41,10 @@ class Wrapper extends React.Component {
   }
 }
 
+Wrapper.propTypes = {
+  createGame: PropTypes.func.isRequired,
+};
+
 export default connect(
   () => ({}),
   dispatch => bindActionCreators(actions, dispatch)

@@ -1,9 +1,9 @@
-import Immutable from 'immutable';
+import { Set } from 'immutable';
 
-const initialState = Immutable.fromJS({});
+const initialState = new Set();
 
 export default function inProgressReducer(state = initialState, action) {
   switch (action.type) {
-    default: return state;
+    default: return state.toSet();
   }
 }
