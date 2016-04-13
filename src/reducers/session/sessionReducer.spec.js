@@ -6,7 +6,7 @@ import Immutable from 'immutable';
 import sessionReducer from './sessionReducer';
 import { logInSuccess, logOutRequest } from 'actions/login';
 
-describe('sessionReducer', () => {
+describe('session reducer', () => {
   it('initializes userId to null', () => {
     const initialState = sessionReducer(undefined, { type: 'INIT' });
 
