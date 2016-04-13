@@ -2,35 +2,9 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from 'actions/mainChat';
-import Chat from 'components/chat/Chat';
+import MainPage from 'components/MainPage';
 
-import styles from './mainPage.css';
-
-class MainPage extends React.Component {
-  render() {
-    const { messages, sessionUserId } = this.props;
-    return (
-      <div>
-        <h1>Main page</h1>
-        <div className={styles.chat}>
-          <Chat
-            sendMessage={this.props.sendMessage}
-            messages={messages}
-            readOnly={!sessionUserId}
-          />
-        </div>
-      </div>
-    );
-  }
-}
-
-MainPage.propTypes = {
-  messages: PropTypes.arrayOf(PropTypes.object).isRequired,
-  sendMessage: PropTypes.func.isRequired,
-  sessionUserId: PropTypes.string,
-};
-
-class Wrapper extends React.Component {
+class MainPageContainer extends React.Component {
   render() {
     const { userData } = this.props;
     let messages = this.props.mainChat.get('messages');
@@ -48,7 +22,7 @@ class Wrapper extends React.Component {
   }
 }
 
-Wrapper.propTypes = {
+MainPageContainer.propTypes = {
   mainChat: PropTypes.object.isRequired,
   userData: PropTypes.object.isRequired,
 };
@@ -60,4 +34,4 @@ export default connect(
     userData: state.getIn(['data', 'users']),
   }),
   dispatch => bindActionCreators(actions, dispatch)
-)(Wrapper);
+)(MainPageContainer);
