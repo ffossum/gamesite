@@ -93,7 +93,7 @@ export function playerJoined(gameId, userId) {
 
 export function joinGame(gameId) {
   return (dispatch, getState) => {
-    const userId = getState().get('loggedInUser');
+    const userId = getState().getIn(['session', 'userId']);
     if (!userId) {
       return;
     }
@@ -128,7 +128,7 @@ export function playerLeft(gameId, userId) {
 
 export function leaveGame(gameId) {
   return (dispatch, getState) => {
-    const userId = getState().get('loggedInUser');
+    const userId = getState().getIn(['session', 'userId']);
     if (!userId) {
       return;
     }

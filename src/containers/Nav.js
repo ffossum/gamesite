@@ -62,11 +62,10 @@ Wrapper.propTypes = {
 
 export default connect(
   state => {
-    const loggedInUser = state.get('loggedInUser');
+    const sessionUserId = state.getIn(['session', 'userId']);
 
     return {
-      loggedInUser,
-      user: state.getIn(['data', 'users', loggedInUser]),
+      user: state.getIn(['data', 'users', sessionUserId]),
     };
   },
   dispatch => bindActionCreators(actions, dispatch)

@@ -8,7 +8,7 @@ import styles from './mainPage.css';
 
 class MainPage extends React.Component {
   render() {
-    const { messages, loggedInUser } = this.props;
+    const { messages, sessionUserId } = this.props;
     return (
       <div>
         <h1>Main page</h1>
@@ -16,7 +16,7 @@ class MainPage extends React.Component {
           <Chat
             sendMessage={this.props.sendMessage}
             messages={messages}
-            readOnly={!loggedInUser}
+            readOnly={!sessionUserId}
           />
         </div>
       </div>
@@ -27,7 +27,7 @@ class MainPage extends React.Component {
 MainPage.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   sendMessage: PropTypes.func.isRequired,
-  loggedInUser: PropTypes.string,
+  sessionUserId: PropTypes.string,
 };
 
 class Wrapper extends React.Component {
@@ -56,7 +56,7 @@ Wrapper.propTypes = {
 export default connect(
   state => ({
     mainChat: state.get('mainChat'),
-    loggedInUser: state.get('loggedInUser'),
+    sessionUserId: state.getIn(['session', 'userId']),
     userData: state.getIn(['data', 'users']),
   }),
   dispatch => bindActionCreators(actions, dispatch)

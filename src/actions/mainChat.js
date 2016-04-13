@@ -16,8 +16,8 @@ export function newMessage(message) {
 export function sendMessage(text) {
   return (dispatch, getState) => {
     const state = getState();
-    const loggedInUser = state.get('loggedInUser');
-    if (loggedInUser) {
+    const userId = state.getIn(['session', 'userId']);
+    if (userId) {
       dispatch({
         type: SEND_MESSAGE,
         payload: {
@@ -28,7 +28,7 @@ export function sendMessage(text) {
         },
       });
 
-      const user = state.getIn(['data', 'users', loggedInUser]);
+      const user = state.getIn(['data', 'users', userId]);
       const message = {
         text,
         time: new Date().toJSON(),

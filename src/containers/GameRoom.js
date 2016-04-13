@@ -150,12 +150,11 @@ const actions = {
 
 export default connect(
   (state, ownProps) => {
-    const loggedInUser = state.get('loggedInUser');
+    const sessionUserId = state.getIn(['session', 'userId']);
     const gameId = ownProps.params.id;
 
     return {
-      loggedInUser,
-      user: state.getIn(['data', 'users', loggedInUser]),
+      user: state.getIn(['data', 'users', sessionUserId]),
       userData: state.getIn(['data', 'users']),
       gameId,
       game: state.getIn(['data', 'games', gameId]),
