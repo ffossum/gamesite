@@ -7,7 +7,7 @@ import LoginForm from 'containers/forms/LoginForm';
 import RegisterUserForm from 'containers/forms/RegisterUserForm';
 import Nav from 'containers/Nav';
 import CreateGame from 'containers/CreateGame';
-import GameRoom from 'containers/GameRoom';
+import GameRoom from 'containers/GameRoomContainer';
 
 import styles from 'client/client.css';
 
