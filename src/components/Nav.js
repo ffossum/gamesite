@@ -38,6 +38,9 @@ export default class Nav extends React.Component {
 }
 
 Nav.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    emailHash: PropTypes.string.isRequired,
+  }),
   logOut: PropTypes.func.isRequired,
 };
