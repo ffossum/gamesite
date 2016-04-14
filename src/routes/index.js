@@ -5,7 +5,7 @@ import Play from 'containers/Play';
 import About from 'components/About';
 import LoginForm from 'containers/forms/LoginForm';
 import RegisterUserForm from 'containers/forms/RegisterUserForm';
-import Nav from 'containers/Nav';
+import Nav from 'containers/NavContainer';
 import CreateGame from 'containers/CreateGame';
 import GameRoom from 'containers/GameRoomContainer';
 
