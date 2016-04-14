@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { IndexRoute, Route } from 'react-router';
 import MainPage from 'containers/MainPageContainer';
-import Play from 'containers/Play';
+import Play from 'containers/PlayContainer';
 import About from 'components/About';
 import LoginForm from 'containers/forms/LoginForm';
 import RegisterUserForm from 'containers/forms/RegisterUserForm';
