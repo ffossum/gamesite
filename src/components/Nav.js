@@ -1,35 +1,56 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import Dropdown from 'components/common/dropdown/Dropdown';
 import Gravatar from 'components/common/Gravatar';
+import _ from 'lodash';
 
 import styles from './nav.css';
 
 export default class Nav extends React.Component {
+  constructor() {
+    super();
+    this.handleLogOut = this.handleLogOut.bind(this);
+  }
+  handleLogOut(e) {
+    e.preventDefault();
+    this.props.logOut();
+  }
   render() {
+    const { user, games } = this.props;
+
     return (
       <nav role="navigation" className={styles.navbar}>
-        <ul className={styles['nav-item']}>
-          <li><Link to="/">Main</Link></li>
-          <li><Link to="/play">Play</Link></li>
-          <li><Link to="/about">About</Link></li>
+        <ul className={styles.navgroup}>
+          <li><Link className={styles.navlink} to="/">Main</Link></li>
+          <li><Link className={styles.navlink} to="/play">Play</Link></li>
+          <li><Link className={styles.navlink} to="/about">About</Link></li>
         </ul>
 
         {
-          this.props.user
+          user
           ?
-          <ul>
+          <ul className={styles.navgroup}>
+            {
+              games && !_.isEmpty(games) &&
+                <li>
+                  <Dropdown title="Games" nav>
+                    {
+                      _.map(games, game => (
+                        <Link key={game.id} to={`/game/${game.id}`}>{game.id}</Link>
+                      ))
+                    }
+                  </Dropdown>
+                </li>
+            }
             <li className={styles.user}>
-              <Gravatar inline emailHash={this.props.user.emailHash} />
-              {this.props.user.username}
+              <Gravatar inline emailHash={user.emailHash} /> {user.username}
             </li>
-            <li className={styles['nav-item']}>
-              <a href="#" onClick={this.props.logOut}>Log out</a>
-            </li>
+            <li><a className={styles.navlink} href="" onClick={this.handleLogOut}>Log out</a></li>
           </ul>
           :
-          <ul className={styles['nav-item']}>
-            <li><Link to="/login">Log in</Link></li>
-            <li><Link to="/register">Register</Link></li>
+          <ul className={styles.navgroup}>
+            <li><Link className={styles.navlink} to="/login">Log in</Link></li>
+            <li><Link className={styles.navlink} to="/register">Register</Link></li>
           </ul>
         }
       </nav>
@@ -42,5 +63,6 @@ Nav.propTypes = {
     username: PropTypes.string.isRequired,
     emailHash: PropTypes.string.isRequired,
   }),
+  games: PropTypes.object,
   logOut: PropTypes.func.isRequired,
 };

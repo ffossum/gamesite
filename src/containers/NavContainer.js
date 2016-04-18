@@ -9,6 +9,7 @@ class NavContainer extends React.Component {
     const props = {
       ...this.props,
       user: this.props.user && this.props.user.toJS(),
+      games: this.props.games && this.props.games.toJS(),
     };
 
     return <Nav {...props} />;
@@ -17,14 +18,19 @@ class NavContainer extends React.Component {
 
 NavContainer.propTypes = {
   user: PropTypes.object,
+  games: PropTypes.object,
 };
 
 export default connect(
   state => {
     const sessionUserId = state.getIn(['session', 'userId']);
+    const games = state.getIn(['data', 'games']).filter(game => (
+      game.get('users').has(sessionUserId)
+    ));
 
     return {
       user: state.getIn(['data', 'users', sessionUserId]),
+      games,
     };
   },
   dispatch => bindActionCreators(actions, dispatch)

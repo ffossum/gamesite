@@ -1,0 +1,11 @@
+.arrow {
+  display: inline-block;
+  vertical-align: middle;
+
+  width: 0;
+  height: 0;
+  border-left: 0.25em solid transparent;
+  border-right: 0.25em solid transparent;
+
+  border-top: 0.433em solid;
+}

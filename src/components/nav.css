@@ -5,26 +5,24 @@
 
   display: flex;
   justify-content: space-between;
-
-  & ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
 }
 
-.nav-item {
-  & a {
-    display: block;
-    text-align: center;
-    padding: 0.75rem;
-    text-decoration: none;
-    color: white;
+.navgroup {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-    &:hover {
-      background-color: #111;
-    }
+.navlink {
+  display: block;
+  text-align: center;
+  padding: 0.75rem;
+  text-decoration: none;
+  color: white;
+
+  &:hover {
+    background-color: #111;
   }
 }
 
