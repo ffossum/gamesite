@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from 'actions/login';
-import Nav from 'components/Nav';
+import Nav from 'components/nav/Nav';
 
 class NavContainer extends React.Component {
   render() {

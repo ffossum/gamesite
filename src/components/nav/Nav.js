@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import Dropdown from 'components/common/dropdown/Dropdown';
+import GamesDropdown from './GamesDropdown';
 import Gravatar from 'components/common/Gravatar';
 import _ from 'lodash';
 
@@ -32,15 +32,7 @@ export default class Nav extends React.Component {
           <ul className={styles.navgroup}>
             {
               games && !_.isEmpty(games) &&
-                <li>
-                  <Dropdown title="Games" nav>
-                    {
-                      _.map(games, game => (
-                        <Link key={game.id} to={`/game/${game.id}`}>{game.id}</Link>
-                      ))
-                    }
-                  </Dropdown>
-                </li>
+                <li><GamesDropdown games={games} /></li>
             }
             <li className={styles.user}>
               <Gravatar inline emailHash={user.emailHash} /> {user.username}
