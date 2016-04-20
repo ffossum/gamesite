@@ -48,15 +48,10 @@ function getGameChannelName(gameId) {
   return `game:${gameId}`;
 }
 
-async function joinGameChannels(socket, userId) {
-  try {
-    const gameIds = await getUserGames(userId);
-    _.forEach(gameIds, gameId => {
-      socket.join(getGameChannelName(gameId));
-    });
-  } catch (e) {
-    // do nothing
-  }
+function joinGameChannels(socket, gameIds) {
+  _.forEach(gameIds, gameId => {
+    socket.join(getGameChannelName(gameId));
+  });
 }
 
 const lobbyRegex = /\/play/;
@@ -89,11 +84,13 @@ export default async function handleConnection(socket) {
     socket.join('users');
     socket.join(getUserChannelName(user.id));
 
-    joinGameChannels(socket, user.id);
+    const userGames = await getUserGames(user.id);
+    joinGameChannels(socket, _.keys(userGames));
 
     socket.emit('news', { hello: user.username });
     socket.emit(LOG_IN_SUCCESS, {
       user: getPublicUserData(socket.user),
+      games: userGames,
     });
   } catch (e) {
     socket.emit('news', { hello: 'guest' });

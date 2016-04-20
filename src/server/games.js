@@ -45,6 +45,14 @@ function leave(gameId, userId) {
 }
 
 export async function getUserGames(userId) {
+  const containsUser = game => _.includes(game.users, userId);
+  return {
+    ..._.pickBy(notStarted, containsUser),
+    ..._.pickBy(inProgress, containsUser),
+  };
+}
+
+export async function getUserGameIds(userId) {
   const user = await getUserById(userId);
   return [...user.games];
 }

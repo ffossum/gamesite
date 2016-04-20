@@ -30,11 +30,12 @@ function logInRequest() {
   };
 }
 
-export function logInSuccess(user) {
+export function logInSuccess(user, games = {}) {
   return {
     type: LOG_IN_SUCCESS,
     payload: {
       user,
+      games,
     },
   };
 }

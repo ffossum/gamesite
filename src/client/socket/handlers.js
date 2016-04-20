@@ -21,7 +21,7 @@ export function createHandlers(store) {
       console.log(data);
     },
     [NEW_MESSAGE]: message => store.dispatch(newMessage(message)),
-    [LOG_IN_SUCCESS]: data => store.dispatch(logInSuccess(data.user)),
+    [LOG_IN_SUCCESS]: data => store.dispatch(logInSuccess(data.user, data.games)),
     [GAME_CREATED]: data => store.dispatch(gameCreated(data.game)),
     [REFRESH_LOBBY]: data => store.dispatch(refreshLobby(data.games)),
     [PLAYER_JOINED]: ({ game, user }) => store.dispatch(playerJoined(game.id, user.id)),

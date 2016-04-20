@@ -1,5 +1,7 @@
 import Immutable from 'immutable';
-
+import {
+  LOG_IN_SUCCESS,
+} from 'actions/login';
 import {
   CREATE_GAME_SUCCESS,
   GAME_CREATED,
@@ -32,6 +34,7 @@ export default function usersReducer(state = initialState, action) {
       return state.set(game.id, gameState);
     }
 
+    case LOG_IN_SUCCESS:
     case REFRESH_LOBBY: {
       let newGames = Immutable.fromJS(action.payload.games)
         .map(newGameState => newGameState.update('users', users => users.toSet()));
