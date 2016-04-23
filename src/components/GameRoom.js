@@ -10,10 +10,10 @@ export default class GameRoom extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleJoinClicked = this.props.joinGame.bind(this, props.game.id);
-    this.handleLeaveClicked = this.props.leaveGame.bind(this, props.game.id);
     this.isInGame = this.isInGame.bind(this);
-    this.sendGameMessage = props.sendGameMessage.bind(this, props.game.id);
+    this.handleJoinClicked = (...args) => this.props.joinGame(this.props.game.id, ...args);
+    this.handleLeaveClicked = (...args) => this.props.leaveGame(this.props.game.id, ...args);
+    this.sendGameMessage = (...args) => this.props.sendGameMessage(this.props.game.id, ...args);
   }
   componentDidMount() {
     const inGame = this.isInGame();
