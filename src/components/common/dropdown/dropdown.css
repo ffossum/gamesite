@@ -8,7 +8,6 @@
   position: absolute;
   top: 100%;
 
-  color: black;
   border-left: var(--border);
   border-right: var(--border);
   border-bottom: var(--border);
