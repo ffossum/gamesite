@@ -1,7 +1,7 @@
 /* eslint no-param-reassign: 0 */
 
 import { verifyJwt, signJwt } from '../jwt';
-import { getUserById } from '../db';
+import { getUserById } from '../db/users';
 
 const COOKIE_NAME = 'jwt';
 const EXPIRATION_AGE = 604800000; // 7 days

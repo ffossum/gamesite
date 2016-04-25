@@ -25,10 +25,7 @@ import {
   LEAVE_ROOM,
   GET_GAME_DATA,
 } from 'actions/gameRoom';
-import games from '../games';
-import {
-  getUserGames,
-} from '../games';
+import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
 
 function getJwt(request) {
@@ -182,14 +179,14 @@ export default async function handleConnection(socket) {
     }
   });
 
-  socket.on(GET_GAME_DATA, (gameId, fn) => {
-    const game = games.get(gameId);
+  socket.on(GET_GAME_DATA, async (gameId, fn) => {
+    const game = await games.get(gameId);
     fn(game);
   });
 
-  socket.on(ENTER_ROOM, (gameId, fn) => {
+  socket.on(ENTER_ROOM, async (gameId, fn) => {
     socket.join(getGameChannelName(gameId));
-    const game = games.get(gameId);
+    const game = await games.get(gameId);
     fn(game);
   });
 
@@ -197,10 +194,10 @@ export default async function handleConnection(socket) {
     socket.leave(getGameChannelName(gameId));
   });
 
-  socket.on(JOIN_LOBBY, () => {
+  socket.on(JOIN_LOBBY, async () => {
     socket.join('lobby');
     socket.emit(REFRESH_LOBBY, {
-      games: games.getJoinable(),
+      games: await games.getJoinable(),
     });
   });
 

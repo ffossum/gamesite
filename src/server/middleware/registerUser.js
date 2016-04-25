@@ -1,6 +1,6 @@
 /* eslint no-param-reassign: 0 */
 
-import { addUser, isUsernameAvailable, isEmailAvailable } from '../db';
+import { addUser, isUsernameAvailable, isEmailAvailable } from '../db/users';
 import validator from 'validator';
 import _ from 'lodash';
 import { errors as registerUserErrors } from 'actions/registerUser';

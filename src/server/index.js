@@ -27,6 +27,9 @@ import {
 } from './middleware/users';
 import http from 'http';
 import socket from './socket/';
+import initDb from './db/init';
+
+initDb();
 
 const app = new Koa();
 const router = new KoaRouter();

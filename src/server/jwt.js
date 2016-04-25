@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { getUserById } from './db';
+import { getUserById } from './db/users';
 
 const secret = 'secret'; // TODO read from config
 

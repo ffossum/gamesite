@@ -1,7 +1,7 @@
 /* eslint no-param-reassign: 0 */
 
 import getPublicUserData from 'util/getPublicUserData';
-import { getUsersByIds } from '../db';
+import { getUsersByIds } from '../db/users';
 import _ from 'lodash';
 
 export async function getUsers(ctx) {

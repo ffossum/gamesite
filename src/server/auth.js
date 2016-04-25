@@ -1,6 +1,6 @@
 import passport from 'koa-passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { getUserById, getUserByName } from './db';
+import { getUserById, getUserByName } from './db/users';
 import { comparePassword } from './crypto';
 
 passport.serializeUser((user, done) => {
