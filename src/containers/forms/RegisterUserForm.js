@@ -5,6 +5,8 @@ import actions, { errors as errorTypes } from 'actions/registerUser';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 
+import styles from './form.css';
+
 class RegisterUserForm extends React.Component {
   constructor(props) {
     super(props);
@@ -62,64 +64,69 @@ class RegisterUserForm extends React.Component {
     const { errors, pending } = this.props.formState;
     const { email, username, password, repeatPassword } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className={styles.form}>
 
-        <TextInput
-          label="Email"
-          type="email"
-          required
-          disabled={pending}
-          value={email}
-          onChange={this.handleEmailChange}
-          onBlur={this.handleEmailBlur}
-          autoFocus
-        />
+        <div className={styles.formInput}>
+          <TextInput
+            label="Email"
+            type="email"
+            required
+            disabled={pending}
+            value={email}
+            onChange={this.handleEmailChange}
+            onBlur={this.handleEmailBlur}
+            autoFocus
+          />
 
-        {errors.email === errorTypes.EMAIL_TAKEN &&
-            <span>A user with this email already exists.</span>}
+          {errors.email === errorTypes.EMAIL_TAKEN &&
+              <span>A user with this email already exists.</span>}
 
-        {errors.email === errorTypes.INVALID_EMAIL &&
-            <span>Invalid email</span>}
-
-        <TextInput
-          label="Username"
-          required
-          disabled={pending}
-          value={username}
-          onChange={this.handleUsernameChange}
-          onBlur={this.handleUsernameBlur}
-        />
-
-        {errors.username === errorTypes.USERNAME_TAKEN && <span>Username is already taken.</span>}
-
-        <TextInput
-          label="Password"
-          type="password"
-          required
-          disabled={pending}
-          value={password}
-          onChange={this.handlePasswordChange}
-          onBlur={this.handlePasswordBlur}
-        />
-
-        <TextInput
-          label="Repeat password"
-          type="password"
-          required
-          disabled={pending}
-          value={repeatPassword}
-          onChange={this.handleRepeatPasswordChange}
-          onBlur={this.handleRepeatPasswordBlur}
-        />
-
-        {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH &&
-          <span>Passwords do not match.</span>}
-
-        <div>
-          <Button btnStyle="primary" disabled={pending}>
-            Register
-          </Button>
+          {errors.email === errorTypes.INVALID_EMAIL &&
+              <span>Invalid email</span>}
         </div>
+
+        <div className={styles.formInput}>
+          <TextInput
+            label="Username"
+            required
+            disabled={pending}
+            value={username}
+            onChange={this.handleUsernameChange}
+            onBlur={this.handleUsernameBlur}
+          />
+
+          {errors.username === errorTypes.USERNAME_TAKEN && <span>Username is already taken.</span>}
+        </div>
+
+        <div className={styles.formInput}>
+          <TextInput
+            label="Password"
+            type="password"
+            required
+            disabled={pending}
+            value={password}
+            onChange={this.handlePasswordChange}
+            onBlur={this.handlePasswordBlur}
+          />
+        </div>
+        <div className={styles.formInput}>
+          <TextInput
+            label="Repeat password"
+            type="password"
+            required
+            disabled={pending}
+            value={repeatPassword}
+            onChange={this.handleRepeatPasswordChange}
+            onBlur={this.handleRepeatPasswordBlur}
+          />
+
+          {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH &&
+            <span>Passwords do not match.</span>}
+        </div>
+
+        <Button btnStyle="primary" disabled={pending}>
+          Register
+        </Button>
       </form>
     );
   }

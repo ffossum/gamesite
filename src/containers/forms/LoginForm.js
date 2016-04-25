@@ -5,6 +5,8 @@ import actions from 'actions/login';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 
+import styles from './form.css';
+
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -54,32 +56,32 @@ class LoginForm extends React.Component {
     const { error, pending } = this.props.formState;
     const { username, password } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
-
-        <TextInput
-          label="Username"
-          required
-          value={username}
-          onChange={this.handleUsernameChange}
-          onBlur={this.handleUsernameBlur}
-          autoFocus
-        />
-
-        <TextInput
-          label="Password"
-          type="password"
-          required
-          value={password}
-          onChange={this.handlePasswordChange}
-          onBlur={this.handlePasswordBlur}
-        />
-
-        {error && <div>Incorrect username and/or password</div>}
-        <div>
-          <Button btnStyle="primary" disabled={pending}>
-            Log in
-          </Button>
+      <form onSubmit={this.handleSubmit} className={styles.form}>
+        <div className={styles.formInput}>
+          <TextInput
+            label="Username"
+            required
+            value={username}
+            onChange={this.handleUsernameChange}
+            onBlur={this.handleUsernameBlur}
+            autoFocus
+          />
         </div>
+        <div className={styles.formInput}>
+          <TextInput
+            label="Password"
+            type="password"
+            required
+            value={password}
+            onChange={this.handlePasswordChange}
+            onBlur={this.handlePasswordBlur}
+          />
+          {error && <div>Incorrect username and/or password</div>}
+        </div>
+
+        <Button btnStyle="primary" disabled={pending}>
+          Log in
+        </Button>
       </form>
     );
   }
