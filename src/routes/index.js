@@ -16,9 +16,9 @@ class Root extends React.Component {
     return (
       <div>
         <Nav />
-        <div className={styles.content}>
+        <main className={styles.content}>
           {this.props.children}
-        </div>
+        </main>
       </div>
     );
   }

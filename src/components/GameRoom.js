@@ -39,7 +39,7 @@ export default class GameRoom extends React.Component {
 
     const inGame = this.isInGame();
     return (
-      <div>
+      <div className={styles.gameRoom}>
         <h1>Game room</h1>
         {!inGame && user && <Button onClick={this.handleJoinClicked}>Join game</Button>}
         {

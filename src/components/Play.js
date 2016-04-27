@@ -17,7 +17,7 @@ export default class Play extends React.Component {
     const gameCount = _.size(games);
 
     return (
-    <div>
+    <div className={styles.play}>
       <h1>Play</h1>
       <section>
         { this.props.children || <Link to="/play/create">Create game</Link> }

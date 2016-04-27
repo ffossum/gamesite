@@ -7,6 +7,7 @@ import TextInput from 'components/common/TextInput';
 import actions from 'actions/gamesList';
 
 import styles from './createGame.css';
+import formStyles from './forms/form.css';
 
 export default class CreateGame extends React.Component {
   constructor() {
@@ -21,9 +22,11 @@ export default class CreateGame extends React.Component {
     return (
       <div className={styles.container}>
         <form onSubmit={this.handleSubmit}>
-          <TextInput
-            label="Comment"
-          />
+          <div className={formStyles.formInput}>
+            <TextInput
+              label="Comment"
+            />
+          </div>
           <Button btnStyle="primary">Create game</Button> <Link to="/play">Cancel</Link>
         </form>
       </div>

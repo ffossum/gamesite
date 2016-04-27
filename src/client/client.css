@@ -4,13 +4,32 @@
 html {
   box-sizing: border-box;
   font-family: 'Source Sans Pro', sans-serif;
+  height: 100%;
 }
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
 body {
+  height: 100%;
   margin: 0;
+}
+
+:global(#root) {
+  height: 100%;
+  & > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.content {
+  padding: 2rem;
+  flex: 1 1 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -21,8 +40,4 @@ h1, h2, h3, h4, h5, h6 {
 a {
   text-decoration: none;
   color: var(--link-color);
-}
-
-.content {
-  padding: 2rem;
 }

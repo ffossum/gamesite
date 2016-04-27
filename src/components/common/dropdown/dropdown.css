@@ -5,6 +5,7 @@
 }
 
 .expanded {
+  z-index: 4000;
   position: absolute;
   top: 100%;
 

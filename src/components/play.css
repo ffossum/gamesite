@@ -1,5 +1,10 @@
 @import "../client/variables.css";
 
+.play {
+  max-width: 50rem;
+  flex: 1 1 auto;
+}
+
 .availableGames {
   list-style: none;
   padding: 0;

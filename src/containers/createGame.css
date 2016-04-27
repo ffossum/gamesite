@@ -1,4 +1,5 @@
 @import "../client/variables.css";
 
 .container {
+  max-width: 30rem;
 }

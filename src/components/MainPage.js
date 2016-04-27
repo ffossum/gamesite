@@ -7,7 +7,7 @@ export default class MainPage extends React.Component {
   render() {
     const { messages, sessionUserId } = this.props;
     return (
-      <div>
+      <div className={styles.main}>
         <h1>Main page</h1>
         <div className={styles.chat}>
           <Chat
