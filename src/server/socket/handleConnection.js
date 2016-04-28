@@ -24,6 +24,7 @@ import {
   ENTER_ROOM,
   LEAVE_ROOM,
   GET_GAME_DATA,
+  START_GAME,
 } from 'actions/gameRoom';
 import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
@@ -174,6 +175,17 @@ export default async function handleConnection(socket) {
       }
 
       fn(!!left);
+    } else {
+      fn(false);
+    }
+  });
+
+  socket.on(START_GAME, async (data, fn) => {
+    if (socket.user) {
+      const gameId = data.game.id;
+      const started = await games.start(gameId, socket.user.id);
+
+      fn(!!started);
     } else {
       fn(false);
     }

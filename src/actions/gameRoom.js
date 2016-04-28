@@ -11,6 +11,9 @@ export const REFRESH_GAME = 'gameRoom/REFRESH';
 export const GAME_NOT_FOUND = 'gameRoom/NOT_FOUND';
 export const GET_GAME_DATA = 'gameRoom/GET_DATA';
 
+export const START_GAME = 'gameRoom/START_GAME';
+export const GAME_STARTED = 'gameRoom/GAME_STARTED';
+
 export function refreshGame(game) {
   return dispatch => {
     dispatch(getUserData(...game.users));
@@ -151,6 +154,29 @@ export function leaveGame(gameId) {
   };
 }
 
+function gameStarted(gameId) {
+  return {
+    type: GAME_STARTED,
+    payload: { game: { id: gameId } },
+  };
+}
+
+export function startGame(gameId) {
+  return dispatch => {
+    dispatch({
+      type: START_GAME,
+      payload: { game: { id: gameId } },
+      meta: {
+        socket: started => {
+          if (started) {
+            dispatch(gameStarted(gameId));
+          }
+        },
+      },
+    });
+  };
+}
+
 export default {
   joinGame,
   playerJoined,
@@ -159,4 +185,5 @@ export default {
   enterRoom,
   leaveRoom,
   getGameData,
+  startGame,
 };

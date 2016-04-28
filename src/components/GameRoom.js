@@ -3,6 +3,7 @@ import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
 import Button from 'components/common/Button';
 import _ from 'lodash';
+import { NOT_STARTED } from 'constants/gameStatus';
 
 import styles from './gameRoom.css';
 
@@ -13,6 +14,7 @@ export default class GameRoom extends React.Component {
     this.isInGame = this.isInGame.bind(this);
     this.handleJoinClicked = (...args) => this.props.joinGame(this.props.game.id, ...args);
     this.handleLeaveClicked = (...args) => this.props.leaveGame(this.props.game.id, ...args);
+    this.handleStartClicked = (...args) => this.props.startGame(this.props.game.id, ...args);
     this.sendGameMessage = (...args) => this.props.sendGameMessage(this.props.game.id, ...args);
   }
   componentDidMount() {
@@ -41,11 +43,19 @@ export default class GameRoom extends React.Component {
     return (
       <div className={styles.gameRoom}>
         <h1>Game room</h1>
-        {!inGame && user && <Button onClick={this.handleJoinClicked}>Join game</Button>}
-        {
-          inGame && game.host !== user.id &&
-            <Button onClick={this.handleLeaveClicked}>Leave game</Button>
-        }
+        <div>
+          {!inGame && user &&
+            <Button onClick={this.handleJoinClicked}>Join game</Button>}
+
+          {inGame && game.host !== user.id && game.status === NOT_STARTED &&
+              <Button onClick={this.handleLeaveClicked}>Leave game</Button>}
+
+          {inGame && game.host === user.id && game.status === NOT_STARTED &&
+              <Button
+                btnStyle="primary"
+                onClick={this.handleStartClicked}
+              >Start game</Button>}
+        </div>
         <ul className={styles.playerList}>
           {
             _.map(users, gameUser => (
@@ -80,5 +90,6 @@ GameRoom.propTypes = {
   leaveGame: PropTypes.func.isRequired,
   enterRoom: PropTypes.func.isRequired,
   leaveRoom: PropTypes.func.isRequired,
+  startGame: PropTypes.func.isRequired,
   sendGameMessage: PropTypes.func.isRequired,
 };

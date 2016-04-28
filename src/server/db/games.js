@@ -3,6 +3,7 @@ import _ from 'lodash';
 import db from './index';
 import {
   NOT_STARTED,
+  IN_PROGRESS,
 } from 'constants/gameStatus';
 
 function create(options) {
@@ -49,6 +50,24 @@ async function leave(gameId, userId) {
   }
 }
 
+async function start(gameId, userId) {
+  try {
+    const result = await db.result(`
+      UPDATE games
+      SET status = $(IN_PROGRESS)
+      WHERE id=$(gameId) AND host=$(userId)
+    `, {
+      IN_PROGRESS,
+      gameId,
+      userId,
+    });
+
+    return !!result.rowCount;
+  } catch (e) {
+    return false;
+  }
+}
+
 export async function getUserGames(userId) {
   const games = await db.any(`
     SELECT games.id, games.host, array_agg(users_games.user_id) AS users, status
@@ -86,6 +105,7 @@ export default {
   create,
   join,
   leave,
+  start,
   get,
   getNotStarted,
   getUserGames,
