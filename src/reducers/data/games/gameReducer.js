@@ -9,7 +9,7 @@ import {
 
 const initialState = Immutable.fromJS({});
 
-export default function notStartedReducer(state = initialState, action) {
+export default function gameReducer(state = initialState, action) {
   switch (action.type) {
     case PLAYER_JOINED: {
       const { user } = action.payload;

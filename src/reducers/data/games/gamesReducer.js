@@ -20,7 +20,7 @@ import gameReducer from './gameReducer';
 
 const initialState = Immutable.fromJS({});
 
-export default function usersReducer(state = initialState, action) {
+export default function gamesReducer(state = initialState, action) {
   switch (action.type) {
     case CREATE_GAME_SUCCESS:
     case GAME_CREATED:
