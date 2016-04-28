@@ -1,6 +1,9 @@
 import shortid from 'shortid';
 import _ from 'lodash';
 import db from './index';
+import {
+  NOT_STARTED,
+} from 'constants/gameStatus';
 
 function create(options) {
   const { host } = options;
@@ -48,7 +51,7 @@ async function leave(gameId, userId) {
 
 export async function getUserGames(userId) {
   const games = await db.any(`
-    SELECT games.id, games.host, array_agg(users_games.user_id) AS users
+    SELECT games.id, games.host, array_agg(users_games.user_id) AS users, status
     FROM games, users_games
     WHERE games.id=users_games.game_id AND users_games.user_id=$1
     GROUP BY games.id`,
@@ -60,7 +63,7 @@ export async function getUserGames(userId) {
 
 async function get(gameId) {
   return await db.one(`
-    SELECT games.id, games.host, array_agg(users_games.user_id) AS users
+    SELECT games.id, games.host, array_agg(users_games.user_id) AS users, status
     FROM games, users_games
     WHERE games.id=users_games.game_id AND games.id=$1
     GROUP BY games.id`,
@@ -68,12 +71,12 @@ async function get(gameId) {
   );
 }
 
-async function getJoinable() {
+async function getNotStarted() {
   const games = await db.any(`
-    SELECT games.id, games.host, array_agg(users_games.user_id) AS users
+    SELECT games.id, games.host, array_agg(users_games.user_id) AS users, status
     FROM games, users_games
-    WHERE games.id=users_games.game_id
-    GROUP BY games.id`
+    WHERE games.id=users_games.game_id AND status=$1
+    GROUP BY games.id`, NOT_STARTED
   );
 
   return _.keyBy(games, game => game.id);
@@ -84,6 +87,6 @@ export default {
   join,
   leave,
   get,
-  getJoinable,
+  getNotStarted,
   getUserGames,
 };

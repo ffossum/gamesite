@@ -1,3 +1,4 @@
+import * as gameStatuses from 'constants/gameStatus';
 import _ from 'lodash';
 import promise from 'bluebird';
 const options = {
@@ -22,11 +23,21 @@ async function createTables(db) {
     password TEXT NOT NULL
   )`);
 
+  try {
+    const statuses = _.map(gameStatuses, status => `'${status}'`).join(', ');
+    await db.query(`CREATE TYPE game_status AS ENUM (${statuses})`);
+  } catch (e) {
+    // Type already existed.
+  }
+
   await db.query(`CREATE TABLE IF NOT EXISTS games (
     id TEXT PRIMARY KEY NOT NULL,
     host TEXT NOT NULL REFERENCES users,
-    comment TEXT
-  )`);
+    comment TEXT,
+    status game_status NOT NULL DEFAULT $(defaultStatus)
+  )`, {
+    defaultStatus: gameStatuses.NOT_STARTED,
+  });
 
   await db.query(`CREATE TABLE IF NOT EXISTS users_games (
     user_id TEXT REFERENCES users ON DELETE CASCADE,
