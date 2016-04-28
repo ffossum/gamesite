@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from 'actions/gamesList';
+import { NOT_STARTED } from 'constants/gameStatus';
 
 import Play from 'components/Play';
 
@@ -9,11 +10,14 @@ class PlayContainer extends React.Component {
   render() {
     const { userData, gameData, joinLobby, leaveLobby, children } = this.props;
 
-    const games = this.props.games.map(gameId => (
-      gameData.get(gameId).update('users', users => (
-        users.map(userId => userData.get(userId) || { id: userId })
+    const games = gameData
+      .filter(game => game.get('status') === NOT_STARTED)
+      .map(game => (
+        game.update('users', users => (
+          users.map(userId => userData.get(userId) || { id: userId })
+        ))
       ))
-    ));
+      .toList();
 
     const props = {
       joinLobby,
@@ -34,7 +38,6 @@ PlayContainer.propTypes = {
   user: PropTypes.object,
   userData: PropTypes.object.isRequired,
   gameData: PropTypes.object.isRequired,
-  games: PropTypes.object.isRequired,
 };
 
 export default connect(
@@ -45,7 +48,6 @@ export default connect(
       user: state.getIn(['data', 'users', sessionUserId]),
       userData: state.getIn(['data', 'users']),
       gameData: state.getIn(['data', 'games']),
-      games: state.getIn(['games', 'notStarted']),
     };
   },
   dispatch => bindActionCreators(actions, dispatch)
