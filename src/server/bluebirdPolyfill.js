@@ -4,15 +4,5 @@ import jwt from 'jsonwebtoken';
 
 global.Promise = bluebird;
 
-export function promisifyValueFirst(fn) {
-  return function promisified(...args) {
-    return new Promise(resolve => {
-      args.push(resolve);
-      fn.apply(this, args);
-    });
-  };
-}
-
 Promise.promisifyAll(bcrypt);
 Promise.promisifyAll(jwt);
-jwt.signAsync = promisifyValueFirst(jwt.sign);
