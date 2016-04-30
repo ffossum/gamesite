@@ -6,26 +6,29 @@ import {
   IN_PROGRESS,
 } from 'constants/gameStatus';
 
-function create(options) {
+async function create(options) {
   const { host } = options;
   const gameId = shortid.generate();
 
-  db.tx(t => {
-    const q1 = t.none('INSERT INTO games(id, host) VALUES ($(gameId), $(host))', { gameId, host });
-    const q2 = t.none('INSERT INTO users_games(user_id, game_id) VALUES ($(host), $(gameId))',
-      { host, gameId }
-    );
+  try {
+    await db.tx(t => {
+      const q1 = t.none(`INSERT INTO games(id, host)
+        VALUES ($(gameId), $(host))`, { gameId, host });
+      const q2 = t.none(`INSERT INTO users_games(user_id, game_id)
+        VALUES ($(host), $(gameId))`, { host, gameId });
 
-    return t.batch([q1, q2]);
-  });
+      return t.batch([q1, q2]);
+    });
 
-  const game = {
-    id: gameId,
-    host: options.host,
-    users: [options.host],
-  };
-
-  return game;
+    return {
+      id: gameId,
+      host: options.host,
+      users: [options.host],
+      status: NOT_STARTED,
+    };
+  } catch (e) {
+    return null;
+  }
 }
 
 async function join(gameId, userId) {

@@ -124,14 +124,16 @@ export default async function handleConnection(socket) {
     socket.disconnect(true);
   });
 
-  socket.on(CREATE_GAME, (data, fn) => {
+  socket.on(CREATE_GAME, async (data, fn) => {
     if (socket.user) {
-      const game = games.create({
+      const game = await games.create({
         host: socket.user.id,
       });
 
-      socket.join(getGameChannelName(game.id));
-      socket.broadcast.to('lobby').emit(GAME_CREATED, { game });
+      if (game) {
+        socket.join(getGameChannelName(game.id));
+        socket.broadcast.to('lobby').emit(GAME_CREATED, { game });
+      }
 
       fn(game);
     }
