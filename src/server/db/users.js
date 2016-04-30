@@ -27,16 +27,17 @@ export async function getUserByName(username) {
 export async function addUser(email, username, password) {
   const emailHash = crypto.createHash('md5').update(email).digest('hex');
   const passwordHash = await hashPassword(password);
+  const userId = shortid.generate();
 
   const user = {
-    id: shortid.generate(),
+    id: userId,
     email,
     emailHash,
     username,
     password: passwordHash,
   };
 
-  db.none(`INSERT INTO users (id, email, email_hash, username, password)
+  await db.none(`INSERT INTO users (id, email, email_hash, username, password)
     VALUES ($(id), $(email), $(emailHash), $(username), $(password))`, user);
 
   return user;
