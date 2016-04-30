@@ -9,12 +9,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userId, done) => {
   getUserById(userId)
-    .then(user => {
-      done(null, user);
-    })
-    .catch(err => {
-      done(err);
-    });
+    .then(user => done(null, user))
+    .catch(err => done(err));
 });
 
 async function authenticate(username, password) {
@@ -31,7 +27,7 @@ passport.use(new LocalStrategy(
   { session: false },
   (username, password, done) => {
     authenticate(username, password)
-    .then(user => done(null, user))
-    .catch(err => done(err));
+      .then(user => done(null, user))
+      .catch(err => done(err));
   }
 ));
