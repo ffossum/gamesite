@@ -20,7 +20,8 @@ async function createTables(db) {
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     email_hash TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    created TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
   )`);
 
   try {
@@ -34,7 +35,8 @@ async function createTables(db) {
     id TEXT PRIMARY KEY NOT NULL,
     host TEXT NOT NULL REFERENCES users,
     comment TEXT,
-    status game_status NOT NULL DEFAULT $(defaultStatus)
+    status game_status NOT NULL DEFAULT $(defaultStatus),
+    created TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
   )`, {
     defaultStatus: gameStatuses.NOT_STARTED,
   });
