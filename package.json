@@ -57,7 +57,7 @@
   "devDependencies": {
     "babel-core": "^6.4.5",
     "babel-eslint": "^6.0.0-beta.6",
-    "babel-istanbul": "^0.7.0",
+    "babel-istanbul": "^0.8.0",
     "babel-istanbul-loader": "^0.1.0",
     "babel-loader": "^6.2.1",
     "babel-polyfill": "^6.3.14",
@@ -86,10 +86,10 @@
     "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.7",
     "postcss-cssnext": "^2.4.0",
-    "postcss-loader": "^0.8.1",
+    "postcss-loader": "^0.9.1",
     "redux-devtools": "^3.2.0",
     "redux-devtools-dock-monitor": "^1.1.1",
-    "redux-devtools-log-monitor": "1.0.7",
+    "redux-devtools-log-monitor": "^1.0.11",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1"
