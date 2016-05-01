@@ -48,13 +48,13 @@ export default class GameRoom extends React.Component {
             <Button onClick={this.handleJoinClicked}>Join game</Button>}
 
           {inGame && game.host !== user.id && game.status === NOT_STARTED &&
-              <Button onClick={this.handleLeaveClicked}>Leave game</Button>}
+            <Button onClick={this.handleLeaveClicked}>Leave game</Button>}
 
           {inGame && game.host === user.id && game.status === NOT_STARTED &&
-              <Button
-                btnStyle="primary"
-                onClick={this.handleStartClicked}
-              >Start game</Button>}
+            <Button
+              btnStyle="primary"
+              onClick={this.handleStartClicked}
+            >Start game</Button>}
         </div>
         <ul className={styles.playerList}>
           {

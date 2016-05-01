@@ -51,9 +51,9 @@ class Dropdown extends React.Component {
         </a>
         {
           this.state.expanded &&
-          <div className={expandedClassName}>
-            {children}
-          </div>
+            <div className={expandedClassName}>
+              {children}
+            </div>
         }
       </div>
 

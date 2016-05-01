@@ -17,32 +17,32 @@ export default class Play extends React.Component {
     const gameCount = _.size(games);
 
     return (
-    <div className={styles.play}>
-      <h1>Play</h1>
-      <section>
-        { this.props.children || <Link to="/play/create">Create game</Link> }
-      </section>
-      <section>
-        <h2>{ `${gameCount} available game${gameCount !== 1 ? 's' : ''}` }</h2>
-        <ul className={styles.availableGames}>
-         {
-           _.map(games, game => (
-             <li key={game.id}>
-              <Link to={`/game/${game.id}`}>Go to</Link>
-              {
-                _.map(game.users, user => (
-                  <span key={user.id || ''}>
-                    <Gravatar inline emailHash={user.emailHash} />
-                    {user.username}
-                  </span>
-                ))
-              }
-             </li>
-           ))
-         }
-        </ul>
-      </section>
-    </div>
+      <div className={styles.play}>
+        <h1>Play</h1>
+        <section>
+          {this.props.children || <Link to="/play/create">Create game</Link>}
+        </section>
+        <section>
+          <h2>{`${gameCount} available game${gameCount !== 1 ? 's' : ''}`}</h2>
+          <ul className={styles.availableGames}>
+          {
+            _.map(games, game => (
+              <li key={game.id}>
+                <Link to={`/game/${game.id}`}>Go to</Link>
+                {
+                  _.map(game.users, user => (
+                    <span key={user.id || ''}>
+                      <Gravatar inline emailHash={user.emailHash} />
+                      {user.username}
+                    </span>
+                  ))
+                }
+              </li>
+            ))
+          }
+          </ul>
+        </section>
+      </div>
     );
   }
 }

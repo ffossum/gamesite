@@ -79,10 +79,10 @@ class RegisterUserForm extends React.Component {
           />
 
           {errors.email === errorTypes.EMAIL_TAKEN &&
-              <span>A user with this email already exists.</span>}
+            <span>A user with this email already exists.</span>}
 
           {errors.email === errorTypes.INVALID_EMAIL &&
-              <span>Invalid email</span>}
+            <span>Invalid email</span>}
         </div>
 
         <div className={styles.formInput}>

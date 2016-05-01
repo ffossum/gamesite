@@ -27,23 +27,22 @@ export default class Nav extends React.Component {
         </ul>
 
         {
-          user
-          ?
-          <ul className={styles.navgroup}>
-            {
-              games && !_.isEmpty(games) &&
-                <li><GamesDropdown games={games} /></li>
-            }
-            <li className={styles.user}>
-              <Gravatar inline emailHash={user.emailHash} /> {user.username}
-            </li>
-            <li><a className={styles.navlink} href="" onClick={this.handleLogOut}>Log out</a></li>
-          </ul>
+          user ?
+            <ul className={styles.navgroup}>
+              {
+                games && !_.isEmpty(games) &&
+                  <li><GamesDropdown games={games} /></li>
+              }
+              <li className={styles.user}>
+                <Gravatar inline emailHash={user.emailHash} /> {user.username}
+              </li>
+              <li><a className={styles.navlink} href="" onClick={this.handleLogOut}>Log out</a></li>
+            </ul>
           :
-          <ul className={styles.navgroup}>
-            <li><Link className={styles.navlink} to="/login">Log in</Link></li>
-            <li><Link className={styles.navlink} to="/register">Register</Link></li>
-          </ul>
+            <ul className={styles.navgroup}>
+              <li><Link className={styles.navlink} to="/login">Log in</Link></li>
+              <li><Link className={styles.navlink} to="/register">Register</Link></li>
+            </ul>
         }
       </nav>
     );
