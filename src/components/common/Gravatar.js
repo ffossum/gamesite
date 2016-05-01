@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 export default class Gravatar extends React.Component {
   render() {
-    const { emailHash, inline, size = 's' } = this.props;
+    const { emailHash, inline, size = 's', name } = this.props;
 
     const gravatarUrl = emailHash
       ? `http://www.gravatar.com/avatar/${emailHash}?d=retro`
@@ -18,6 +18,7 @@ export default class Gravatar extends React.Component {
 
     return (
       <img
+        alt={name}
         className={className}
         src={gravatarUrl}
       />
@@ -27,6 +28,7 @@ export default class Gravatar extends React.Component {
 
 Gravatar.propTypes = {
   emailHash: PropTypes.string,
+  name: PropTypes.string.isRequired,
   inline: PropTypes.bool,
   size: PropTypes.oneOf(['s', 'm']),
 };

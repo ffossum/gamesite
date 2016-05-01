@@ -60,7 +60,7 @@ export default class GameRoom extends React.Component {
           {
             _.map(users, gameUser => (
               <li key={gameUser.id}>
-                <Gravatar inline emailHash={gameUser.emailHash} />
+                <Gravatar inline emailHash={gameUser.emailHash} name={gameUser.username} />
                 {gameUser.username}
               </li>
             ))

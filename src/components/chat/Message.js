@@ -15,7 +15,7 @@ export default class Message extends React.Component {
     return (
       <div className={styles.message}>
         <div className={styles.avatar}>
-          <Gravatar size="m" emailHash={user.emailHash} />
+          <Gravatar size="m" emailHash={user.emailHash} name={user.username} />
         </div>
         <div>
           <div>

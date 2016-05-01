@@ -14,7 +14,6 @@
     "react/no-multi-comp": 0,
     "react/prefer-stateless-function": 1,
     "global-require": 1,
-    "jsx-a11y/img-has-alt": 1,
   },
   "settings": {
     "import/resolver": {

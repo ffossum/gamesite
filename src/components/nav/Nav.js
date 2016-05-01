@@ -34,7 +34,7 @@ export default class Nav extends React.Component {
                   <li><GamesDropdown games={games} /></li>
               }
               <li className={styles.user}>
-                <Gravatar inline emailHash={user.emailHash} /> {user.username}
+                <Gravatar inline emailHash={user.emailHash} name={user.username} /> {user.username}
               </li>
               <li><a className={styles.navlink} href="" onClick={this.handleLogOut}>Log out</a></li>
             </ul>

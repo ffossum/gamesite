@@ -32,7 +32,7 @@ export default class Play extends React.Component {
                 {
                   _.map(game.users, user => (
                     <span key={user.id || ''}>
-                      <Gravatar inline emailHash={user.emailHash} />
+                      <Gravatar inline emailHash={user.emailHash} name={user.username} />
                       {user.username}
                     </span>
                   ))
