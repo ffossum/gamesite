@@ -25,14 +25,16 @@
 
 .primary {
   color: white;
-  border-color: var(--btn-primary-active);
+  border-color: var(--btn-primary);
   background-color: var(--btn-primary);
 
   &:focus,
   &:hover {
+    border-color: var(--btn-primary-hover);
     background-color: var(--btn-primary-hover);
   }
   &:active {
+    border-color: var(--btn-primary-active);
     background-color: var(--btn-primary-active);
   }
   &[disabled] {
