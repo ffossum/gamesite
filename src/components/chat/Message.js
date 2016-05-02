@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Gravatar from 'components/common/Gravatar';
-import getTimestamp from './getTimestamp';
+import getTimestamp from 'util/getTimestamp';
 import styles from './message.css';
 import _ from 'lodash';
 

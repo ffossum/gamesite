@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import getTimestamp from './getTimestamp';
+import getTimestamp from 'util/getTimestamp';
 import getText from './getText';
 
 import styles from './message.css';

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import Message from './Message';
 import InfoMessage from './InfoMessage';
 import groupAdjacentBy from 'util/groupAdjacentBy';
-import getTimestamp from './getTimestamp';
+import getTimestamp from 'util/getTimestamp';
 
 import styles from './chat.css';
 
