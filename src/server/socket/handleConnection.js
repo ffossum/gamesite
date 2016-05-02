@@ -126,8 +126,11 @@ export default async function handleConnection(socket) {
 
   socket.on(CREATE_GAME, async (data, fn) => {
     if (socket.user) {
+      const { options, custom } = data;
       const game = await games.create({
         host: socket.user.id,
+        options,
+        custom,
       });
 
       if (game) {

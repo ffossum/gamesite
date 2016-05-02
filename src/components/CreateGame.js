@@ -9,11 +9,22 @@ import formStyles from 'containers/forms/form.css';
 export default class CreateGame extends React.Component {
   constructor() {
     super();
+
+    this.state = {
+      comment: '',
+    };
+
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeComment = this.handleChange.bind(this, 'comment');
   }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.createGame();
+    this.props.createGame(this.state);
+  }
+  handleChange(field, e) {
+    this.setState({
+      [field]: e.target.value,
+    });
   }
   render() {
     return (
@@ -22,6 +33,7 @@ export default class CreateGame extends React.Component {
           <div className={formStyles.formInput}>
             <TextInput
               label="Comment"
+              onChange={this.handleChangeComment}
             />
           </div>
           <Button btnStyle="primary">Create game</Button> <Link to="/play">Cancel</Link>

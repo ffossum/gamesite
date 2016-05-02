@@ -6,14 +6,15 @@ import {
   IN_PROGRESS,
 } from 'constants/gameStatus';
 
-async function create(options) {
-  const { host } = options;
+async function create(data) {
+  const { host, options } = data;
+  const { comment } = options;
   const gameId = shortid.generate();
 
   try {
     await db.tx(t => {
-      const q1 = t.none(`INSERT INTO games(id, host)
-        VALUES ($(gameId), $(host))`, { gameId, host });
+      const q1 = t.none(`INSERT INTO games(id, host, comment)
+        VALUES ($(gameId), $(host), $(comment))`, { gameId, host, comment });
       const q2 = t.none(`INSERT INTO users_games(user_id, game_id)
         VALUES ($(host), $(gameId))`, { host, gameId });
 
@@ -22,8 +23,9 @@ async function create(options) {
 
     return {
       id: gameId,
-      host: options.host,
-      users: [options.host],
+      host,
+      comment,
+      users: [data.host],
       status: NOT_STARTED,
     };
   } catch (e) {
@@ -73,7 +75,7 @@ async function start(gameId, userId) {
 
 export async function getUserGames(userId) {
   const games = await db.any(`
-    SELECT games.id, games.host, array_agg(users_games.user_id) AS users, status
+    SELECT games.id, created, games.host, comment, array_agg(users_games.user_id) AS users, status
     FROM games, users_games
     WHERE games.id=users_games.game_id AND users_games.user_id=$1
     GROUP BY games.id`,
@@ -85,7 +87,7 @@ export async function getUserGames(userId) {
 
 async function get(gameId) {
   return await db.one(`
-    SELECT games.id, games.host, array_agg(users_games.user_id) AS users, status
+    SELECT games.id, created, games.host, comment, array_agg(users_games.user_id) AS users, status
     FROM games, users_games
     WHERE games.id=users_games.game_id AND games.id=$1
     GROUP BY games.id`,
@@ -95,7 +97,7 @@ async function get(gameId) {
 
 async function getNotStarted() {
   const games = await db.any(`
-    SELECT games.id, games.host, array_agg(users_games.user_id) AS users, status
+    SELECT games.id, created, games.host, comment, array_agg(users_games.user_id) AS users, status
     FROM games, users_games
     WHERE games.id=users_games.game_id AND status=$1
     GROUP BY games.id`, NOT_STARTED
