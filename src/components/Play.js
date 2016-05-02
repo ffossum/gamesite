@@ -27,15 +27,25 @@ export default class Play extends React.Component {
           <ul className={styles.availableGames}>
           {
             _.map(games, game => (
-              <li key={game.id}>
-                <Link to={`/game/${game.id}`}>Go to</Link>
+              <li key={game.id} className={styles.listItem}>
+                <div className={styles.listItemHead}>
+                  <ul className={styles.players}>
+                    {
+                      _.map(game.users, user => (
+                        <li key={user.id || ''} className={styles.player}>
+                          <Gravatar inline emailHash={user.emailHash} name={user.username} />
+                          <div className={styles.playerName}>{user.username}</div>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                  <Link to={`/game/${game.id}`}>Open</Link>
+                </div>
                 {
-                  _.map(game.users, user => (
-                    <span key={user.id || ''}>
-                      <Gravatar inline emailHash={user.emailHash} name={user.username} />
-                      {user.username}
-                    </span>
-                  ))
+                  game.comment && !_.isEmpty(game.comment) &&
+                    <div className={styles.comment}>
+                      <em>{game.comment}</em>
+                    </div>
                 }
               </li>
             ))
