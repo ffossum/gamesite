@@ -16,9 +16,12 @@ export default class Gravatar extends React.Component {
       [styles[size]]: true,
     });
 
+    const role = name ? undefined : 'presentation';
+
     return (
       <img
         alt={name}
+        role={role}
         className={className}
         src={gravatarUrl}
       />
@@ -28,7 +31,7 @@ export default class Gravatar extends React.Component {
 
 Gravatar.propTypes = {
   emailHash: PropTypes.string,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   inline: PropTypes.bool,
   size: PropTypes.oneOf(['s', 'm']),
 };
