@@ -1,0 +1,34 @@
+.rps {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.players {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  margin-bottom: 1rem;
+
+}
+
+.player {
+  border: 1px solid #ccc;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 1rem;
+  width: 15rem;
+
+  display: flex;
+  justify-content: space-between;
+
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),
+    0 3px 1px -2px rgba(0,0,0,.2),
+    0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.chat {
+  align-self: stretch;
+}

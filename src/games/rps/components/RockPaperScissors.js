@@ -1,6 +1,10 @@
 import React, { PropTypes } from 'react';
 import Chat from 'components/chat/Chat';
+import Gravatar from 'components/common/Gravatar';
+import Spinner from 'components/common/Spinner';
 import _ from 'lodash';
+
+import styles from './rockPaperScissors.css';
 
 export default class RockPaperScissors extends React.Component {
   render() {
@@ -9,15 +13,20 @@ export default class RockPaperScissors extends React.Component {
     const inGame = user && _.some(users, gameUser => gameUser.id === user.id);
 
     return (
-      <div>
-        {
-          _.map(state.players, player => (
-            <div key={player.id}>
-              {JSON.stringify(player)}
-            </div>
-          ))
-        }
-        <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />
+      <div className={styles.rps}>
+        <div className={styles.players}>
+          {
+            _.map(state.players, player => (
+              <div key={player.id} className={styles.player}>
+                <div><Gravatar emailHash={player.emailHash} inline /> {player.username}</div>
+                <div><Spinner /></div>
+              </div>
+            ))
+          }
+        </div>
+        <div className={styles.chat}>
+          <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />
+        </div>
       </div>
     );
   }
