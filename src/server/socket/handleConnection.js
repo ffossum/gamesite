@@ -25,6 +25,7 @@ import {
   LEAVE_ROOM,
   GET_GAME_DATA,
   START_GAME,
+  GAME_STARTED,
 } from 'actions/gameRoom';
 import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
@@ -188,9 +189,16 @@ export default async function handleConnection(socket) {
   socket.on(START_GAME, async (data, fn) => {
     if (socket.user) {
       const gameId = data.game.id;
-      const started = await games.start(gameId, socket.user.id);
+      const state = await games.start(gameId, socket.user.id);
 
-      fn(!!started);
+      if (state) {
+        socket.broadcast.to('lobby').emit(GAME_STARTED, { game: { id: gameId } });
+        socket.broadcast.to(getGameChannelName(gameId)).emit(GAME_STARTED, {
+          game: { id: gameId, state },
+        });
+      }
+
+      fn(state ? { state } : false);
     } else {
       fn(false);
     }

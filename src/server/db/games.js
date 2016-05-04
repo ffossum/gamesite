@@ -5,6 +5,9 @@ import {
   NOT_STARTED,
   IN_PROGRESS,
 } from 'constants/gameStatus';
+import {
+  getInitialState,
+} from 'games/rps/rps';
 
 async function create(data) {
   const { host, options } = data;
@@ -55,19 +58,39 @@ async function leave(gameId, userId) {
   }
 }
 
+async function get(gameId) {
+  return await db.one(`
+    SELECT
+      games.id,
+      created,
+      games.host,
+      comment,
+      array_agg(users_games.user_id) AS users,
+      status,
+      state
+    FROM games, users_games
+    WHERE games.id=users_games.game_id AND games.id=$1
+    GROUP BY games.id`,
+    gameId
+  );
+}
+
 async function start(gameId, userId) {
   try {
+    const { users } = await get(gameId);
+    const state = getInitialState(users);
     const result = await db.result(`
       UPDATE games
-      SET status = $(IN_PROGRESS)
+      SET (status, state) = ($(IN_PROGRESS), $(state))
       WHERE id=$(gameId) AND host=$(userId)
     `, {
       IN_PROGRESS,
+      state,
       gameId,
       userId,
     });
 
-    return !!result.rowCount;
+    return !!result.rowCount ? state : false;
   } catch (e) {
     return false;
   }
@@ -75,7 +98,14 @@ async function start(gameId, userId) {
 
 export async function getUserGames(userId) {
   const games = await db.any(`
-    SELECT games.id, created, games.host, comment, array_agg(users_games.user_id) AS users, status
+    SELECT
+      games.id,
+      created,
+      games.host,
+      comment,
+      array_agg(users_games.user_id) AS users,
+      status,
+      state
     FROM games, users_games
     WHERE games.id=users_games.game_id AND users_games.user_id=$1
     GROUP BY games.id`,
@@ -85,19 +115,16 @@ export async function getUserGames(userId) {
   return _.keyBy(games, game => game.id);
 }
 
-async function get(gameId) {
-  return await db.one(`
-    SELECT games.id, created, games.host, comment, array_agg(users_games.user_id) AS users, status
-    FROM games, users_games
-    WHERE games.id=users_games.game_id AND games.id=$1
-    GROUP BY games.id`,
-    gameId
-  );
-}
-
 async function getNotStarted() {
   const games = await db.any(`
-    SELECT games.id, created, games.host, comment, array_agg(users_games.user_id) AS users, status
+    SELECT
+      games.id,
+      created,
+      games.host,
+      comment,
+      array_agg(users_games.user_id) AS users,
+      status,
+      state
     FROM games, users_games
     WHERE games.id=users_games.game_id AND status=$1
     GROUP BY games.id`, NOT_STARTED

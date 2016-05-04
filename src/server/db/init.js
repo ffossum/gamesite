@@ -36,7 +36,8 @@ async function createTables(db) {
     host TEXT NOT NULL REFERENCES users,
     comment TEXT,
     status game_status NOT NULL DEFAULT $(defaultStatus),
-    created TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
+    created TIMESTAMPTZ NOT NULL DEFAULT current_timestamp,
+    state JSONB
   )`, {
     defaultStatus: gameStatuses.NOT_STARTED,
   });
