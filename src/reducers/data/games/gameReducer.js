@@ -46,13 +46,16 @@ export default function gameReducer(state = initialState, action) {
         .update('messages', messages => messages.push(Immutable.fromJS(message)));
     }
     case GAME_STARTED: {
+      const { game } = action.payload;
       const message = {
         time: new Date().toJSON(),
         key: GAME_STARTED,
         args: [],
       };
+
       return state
         .set('status', IN_PROGRESS)
+        .update('state', gameState => (game.state ? Immutable.fromJS(game.state) : gameState))
         .update('messages', messages => messages.push(Immutable.fromJS(message)));
     }
     case NEW_GAME_MESSAGE: {

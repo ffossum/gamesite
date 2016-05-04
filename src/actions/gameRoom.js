@@ -154,10 +154,15 @@ export function leaveGame(gameId) {
   };
 }
 
-function gameStarted(gameId) {
+export function gameStarted(gameId, gameState) {
   return {
     type: GAME_STARTED,
-    payload: { game: { id: gameId } },
+    payload: {
+      game: {
+        id: gameId,
+        state: gameState,
+      },
+    },
   };
 }
 
@@ -169,7 +174,7 @@ export function startGame(gameId) {
       meta: {
         socket: started => {
           if (started) {
-            dispatch(gameStarted(gameId));
+            dispatch(gameStarted(gameId, started.state));
           }
         },
       },
