@@ -46,6 +46,8 @@ class Dropdown extends React.Component {
           className={nav && navStyles.navlink}
           href=""
           onClick={this.handleTriggerClick}
+          aria-haspopup
+          aria-expanded={this.state.expanded}
         >
           {this.props.title} <DownArrow />
         </a>
