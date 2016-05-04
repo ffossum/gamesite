@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import gameRoomActions from 'actions/gameRoom';
 import gameChatActions from 'actions/gameChat';
-import GameRoom from 'components/GameRoom';
+import GameRoom from 'components/gameRoom/GameRoom';
 
 class GameRoomContainer extends React.Component {
   componentDidMount() {

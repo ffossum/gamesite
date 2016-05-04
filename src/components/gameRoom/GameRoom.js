@@ -3,7 +3,11 @@ import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
 import Button from 'components/common/Button';
 import _ from 'lodash';
-import { NOT_STARTED } from 'constants/gameStatus';
+import {
+  NOT_STARTED,
+  IN_PROGRESS,
+} from 'constants/gameStatus';
+import GameInProgress from './GameInProgress';
 
 import styles from './gameRoom.css';
 
@@ -39,7 +43,19 @@ export default class GameRoom extends React.Component {
     const { game, user } = this.props;
     const { messages, users } = game;
 
+    const inProgress = game.status === IN_PROGRESS;
     const inGame = this.isInGame();
+    if (inProgress) {
+      return (
+        <GameInProgress
+          user={user}
+          game={game}
+          messages={messages}
+          sendGameMessage={this.sendGameMessage}
+        />
+      );
+    }
+
     return (
       <div className={styles.gameRoom}>
         <h1>Game room</h1>
