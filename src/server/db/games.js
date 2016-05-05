@@ -59,20 +59,24 @@ async function leave(gameId, userId) {
 }
 
 async function get(gameId) {
-  return await db.one(`
-    SELECT
-      games.id,
-      created,
-      games.host,
-      comment,
-      array_agg(users_games.user_id) AS users,
-      status,
-      state
-    FROM games, users_games
-    WHERE games.id=users_games.game_id AND games.id=$1
-    GROUP BY games.id`,
-    gameId
-  );
+  try {
+    return await db.oneOrNone(`
+      SELECT
+        games.id,
+        created,
+        games.host,
+        comment,
+        array_agg(users_games.user_id) AS users,
+        status,
+        state
+      FROM games, users_games
+      WHERE games.id=users_games.game_id AND games.id=$1
+      GROUP BY games.id`,
+      gameId
+    );
+  } catch (e) {
+    return null;
+  }
 }
 
 async function start(gameId, userId) {
