@@ -2,15 +2,20 @@
   height: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
   flex-wrap: wrap;
+}
+
+.game {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .players {
   display: flex;
   flex: 1 1 auto;
   justify-content: center;
-  margin-bottom: 1rem;
 }
 
 .player {
