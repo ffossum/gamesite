@@ -17,8 +17,10 @@ export default class Play extends React.Component {
     const gameCount = _.size(games);
 
     return (
-      <div className={styles.play}>
-        <h1>Play</h1>
+      <article className={styles.play}>
+        <header>
+          <h1>Play</h1>
+        </header>
         <section>
           {this.props.children || <Link to="/play/create">Create game</Link>}
         </section>
@@ -52,7 +54,7 @@ export default class Play extends React.Component {
           }
           </ul>
         </section>
-      </div>
+      </article>
     );
   }
 }
