@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import socket from 'client/socket';
+import { getUserData } from './userData';
+import _ from 'lodash';
 
 export const LOG_IN_REQUEST = 'login/LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'login/LOG_IN_SUCCESS';
@@ -30,13 +32,24 @@ function logInRequest() {
   };
 }
 
-export function logInSuccess(user, games = {}) {
-  return {
-    type: LOG_IN_SUCCESS,
-    payload: {
-      user,
-      games,
-    },
+export function logInSuccess(user, games) {
+  if (!games) {
+    return {
+      type: LOG_IN_SUCCESS,
+      payload: { user, games: {} },
+    };
+  }
+
+  return dispatch => {
+    const users = _.reduce(games, (result, game) => _.union(result, game.users), []);
+    dispatch(getUserData(...users));
+    dispatch({
+      type: LOG_IN_SUCCESS,
+      payload: {
+        user,
+        games,
+      },
+    });
   };
 }
 
