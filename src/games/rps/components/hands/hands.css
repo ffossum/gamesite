@@ -1,0 +1,12 @@
+.big {
+  width: 10rem;
+  height: 10rem;
+}
+
+.right {
+  transform: rotate(90deg);
+}
+
+.left {
+  transform: scale(-1, 1) rotate(90deg);
+}

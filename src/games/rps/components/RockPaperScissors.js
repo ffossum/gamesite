@@ -3,6 +3,7 @@ import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
 import Spinner from 'components/common/Spinner';
 import _ from 'lodash';
+import Scissors from './hands/Scissors';
 
 import styles from './rockPaperScissors.css';
 
@@ -13,21 +14,26 @@ export default class RockPaperScissors extends React.Component {
     const inGame = user && _.some(users, gameUser => gameUser.id === user.id);
 
     return (
-      <div className={styles.rps}>
-        <div className={styles.players}>
+      <article className={styles.rps}>
+        <section className={styles.players}>
           {
-            _.map(state.players, player => (
-              <div key={player.id} className={styles.player}>
-                <div><Gravatar emailHash={player.emailHash} inline /> {player.username}</div>
-                <div><Spinner /></div>
+            _.map(_.toArray(state.players), (player, index) => (
+              <div className={styles.player} key={player.id}>
+                <div className={styles.playerInfo}>
+                  <div><Gravatar emailHash={player.emailHash} inline /> {player.username}</div>
+                  {_.includes(state.active, player.id) && <div><Spinner /></div>}
+                </div>
+                <div className={styles.action}>
+                  <Scissors direction={index === 0 ? 'right' : 'left'} />
+                </div>
               </div>
             ))
           }
-        </div>
-        <div className={styles.chat}>
+        </section>
+        <section className={styles.chat}>
           <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />
-        </div>
-      </div>
+        </section>
+      </article>
     );
   }
 }

@@ -1,4 +1,4 @@
 dist/
-static/
+static/dist/
 node_modules/
 test/
