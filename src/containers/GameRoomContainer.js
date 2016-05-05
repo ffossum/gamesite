@@ -70,13 +70,13 @@ export default connect(
   (state, ownProps) => {
     const sessionUserId = state.getIn(['session', 'userId']);
     const gameId = ownProps.params.id;
-
+    const game = state.getIn(['data', 'games', gameId]);
     return {
       user: state.getIn(['data', 'users', sessionUserId]),
       userData: state.getIn(['data', 'users']),
       gameId,
-      game: state.getIn(['data', 'games', gameId]),
-      notFound: state.getIn(['games', 'notFound']).has(gameId),
+      game,
+      notFound: game === null,
     };
   },
   dispatch => bindActionCreators(actions, dispatch)

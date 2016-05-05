@@ -12,6 +12,7 @@ import {
   PLAYER_LEFT,
   REFRESH_GAME,
   GAME_STARTED,
+  GAME_NOT_FOUND,
 } from 'actions/gameRoom';
 import {
   NEW_GAME_MESSAGE,
@@ -53,7 +54,8 @@ export default function gamesReducer(state = initialState, action) {
     case PLAYER_JOINED:
     case PLAYER_LEFT:
     case NEW_GAME_MESSAGE:
-    case GAME_STARTED: {
+    case GAME_STARTED:
+    case GAME_NOT_FOUND: {
       const { game } = action.payload;
       return state.update(game.id, gameState => gameReducer(gameState, action));
     }

@@ -6,6 +6,7 @@ import {
   PLAYER_JOINED,
   PLAYER_LEFT,
   GAME_STARTED,
+  GAME_NOT_FOUND,
 } from 'actions/gameRoom';
 import {
   IN_PROGRESS,
@@ -61,6 +62,9 @@ export default function gameReducer(state = initialState, action) {
     case NEW_GAME_MESSAGE: {
       const { message } = action.payload;
       return state.update('messages', messages => messages.push(Immutable.fromJS(message)));
+    }
+    case GAME_NOT_FOUND: {
+      return null;
     }
     default: return state;
   }

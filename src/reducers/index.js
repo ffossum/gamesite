@@ -4,13 +4,11 @@ import forms from './forms';
 import session from './session/sessionReducer';
 import data from './data/dataReducer';
 import mainChat from './mainChat';
-import games from './games/gamesReducer';
 
 export default combineReducers({
   routing,
   data,
   mainChat,
   forms,
-  games,
   session,
 });

@@ -25,7 +25,7 @@ export default connect(
   state => {
     const sessionUserId = state.getIn(['session', 'userId']);
     const games = state.getIn(['data', 'games']).filter(game => (
-      game.get('users').has(sessionUserId)
+      game && game.get('users').has(sessionUserId)
     ));
 
     return {
