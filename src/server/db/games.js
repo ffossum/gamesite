@@ -107,7 +107,8 @@ export async function getUserGames(userId) {
       status,
       state
     FROM games, users_games
-    WHERE games.id=users_games.game_id AND users_games.user_id=$1
+    WHERE games.id=users_games.game_id
+    AND games.id IN (SELECT game_id from users_games WHERE user_id=$1)
     GROUP BY games.id`,
     userId,
   );
