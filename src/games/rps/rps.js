@@ -62,7 +62,7 @@ function moveActionToHistory(player) {
 
 export function performAction(previousState, userId, action) {
   if (!includes(previousState.active, userId)) {
-    return false;
+    return previousState;
   }
 
   const state = JSON.parse(JSON.stringify(previousState));
