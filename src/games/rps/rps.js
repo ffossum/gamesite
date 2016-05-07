@@ -11,12 +11,11 @@ import {
   pick,
   orderBy,
 } from 'lodash';
+import {
+  ROCK, PAPER, SCISSORS,
+} from './constants';
 
 const defaultFirstTo = 3;
-
-export const ROCK = 'R';
-export const PAPER = 'P';
-export const SCISSORS = 'S';
 
 export function getInitialState(userIds, gameOptions = {}) {
   const { firstTo = defaultFirstTo } = gameOptions;
@@ -96,7 +95,7 @@ export function getGameSummary(state) {
   return orderBy(players, 'score', 'desc');
 }
 
-export function asViewedBy(state, userId) {
+export function asViewedBy(state, userId = false) {
   if (!state) {
     return state;
   }

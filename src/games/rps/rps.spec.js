@@ -8,8 +8,10 @@ import {
   performAction,
   isGameOver,
   asViewedBy,
-  ROCK, PAPER, SCISSORS,
 } from './rps';
+import {
+  ROCK, PAPER, SCISSORS,
+} from './constants';
 
 describe('rock paper scissors', () => {
   it('players start with score 0', () => {

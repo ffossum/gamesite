@@ -5,4 +5,5 @@ export {
   performAction,
   isGameOver,
   getGameSummary,
+  asViewedBy,
 } from './rps';

@@ -10,7 +10,7 @@ import styles from './rockPaperScissors.css';
 
 export default class RockPaperScissors extends React.Component {
   render() {
-    const { user, game, sendMessage } = this.props;
+    const { user, game, sendMessage, performAction } = this.props;
     const { state, users, messages } = game;
     const inGame = user && _.some(users, gameUser => gameUser.id === user.id);
 
@@ -32,7 +32,7 @@ export default class RockPaperScissors extends React.Component {
               ))
             }
           </div>
-          <ActionButtons />
+          <ActionButtons game={game} performAction={performAction} />
         </section>
         <section className={styles.chat}>
           <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />
