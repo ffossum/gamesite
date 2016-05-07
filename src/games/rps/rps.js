@@ -1,5 +1,6 @@
 import {
   map,
+  mapValues,
   keyBy,
   includes,
   without,
@@ -22,6 +23,7 @@ export function getInitialState(userIds, gameOptions = {}) {
   let players = map(userIds, userId => ({
     id: userId,
     score: 0,
+    history: [],
   }));
 
   players = keyBy(players, player => player.id);
@@ -52,16 +54,19 @@ function getWinner(players) {
   return null;
 }
 
+function moveActionToHistory(player) {
+  const playerAction = player.action;
+  const modifiedPlayer = omit(player, 'action');
+  modifiedPlayer.history.push(playerAction);
+  return modifiedPlayer;
+}
+
 export function performAction(previousState, userId, action) {
   if (!includes(previousState.active, userId)) {
     return false;
   }
 
   const state = JSON.parse(JSON.stringify(previousState));
-
-  if (every(state.players, player => player.action)) {
-    state.players = map(state.players, player => omit(player, 'action'));
-  }
 
   state.players[userId].action = action;
   state.active = without(state.active, userId);
@@ -71,6 +76,7 @@ export function performAction(previousState, userId, action) {
     if (winner) {
       winner.score++;
     }
+    state.players = mapValues(state.players, moveActionToHistory);
   }
 
   return state;
