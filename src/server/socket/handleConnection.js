@@ -202,13 +202,13 @@ export default async function handleConnection(socket) {
   });
 
   socket.on(GET_GAME_DATA, async (gameId, fn) => {
-    const game = await games.get(gameId, socket.user.id);
+    const game = await games.get(gameId, socket.user && socket.user.id);
     fn(game);
   });
 
   socket.on(ENTER_ROOM, async (gameId, fn) => {
     socket.join(getGameChannelName(gameId));
-    const game = await games.get(gameId, socket.user.id);
+    const game = await games.get(gameId, socket.user && socket.user.id);
     fn(game);
   });
 
