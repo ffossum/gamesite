@@ -11,6 +11,9 @@ import {
 import {
   IN_PROGRESS,
 } from 'constants/gameStatus';
+import {
+  NEW_ACTION,
+} from 'actions/game';
 
 const initialState = Immutable.fromJS({});
 
@@ -65,6 +68,10 @@ export default function gameReducer(state = initialState, action) {
     }
     case GAME_NOT_FOUND: {
       return null;
+    }
+    case NEW_ACTION: {
+      const gameState = action.payload.state;
+      return state.set('state', Immutable.fromJS(gameState));
     }
     default: return state;
   }

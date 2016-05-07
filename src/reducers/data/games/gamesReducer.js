@@ -17,6 +17,9 @@ import {
 import {
   NEW_GAME_MESSAGE,
 } from 'actions/gameChat';
+import {
+  NEW_ACTION,
+} from 'actions/game';
 
 import gameReducer from './gameReducer';
 
@@ -55,7 +58,8 @@ export default function gamesReducer(state = initialState, action) {
     case PLAYER_LEFT:
     case NEW_GAME_MESSAGE:
     case GAME_STARTED:
-    case GAME_NOT_FOUND: {
+    case GAME_NOT_FOUND:
+    case NEW_ACTION: {
       const { game } = action.payload;
       return state.update(game.id, gameState => gameReducer(gameState, action));
     }
