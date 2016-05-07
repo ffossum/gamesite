@@ -30,6 +30,7 @@ import {
 import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
 import { isLobbyRoute, getGameIdFromRoute } from 'util/routeUtils';
+import isInRoom from './isInRoom';
 
 function getJwt(request) {
   const { headers } = request;
@@ -48,8 +49,13 @@ function getGameChannelName(gameId) {
   return `game:${gameId}`;
 }
 
+function getSpectatorChannelName(gameId) {
+  return `spectator:${gameId}`;
+}
+
 function joinGameChannels(socket, gameIds) {
   _.forEach(gameIds, gameId => {
+    socket.leave(getSpectatorChannelName(gameId));
     socket.join(getGameChannelName(gameId));
   });
 }
@@ -65,7 +71,7 @@ function joinUrlChannels(socket) {
   }
   const gameId = getGameIdFromRoute(referer);
   if (gameId) {
-    socket.join(getGameChannelName(gameId));
+    socket.join(getSpectatorChannelName(gameId));
   }
 }
 
@@ -77,7 +83,6 @@ export default async function handleConnection(socket) {
     const user = await getUserByJwt(token);
     socket.user = user;
 
-    socket.join('users');
     socket.join(getUserChannelName(user.id));
 
     const userGames = await getUserGames(user.id);
@@ -116,7 +121,6 @@ export default async function handleConnection(socket) {
   });
 
   socket.on(LOG_OUT, () => {
-    socket.leave('users');
     socket.leave(getUserChannelName(socket.user.id));
     delete socket.user;
     socket.disconnect(true);
@@ -146,14 +150,18 @@ export default async function handleConnection(socket) {
       const joined = await games.join(gameId, socket.user.id);
 
       if (joined) {
+        socket.leave(getSpectatorChannelName(gameId));
         socket.join(getGameChannelName(gameId));
 
         const emitData = {
           user: { id: socket.user.id },
           game: { id: gameId },
         };
-        socket.broadcast.to('lobby').emit(PLAYER_JOINED, emitData);
-        socket.broadcast.to(getGameChannelName(gameId)).emit(PLAYER_JOINED, emitData);
+        socket.broadcast
+          .to('lobby')
+          .to(getSpectatorChannelName(gameId))
+          .to(getGameChannelName(gameId))
+          .emit(PLAYER_JOINED, emitData);
       }
       fn(!!joined);
     } else {
@@ -167,14 +175,18 @@ export default async function handleConnection(socket) {
       const left = await games.leave(gameId, socket.user.id);
 
       if (left) {
-        socket.join(getGameChannelName(gameId));
+        socket.leave(getGameChannelName(gameId));
+        socket.join(getSpectatorChannelName(gameId));
 
         const emitData = {
           user: { id: socket.user.id },
           game: { id: gameId },
         };
-        socket.broadcast.to('lobby').emit(PLAYER_LEFT, emitData);
-        socket.broadcast.to(getGameChannelName(gameId)).emit(PLAYER_LEFT, emitData);
+        socket.broadcast
+          .to('lobby')
+          .to(getSpectatorChannelName(gameId))
+          .to(getGameChannelName(gameId))
+          .emit(PLAYER_LEFT, emitData);
       }
 
       fn(!!left);
@@ -189,10 +201,12 @@ export default async function handleConnection(socket) {
       const state = await games.start(gameId, socket.user.id);
 
       if (state) {
+        const emitData = { game: { id: gameId, state } };
         socket.broadcast.to('lobby').emit(GAME_STARTED, { game: { id: gameId } });
-        socket.broadcast.to(getGameChannelName(gameId)).emit(GAME_STARTED, {
-          game: { id: gameId, state },
-        });
+        socket.broadcast
+          .to(getSpectatorChannelName(gameId))
+          .to(getGameChannelName(gameId))
+          .emit(GAME_STARTED, emitData);
       }
 
       fn(state ? { state } : false);
@@ -207,13 +221,23 @@ export default async function handleConnection(socket) {
   });
 
   socket.on(ENTER_ROOM, async (gameId, fn) => {
-    socket.join(getGameChannelName(gameId));
-    const game = await games.get(gameId, socket.user && socket.user.id);
-    fn(game);
+    const inGame = isInRoom(socket, getGameChannelName(gameId));
+
+    if (!inGame) {
+      const game = await games.get(gameId, socket.user && socket.user.id);
+      if (game) {
+        socket.join(getSpectatorChannelName(gameId));
+        fn(null, game);
+      } else {
+        fn('not found');
+      }
+    } else {
+      fn();
+    }
   });
 
   socket.on(LEAVE_ROOM, gameId => {
-    socket.leave(getGameChannelName(gameId));
+    socket.leave(getSpectatorChannelName(gameId));
   });
 
   socket.on(JOIN_LOBBY, async () => {

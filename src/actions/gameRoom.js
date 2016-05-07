@@ -59,10 +59,10 @@ export function enterRoom(gameId) {
       type: ENTER_ROOM,
       payload: gameId,
       meta: {
-        socket: game => {
+        socket: (err, game) => {
           if (game) {
             dispatch(refreshGame(game));
-          } else {
+          } else if (err) {
             dispatch(gameNotFound(gameId));
           }
         },
