@@ -10,6 +10,8 @@ import {
   values,
   pick,
   orderBy,
+  isEmpty,
+  keys,
 } from 'lodash';
 import {
   ROCK, PAPER, SCISSORS,
@@ -76,6 +78,10 @@ export function performAction(previousState, userId, action) {
       winner.score++;
     }
     state.players = mapValues(state.players, moveActionToHistory);
+  }
+
+  if (isEmpty(state.active)) {
+    state.active = keys(state.players);
   }
 
   return state;
