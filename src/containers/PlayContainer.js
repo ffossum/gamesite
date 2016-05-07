@@ -11,7 +11,7 @@ class PlayContainer extends React.Component {
     const { userData, gameData, joinLobby, leaveLobby, children } = this.props;
 
     const games = gameData
-      .filter(game => game.get('status') === NOT_STARTED)
+      .filter(game => game && game.get('status') === NOT_STARTED)
       .map(game => (
         game.update('users', users => (
           users.map(userId => userData.get(userId) || { id: userId })
