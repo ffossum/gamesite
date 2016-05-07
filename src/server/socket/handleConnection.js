@@ -115,14 +115,17 @@ export default async function handleConnection(socket) {
 
   socket.on(SEND_GAME_MESSAGE, message => {
     if (socket.user) {
-      socket.broadcast.to(getGameChannelName(message.game.Id)).emit(NEW_GAME_MESSAGE, {
-        game: { id: message.gameId },
-        message: {
-          text: message.text,
-          time: new Date().toJSON(),
-          user: socket.user.id,
-        },
-      });
+      socket.broadcast
+        .to(getGameChannelName(message.game.id))
+        .to(getSpectatorChannelName(message.game.id))
+        .emit(NEW_GAME_MESSAGE, {
+          game: { id: message.game.id },
+          message: {
+            text: message.text,
+            time: new Date().toJSON(),
+            user: socket.user.id,
+          },
+        });
     }
   });
 
