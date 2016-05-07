@@ -8,6 +8,7 @@ import {
   IN_PROGRESS,
 } from 'constants/gameStatus';
 import GameInProgress from './GameInProgress';
+import isUserInGame from 'util/isUserInGame';
 
 import styles from './gameRoom.css';
 
@@ -35,9 +36,7 @@ export default class GameRoom extends React.Component {
   }
   isInGame() {
     const { game, user } = this.props;
-    const { users } = game;
-
-    return user && _.some(users, gameUser => gameUser.id === user.id);
+    return isUserInGame(game, user);
   }
   render() {
     const { game, user } = this.props;
