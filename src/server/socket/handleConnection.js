@@ -29,6 +29,7 @@ import {
 } from 'actions/gameRoom';
 import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
+import { isLobbyRoute, getGameIdFromRoute } from 'util/routeUtils';
 
 function getJwt(request) {
   const { headers } = request;
@@ -53,21 +54,17 @@ function joinGameChannels(socket, gameIds) {
   });
 }
 
-const lobbyRegex = /\/play/;
-const gameRegex = /\/game\/([^/]+)/;
-
 /*
 Join channels based on url.
 Useful when socket reconnects without page refresh.
 */
 function joinUrlChannels(socket) {
   const { referer } = socket.request.headers;
-  if (referer.match(lobbyRegex)) {
+  if (isLobbyRoute(referer)) {
     socket.join('lobby');
   }
-  const game = referer.match(gameRegex);
-  if (game) {
-    const gameId = game[1];
+  const gameId = getGameIdFromRoute(referer);
+  if (gameId) {
     socket.join(getGameChannelName(gameId));
   }
 }
