@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
-import Rock from './hands/Rock';
-import Paper from './hands/Paper';
-import Scissors from './hands/Scissors';
+import Hand from './hands/Hand';
 import {
   ROCK, PAPER, SCISSORS,
 } from '../constants';
@@ -25,15 +23,15 @@ export default class ActionButtons extends React.Component {
     return (
       <div className={styles.group}>
         <button className={styles.btn} onClick={this.handleRockClick}>
-          <Rock />
+          <Hand type={ROCK} />
         </button>
 
         <button className={styles.btn} onClick={this.handlePaperClick}>
-          <Paper />
+          <Hand type={PAPER} />
         </button>
 
         <button className={styles.btn} onClick={this.handleScissorsClick}>
-          <Scissors />
+          <Hand type={SCISSORS} />
         </button>
       </div>
     );

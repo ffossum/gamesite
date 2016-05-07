@@ -3,7 +3,7 @@ import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
 import Spinner from 'components/common/Spinner';
 import _ from 'lodash';
-import Scissors from './hands/Scissors';
+import Hand from './hands/Hand';
 import ActionButtons from './ActionButtons';
 
 import styles from './rockPaperScissors.css';
@@ -13,6 +13,8 @@ export default class RockPaperScissors extends React.Component {
     const { user, game, sendMessage, performAction } = this.props;
     const { state, users, messages } = game;
     const inGame = user && _.some(users, gameUser => gameUser.id === user.id);
+
+    const lastHandIndex = _.max(_.map(state.players, player => _.size(player.history))) - 1;
 
     return (
       <article className={styles.rps}>
@@ -26,7 +28,10 @@ export default class RockPaperScissors extends React.Component {
                     {_.includes(state.active, player.id) && <div><Spinner /></div>}
                   </div>
                   <div className={styles.action}>
-                    <Scissors direction={index === 0 ? 'right' : 'left'} />
+                    <Hand
+                      type={player.history[lastHandIndex]}
+                      direction={index === 0 ? 'right' : 'left'}
+                    />
                   </div>
                 </div>
               ))
@@ -56,6 +61,7 @@ RockPaperScissors.propTypes = {
         emailHash: PropTypes.string,
         username: PropTypes.string,
         score: PropTypes.number.isRequired,
+        history: PropTypes.array.isRequired,
       })).isRequired,
     }),
     users: PropTypes.arrayOf(
