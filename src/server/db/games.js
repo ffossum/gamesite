@@ -7,6 +7,7 @@ import {
 } from 'constants/gameStatus';
 import {
   getInitialState,
+  performAction,
   asViewedBy,
 } from 'games/rps/rps';
 
@@ -146,6 +147,49 @@ async function getNotStarted() {
   return _.keyBy(games, game => game.id);
 }
 
+export async function performGameAction(gameId, userId, action) {
+  try {
+    const game = await db.one(`
+      SELECT
+        array_agg(users_games.user_id) AS users,
+        state
+      FROM games, users_games
+      WHERE games.id=users_games.game_id
+      AND games.id=$(gameId)
+      AND status=$(IN_PROGRESS)
+      GROUP BY games.id
+    `, {
+      gameId,
+      IN_PROGRESS,
+    });
+
+    if (!_.includes(game.users, userId)) {
+      return false;
+    }
+
+    const newState = performAction(game.state, userId, action);
+    if (newState === game.state) {
+      return false;
+    }
+
+    await db.none(`
+      UPDATE games
+      SET (state) = ($(newState))
+      WHERE id=$(gameId)
+    `, {
+      newState,
+      gameId,
+    });
+
+    return {
+      previousState: game.state,
+      newState,
+    };
+  } catch (e) {
+    return false;
+  }
+}
+
 export default {
   create,
   join,
@@ -154,4 +198,5 @@ export default {
   get,
   getNotStarted,
   getUserGames,
+  performGameAction,
 };

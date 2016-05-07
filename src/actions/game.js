@@ -1,16 +1,28 @@
 export const PERFORM_ACTION = 'game/ACTION';
+export const NEW_ACTION = 'game/NEW_ACTION';
 
-export function performAction(action) {
+export function performAction(gameId, action) {
   return dispatch => {
     dispatch({
       type: PERFORM_ACTION,
-      payload: action,
+      payload: {
+        game: { id: gameId },
+        action,
+      },
       meta: {
-        socket: newState => {
-          console.log(newState);
-        },
+        socket: true,
       },
     });
+  };
+}
+
+export function newAction(game, state) {
+  return {
+    type: NEW_ACTION,
+    payload: {
+      game,
+      state,
+    },
   };
 }
 

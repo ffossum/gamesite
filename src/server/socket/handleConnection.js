@@ -27,10 +27,16 @@ import {
   START_GAME,
   GAME_STARTED,
 } from 'actions/gameRoom';
+import {
+  PERFORM_ACTION,
+  NEW_ACTION,
+} from 'actions/game';
 import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
 import { isLobbyRoute, getGameIdFromRoute } from 'util/routeUtils';
 import isInRoom from './isInRoom';
+import getRoomSockets from './getRoomSockets';
+import { asViewedBy } from 'games/rps/';
 
 function getJwt(request) {
   const { headers } = request;
@@ -212,6 +218,28 @@ export default async function handleConnection(socket) {
       fn(state ? { state } : false);
     } else {
       fn(false);
+    }
+  });
+
+  socket.on(PERFORM_ACTION, async data => {
+    if (socket.user) {
+      const gameId = data.game.id;
+      const success = await games.performGameAction(gameId, socket.user.id, data.action);
+      if (success) {
+        const { newState } = success;
+        _.forEach(getRoomSockets(socket, getGameChannelName(gameId)), playerSocket => {
+          if (playerSocket.user) {
+            playerSocket.emit(NEW_ACTION, {
+              game: { id: gameId },
+              state: asViewedBy(newState, playerSocket.user.id),
+            });
+          }
+        });
+        socket.broadcast.to(getSpectatorChannelName(gameId)).emit(NEW_ACTION, {
+          game: { id: gameId },
+          state: asViewedBy(newState),
+        });
+      }
     }
   });
 

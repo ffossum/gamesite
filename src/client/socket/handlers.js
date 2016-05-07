@@ -16,6 +16,10 @@ import {
 import {
   NEW_GAME_MESSAGE, newGameMessage,
 } from 'actions/gameChat';
+import {
+  NEW_ACTION, newAction,
+} from 'actions/game';
+
 export function createHandlers(store) {
   return {
     news: data => {
@@ -29,5 +33,6 @@ export function createHandlers(store) {
     [PLAYER_LEFT]: ({ game, user }) => store.dispatch(playerLeft(game.id, user.id)),
     [NEW_GAME_MESSAGE]: ({ game, message }) => store.dispatch(newGameMessage(game.id, message)),
     [GAME_STARTED]: ({ game }) => store.dispatch(gameStarted(game.id, game.state)),
+    [NEW_ACTION]: ({ game, state }) => store.dispatch(newAction(game, state)),
   };
 }
