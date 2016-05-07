@@ -97,6 +97,10 @@ export function getGameSummary(state) {
 }
 
 export function asViewedBy(state, userId) {
+  if (!state) {
+    return state;
+  }
+
   const viewedPlayers = mapValues(state.players, player => (
     player.id === userId ? player : omit(player, 'action')
   ));

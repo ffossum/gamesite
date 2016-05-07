@@ -7,6 +7,7 @@ import {
 } from 'constants/gameStatus';
 import {
   getInitialState,
+  asViewedBy,
 } from 'games/rps/rps';
 
 async function create(data) {
@@ -58,9 +59,9 @@ async function leave(gameId, userId) {
   }
 }
 
-async function get(gameId) {
+async function get(gameId, userId) {
   try {
-    return await db.oneOrNone(`
+    const game = await db.oneOrNone(`
       SELECT
         games.id,
         created,
@@ -74,6 +75,11 @@ async function get(gameId) {
       GROUP BY games.id`,
       gameId
     );
+
+    return {
+      ...game,
+      state: asViewedBy(game.state, userId),
+    };
   } catch (e) {
     return null;
   }
@@ -94,14 +100,14 @@ async function start(gameId, userId) {
       userId,
     });
 
-    return !!result.rowCount ? state : false;
+    return !!result.rowCount ? asViewedBy(state, userId) : false;
   } catch (e) {
     return false;
   }
 }
 
 export async function getUserGames(userId) {
-  const games = await db.any(`
+  let games = await db.any(`
     SELECT
       games.id,
       created,
@@ -116,7 +122,10 @@ export async function getUserGames(userId) {
     GROUP BY games.id`,
     userId,
   );
-
+  games = _.map(games, game => ({
+    ...game,
+    state: asViewedBy(game.state, userId),
+  }));
   return _.keyBy(games, game => game.id);
 }
 
@@ -128,8 +137,7 @@ async function getNotStarted() {
       games.host,
       comment,
       array_agg(users_games.user_id) AS users,
-      status,
-      state
+      status
     FROM games, users_games
     WHERE games.id=users_games.game_id AND status=$1
     GROUP BY games.id`, NOT_STARTED
