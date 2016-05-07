@@ -7,6 +7,7 @@ import {
   getInitialState,
   performAction,
   isGameOver,
+  asViewedBy,
   ROCK, PAPER, SCISSORS,
 } from './rps';
 
@@ -75,5 +76,25 @@ describe('rock paper scissors', () => {
 
     state = performAction(state, '2', PAPER);
     expect(isGameOver(state)).to.equal(true);
+  });
+
+  describe('as viewed by players', () => {
+    it('hides actions by other players', () => {
+      let state = getInitialState(['1', '2']);
+      state = performAction(state, '1', ROCK);
+
+      expect(state.players['1'].action).to.equal(ROCK);
+      const viewedState = asViewedBy(state, '2');
+      expect(viewedState.players['2'].action).to.be.undefined;
+    });
+
+    it('lets users see their own actions', () => {
+      let state = getInitialState(['1', '2']);
+      state = performAction(state, '1', ROCK);
+
+      expect(state.players['1'].action).to.equal(ROCK);
+      const viewedState = asViewedBy(state, '1');
+      expect(viewedState.players['1'].action).to.equal(ROCK);
+    });
   });
 });

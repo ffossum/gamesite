@@ -95,3 +95,14 @@ export function getGameSummary(state) {
 
   return orderBy(players, 'score', 'desc');
 }
+
+export function asViewedBy(state, userId) {
+  const viewedPlayers = mapValues(state.players, player => (
+    player.id === userId ? player : omit(player, 'action')
+  ));
+
+  return {
+    ...state,
+    players: viewedPlayers,
+  };
+}
