@@ -28,16 +28,19 @@ export default class RockPaperScissors extends React.Component {
                     {_.includes(state.active, player.id) && <div><Spinner /></div>}
                   </div>
                   <div className={styles.action}>
-                    <Hand
-                      type={player.history[lastHandIndex]}
-                      direction={index === 0 ? 'right' : 'left'}
-                    />
+                    {
+                      player.history[lastHandIndex] &&
+                        <Hand
+                          type={player.history[lastHandIndex]}
+                          direction={index === 0 ? 'right' : 'left'}
+                        />
+                    }
                   </div>
                 </div>
               ))
             }
           </div>
-          <ActionButtons game={game} performAction={performAction} />
+          {inGame && <ActionButtons user={user} game={game} performAction={performAction} />}
         </section>
         <section className={styles.chat}>
           <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />

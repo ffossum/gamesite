@@ -3,6 +3,7 @@ import Hand from './hands/Hand';
 import {
   ROCK, PAPER, SCISSORS,
 } from '../constants';
+import _ from 'lodash';
 
 import styles from './actionButtons.css';
 
@@ -20,17 +21,20 @@ export default class ActionButtons extends React.Component {
     performAction(game.id, hand);
   }
   render() {
+    const { user, game } = this.props;
+    const active = _.includes(game.state.active, user.id);
+
     return (
       <div className={styles.group}>
-        <button className={styles.btn} onClick={this.handleRockClick}>
+        <button disabled={!active} className={styles.btn} onClick={this.handleRockClick}>
           <Hand type={ROCK} />
         </button>
 
-        <button className={styles.btn} onClick={this.handlePaperClick}>
+        <button disabled={!active} className={styles.btn} onClick={this.handlePaperClick}>
           <Hand type={PAPER} />
         </button>
 
-        <button className={styles.btn} onClick={this.handleScissorsClick}>
+        <button disabled={!active} className={styles.btn} onClick={this.handleScissorsClick}>
           <Hand type={SCISSORS} />
         </button>
       </div>
@@ -39,6 +43,9 @@ export default class ActionButtons extends React.Component {
 }
 
 ActionButtons.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }).isRequired,
   game: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
