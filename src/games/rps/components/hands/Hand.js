@@ -18,7 +18,8 @@ function getFilename(hand) {
 export default function Hand(props) {
   const handText = getHandText(props.type);
   const className = classnames({
-    [styles.big]: true,
+    [styles.big]: !props.small,
+    [styles.small]: props.small,
     [styles.right]: props.direction === 'right',
     [styles.left]: props.direction === 'left',
   });
@@ -36,4 +37,5 @@ export default function Hand(props) {
 Hand.propTypes = {
   type: PropTypes.oneOf([ROCK, PAPER, SCISSORS]).isRequired,
   direction: PropTypes.oneOf(['left', 'right']),
+  small: PropTypes.bool,
 };

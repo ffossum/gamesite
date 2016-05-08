@@ -5,6 +5,10 @@
   flex-wrap: wrap;
 }
 
+.history {
+  align-self: center;
+}
+
 .game {
   flex: 1 1 auto;
   display: flex;
