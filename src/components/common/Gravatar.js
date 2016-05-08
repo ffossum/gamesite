@@ -21,6 +21,7 @@ export default class Gravatar extends React.Component {
     return (
       <img
         alt={name}
+        title={name}
         role={role}
         className={className}
         src={gravatarUrl}
