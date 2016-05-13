@@ -14,39 +14,39 @@ export default class HandHistory extends React.Component {
 
     const history = zip(...map(players, player => player.history));
     return (
-      <div className={styles.wrapper}>
+      <div>
         <div className={`${styles.row} ${styles.header}`}>
           {
             map(players, player => (
-              <span key={player.id}>
+              <span key={player.id} className={styles.cell}>
                 <Gravatar emailHash={player.emailHash} name={player.username} />
               </span>
             ))
           }
         </div>
-        <div>
-          {
-            map(history, (hands, rowIndex) => (
-              <div key={rowIndex} className={styles.row}>
-                {
-                  map(hands, (hand, cellIndex) => (
-                    <span key={cellIndex}>
-                      <Hand
-                        small
-                        type={hand}
-                        direction={cellIndex === 0 ? 'right' : 'left'}
-                      />
-                    </span>
-                  ))
-                }
-              </div>
-            ))
-          }
+        <div className={styles.body}>
+            {
+              map(history, (hands, rowIndex) => (
+                <div key={rowIndex} className={styles.row}>
+                  {
+                    map(hands, (hand, cellIndex) => (
+                      <span key={cellIndex} className={styles.cell}>
+                        <Hand
+                          small
+                          type={hand}
+                          direction={cellIndex === 0 ? 'right' : 'left'}
+                        />
+                      </span>
+                    ))
+                  }
+                </div>
+              ))
+            }
         </div>
         <div className={`${styles.row} ${styles.footer}`}>
           {
             map(players, player => (
-              <span key={player.id}>
+              <span key={player.id} className={styles.cell}>
                 {player.score}
               </span>
             ))
