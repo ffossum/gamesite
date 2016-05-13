@@ -62,8 +62,14 @@ function moveActionToHistory(player) {
   return modifiedPlayer;
 }
 
+export function isGameOver(state) {
+  return some(state.players, player => (
+    player.score >= state.firstTo
+  ));
+}
+
 export function performAction(previousState, userId, action) {
-  if (!includes(previousState.active, userId)) {
+  if (!includes(previousState.active, userId) || isGameOver(previousState)) {
     return previousState;
   }
 
@@ -84,13 +90,11 @@ export function performAction(previousState, userId, action) {
     state.active = keys(state.players);
   }
 
-  return state;
-}
+  if (isGameOver(state)) {
+    state.active = [];
+  }
 
-export function isGameOver(state) {
-  return some(state.players, player => (
-    player.score >= state.firstTo
-  ));
+  return state;
 }
 
 export function getGameSummary(state) {
