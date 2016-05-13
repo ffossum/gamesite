@@ -4,6 +4,7 @@ import Message from './Message';
 import InfoMessage from './InfoMessage';
 import groupAdjacentBy from 'util/groupAdjacentBy';
 import getTimestamp from 'util/getTimestamp';
+import KeepBottomScroll from 'components/common/KeepBottomScroll';
 
 import styles from './chat.css';
 
@@ -26,41 +27,23 @@ function groupMessages(messages) {
 }
 
 export default class MessagesList extends React.Component {
-  constructor() {
-    super();
-    this.scrollBottom = this.scrollBottom.bind(this);
-  }
-  componentDidMount() {
-    this.scrollBottom();
-  }
-  componentWillUpdate() {
-    const node = this.refs.chatMessages;
-    this.shouldScrollBottom = node.scrollTop + node.offsetHeight - node.scrollHeight > -10;
-  }
-  componentDidUpdate() {
-    if (this.shouldScrollBottom) {
-      this.scrollBottom();
-    }
-  }
-  scrollBottom() {
-    const node = this.refs.chatMessages;
-    node.scrollTop = node.scrollHeight;
-  }
   render() {
     const { messages } = this.props;
     const groupedMessages = groupMessages(messages);
 
     return (
       <div className={styles.messagesContainer}>
-        <div className={styles.messages} ref="chatMessages">
-          {
-            _.map(groupedMessages, msg => (
-              msg.key
-              ? <InfoMessage key={`${msg.key}${msg.time}`} message={msg} />
-              : <Message key={`${msg.user.id}${msg.time}`} message={msg} />
-            ))
-          }
-        </div>
+        <KeepBottomScroll>
+          <div className={styles.messages}>
+            {
+              _.map(groupedMessages, msg => (
+                msg.key
+                ? <InfoMessage key={`${msg.key}${msg.time}`} message={msg} />
+                : <Message key={`${msg.user.id}${msg.time}`} message={msg} />
+              ))
+            }
+          </div>
+        </KeepBottomScroll>
       </div>
     );
   }
