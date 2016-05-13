@@ -6,14 +6,15 @@ import _ from 'lodash';
 import Hand from './hands/Hand';
 import HandHistory from './HandHistory';
 import ActionButtons from './ActionButtons';
+import isUserInGame from 'util/isUserInGame';
 
 import styles from './rockPaperScissors.css';
 
 export default class RockPaperScissors extends React.Component {
   render() {
     const { user, game, sendMessage, performAction } = this.props;
-    const { state, users, messages } = game;
-    const inGame = user && _.some(users, gameUser => gameUser.id === user.id);
+    const { state, messages } = game;
+    const inGame = isUserInGame(game, user);
 
     const playersArray = _.toArray(state.players);
     const lastHandIndex = _.max(_.map(state.players, player => _.size(player.history))) - 1;
