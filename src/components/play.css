@@ -33,6 +33,7 @@
 }
 
 .player {
+  width: 11rem;
   list-style: none;
   display: inline-block;
   margin-right: 0.5rem;
@@ -40,8 +41,8 @@
 }
 
 .playerName {
+  width: calc(100% - 2rem);
   display: inline-block;
-  width: 9rem;
   text-overflow: ellipsis;
   overflow-x: hidden;
   white-space: nowrap;
