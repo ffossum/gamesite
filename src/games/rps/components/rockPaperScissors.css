@@ -2,9 +2,15 @@
 
 .rpsContainer {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   margin-top: 1rem;
+  height: calc(100% - 1rem);
+  justify-content: space-around;
+}
+
+.playerSection {
+  padding: 1rem;
 }
 
 .player {
@@ -23,9 +29,14 @@
   display: inline-block;
 }
 
+.historySection {
+  padding: 1rem;
+}
+
 .chatSection {
   position: relative;
   width: 100%;
+  max-width: 30rem;
   min-height: 20rem;
 
   & > div {
@@ -37,5 +48,36 @@
     right: 0;
     top: 0;
     bottom: 0;
+  }
+}
+
+@media (min-width: 800px) {
+  .playerSection {
+    position: absolute;
+    width: 21rem;
+    right: 0;
+  }
+  .historySection {
+    position: absolute;
+    width: calc(100% - 21rem);
+    left: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .actionSection {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    width: calc(100% - 21rem);
+    display: flex;
+    flex-direction: column;
+  }
+  .chatSection {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 60%;
+    min-height: 0;
+    width: 21rem;
   }
 }

@@ -18,7 +18,7 @@ export default class RockPaperScissors extends React.Component {
 
     return (
       <article className={styles.rpsContainer}>
-        <section>
+        <section className={styles.playerSection}>
             {
               _.map(playersArray, player => (
                 <div key={player.id} className={styles.player}>
@@ -38,12 +38,12 @@ export default class RockPaperScissors extends React.Component {
               ))
             }
         </section>
-        <section>
+        <section className={styles.historySection}>
           <HandHistory players={playersArray} />
         </section>
         {
           inGame && (
-            <section>
+            <section className={styles.actionSection}>
               <ActionButtons user={user} game={game} performAction={performAction} />
             </section>
           )
