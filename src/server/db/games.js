@@ -4,10 +4,12 @@ import db from './index';
 import {
   NOT_STARTED,
   IN_PROGRESS,
+  ENDED,
 } from 'constants/gameStatus';
 import {
   getInitialState,
   performAction,
+  isGameOver,
   asViewedBy,
 } from 'games/rps/rps';
 
@@ -152,6 +154,7 @@ export async function performGameAction(gameId, userId, action) {
     const game = await db.one(`
       SELECT
         array_agg(users_games.user_id) AS users,
+        status,
         state
       FROM games, users_games
       WHERE games.id=users_games.game_id
@@ -172,18 +175,23 @@ export async function performGameAction(gameId, userId, action) {
       return false;
     }
 
+    const gameOver = isGameOver(newState);
+    const newStatus = gameOver ? ENDED : game.status;
+
     await db.none(`
       UPDATE games
-      SET (state) = ($(newState))
+      SET (state, status) = ($(newState), $(newStatus))
       WHERE id=$(gameId)
     `, {
       newState,
+      newStatus,
       gameId,
     });
 
     return {
       previousState: game.state,
       newState,
+      gameOver,
     };
   } catch (e) {
     return false;
