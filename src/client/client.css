@@ -4,6 +4,7 @@
 html {
   box-sizing: border-box;
   font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
   height: 100%;
 }
 *, *:before, *:after {
@@ -25,7 +26,6 @@ body {
 }
 
 .content {
-  padding: 1rem;
   flex: 1 1 auto;
   position: relative;
   display: flex;
@@ -40,4 +40,11 @@ h1, h2, h3, h4, h5, h6 {
 a {
   text-decoration: none;
   color: var(--link-color);
+}
+
+
+@media (min-width: 600px) {
+  html {
+    font-size: 16px;
+  }
 }

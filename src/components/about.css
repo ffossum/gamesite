@@ -1,4 +1,5 @@
 .about {
+  padding: 1rem;
   flex: 1 1 auto;
   max-width: 50rem;
 }
