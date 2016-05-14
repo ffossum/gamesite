@@ -1,9 +1,7 @@
 import React, { PropTypes } from 'react';
 import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
-import Spinner from 'components/common/Spinner';
 import _ from 'lodash';
-import Hand from './hands/Hand';
 import HandHistory from './HandHistory';
 import ActionButtons from './ActionButtons';
 import isUserInGame from 'util/isUserInGame';
@@ -17,43 +15,43 @@ export default class RockPaperScissors extends React.Component {
     const inGame = isUserInGame(game, user);
 
     const playersArray = _.toArray(state.players);
-    const lastHandIndex = _.max(_.map(state.players, player => _.size(player.history))) - 1;
 
     return (
-      <article className={styles.rps}>
-        <section className={styles.history}>
-          <HandHistory players={playersArray} />
-        </section>
-        <section className={styles.game}>
-          <div className={styles.players}>
+      <article className={styles.rpsContainer}>
+        <section>
             {
-              _.map(playersArray, (player, index) => (
-                <div className={styles.player} key={player.id}>
+              _.map(playersArray, player => (
+                <div key={player.id} className={styles.player}>
                   <div className={styles.playerInfo}>
                     <div>
-                      <Gravatar emailHash={player.emailHash} name={player.username} inline />
+                      <Gravatar
+                        inline
+                        emailHash={player.emailHash}
+                        name={player.username}
+                        active={_.includes(state.active, player.id)}
+                      />
                       {' '}
-                      {player.username}
+                      <div className={styles.playerName}>{player.username}</div>
                     </div>
-                    {_.includes(state.active, player.id) && <div><Spinner /></div>}
-                  </div>
-                  <div className={styles.action}>
-                    {
-                      player.history[lastHandIndex] &&
-                        <Hand
-                          type={player.history[lastHandIndex]}
-                          direction={index === 0 ? 'right' : 'left'}
-                        />
-                    }
                   </div>
                 </div>
               ))
             }
-          </div>
-          {inGame && <ActionButtons user={user} game={game} performAction={performAction} />}
         </section>
-        <section className={styles.chat}>
-          <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />
+        <section>
+          <HandHistory players={playersArray} />
+        </section>
+        {
+          inGame && (
+            <section>
+              <ActionButtons user={user} game={game} performAction={performAction} />
+            </section>
+          )
+        }
+        <section className={styles.chatSection}>
+          <div>
+            <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />
+          </div>
         </section>
       </article>
     );

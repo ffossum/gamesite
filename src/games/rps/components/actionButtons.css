@@ -4,8 +4,13 @@
 }
 
 .btn {
+  width: 25%;
+  max-width: 10rem;
   border: none;
   background: none;
+  & > img {
+    width: 100%;
+  }
 
   &:disabled {
     opacity: 0.4;

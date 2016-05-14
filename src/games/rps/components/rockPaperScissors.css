@@ -1,53 +1,41 @@
-.rps {
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
+@import "../../../client/variables.css";
 
-.history {
-  align-self: center;
-}
-
-.game {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.players {
-  display: flex;
-  flex: 1 1 auto;
-  justify-content: center;
-}
-
-.player {
+.rpsContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 1rem;
+}
+
+.player {
+  min-width: 15rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--box-shadow);
+  border: var(--border);
 }
 
 .playerInfo {
-
-  margin-left: 1rem;
-  margin-right: 1rem;
   padding: 1rem;
-  width: 15rem;
-
   display: flex;
-  justify-content: space-between;
-
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),
-    0 3px 1px -2px rgba(0,0,0,.2),
-    0 1px 5px 0 rgba(0,0,0,.12);
 }
 
-.action {
-  margin-top: 2rem;
+.playerName {
+  display: inline-block;
 }
 
-.chat {
-  align-self: stretch;
+.chatSection {
+  position: relative;
+  width: 100%;
+  min-height: 20rem;
+
+  & > div {
+    position: absolute;
+    padding: 1rem;
+
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
 }

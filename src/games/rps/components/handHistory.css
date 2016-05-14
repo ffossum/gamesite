@@ -18,8 +18,7 @@
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   width: 6.5rem;
-  min-height: 10rem;
-  max-height: 20rem;
+  height: 12.6rem;
   overflow-y: auto;
   overflow-x: hidden;
 }
