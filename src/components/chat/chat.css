@@ -1,11 +1,9 @@
 @import "../../client/variables.css";
 
 .chat {
-  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 0;
 }
 
 .messagesContainer {
@@ -32,6 +30,7 @@
 .chatForm {
   display: flex;
   flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
 .messageInput {

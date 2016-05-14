@@ -11,13 +11,11 @@ export default class MainPage extends React.Component {
         <header>
           <h1>Main page</h1>
         </header>
-        <section className={styles.chat}>
-          <Chat
-            sendMessage={this.props.sendMessage}
-            messages={messages}
-            readOnly={!sessionUserId}
-          />
-        </section>
+        <Chat
+          sendMessage={this.props.sendMessage}
+          messages={messages}
+          readOnly={!sessionUserId}
+        />
       </article>
     );
   }
