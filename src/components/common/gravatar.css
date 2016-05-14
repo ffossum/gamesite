@@ -1,3 +1,29 @@
+.wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.active {
+  position: absolute;
+  top: -0.75rem;
+  left: 0.75rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 0.75rem;
+  height: 0.75rem;
+  background-size: 0.75rem;
+  animation: hourglass 3s infinite ease-in-out;
+}
+
 .s {
   height: 1.5rem;
   width: 1.5rem;
@@ -17,4 +43,23 @@
   margin-top: -0.60rem;
   margin-bottom: -0.40rem;
   margin-right: 0.25rem;
+}
+
+@keyframes hourglass {
+  0% {
+    transform: rotate(0);
+    background-image: url('/static/hourglass-1.svg');
+  }
+  40% {
+    transform: rotate(0);
+    background-image: url('/static/hourglass-2.svg');
+  }
+  80% {
+    transform: rotate(0);
+    background-image: url('/static/hourglass-3.svg');
+  }
+  100% {
+    transform: rotate(180deg);
+    background-image: url('/static/hourglass-3.svg');
+  }
 }
