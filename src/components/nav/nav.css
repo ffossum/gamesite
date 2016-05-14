@@ -1,5 +1,6 @@
 .navbar {
   width: 100%;
+  flex-shrink: 0;
   background-color: #333;
   color: white;
 
