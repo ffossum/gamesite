@@ -56,13 +56,17 @@
     position: absolute;
     width: 21rem;
     right: 0;
+    top: 0;
   }
   .historySection {
     position: absolute;
     width: calc(100% - 21rem);
     left: 0;
+    top: 0;
+    bottom: 11rem;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
   .actionSection {
     position: absolute;
