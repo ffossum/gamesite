@@ -27,6 +27,7 @@ export default class CreateGame extends React.Component {
     });
   }
   render() {
+    const { disabled } = this.props;
     return (
       <div className={styles.container}>
         <form onSubmit={this.handleSubmit}>
@@ -36,7 +37,12 @@ export default class CreateGame extends React.Component {
               onChange={this.handleChangeComment}
             />
           </div>
-          <Button btnStyle="primary">Create game</Button> <Link to="/play">Cancel</Link>
+          <Button
+            disabled={disabled}
+            btnStyle="primary"
+          >
+            Create game
+          </Button> <Link to="/play">Cancel</Link>
         </form>
       </div>
     );
@@ -45,4 +51,5 @@ export default class CreateGame extends React.Component {
 
 CreateGame.propTypes = {
   createGame: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
