@@ -7,9 +7,11 @@ import {
   PLAYER_LEFT,
   GAME_STARTED,
   GAME_NOT_FOUND,
+  GAME_ENDED,
 } from 'actions/gameRoom';
 import {
   IN_PROGRESS,
+  ENDED,
 } from 'constants/gameStatus';
 import {
   NEW_ACTION,
@@ -72,6 +74,17 @@ export default function gameReducer(state = initialState, action) {
     case NEW_ACTION: {
       const gameState = action.payload.state;
       return state.set('state', Immutable.fromJS(gameState));
+    }
+    case GAME_ENDED: {
+      const message = {
+        time: new Date().toJSON(),
+        key: GAME_ENDED,
+        args: [],
+      };
+
+      return state
+        .set('status', ENDED)
+        .update('messages', messages => messages.push(Immutable.fromJS(message)));
     }
     default: return state;
   }

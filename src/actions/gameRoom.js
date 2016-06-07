@@ -13,6 +13,7 @@ export const GET_GAME_DATA = 'gameRoom/GET_DATA';
 
 export const START_GAME = 'gameRoom/START_GAME';
 export const GAME_STARTED = 'gameRoom/GAME_STARTED';
+export const GAME_ENDED = 'gameRoom/ENDED';
 
 export function refreshGame(game) {
   return dispatch => {
@@ -179,6 +180,17 @@ export function startGame(gameId) {
         },
       },
     });
+  };
+}
+
+export function gameEnded(gameId) {
+  return {
+    type: GAME_ENDED,
+    payload: {
+      game: {
+        id: gameId,
+      },
+    },
   };
 }
 

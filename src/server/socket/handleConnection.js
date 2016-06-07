@@ -26,6 +26,7 @@ import {
   GET_GAME_DATA,
   START_GAME,
   GAME_STARTED,
+  GAME_ENDED,
 } from 'actions/gameRoom';
 import {
   PERFORM_ACTION,
@@ -229,7 +230,7 @@ export default async function handleConnection(socket) {
       const gameId = data.game.id;
       const success = await games.performGameAction(gameId, socket.user.id, data.action);
       if (success) {
-        const { newState } = success;
+        const { newState, gameOver } = success;
         _.forEach(getRoomSockets(socket, getGameChannelName(gameId)), playerSocket => {
           if (playerSocket.user) {
             playerSocket.emit(NEW_ACTION, {
@@ -242,6 +243,15 @@ export default async function handleConnection(socket) {
           game: { id: gameId },
           state: asViewedBy(newState),
         });
+
+        if (gameOver) {
+          socket.broadcast
+            .to(getSpectatorChannelName(gameId))
+            .to(getGameChannelName(gameId))
+            .emit(GAME_ENDED, {
+              game: { id: gameId },
+            });
+        }
       }
     }
   });
