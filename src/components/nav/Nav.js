@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import { IndexLink, Link } from 'react-router';
 import GamesDropdown from './GamesDropdown';
 import Gravatar from 'components/common/Gravatar';
 import _ from 'lodash';
@@ -21,9 +21,26 @@ export default class Nav extends React.Component {
     return (
       <nav role="navigation" className={styles.navbar}>
         <ul className={styles.navgroup}>
-          <li><Link className={styles.navlink} to="/">Main</Link></li>
-          <li><Link className={styles.navlink} to="/play">Play</Link></li>
-          <li><Link className={styles.navlink} to="/about">About</Link></li>
+          <li>
+            <IndexLink
+              to="/"
+              className={styles.navlink}
+            >Main</IndexLink>
+          </li>
+          <li>
+            <Link
+              to="/play"
+              activeClassName={styles.active}
+              className={styles.navlink}
+            >Play</Link>
+          </li>
+          <li>
+            <Link
+              to="/about"
+              activeClassName={styles.active}
+              className={styles.navlink}
+            >About</Link>
+          </li>
         </ul>
 
         {
