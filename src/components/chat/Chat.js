@@ -9,7 +9,9 @@ export default class Chat extends React.Component {
     const { sendMessage, messages, readOnly } = this.props;
     return (
       <div className={styles.chat}>
-        <MessageList messages={messages} />
+        <div className={styles.messagesContainer}>
+          <MessageList messages={messages} />
+        </div>
         <ChatInput sendMessage={sendMessage} disabled={readOnly} />
       </div>
     );

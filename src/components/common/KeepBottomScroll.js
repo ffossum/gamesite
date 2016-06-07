@@ -1,14 +1,9 @@
-import React, { cloneElement, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 
 export default class KeepBottomScroll extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.setElementRef = el => {
-      this.element = el;
-    };
-  }
   componentDidMount() {
+    this.element = findDOMNode(this);
     this.scrollBottom();
   }
   componentWillUpdate() {
@@ -24,12 +19,37 @@ export default class KeepBottomScroll extends React.Component {
     this.element.scrollTop = this.element.scrollHeight;
   }
   render() {
-    return cloneElement(this.props.children, {
-      ref: this.setElementRef,
-    });
+    return this.props.children;
   }
 }
 
 KeepBottomScroll.propTypes = {
   children: PropTypes.node.isRequired,
 };
+
+export function keepBottomScroll(Component) {
+  return (
+    class extends Component {
+      static displayName = `KeepBottomScroll(${Component.displayName || Component.name})`;
+      componentDidMount() {
+        this.element = findDOMNode(this);
+        this.scrollBottom();
+      }
+      componentWillUpdate() {
+        this.shouldScrollBottom =
+          (this.element.scrollTop + this.element.offsetHeight - this.element.scrollHeight) > -10;
+      }
+      componentDidUpdate() {
+        if (this.shouldScrollBottom) {
+          this.scrollBottom();
+        }
+      }
+      scrollBottom() {
+        this.element.scrollTop = this.element.scrollHeight;
+      }
+      render() {
+        return super.render();
+      }
+    }
+  );
+}
