@@ -4,15 +4,16 @@ export default class KeepBottomScroll extends React.Component {
   constructor(props) {
     super(props);
 
-    this.elementRef = this.props.children.ref || 'element';
-    this.scrollBottom = this.scrollBottom.bind(this);
+    this.setElementRef = el => {
+      this.element = el;
+    };
   }
   componentDidMount() {
     this.scrollBottom();
   }
   componentWillUpdate() {
-    const node = this.refs[this.elementRef];
-    this.shouldScrollBottom = node.scrollTop + node.offsetHeight - node.scrollHeight > -10;
+    this.shouldScrollBottom =
+      (this.element.scrollTop + this.element.offsetHeight - this.element.scrollHeight) > -10;
   }
   componentDidUpdate() {
     if (this.shouldScrollBottom) {
@@ -20,12 +21,11 @@ export default class KeepBottomScroll extends React.Component {
     }
   }
   scrollBottom() {
-    const node = this.refs[this.elementRef];
-    node.scrollTop = node.scrollHeight;
+    this.element.scrollTop = this.element.scrollHeight;
   }
   render() {
     return cloneElement(this.props.children, {
-      ref: this.elementRef,
+      ref: this.setElementRef,
     });
   }
 }
