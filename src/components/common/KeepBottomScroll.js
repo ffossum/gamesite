@@ -29,7 +29,7 @@ KeepBottomScroll.propTypes = {
 
 export function keepBottomScroll(Component) {
   return (
-    class extends Component {
+    class extends React.Component {
       static displayName = `KeepBottomScroll(${Component.displayName || Component.name})`;
       componentDidMount() {
         this.element = findDOMNode(this);
@@ -48,7 +48,7 @@ export function keepBottomScroll(Component) {
         this.element.scrollTop = this.element.scrollHeight;
       }
       render() {
-        return super.render();
+        return <Component {...this.props} />;
       }
     }
   );
