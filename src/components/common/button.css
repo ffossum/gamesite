@@ -9,6 +9,8 @@
   padding: 0.5rem;
   min-width: 5rem;
 
+  transition-duration: 0.3;
+
   &:focus,
   &:hover {
     background-color: var(--btn-default-hover);
