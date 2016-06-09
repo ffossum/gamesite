@@ -26,7 +26,6 @@ function getModalContent(modalType) {
 class Root extends React.Component {
   render() {
     const { modal, closeModal } = this.props;
-    console.log('closeModal', closeModal);
 
     return (
       <div>
