@@ -1,0 +1,32 @@
+@import "../../../client/variables.css";
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 5000;
+
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.backdrop {
+  filter: blur(2px);
+}
+
+.modal {
+  padding: 1rem;
+  min-height: 10rem;
+  min-width: 15rem;
+
+  border: var(--border);
+  border-radius: 3px;
+  box-shadow: var(--box-shadow);
+  background-color: white;
+}

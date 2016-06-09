@@ -1,32 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import MainPage from 'containers/MainPageContainer';
 import Play from 'containers/PlayContainer';
 import About from 'components/About';
-import LoginForm from 'containers/forms/LoginForm';
-import RegisterUserForm from 'containers/forms/RegisterUserForm';
-import Nav from 'containers/NavContainer';
 import CreateGame from 'containers/CreateGameContainer';
 import GameRoom from 'containers/GameRoomContainer';
-
-import styles from 'client/client.css';
-
-class Root extends React.Component {
-  render() {
-    return (
-      <div>
-        <Nav />
-        <main className={styles.content}>
-          {this.props.children}
-        </main>
-      </div>
-    );
-  }
-}
-
-Root.propTypes = {
-  children: PropTypes.node,
-};
+import Root from 'containers/RootContainer';
 
 export default (
   <Route path="/" component={Root}>
@@ -36,8 +15,5 @@ export default (
     </Route>
     <Route path="game/:id" component={GameRoom} />
     <Route path="about" component={About} />
-
-    <Route path="login" component={LoginForm} />
-    <Route path="register" component={RegisterUserForm} />
   </Route>
 );

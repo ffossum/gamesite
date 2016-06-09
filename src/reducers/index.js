@@ -4,6 +4,7 @@ import forms from './forms';
 import session from './session/sessionReducer';
 import data from './data/dataReducer';
 import mainChat from './mainChat';
+import modal from './modal';
 
 export default combineReducers({
   routing,
@@ -11,4 +12,5 @@ export default combineReducers({
   mainChat,
   forms,
   session,
+  modal,
 });

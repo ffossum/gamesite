@@ -3,6 +3,10 @@ import { IndexLink, Link } from 'react-router';
 import GamesDropdown from './GamesDropdown';
 import Gravatar from 'components/common/Gravatar';
 import _ from 'lodash';
+import {
+  LOGIN_MODAL,
+  REGISTER_MODAL,
+} from 'constants/modalType';
 
 import styles from './nav.css';
 
@@ -10,10 +14,17 @@ export default class Nav extends React.Component {
   constructor() {
     super();
     this.handleLogOut = this.handleLogOut.bind(this);
+
+    this.openLoginModal = this.openModal.bind(this, LOGIN_MODAL);
+    this.openRegisterModal = this.openModal.bind(this, REGISTER_MODAL);
   }
   handleLogOut(e) {
     e.preventDefault();
     this.props.logOut();
+  }
+  openModal(modalType, e) {
+    e.preventDefault();
+    this.props.openModal(modalType);
   }
   render() {
     const { user, games } = this.props;
@@ -57,8 +68,12 @@ export default class Nav extends React.Component {
             </ul>
           :
             <ul className={styles.navgroup}>
-              <li><Link className={styles.navlink} to="/login">Log in</Link></li>
-              <li><Link className={styles.navlink} to="/register">Register</Link></li>
+              <li>
+                <a className={styles.navlink} href="" onClick={this.openLoginModal}>Log in</a>
+              </li>
+              <li>
+                <a className={styles.navlink} href="" onClick={this.openRegisterModal}>Register</a>
+              </li>
             </ul>
         }
       </nav>
@@ -73,4 +88,5 @@ Nav.propTypes = {
   }),
   games: PropTypes.object,
   logOut: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
 };

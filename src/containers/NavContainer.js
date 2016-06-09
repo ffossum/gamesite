@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import actions from 'actions/login';
+import loginActions from 'actions/login';
+import modalActions from 'actions/modal';
 import Nav from 'components/nav/Nav';
 
 class NavContainer extends React.Component {
@@ -33,5 +34,5 @@ export default connect(
       games,
     };
   },
-  dispatch => bindActionCreators(actions, dispatch)
+  dispatch => bindActionCreators({ ...loginActions, ...modalActions }, dispatch)
 )(NavContainer);
