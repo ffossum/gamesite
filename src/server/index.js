@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
 
 import Koa from 'koa';
+import compress from 'koa-compress';
 import convert from 'koa-convert';
 import serve from 'koa-static';
 import bodyParser from 'koa-bodyparser';
@@ -35,6 +36,7 @@ const app = new Koa();
 const router = new KoaRouter();
 
 app.use(bodyParser());
+app.use(compress());
 
 require('./auth');
 app.use(passport.initialize());
