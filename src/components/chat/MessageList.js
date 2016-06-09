@@ -4,7 +4,7 @@ import Message from './Message';
 import InfoMessage from './InfoMessage';
 import groupAdjacentBy from 'util/groupAdjacentBy';
 import getTimestamp from 'util/getTimestamp';
-import KeepBottomScroll, { keepBottomScroll } from 'components/common/KeepBottomScroll';
+import { keepBottomScroll } from 'components/common/KeepBottomScroll';
 
 import styles from './chat.css';
 
