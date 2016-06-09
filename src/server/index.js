@@ -57,7 +57,7 @@ router.post('/api/register',
 
 router.get('/api/users', getUsers);
 
-router.get('*',
+router.get('/*',
   authenticateJwtCookie,
   fetchAuthenticatedUserData,
   refreshJwtCookie,
