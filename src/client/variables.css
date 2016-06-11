@@ -19,6 +19,7 @@
   --border: 1px solid var(--gray);
 
   --link-color: var(--blue);
+  --link-hover-color: var(--darker-blue);
 
   --btn-default: white;
   --btn-default-hover: var(--light-gray);
