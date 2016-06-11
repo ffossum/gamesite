@@ -1,3 +1,5 @@
+const style = require('!!raw!../../../static/dist/style.css');
+
 const devScripts =
 `
 <script src="http://localhost:3000/dist/client.js" defer></script>
@@ -5,7 +7,7 @@ const devScripts =
 
 const prodScripts =
 `
-<link href="/static/dist/style.css" rel="stylesheet"/>
+<style>${style}</style>
 <script src="https://fb.me/react-15.0.1.min.js" defer></script>
 <script src="https://fb.me/react-dom-15.0.1.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/immutable.js/3.7.6/immutable.min.js" defer></script>
