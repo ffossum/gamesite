@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions, { errors as errorTypes } from 'actions/registerUser';
+import modalActions from 'actions/modal';
+import { LOGIN_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 
@@ -26,6 +28,7 @@ class RegisterUserForm extends React.Component {
     this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
     this.handleRepeatPasswordChange = this.handleChange.bind(this, 'repeatPassword');
     this.handleRepeatPasswordBlur = this.handleBlur.bind(this, 'repeatPassword');
+    this.openLoginModal = this.openLoginModal.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     const { email, username, password, repeatPassword } = nextProps.formState;
@@ -57,6 +60,10 @@ class RegisterUserForm extends React.Component {
       });
     }
   }
+  openLoginModal(e) {
+    e.preventDefault();
+    this.props.openModal(LOGIN_MODAL);
+  }
   render() {
     if (this.props.sessionUserId) {
       return null;
@@ -64,70 +71,78 @@ class RegisterUserForm extends React.Component {
     const { errors, pending } = this.props.formState;
     const { email, username, password, repeatPassword } = this.state;
     return (
-      <form onSubmit={this.handleSubmit} className={styles.form}>
+      <section>
+        <h2>Registration</h2>
+        <form onSubmit={this.handleSubmit} className={styles.form}>
 
-        <div className={styles.formInput}>
-          <TextInput
-            label="Email"
-            type="email"
-            required
-            disabled={pending}
-            value={email}
-            onChange={this.handleEmailChange}
-            onBlur={this.handleEmailBlur}
-            autoFocus
-          />
+          <div className={styles.formInput}>
+            <TextInput
+              label="Email"
+              type="email"
+              required
+              disabled={pending}
+              value={email}
+              onChange={this.handleEmailChange}
+              onBlur={this.handleEmailBlur}
+              autoFocus
+            />
 
-          {errors.email === errorTypes.EMAIL_TAKEN &&
-            <span>A user with this email already exists.</span>}
+            {errors.email === errorTypes.EMAIL_TAKEN &&
+              <span>A user with this email already exists.</span>}
 
-          {errors.email === errorTypes.INVALID_EMAIL &&
-            <span>Invalid email</span>}
-        </div>
+            {errors.email === errorTypes.INVALID_EMAIL &&
+              <span>Invalid email</span>}
+          </div>
 
-        <div className={styles.formInput}>
-          <TextInput
-            label="Username"
-            required
-            disabled={pending}
-            value={username}
-            onChange={this.handleUsernameChange}
-            onBlur={this.handleUsernameBlur}
-          />
+          <div className={styles.formInput}>
+            <TextInput
+              label="Username"
+              required
+              disabled={pending}
+              value={username}
+              onChange={this.handleUsernameChange}
+              onBlur={this.handleUsernameBlur}
+            />
 
-          {errors.username === errorTypes.USERNAME_TAKEN && <span>Username is already taken.</span>}
-        </div>
+            {errors.username === errorTypes.USERNAME_TAKEN &&
+              <span>Username is already taken.</span>}
+          </div>
 
-        <div className={styles.formInput}>
-          <TextInput
-            label="Password"
-            type="password"
-            required
-            disabled={pending}
-            value={password}
-            onChange={this.handlePasswordChange}
-            onBlur={this.handlePasswordBlur}
-          />
-        </div>
-        <div className={styles.formInput}>
-          <TextInput
-            label="Repeat password"
-            type="password"
-            required
-            disabled={pending}
-            value={repeatPassword}
-            onChange={this.handleRepeatPasswordChange}
-            onBlur={this.handleRepeatPasswordBlur}
-          />
+          <div className={styles.formInput}>
+            <TextInput
+              label="Password"
+              type="password"
+              required
+              disabled={pending}
+              value={password}
+              onChange={this.handlePasswordChange}
+              onBlur={this.handlePasswordBlur}
+            />
+          </div>
+          <div className={styles.formInput}>
+            <TextInput
+              label="Repeat password"
+              type="password"
+              required
+              disabled={pending}
+              value={repeatPassword}
+              onChange={this.handleRepeatPasswordChange}
+              onBlur={this.handleRepeatPasswordBlur}
+            />
 
-          {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH &&
-            <span>Passwords do not match.</span>}
-        </div>
+            {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH &&
+              <span>Passwords do not match.</span>}
+          </div>
 
-        <Button btnStyle="primary" disabled={pending}>
-          Register
-        </Button>
-      </form>
+          <Button btnStyle="primary" disabled={pending}>
+            Register
+          </Button>
+
+          <p>
+            Already registered? <a href="" onClick={this.openLoginModal}>Log in</a>
+          </p>
+        </form>
+      </section>
     );
   }
 }
@@ -137,6 +152,7 @@ RegisterUserForm.propTypes = {
   registerUser: PropTypes.func.isRequired,
   updateForm: PropTypes.func.isRequired,
   sessionUserId: PropTypes.string,
+  openModal: PropTypes.func.isRequired,
 };
 
 class Wrapper extends React.Component {
@@ -159,11 +175,5 @@ export default connect(
     formState: state.getIn(['forms', 'registerUser']),
     sessionUserId: state.getIn(['session', 'userId']),
   }),
-  dispatch => {
-    const { registerUser, updateForm } = bindActionCreators(actions, dispatch);
-    return {
-      registerUser,
-      updateForm,
-    };
-  }
+  dispatch => bindActionCreators({ ...actions, ...modalActions }, dispatch),
 )(Wrapper);

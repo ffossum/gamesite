@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from 'actions/login';
+import modalActions from 'actions/modal';
+import { REGISTER_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 
@@ -20,6 +22,7 @@ class LoginForm extends React.Component {
     this.handleUsernameBlur = this.handleBlur.bind(this, 'username');
     this.handlePasswordChange = this.handleChange.bind(this, 'password');
     this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
+    this.openRegisterModal = this.openRegisterModal.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     const { username, password } = nextProps.formState;
@@ -49,6 +52,10 @@ class LoginForm extends React.Component {
       });
     }
   }
+  openRegisterModal(e) {
+    e.preventDefault();
+    this.props.openModal(REGISTER_MODAL);
+  }
   render() {
     if (this.props.sessionUserId) {
       return null;
@@ -56,33 +63,39 @@ class LoginForm extends React.Component {
     const { error, pending } = this.props.formState;
     const { username, password } = this.state;
     return (
-      <form onSubmit={this.handleSubmit} className={styles.form}>
-        <div className={styles.formInput}>
-          <TextInput
-            label="Username"
-            required
-            value={username}
-            onChange={this.handleUsernameChange}
-            onBlur={this.handleUsernameBlur}
-            autoFocus
-          />
-        </div>
-        <div className={styles.formInput}>
-          <TextInput
-            label="Password"
-            type="password"
-            required
-            value={password}
-            onChange={this.handlePasswordChange}
-            onBlur={this.handlePasswordBlur}
-          />
-          {error && <div>Incorrect username and/or password</div>}
-        </div>
+      <section>
+        <h2>Log in</h2>
+        <form onSubmit={this.handleSubmit} className={styles.form}>
+          <div className={styles.formInput}>
+            <TextInput
+              label="Username"
+              required
+              value={username}
+              onChange={this.handleUsernameChange}
+              onBlur={this.handleUsernameBlur}
+              autoFocus
+            />
+          </div>
+          <div className={styles.formInput}>
+            <TextInput
+              label="Password"
+              type="password"
+              required
+              value={password}
+              onChange={this.handlePasswordChange}
+              onBlur={this.handlePasswordBlur}
+            />
+            {error && <div>Incorrect username and/or password</div>}
+          </div>
 
-        <Button btnStyle="primary" disabled={pending}>
-          Log in
-        </Button>
-      </form>
+          <Button btnStyle="primary" disabled={pending}>
+            Log in
+          </Button>
+          <p>
+            Not yet registered? <a href="" onClick={this.openRegisterModal}>Register</a>
+          </p>
+        </form>
+      </section>
     );
   }
 }
@@ -92,6 +105,7 @@ LoginForm.propTypes = {
   logIn: PropTypes.func.isRequired,
   updateForm: PropTypes.func.isRequired,
   sessionUserId: PropTypes.string,
+  openModal: PropTypes.func.isRequired,
 };
 
 class Wrapper extends React.Component {
@@ -113,11 +127,5 @@ export default connect(
     formState: state.getIn(['forms', 'login']),
     sessionUserId: state.getIn(['session', 'userId']),
   }),
-  dispatch => {
-    const { logIn, updateForm } = bindActionCreators(actions, dispatch);
-    return {
-      logIn,
-      updateForm,
-    };
-  }
+  dispatch => bindActionCreators({ ...actions, ...modalActions }, dispatch),
 )(Wrapper);
