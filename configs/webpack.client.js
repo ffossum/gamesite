@@ -11,6 +11,7 @@ module.exports = {
   entry: ["./src/client"],
   output: {
     path: path.join(__dirname, "../static/dist"),
+    publicPath: "/static/dist/",
     filename: "client.js",
     chunkFilename: "[name].[id].js"
   },
@@ -20,7 +21,9 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
-    new ExtractTextPlugin('style.css')
+    new ExtractTextPlugin('style.css', {
+      allChunks: true,
+    }),
   ],
   module: {
     loaders: [

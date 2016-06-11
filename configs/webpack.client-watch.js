@@ -5,7 +5,7 @@ var port = 3000;
 
 config.cache = true;
 config.debug = true;
-config.devtool = "eval-source-map";
+config.devtool = "#inline-source-map";
 config.externals = {};
 
 config.entry.unshift(

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {
   Router,
   browserHistory,
+  match,
 } from 'react-router';
 import {
   syncHistoryWithStore,
@@ -16,25 +17,29 @@ import socket from './socket/';
 
 import './client.css';
 
-socket.init(store);
+match({ history: browserHistory, routes }, (error, redirectLocation, renderProps) => {
+  socket.init(store);
 
-const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: state => state.get('routing'),
-});
+  const history = syncHistoryWithStore(browserHistory, store, {
+    selectLocationState: state => state.get('routing'),
+  });
 
-ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      {routes}
-    </Router>
-  </Provider>,
-  document.getElementById('root'));
-
-if (__DEVELOPMENT__) {
-  const DevTools = require('../containers/DevTools').default;
   ReactDOM.render(
     <Provider store={store}>
-      <DevTools />
+      <Router history={history} {...renderProps} >
+        {routes}
+      </Router>
     </Provider>,
-    document.getElementById('dev-tools'));
-}
+    document.getElementById('root')
+  );
+
+  if (__DEVELOPMENT__) {
+    const DevTools = require('../containers/DevTools').default;
+    ReactDOM.render(
+      <Provider store={store}>
+        <DevTools />
+      </Provider>,
+      document.getElementById('dev-tools')
+    );
+  }
+});

@@ -34,5 +34,7 @@ export default connect(
       games,
     };
   },
-  dispatch => bindActionCreators({ ...loginActions, ...modalActions }, dispatch)
+  dispatch => bindActionCreators({ ...loginActions, ...modalActions }, dispatch),
+  null,
+  { pure: false }
 )(NavContainer);
