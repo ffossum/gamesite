@@ -1,7 +1,7 @@
 @import "../../../client/variables.css";
 
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -24,6 +24,7 @@
   padding: 1rem;
   min-height: 10rem;
   min-width: 15rem;
+  overflow-y: auto;
 
   border: var(--border);
   border-radius: 3px;
