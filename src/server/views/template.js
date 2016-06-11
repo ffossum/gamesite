@@ -1,13 +1,14 @@
-const style = require('!!raw!../../../static/dist/style.css');
+/* eslint-disable import/no-unresolved */
+const prodStyle = __PRODUCTION__ ? require('!!raw!../../../static/dist/style.css') : '';
 
-const devScripts =
+const devHead =
 `
 <script src="http://localhost:3000/dist/client.js" defer></script>
 `;
 
-const prodScripts =
+const prodHead =
 `
-<style>${style}</style>
+<style>${prodStyle}</style>
 <script src="https://fb.me/react-15.0.1.min.js" defer></script>
 <script src="https://fb.me/react-dom-15.0.1.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/immutable.js/3.7.6/immutable.min.js" defer></script>
@@ -33,7 +34,7 @@ export default ({
     <link href='https://fonts.googleapis.com/css?family=Lato:900' rel='stylesheet' type='text/css'>
     <script>window.INITIAL_STATE = ${initialState};</script>
 
-    ${__DEVELOPMENT__ ? devScripts : prodScripts}
+    ${__DEVELOPMENT__ ? devHead : prodHead}
 
   </head>
   <body>
