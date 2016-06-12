@@ -1,5 +1,7 @@
 /* eslint no-console: 0 */
 
+
+import path from 'path';
 import Koa from 'koa';
 import compress from 'koa-compress';
 import convert from 'koa-convert';
@@ -7,6 +9,7 @@ import serve from 'koa-static';
 import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
+import favicon from 'koa-favicon';
 import {
   renderReact,
   initializeReduxStore,
@@ -35,8 +38,10 @@ initDb();
 const app = new Koa();
 const router = new KoaRouter();
 
-app.use(bodyParser());
 app.use(compress());
+app.use(bodyParser());
+
+app.use(favicon(path.join('.', 'static', 'favicon.ico')));
 
 require('./auth');
 app.use(passport.initialize());
@@ -59,16 +64,16 @@ router.post('/api/register',
 
 router.get('/api/users', getUsers);
 
+router.get('/static/*',
+  convert(serve('.')),
+);
+
 router.get('/*',
   authenticateJwtCookie,
   fetchAuthenticatedUserData,
   refreshJwtCookie,
   initializeReduxStore,
   renderReact,
-);
-
-router.get('/static/*',
-  convert(serve('.')),
 );
 
 app
