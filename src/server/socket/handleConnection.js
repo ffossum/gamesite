@@ -38,6 +38,9 @@ import { isLobbyRoute, getGameIdFromRoute } from 'util/routeUtils';
 import isInRoom from './isInRoom';
 import getRoomSockets from './getRoomSockets';
 import { asViewedBy } from 'games/rps/';
+import { getMessageCacheInstance } from './messageCache';
+
+const messageCache = getMessageCacheInstance();
 
 function getJwt(request) {
   const { headers } = request;
@@ -104,13 +107,15 @@ export default async function handleConnection(socket) {
     socket.emit('news', { hello: 'guest' });
   }
 
-  socket.on(SEND_MESSAGE, message => {
+  socket.on(SEND_MESSAGE, data => {
     if (socket.user) {
-      socket.broadcast.emit(NEW_MESSAGE, {
-        text: message.text,
+      const message = {
+        text: data.text,
         time: new Date().toJSON(),
         user: socket.user.id,
-      });
+      };
+      messageCache.add(message);
+      socket.broadcast.emit(NEW_MESSAGE, message);
     }
   });
 

@@ -2,6 +2,7 @@ import { getUserData } from './userData';
 
 export const SEND_MESSAGE = 'mainChat/SEND_MESSAGE';
 export const NEW_MESSAGE = 'mainChat/NEW_MESSAGE';
+export const RESET_MESSAGES = 'mainChat/RESET';
 
 export function newMessage(message) {
   return dispatch => {
@@ -37,6 +38,13 @@ export function sendMessage(text) {
 
       dispatch(newMessage(message));
     }
+  };
+}
+
+export function resetMessages(messages = []) {
+  return {
+    type: RESET_MESSAGES,
+    payload: messages,
   };
 }
 

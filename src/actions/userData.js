@@ -5,6 +5,15 @@ export const GET_USER_DATA = 'userData/GET';
 
 const pendingFetches = {};
 
+export function addUserData(users) {
+  return {
+    type: GET_USER_DATA,
+    payload: {
+      users,
+    },
+  };
+}
+
 export function getUserData(...userIds) {
   return (dispatch, getState) => {
     const stateUsers = getState().getIn(['data', 'users']);
@@ -25,12 +34,7 @@ export function getUserData(...userIds) {
           res.json()
             .then(json => {
               if (res.ok) {
-                dispatch({
-                  type: GET_USER_DATA,
-                  payload: {
-                    users: json.users,
-                  },
-                });
+                dispatch(addUserData(json.users));
               }
               delete pendingFetches[fetchUrl];
             })
