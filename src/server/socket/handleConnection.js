@@ -250,6 +250,9 @@ export default async function handleConnection(socket) {
         });
 
         if (gameOver) {
+          socket.emit(GAME_ENDED, {
+            game: { id: gameId },
+          });
           socket.broadcast
             .to(getSpectatorChannelName(gameId))
             .to(getGameChannelName(gameId))
