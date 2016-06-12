@@ -5,6 +5,7 @@ import _ from 'lodash';
 import HandHistory from './HandHistory';
 import ActionButtons from './ActionButtons';
 import isUserInGame from 'util/isUserInGame';
+import { ENDED } from 'constants/gameStatus';
 
 import styles from './rockPaperScissors.css';
 
@@ -14,7 +15,11 @@ export default class RockPaperScissors extends React.Component {
     const { state, messages } = game;
     const inGame = isUserInGame(game, user);
 
+    const isGameOver = game.status === ENDED;
+
     const playersArray = _.toArray(state.players);
+
+    const winner = _.maxBy(playersArray, player => player.score);
 
     return (
       <article className={styles.rpsContainer}>
@@ -42,12 +47,19 @@ export default class RockPaperScissors extends React.Component {
           <HandHistory players={playersArray} />
         </section>
         {
-          inGame && (
+          inGame && !isGameOver && (
             <section className={styles.actionSection}>
               <ActionButtons user={user} game={game} performAction={performAction} />
             </section>
           )
         }
+        {
+          isGameOver &&
+            <section className={styles.winnerSection}>
+              <h1>{`${winner.username} wins!`}</h1>
+            </section>
+        }
+
         <section className={styles.chatSection}>
           <div>
             <Chat messages={messages} sendMessage={sendMessage} readOnly={!inGame} />

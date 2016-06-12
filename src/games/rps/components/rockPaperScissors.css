@@ -33,6 +33,11 @@
   padding: 1rem;
 }
 
+.winnerSection {
+  width: 100%;
+  text-align: center;
+}
+
 .chatSection {
   position: relative;
   width: 100%;
@@ -67,6 +72,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .winnerSection {
+    position: absolute;
+    width: calc(100% - 21rem);
+    left: 0;
+    bottom: 8rem;
   }
   .actionSection {
     position: absolute;

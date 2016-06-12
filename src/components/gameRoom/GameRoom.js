@@ -5,7 +5,6 @@ import Button from 'components/common/Button';
 import _ from 'lodash';
 import {
   NOT_STARTED,
-  IN_PROGRESS,
 } from 'constants/gameStatus';
 import GameInProgress from './GameInProgress';
 import isUserInGame from 'util/isUserInGame';
@@ -25,9 +24,9 @@ export default class GameRoom extends React.Component {
     const { game, user } = this.props;
     const { messages, users } = game;
 
-    const inProgress = game.status === IN_PROGRESS;
+    const hasStarted = game.status !== NOT_STARTED;
     const inGame = isUserInGame(game, user);
-    if (inProgress) {
+    if (hasStarted) {
       return (
         <GameInProgress
           user={user}
