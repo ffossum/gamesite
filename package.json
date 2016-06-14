@@ -1,7 +1,7 @@
 {
-  "name": "koa-example",
-  "version": "0.0.0",
-  "description": "",
+  "name": "gamesite",
+  "version": "0.1.0",
+  "description": "A website for playing board and card games... some day.",
   "scripts": {
     "start": "node node_modules/forever/bin/forever --minUptime 1000 --spinSleepTime 1000 -c \"node --harmony\" ./dist/server.js",
     "build": "npm run build-client && npm run build-server",
