@@ -33,7 +33,12 @@ class Dropdown extends React.Component {
   }
   render() {
     let { children } = this.props;
-    const { right, nav } = this.props;
+    const { right, nav, activeClassName } = this.props;
+
+    const linkClassName = classnames({
+      [navStyles.navlink]: nav,
+      [activeClassName]: this.state.expanded && activeClassName,
+    });
 
     const expandedClassName = classnames({
       [styles.expanded]: true,
@@ -43,7 +48,7 @@ class Dropdown extends React.Component {
     return (
       <div className={styles.container}>
         <a
-          className={nav && navStyles.navlink}
+          className={linkClassName}
           href=""
           onClick={this.handleTriggerClick}
           aria-haspopup
@@ -74,4 +79,5 @@ Dropdown.propTypes = {
   title: PropTypes.node.isRequired,
   right: PropTypes.bool,
   nav: PropTypes.bool,
+  activeClassName: PropTypes.string,
 };

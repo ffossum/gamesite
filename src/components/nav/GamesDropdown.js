@@ -5,6 +5,7 @@ import gameStatusText from 'constants/gameStatusText';
 import _ from 'lodash';
 
 import styles from './gamesDropdown.css';
+import navStyles from './nav.css';
 
 export default class GamesDropdown extends React.Component {
   render() {
@@ -12,7 +13,7 @@ export default class GamesDropdown extends React.Component {
     const groupedByStatus = _.groupBy(games, 'status');
 
     return (
-      <Dropdown title="Games" nav right>
+      <Dropdown title="Games" nav right activeClassName={navStyles.active}>
         {
           _.map(groupedByStatus, (group, status) => (
             <section key={status} className={styles.section}>
