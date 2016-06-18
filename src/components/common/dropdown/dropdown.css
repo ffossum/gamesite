@@ -7,17 +7,12 @@
 .expanded {
   z-index: 4000;
   position: absolute;
-  top: 100%;
 
   border-left: var(--border);
   border-right: var(--border);
   border-bottom: var(--border);
 
   box-shadow: var(--box-shadow);
-}
-
-.left {
-  left: 0;
 }
 
 .right {
