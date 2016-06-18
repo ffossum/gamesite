@@ -13,7 +13,7 @@ export default class GamesDropdown extends React.Component {
     const groupedByStatus = _.groupBy(games, 'status');
 
     return (
-      <Dropdown title="Games" nav right activeClassName={navStyles.active}>
+      <Dropdown title="Games" nav activeClassName={navStyles.active}>
         {
           _.map(groupedByStatus, (group, status) => (
             <section key={status} className={styles.section}>
