@@ -1,10 +1,12 @@
+@import "../../client/variables.css";
+
 .section {
   max-width: 100vw;
   background-color: white;
   padding-top: 1rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-  color: #aaa;
+  color: var(--darker-gray);
 }
 
 .list {
@@ -14,4 +16,15 @@
 
 .item {
   padding: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+
+  &:not(:last-child) {
+    border-bottom: var(--border);
+  }
+}
+
+.users {
+  min-width: 10rem;
+  padding-right: 2rem;
 }

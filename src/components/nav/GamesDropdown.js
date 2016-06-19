@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import Dropdown, { CloseDropdown } from 'components/common/dropdown/';
+import Gravatar from 'components/common/Gravatar';
 import gameStatusText from 'constants/gameStatusText';
 import _ from 'lodash';
 
@@ -24,8 +25,16 @@ export default class GamesDropdown extends React.Component {
                 {
                   _.map(group, game => (
                     <li key={game.id} className={styles.item}>
+                      <span className={styles.users}>
+                        {
+                          _.map(game.users, user => (
+                            <Gravatar inline emailHash={user.emailHash} name={user.username} />
+                            )
+                          )
+                        }
+                      </span>
                       <CloseDropdown>
-                        <Link to={`/game/${game.id}`}>{game.id}</Link>
+                        <Link to={`/game/${game.id}`}>Open</Link>
                       </CloseDropdown>
                     </li>
                   ))
