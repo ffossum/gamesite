@@ -5,8 +5,12 @@ import {
   userSelector,
   mainChatWithUserDataSelector,
   userGamesSelector,
+  gameByIdSelector,
 } from './commonSelectors';
-import { addUserDataToGame } from './util';
+import {
+  addUserDataToGame,
+  addUserDataToMessage,
+} from './util';
 
 export const playSelector = createSelector(
   gamesNotStartedSelector,
@@ -33,6 +37,18 @@ export const navSelector = createSelector(
   userSelector,
   (gameData, userData, user) => ({
     games: gameData.map(addUserDataToGame(userData)).toJS(),
+    user,
+  })
+);
+
+export const gameRoomSelector = createSelector(
+  gameByIdSelector,
+  userDataSelector,
+  userSelector,
+  (game, userData, user) => ({
+    game: game && addUserDataToGame(userData)(
+      game.update('messages', messages => messages.map(addUserDataToMessage(userData)))
+    ).toJS(),
     user,
   })
 );

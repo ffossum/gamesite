@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { NOT_STARTED } from 'constants/gameStatus';
 import { addUserDataToMessage } from './util';
 
-const gameDataSelector = state => state.getIn(['data', 'games']);
+export const gameDataSelector = state => state.getIn(['data', 'games']);
 
 export const userDataSelector = state => state.getIn(['data', 'users']);
 
@@ -39,3 +39,9 @@ export const userGamesSelector = createSelector(
       game && game.get('users').has(userId)
   ))
 );
+
+export const gameByIdSelector = (state, props = {}) => {
+  const games = gameDataSelector(state);
+  const gameId = props.params && props.params.id;
+  return games.get(gameId);
+};
