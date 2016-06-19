@@ -1,40 +1,13 @@
-import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import loginActions from 'actions/login';
 import modalActions from 'actions/modal';
 import Nav from 'components/nav/Nav';
-
-class NavContainer extends React.Component {
-  render() {
-    const props = {
-      ...this.props,
-      user: this.props.user && this.props.user.toJS(),
-      games: this.props.games && this.props.games.toJS(),
-    };
-
-    return <Nav {...props} />;
-  }
-}
-
-NavContainer.propTypes = {
-  user: PropTypes.object,
-  games: PropTypes.object,
-};
+import { navSelector } from 'selectors';
 
 export default connect(
-  state => {
-    const sessionUserId = state.getIn(['session', 'userId']);
-    const games = state.getIn(['data', 'games']).filter(game => (
-      game && game.get('users').has(sessionUserId)
-    ));
-
-    return {
-      user: state.getIn(['data', 'users', sessionUserId]),
-      games,
-    };
-  },
+  navSelector,
   dispatch => bindActionCreators({ ...loginActions, ...modalActions }, dispatch),
   null,
   { pure: false }
-)(NavContainer);
+)(Nav);

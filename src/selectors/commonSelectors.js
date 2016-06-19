@@ -6,11 +6,16 @@ const gameDataSelector = state => state.getIn(['data', 'games']);
 
 export const userDataSelector = state => state.getIn(['data', 'users']);
 
-export const userSelector = state => {
-  const sessionUserId = state.getIn(['session', 'userId']);
-  const user = state.getIn(['data', 'users', sessionUserId]);
-  return user && user.toJS();
-};
+const userIdSelector = state => state.getIn(['session', 'userId']);
+
+export const userSelector = createSelector(
+  userIdSelector,
+  userDataSelector,
+  (userId, userData) => {
+    const user = userData.get(userId);
+    return user && user.toJS();
+  }
+);
 
 export const gamesNotStartedSelector = createSelector(
   gameDataSelector,
@@ -24,5 +29,13 @@ export const mainChatWithUserDataSelector = createSelector(
   mainChatSelector,
   (userData, mainChat) => mainChat.update('messages', messages => (
     messages.map(addUserDataToMessage(userData))
+  ))
+);
+
+export const userGamesSelector = createSelector(
+  userIdSelector,
+  gameDataSelector,
+  (userId, games) => games.filter(game => (
+      game && game.get('users').has(userId)
   ))
 );
