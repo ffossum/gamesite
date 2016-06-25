@@ -17,7 +17,7 @@ export function addUserData(users) {
 export function getUserData(...userIds) {
   return (dispatch, getState) => {
     const stateUsers = getState().getIn(['data', 'users']);
-    const missingUserIds = _.filter(userIds, userId => !stateUsers.has(userId));
+    const missingUserIds = _.filter(_.uniq(userIds), userId => !stateUsers.has(userId));
 
     if (_.isEmpty(missingUserIds)) {
       return;
