@@ -1,58 +1,37 @@
-import * as gameStatuses from 'constants/gameStatus';
 import _ from 'lodash';
-import promise from 'bluebird';
-const options = {
-  promiseLib: promise,
-};
-const pgp = require('pg-promise')(options);
+import r from 'rethinkdb';
+import connect from './connect';
 
-const connection = {
-  host: 'localhost', // server name or IP address;
-  port: 5432,
-  database: 'game-site',
-  user: 'postgres',
-  password: 'postgres',
-};
-
-async function createTables(db) {
-  await db.query(`CREATE TABLE IF NOT EXISTS users (
-    id TEXT PRIMARY KEY NOT NULL,
-    username TEXT NOT NULL UNIQUE,
-    email TEXT NOT NULL UNIQUE,
-    email_hash TEXT NOT NULL,
-    password TEXT NOT NULL,
-    created TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
-  )`);
-
+async function initRdb() {
+  let conn;
   try {
-    const statuses = _.map(gameStatuses, status => `'${status}'`).join(', ');
-    await db.query(`CREATE TYPE game_status AS ENUM (${statuses})`);
-  } catch (e) {
-    // Type already existed.
+    conn = await connect();
+
+    await r.dbCreate('test').run(conn).error(console.log);
+
+    await Promise.all([
+      await r.tableCreate('users').run(conn).error(console.log),
+      await r.tableCreate('games').run(conn).error(console.log),
+      await r.tableCreate('users_games').run(conn).error(console.log),
+    ]);
+
+    await r.table('users').indexCreate('username').run(conn).error(console.log);
+    await r.table('users_games').indexCreate('userId').run(conn).error(console.log);
+    await r.table('users_games').indexCreate('gameId').run(conn).error(console.log);
+    await r.table('users').indexWait().run(conn).error(console.log);
+
+    console.log('connected');
+  } catch (err) {
+    console.log('error', err);
   }
 
-  await db.query(`CREATE TABLE IF NOT EXISTS games (
-    id TEXT PRIMARY KEY NOT NULL,
-    host TEXT NOT NULL REFERENCES users,
-    comment TEXT,
-    status game_status NOT NULL DEFAULT $(defaultStatus),
-    created TIMESTAMPTZ NOT NULL DEFAULT current_timestamp,
-    state JSONB
-  )`, {
-    defaultStatus: gameStatuses.NOT_STARTED,
-  });
-
-  await db.query(`CREATE TABLE IF NOT EXISTS users_games (
-    user_id TEXT REFERENCES users ON DELETE CASCADE,
-    game_id TEXT REFERENCES games ON DELETE CASCADE,
-    PRIMARY KEY (user_id, game_id)
-  )`);
+  if (conn) {
+    conn.close();
+  }
 }
 
 function init() {
-  const db = pgp(connection);
-  createTables(db);
-  return db;
+  initRdb();
 }
 
 export default _.once(init);

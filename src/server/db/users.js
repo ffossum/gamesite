@@ -1,30 +1,25 @@
 import shortid from 'shortid';
 import { hashPassword } from '../crypto';
 import crypto from 'crypto';
-import db from './index';
+import r from 'rethinkdb';
+import _ from 'lodash';
 
-export async function getUserById(userId) {
-  return db.oneOrNone(`
-    SELECT id, username, email, email_hash AS "emailHash", password
-    FROM users
-    WHERE id=$1`, userId);
+export async function getUserById(rdbConn, userId) {
+  return r.table('users').get(userId).run(rdbConn);
 }
 
-export async function getUsersByIds(userIds) {
-  return db.many(`
-    SELECT id, username, email, email_hash AS "emailHash", password
-    FROM users
-    WHERE id=ANY($(userIds))`, { userIds });
+export async function getUsersByIds(rdbConn, userIds) {
+  const cursor = await r.table('users').getAll(...userIds).run(rdbConn);
+  return cursor.toArray();
 }
 
-export async function getUserByName(username) {
-  return db.oneOrNone(`
-    SELECT id, username, email, email_hash AS "emailHash", password
-    FROM users
-    WHERE username=$1`, username);
+export async function getUserByName(rdbConn, username) {
+  const cursor = await r.table('users').getAll(username, { index: 'username' }).run(rdbConn);
+  const result = await cursor.toArray();
+  return result[0];
 }
 
-export async function addUser(email, username, password) {
+export async function addUser(rdbConn, email, username, password) {
   const emailHash = crypto.createHash('md5').update(email).digest('hex');
   const passwordHash = await hashPassword(password);
   const userId = shortid.generate();
@@ -37,18 +32,27 @@ export async function addUser(email, username, password) {
     password: passwordHash,
   };
 
-  await db.none(`INSERT INTO users (id, email, email_hash, username, password)
-    VALUES ($(id), $(email), $(emailHash), $(username), $(password))`, user);
+  await r.table('users').insert(user).run(rdbConn);
 
   return user;
 }
 
-export async function isUsernameAvailable(username) {
-  const { exists } = await db.one('SELECT EXISTS(SELECT 1 FROM users WHERE username=$1)', username);
-  return !exists;
+export async function isUsernameAvailable(rdbConn, username) {
+  const cursor = await r.table('users')
+    .filter(user => user('username').upcase().eq(username.toUpperCase()))
+    .run(rdbConn);
+
+  const matches = await cursor.toArray();
+
+  return _.isEmpty(matches);
 }
 
-export async function isEmailAvailable(email) {
-  const { exists } = await db.one('SELECT EXISTS(SELECT 1 FROM users WHERE email=$1)', email);
-  return !exists;
+export async function isEmailAvailable(rdbConn, email) {
+  const cursor = await r.table('users')
+    .filter(user => user('email').upcase().eq(email.toUpperCase()))
+    .run(rdbConn);
+
+  const matches = await cursor.toArray();
+
+  return _.isEmpty(matches);
 }

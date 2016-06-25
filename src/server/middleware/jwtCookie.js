@@ -37,11 +37,13 @@ export async function expireJwtCookie(ctx, next) {
 
 export async function authenticateJwtCookie(ctx, next) {
   const jwt = ctx.cookies.get(COOKIE_NAME);
-  try {
-    const decoded = await verifyJwt(jwt);
-    ctx.req.user = decoded;
-  } catch (err) {
-    // Do nothing
+  if (jwt) {
+    try {
+      const decoded = await verifyJwt(jwt);
+      ctx.req.user = decoded;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   await next();
@@ -57,7 +59,7 @@ export async function requireAuthentication(ctx, next) {
 
 export async function fetchAuthenticatedUserData(ctx, next) {
   if (ctx.isAuthenticated()) {
-    const user = await getUserById(ctx.req.user.id);
+    const user = await getUserById(ctx.req.rdbConn, ctx.req.user.id);
     ctx.req.user = user;
   }
 

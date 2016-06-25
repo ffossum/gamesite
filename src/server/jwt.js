@@ -11,7 +11,8 @@ export async function verifyJwt(token) {
   return await jwt.verifyAsync(token, secret);
 }
 
-export async function getUserByJwt(token) {
+export async function getUserByJwt(rdbConn, token) {
   const decoded = await verifyJwt(token);
-  return await getUserById(decoded.id);
+  const user = await getUserById(rdbConn, decoded.id);
+  return user;
 }

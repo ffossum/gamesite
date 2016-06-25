@@ -53,7 +53,7 @@ export async function initializeReduxStore(ctx, next) {
   const messages = messageCache.messages;
   if (!_.isEmpty(messages)) {
     const userIds = messageCache.userIds;
-    const users = await getUsersByIds(userIds);
+    const users = await getUsersByIds(ctx.req.rdbConn, userIds);
     const publicUserData = _.chain(users)
       .map(getPublicUserData)
       .keyBy('id')

@@ -1,6 +1,6 @@
 import shortid from 'shortid';
 import _ from 'lodash';
-import db from './index';
+import r from 'rethinkdb';
 import {
   NOT_STARTED,
   IN_PROGRESS,
@@ -13,158 +13,165 @@ import {
   asViewedBy,
 } from 'games/rps/rps';
 
-async function create(data) {
+async function create(rdbConn, data) {
   const { host, options } = data;
   const { comment } = options;
   const gameId = shortid.generate();
 
+  const game = {
+    id: gameId,
+    host,
+    comment,
+    status: NOT_STARTED,
+  };
+
   try {
-    await db.tx(t => {
-      const q1 = t.none(`INSERT INTO games(id, host, comment)
-        VALUES ($(gameId), $(host), $(comment))`, { gameId, host, comment });
-      const q2 = t.none(`INSERT INTO users_games(user_id, game_id)
-        VALUES ($(host), $(gameId))`, { host, gameId });
-
-      return t.batch([q1, q2]);
-    });
-
-    return {
-      id: gameId,
-      host,
-      comment,
-      users: [data.host],
-      status: NOT_STARTED,
-    };
-  } catch (e) {
-    return null;
-  }
-}
-
-async function join(gameId, userId) {
-  try {
-    db.none('INSERT INTO users_games(user_id, game_id) VALUES ($(userId), $(gameId))',
-      { userId, gameId }
-    );
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-async function leave(gameId, userId) {
-  try {
-    db.none('DELETE FROM users_games WHERE user_id=$(userId) AND game_id=$(gameId)',
-      { userId, gameId }
-    );
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-async function get(gameId, userId) {
-  try {
-    const game = await db.oneOrNone(`
-      SELECT
-        games.id,
-        created,
-        games.host,
-        comment,
-        array_agg(users_games.user_id) AS users,
-        status,
-        state
-      FROM games, users_games
-      WHERE games.id=users_games.game_id AND games.id=$1
-      GROUP BY games.id`,
-      gameId
-    );
+    await Promise.all([
+      r.table('games').insert(game).run(rdbConn),
+      r.table('users_games').insert({
+        id: [host, gameId],
+        userId: host,
+        gameId,
+      }).run(rdbConn),
+    ]);
 
     return {
       ...game,
-      state: asViewedBy(game.state, userId),
+      users: [host],
     };
-  } catch (e) {
+  } catch (err) {
+    console.log(err);
     return null;
   }
 }
 
-async function start(gameId, userId) {
+async function join(rdbConn, gameId, userId) {
   try {
-    const { users } = await get(gameId);
-    const state = getInitialState(users);
-    const result = await db.result(`
-      UPDATE games
-      SET (status, state) = ($(IN_PROGRESS), $(state))
-      WHERE id=$(gameId) AND host=$(userId)
-    `, {
-      IN_PROGRESS,
-      state,
-      gameId,
+    const result = await r.table('users_games').insert({
+      id: [userId, gameId],
       userId,
-    });
+      gameId,
+    }).run(rdbConn);
 
-    return !!result.rowCount ? asViewedBy(state, userId) : false;
+    return result.inserted === 1 && result.errors === 0;
   } catch (e) {
+    console.log(e);
     return false;
   }
 }
 
-export async function getUserGames(userId) {
-  let games = await db.any(`
-    SELECT
-      games.id,
-      created,
-      games.host,
-      comment,
-      array_agg(users_games.user_id) AS users,
-      status,
-      state
-    FROM games, users_games
-    WHERE games.id=users_games.game_id
-    AND games.id IN (SELECT game_id from users_games WHERE user_id=$1)
-    GROUP BY games.id`,
-    userId,
-  );
+async function leave(rdbConn, gameId, userId) {
+  try {
+    const result = await r.table('users_games')
+      .get([userId, gameId])
+      .delete()
+      .run(rdbConn);
+
+    return result.deleted === 1 && result.errors === 0;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+async function get(rdbConn, gameId, userId) {
+  try {
+    const foundGame = await r.table('games').get(gameId)
+      .merge(game => ({
+        users: r.table('users_games')
+          .getAll(game('id'), { index: 'gameId' })
+          .map(userGame => userGame('userId'))
+          .coerceTo('array'),
+      }))
+      .run(rdbConn);
+
+    return {
+      ...foundGame,
+      state: asViewedBy(foundGame.state, userId),
+    };
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+async function start(rdbConn, gameId, userId) {
+  try {
+    const query = r.table('games')
+      .getAll(gameId)
+      .filter(game => (
+        game('id').eq(gameId).and(game('host').eq(userId))
+      ));
+
+    await query.update({
+      status: IN_PROGRESS,
+    }).run(rdbConn);
+
+    const { users } = await get(rdbConn, gameId);
+    const state = getInitialState(users);
+
+    await query.update({
+      state,
+    }).run(rdbConn);
+
+    return asViewedBy(state, userId);
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function getUserGames(rdbConn, userId) {
+  const cursor = await r.table('games')
+    .filter(game => game('status').ne(ENDED))
+    .filter(game => (
+      r.table('users_games')
+        .getAll(userId, { index: 'userId' })
+        .map(userGame => userGame('gameId'))
+        .contains(game('id'))
+    ))
+    .merge(game => ({
+      users: r.table('users_games')
+        .getAll(game('id'), { index: 'gameId' })
+        .map(userGame => userGame('userId'))
+        .coerceTo('array'),
+    }))
+    .run(rdbConn);
+
+  let games = await cursor.toArray();
+
   games = _.map(games, game => ({
     ...game,
     state: asViewedBy(game.state, userId),
   }));
-  return _.keyBy(games, game => game.id);
-}
-
-async function getNotStarted() {
-  const games = await db.any(`
-    SELECT
-      games.id,
-      created,
-      games.host,
-      comment,
-      array_agg(users_games.user_id) AS users,
-      status
-    FROM games, users_games
-    WHERE games.id=users_games.game_id AND status=$1
-    GROUP BY games.id`, NOT_STARTED
-  );
 
   return _.keyBy(games, game => game.id);
 }
 
-export async function performGameAction(gameId, userId, action) {
+export async function getNotStarted(rdbConn) {
+  const cursor = await r.table('games')
+    .filter(game => game('status').eq(NOT_STARTED))
+    .merge(game => ({
+      users: r.table('users_games')
+        .getAll(game('id'), { index: 'gameId' })
+        .map(userGame => userGame('userId'))
+        .coerceTo('array'),
+    })).run(rdbConn);
+
+  const games = await cursor.toArray();
+
+  return _.keyBy(games, game => game.id);
+}
+
+export async function performGameAction(rdbConn, gameId, userId, action) {
   try {
-    const game = await db.one(`
-      SELECT
-        array_agg(users_games.user_id) AS users,
-        status,
-        state
-      FROM games, users_games
-      WHERE games.id=users_games.game_id
-      AND games.id=$(gameId)
-      AND status=$(IN_PROGRESS)
-      GROUP BY games.id
-    `, {
-      gameId,
-      IN_PROGRESS,
-    });
+    const game = await r.table('games').get(gameId)
+      .merge(row => ({
+        users: r.table('users_games')
+          .getAll(row('id'), { index: 'gameId' })
+          .map(userGame => userGame('userId'))
+          .coerceTo('array'),
+      })).run(rdbConn);
 
     if (!_.includes(game.users, userId)) {
       return false;
@@ -178,15 +185,10 @@ export async function performGameAction(gameId, userId, action) {
     const gameOver = isGameOver(newState);
     const newStatus = gameOver ? ENDED : game.status;
 
-    await db.none(`
-      UPDATE games
-      SET (state, status) = ($(newState), $(newStatus))
-      WHERE id=$(gameId)
-    `, {
-      newState,
-      newStatus,
-      gameId,
-    });
+    await r.table('games').get(gameId).update({
+      state: r.literal(newState),
+      status: newStatus,
+    }).run(rdbConn);
 
     return {
       previousState: game.state,
@@ -194,6 +196,7 @@ export async function performGameAction(gameId, userId, action) {
       gameOver,
     };
   } catch (e) {
+    console.log(e);
     return false;
   }
 }
