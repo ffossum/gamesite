@@ -28,7 +28,12 @@ export default class GamesDropdown extends React.Component {
                       <span className={styles.users}>
                         {
                           _.map(game.users, user => (
-                            <Gravatar inline emailHash={user.emailHash} name={user.username} />
+                            <Gravatar
+                              inline
+                              key={user.id}
+                              emailHash={user.emailHash}
+                              name={user.username}
+                            />
                             )
                           )
                         }
