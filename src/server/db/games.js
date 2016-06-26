@@ -191,6 +191,7 @@ export async function performGameAction(rdbConn, gameId, userId, action) {
     }).run(rdbConn);
 
     return {
+      users: game.users,
       previousState: game.state,
       newState,
       gameOver,

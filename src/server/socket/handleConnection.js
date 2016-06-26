@@ -36,7 +36,6 @@ import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
 import { isLobbyRoute, getGameIdFromRoute } from 'util/routeUtils';
 import isInRoom from './isInRoom';
-import getRoomSockets from './getRoomSockets';
 import { asViewedBy } from 'games/rps/';
 import { getMessageCacheInstance } from './messageCache';
 import connect from '../db/connect';
@@ -256,14 +255,16 @@ export default async function handleConnection(socket) {
       const success = await games.performGameAction(rdbConn, gameId, socket.user.id, data.action);
       rdbConn.close();
       if (success) {
-        const { newState, gameOver } = success;
-        _.forEach(getRoomSockets(socket, getGameChannelName(gameId)), playerSocket => {
-          if (playerSocket.user) {
-            playerSocket.emit(NEW_ACTION, {
-              game: { id: gameId },
-              state: asViewedBy(newState, playerSocket.user.id),
-            });
-          }
+        const { newState, gameOver, users } = success;
+        socket.emit(NEW_ACTION, {
+          game: { id: gameId },
+          state: asViewedBy(newState, socket.user.id),
+        });
+        _.forEach(users, playerId => {
+          socket.broadcast.to(getUserChannelName(playerId)).emit(NEW_ACTION, {
+            game: { id: gameId },
+            state: asViewedBy(newState, playerId),
+          });
         });
         socket.broadcast.to(getSpectatorChannelName(gameId)).emit(NEW_ACTION, {
           game: { id: gameId },
