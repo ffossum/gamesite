@@ -156,7 +156,8 @@ export async function getNotStarted(rdbConn) {
         .getAll(game('id'), { index: 'gameId' })
         .map(userGame => userGame('userId'))
         .coerceTo('array'),
-    })).run(rdbConn);
+    }))
+    .run(rdbConn);
 
   const games = await cursor.toArray();
 
@@ -171,7 +172,8 @@ export async function performGameAction(rdbConn, gameId, userId, action) {
           .getAll(row('id'), { index: 'gameId' })
           .map(userGame => userGame('userId'))
           .coerceTo('array'),
-      })).run(rdbConn);
+      }))
+      .run(rdbConn);
 
     if (!_.includes(game.users, userId)) {
       return false;
@@ -188,7 +190,8 @@ export async function performGameAction(rdbConn, gameId, userId, action) {
     await r.table('games').get(gameId).update({
       state: r.literal(newState),
       status: newStatus,
-    }).run(rdbConn);
+    })
+    .run(rdbConn);
 
     return {
       users: game.users,

@@ -15,10 +15,25 @@ async function initRdb() {
       await r.tableCreate('users_games').run(conn).error(noop),
     ]);
 
-    await r.table('users').indexCreate('username').run(conn).error(noop);
-    await r.table('users_games').indexCreate('userId').run(conn).error(noop);
-    await r.table('users_games').indexCreate('gameId').run(conn).error(noop);
-    await r.table('users').indexWait().run(conn).error(noop);
+    await r.table('users')
+      .indexCreate('username')
+      .run(conn)
+      .error(noop);
+
+    await r.table('users_games')
+      .indexCreate('userId')
+      .run(conn)
+      .error(noop);
+
+    await r.table('users_games')
+      .indexCreate('gameId')
+      .run(conn)
+      .error(noop);
+
+    await r.table('users')
+      .indexWait()
+      .run(conn)
+      .error(noop);
   } catch (err) {
     console.log('error', err);
   }
