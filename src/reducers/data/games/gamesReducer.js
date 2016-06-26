@@ -19,6 +19,7 @@ import {
   NEW_GAME_MESSAGE,
 } from 'actions/gameChat';
 import {
+  PERFORM_ACTION,
   NEW_ACTION,
 } from 'actions/game';
 
@@ -60,6 +61,7 @@ export default function gamesReducer(state = initialState, action) {
     case NEW_GAME_MESSAGE:
     case GAME_STARTED:
     case GAME_NOT_FOUND:
+    case PERFORM_ACTION:
     case NEW_ACTION:
     case GAME_ENDED: {
       const { game } = action.payload;

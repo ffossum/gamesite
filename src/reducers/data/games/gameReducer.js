@@ -14,6 +14,7 @@ import {
   ENDED,
 } from 'constants/gameStatus';
 import {
+  PERFORM_ACTION,
   NEW_ACTION,
 } from 'actions/game';
 
@@ -70,6 +71,18 @@ export default function gameReducer(state = initialState, action) {
     }
     case GAME_NOT_FOUND: {
       return null;
+    }
+    case PERFORM_ACTION: {
+      const userId = action.meta.session.userId;
+
+      const userIndex = state.getIn(['state', 'active']).indexOf(userId);
+      if (userIndex > -1) {
+        return state.updateIn(['state', 'active'], activePlayers => (
+          activePlayers.delete(userIndex)
+        ));
+      }
+
+      return state;
     }
     case NEW_ACTION: {
       const gameState = action.payload.state;
