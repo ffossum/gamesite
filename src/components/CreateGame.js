@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
+import Incrementer from 'components/common/incrementer/Incrementer';
 
 import styles from './createGame.css';
 import formStyles from 'containers/forms/form.css';
@@ -36,6 +37,9 @@ export default class CreateGame extends React.Component {
               label="Comment"
               onChange={this.handleChangeComment}
             />
+          </div>
+          <div className={formStyles.formInput}>
+            <Incrementer value={2} disabled />
           </div>
           <Button
             disabled={disabled}

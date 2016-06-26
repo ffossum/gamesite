@@ -7,7 +7,6 @@
 
   border-radius: 3px;
   padding: 0.5rem;
-  min-width: 5rem;
 
   transition-duration: 0.3s;
 
@@ -23,6 +22,16 @@
     opacity:0.5;
     background-color: white;
   }
+}
+
+.left {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.right {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .primary {

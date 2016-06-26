@@ -1,15 +1,18 @@
 @import "../../client/variables.css";
 
-.group {
-  & input {
-    width: 100%;
-    padding: 0.5rem;
-    border-radius: 3px;
-    border: var(--border);
+.textInput {
+  padding: 0.5rem;
+  border-top: var(--border);
+  border-bottom: var(--border);
 
-    &[disabled] {
-      background-color: #f2f2f2;
-      opacity:0.5;
-    }
+  &[disabled] {
+    background-color: #f2f2f2;
+    opacity: 0.5;
   }
+}
+
+.full{
+  width: 100%;
+  border-radius: 3px;
+  border: var(--border);
 }

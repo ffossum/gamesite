@@ -1,0 +1,19 @@
+.icon {
+  height: 0.75em;
+  width: 0.75em;
+  margin: 0.25em;
+  display: block;
+  fill: currentColor;
+}
+
+.group {
+  display: flex;
+}
+
+.input {
+  width: 6rem;
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+  text-align: center;
+}
