@@ -24,6 +24,7 @@ async function create(rdbConn, data) {
     comment,
     status: NOT_STARTED,
     users: [host],
+    created: new Date(),
   };
 
   try {
