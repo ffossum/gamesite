@@ -89,24 +89,29 @@ async function get(rdbConn, gameId, userId) {
 
 async function start(rdbConn, gameId, userId) {
   try {
-    const query = r.table('games')
-      .getAll(gameId)
-      .filter(game => (
-        game('id').eq(gameId).and(game('host').eq(userId))
-      ));
+    const gameQuery = r.table('games').get(gameId);
+    const game = await gameQuery.run(rdbConn);
 
-    await query.update({
-      status: IN_PROGRESS,
-    }).run(rdbConn);
+    // TODO validate player count
+    const state = getInitialState(game.users);
 
-    const { users } = await get(rdbConn, gameId);
-    const state = getInitialState(users);
+    const result = await gameQuery.replace(
+      r.branch(
+        r.row('users').eq(game.users),
+        r.row.merge({
+          state,
+          status: IN_PROGRESS,
+        }),
+        r.error('users changed between validation and write')
+      )
+    )
+    .run(rdbConn);
 
-    await query.update({
-      state,
-    }).run(rdbConn);
+    if (result.replaced === 1) {
+      return asViewedBy(state, userId);
+    }
 
-    return asViewedBy(state, userId);
+    return false;
   } catch (e) {
     console.log(e);
     return false;
