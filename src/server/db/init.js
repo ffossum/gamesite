@@ -12,7 +12,6 @@ async function initRdb() {
     await Promise.all([
       await r.tableCreate('users').run(conn).error(noop),
       await r.tableCreate('games').run(conn).error(noop),
-      await r.tableCreate('users_games').run(conn).error(noop),
     ]);
 
     await r.table('users')
@@ -20,17 +19,17 @@ async function initRdb() {
       .run(conn)
       .error(noop);
 
-    await r.table('users_games')
-      .indexCreate('userId')
-      .run(conn)
-      .error(noop);
-
-    await r.table('users_games')
-      .indexCreate('gameId')
+    await r.table('games')
+      .indexCreate('users', { multi: true })
       .run(conn)
       .error(noop);
 
     await r.table('users')
+      .indexWait()
+      .run(conn)
+      .error(noop);
+
+    await r.table('games')
       .indexWait()
       .run(conn)
       .error(noop);

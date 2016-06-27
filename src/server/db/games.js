@@ -23,22 +23,15 @@ async function create(rdbConn, data) {
     host,
     comment,
     status: NOT_STARTED,
+    users: [host],
   };
 
   try {
-    await Promise.all([
-      r.table('games').insert(game).run(rdbConn),
-      r.table('users_games').insert({
-        id: [host, gameId],
-        userId: host,
-        gameId,
-      }).run(rdbConn),
-    ]);
+    await r.table('games')
+      .insert(game)
+      .run(rdbConn);
 
-    return {
-      ...game,
-      users: [host],
-    };
+    return game;
   } catch (err) {
     console.log(err);
     return null;
@@ -47,13 +40,14 @@ async function create(rdbConn, data) {
 
 async function join(rdbConn, gameId, userId) {
   try {
-    const result = await r.table('users_games').insert({
-      id: [userId, gameId],
-      userId,
-      gameId,
-    }).run(rdbConn);
+    const result = await r.table('games')
+      .get(gameId)
+      .update({
+        users: r.row('users').setInsert(userId),
+      })
+      .run(rdbConn);
 
-    return result.inserted === 1 && result.errors === 0;
+    return result.replaced === 1 && result.errors === 0;
   } catch (e) {
     console.log(e);
     return false;
@@ -62,12 +56,14 @@ async function join(rdbConn, gameId, userId) {
 
 async function leave(rdbConn, gameId, userId) {
   try {
-    const result = await r.table('users_games')
-      .get([userId, gameId])
-      .delete()
+    const result = await r.table('games')
+      .get(gameId)
+      .update({
+        users: r.row('users').setDifference([userId]),
+      })
       .run(rdbConn);
 
-    return result.deleted === 1 && result.errors === 0;
+    return result.replaced === 1 && result.errors === 0;
   } catch (e) {
     console.log(e);
     return false;
@@ -76,13 +72,8 @@ async function leave(rdbConn, gameId, userId) {
 
 async function get(rdbConn, gameId, userId) {
   try {
-    const foundGame = await r.table('games').get(gameId)
-      .merge(game => ({
-        users: r.table('users_games')
-          .getAll(game('id'), { index: 'gameId' })
-          .map(userGame => userGame('userId'))
-          .coerceTo('array'),
-      }))
+    const foundGame = await r.table('games')
+      .get(gameId)
       .run(rdbConn);
 
     return {
@@ -123,19 +114,8 @@ async function start(rdbConn, gameId, userId) {
 
 export async function getUserGames(rdbConn, userId) {
   const cursor = await r.table('games')
+    .getAll(userId, { index: 'users' })
     .filter(game => game('status').ne(ENDED))
-    .filter(game => (
-      r.table('users_games')
-        .getAll(userId, { index: 'userId' })
-        .map(userGame => userGame('gameId'))
-        .contains(game('id'))
-    ))
-    .merge(game => ({
-      users: r.table('users_games')
-        .getAll(game('id'), { index: 'gameId' })
-        .map(userGame => userGame('userId'))
-        .coerceTo('array'),
-    }))
     .run(rdbConn);
 
   let games = await cursor.toArray();
@@ -151,12 +131,6 @@ export async function getUserGames(rdbConn, userId) {
 export async function getNotStarted(rdbConn) {
   const cursor = await r.table('games')
     .filter(game => game('status').eq(NOT_STARTED))
-    .merge(game => ({
-      users: r.table('users_games')
-        .getAll(game('id'), { index: 'gameId' })
-        .map(userGame => userGame('userId'))
-        .coerceTo('array'),
-    }))
     .run(rdbConn);
 
   const games = await cursor.toArray();
@@ -166,13 +140,8 @@ export async function getNotStarted(rdbConn) {
 
 export async function performGameAction(rdbConn, gameId, userId, action) {
   try {
-    const game = await r.table('games').get(gameId)
-      .merge(row => ({
-        users: r.table('users_games')
-          .getAll(row('id'), { index: 'gameId' })
-          .map(userGame => userGame('userId'))
-          .coerceTo('array'),
-      }))
+    const game = await r.table('games')
+      .get(gameId)
       .run(rdbConn);
 
     if (!_.includes(game.users, userId)) {
