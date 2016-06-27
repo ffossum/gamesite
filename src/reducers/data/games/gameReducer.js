@@ -16,6 +16,7 @@ import {
 import {
   PERFORM_ACTION,
   NEW_ACTION,
+  ACTION_REJECTED,
 } from 'actions/game';
 
 const initialState = Immutable.fromJS({});
@@ -73,20 +74,16 @@ export default function gameReducer(state = initialState, action) {
       return null;
     }
     case PERFORM_ACTION: {
-      const userId = action.meta.session.userId;
-
-      const userIndex = state.getIn(['state', 'active']).indexOf(userId);
-      if (userIndex > -1) {
-        return state.updateIn(['state', 'active'], activePlayers => (
-          activePlayers.delete(userIndex)
-        ));
-      }
-
-      return state;
+      return state.set('waitingForServer', true);
+    }
+    case ACTION_REJECTED: {
+      return state.delete('waitingForServer');
     }
     case NEW_ACTION: {
       const gameState = action.payload.state;
-      return state.set('state', Immutable.fromJS(gameState));
+      return state
+        .delete('waitingForServer')
+        .set('state', Immutable.fromJS(gameState));
     }
     case GAME_ENDED: {
       const message = {

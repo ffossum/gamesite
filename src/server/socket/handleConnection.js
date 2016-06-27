@@ -248,16 +248,18 @@ export default async function handleConnection(socket) {
     }
   });
 
-  socket.on(PERFORM_ACTION, async data => {
+  socket.on(PERFORM_ACTION, async (data, fn) => {
     if (socket.user) {
       const gameId = data.game.id;
       const rdbConn = await connect();
       const success = await games.performGameAction(rdbConn, gameId, socket.user.id, data.action);
       rdbConn.close();
-      if (success) {
+      if (!success) {
+        fn({ ok: false });
+      } else {
         const { newState, gameOver, users } = success;
-        socket.emit(NEW_ACTION, {
-          game: { id: gameId },
+        fn({
+          ok: true,
           state: asViewedBy(newState, socket.user.id),
         });
         _.forEach(users, playerId => {

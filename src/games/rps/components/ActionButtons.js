@@ -22,7 +22,7 @@ export default class ActionButtons extends React.Component {
   }
   render() {
     const { user, game } = this.props;
-    const active = _.includes(game.state.active, user.id);
+    const active = _.includes(game.state.active, user.id) && !game.waitingForServer;
 
     return (
       <div className={styles.group}>
