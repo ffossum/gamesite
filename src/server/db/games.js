@@ -146,9 +146,8 @@ export async function getNotStarted(rdbConn) {
 
 export async function performGameAction(rdbConn, gameId, userId, action) {
   try {
-    const game = await r.table('games')
-      .get(gameId)
-      .run(rdbConn);
+    const gameQuery = r.table('games').get(gameId);
+    const game = await gameQuery.run(rdbConn);
 
     if (!_.includes(game.users, userId)) {
       return false;
@@ -162,18 +161,28 @@ export async function performGameAction(rdbConn, gameId, userId, action) {
     const gameOver = isGameOver(newState);
     const newStatus = gameOver ? ENDED : game.status;
 
-    await r.table('games').get(gameId).update({
-      state: r.literal(newState),
-      status: newStatus,
-    })
+    const result = await gameQuery.replace(
+      r.branch(
+        r.row('state').eq(game.state),
+        r.row.merge({
+          state: r.literal(newState),
+          status: newStatus,
+        }),
+        r.error('game state changed before write')
+      )
+    )
     .run(rdbConn);
 
-    return {
-      users: game.users,
-      previousState: game.state,
-      newState,
-      gameOver,
-    };
+    if (result.replaced === 1) {
+      return {
+        users: game.users,
+        previousState: game.state,
+        newState,
+        gameOver,
+      };
+    }
+
+    return false;
   } catch (e) {
     console.log(e);
     return false;
