@@ -1,0 +1,44 @@
+import React, { PropTypes } from 'react';
+import Dropdown, { CloseDropdown } from 'components/common/dropdown/';
+import Gravatar from 'components/common/Gravatar';
+
+import styles from './navDropdown.css';
+import navStyles from './nav.css';
+
+export default class UserDropdown extends React.Component {
+  constructor() {
+    super();
+    this.handleLogOut = this.handleLogOut.bind(this);
+  }
+  handleLogOut(e) {
+    e.preventDefault();
+    this.props.logOut();
+  }
+  render() {
+    const { user } = this.props;
+    const dropdownTitle = (
+      <span>
+        <Gravatar inline emailHash={user.emailHash} name={user.username} />{user.username}
+      </span>
+    );
+
+    return (
+      <Dropdown title={dropdownTitle} nav activeClassName={navStyles.active}>
+        <section className={styles.section}>
+          <ul className={styles.list}>
+            <li className={styles.item}>
+              <CloseDropdown>
+                <a href="" onClick={this.handleLogOut}>Log out</a>
+              </CloseDropdown>
+            </li>
+          </ul>
+        </section>
+      </Dropdown>
+    );
+  }
+}
+
+UserDropdown.propTypes = {
+  user: PropTypes.object.isRequired,
+  logOut: PropTypes.func.isRequired,
+};

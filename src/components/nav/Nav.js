@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { IndexLink, Link } from 'react-router';
 import GamesDropdown from './GamesDropdown';
-import Gravatar from 'components/common/Gravatar';
+import UserDropdown from './UserDropdown';
 import _ from 'lodash';
 import {
   LOGIN_MODAL,
@@ -13,14 +13,9 @@ import styles from './nav.css';
 export default class Nav extends React.Component {
   constructor() {
     super();
-    this.handleLogOut = this.handleLogOut.bind(this);
 
     this.openLoginModal = this.openModal.bind(this, LOGIN_MODAL);
     this.openRegisterModal = this.openModal.bind(this, REGISTER_MODAL);
-  }
-  handleLogOut(e) {
-    e.preventDefault();
-    this.props.logOut();
   }
   openModal(modalType, e) {
     e.preventDefault();
@@ -57,14 +52,8 @@ export default class Nav extends React.Component {
         {
           user ?
             <ul className={styles.navgroup}>
-              {
-                games && !_.isEmpty(games) &&
-                  <li><GamesDropdown games={games} /></li>
-              }
-              <li className={styles.user}>
-                <Gravatar inline emailHash={user.emailHash} name={user.username} />{user.username}
-              </li>
-              <li><a className={styles.navlink} href="" onClick={this.handleLogOut}>Log out</a></li>
+              {!_.isEmpty(games) && <li><GamesDropdown games={games} /></li>}
+              <li><UserDropdown user={user} logOut={this.props.logOut} /></li>
             </ul>
           :
             <ul className={styles.navgroup}>

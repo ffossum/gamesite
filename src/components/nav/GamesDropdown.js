@@ -5,7 +5,7 @@ import Gravatar from 'components/common/Gravatar';
 import gameStatusText from 'constants/gameStatusText';
 import _ from 'lodash';
 
-import styles from './gamesDropdown.css';
+import styles from './navDropdown.css';
 import navStyles from './nav.css';
 
 export default class GamesDropdown extends React.Component {
