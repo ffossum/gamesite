@@ -4,7 +4,7 @@ export default function CloseDropdown(props, context) {
   return cloneElement(props.children, {
     onClick: (...args) => {
       context.closeDropdown();
-      return props.children.onClick && props.children.onClick(...args);
+      return props.children.props.onClick && props.children.props.onClick(...args);
     },
   });
 }
