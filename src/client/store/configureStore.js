@@ -4,12 +4,14 @@ import rootReducer from 'reducers/';
 import DevTools from 'containers/DevTools';
 import socketMiddleware from './middleware/socketMiddleware';
 import historyMiddleware from './middleware/historyMiddleware';
+import gameRoomMiddleware from './middleware/gameRoomMiddleware';
 
 const finalCreateStore = compose(
   applyMiddleware(
     thunk,
     socketMiddleware,
     historyMiddleware,
+    gameRoomMiddleware,
   ),
   DevTools.instrument(),
 )(createStore);
