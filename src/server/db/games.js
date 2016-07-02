@@ -1,6 +1,6 @@
 import shortid from 'shortid';
 import _ from 'lodash';
-import r from 'rethinkdb';
+import r from './rethinkdb';
 import {
   NOT_STARTED,
   IN_PROGRESS,
@@ -13,7 +13,7 @@ import {
   asViewedBy,
 } from 'games/rps/rps';
 
-async function create(rdbConn, data) {
+async function create(data) {
   const { host, options } = data;
   const { comment } = options;
   const gameId = shortid.generate();
@@ -30,7 +30,7 @@ async function create(rdbConn, data) {
   try {
     await r.table('games')
       .insert(game)
-      .run(rdbConn);
+      .run();
 
     return game;
   } catch (err) {
@@ -39,14 +39,14 @@ async function create(rdbConn, data) {
   }
 }
 
-async function join(rdbConn, gameId, userId) {
+async function join(gameId, userId) {
   try {
     const result = await r.table('games')
       .get(gameId)
       .update({
         users: r.row('users').setInsert(userId),
       })
-      .run(rdbConn);
+      .run();
 
     return result.replaced === 1 && result.errors === 0;
   } catch (e) {
@@ -55,14 +55,14 @@ async function join(rdbConn, gameId, userId) {
   }
 }
 
-async function leave(rdbConn, gameId, userId) {
+async function leave(gameId, userId) {
   try {
     const result = await r.table('games')
       .get(gameId)
       .update({
         users: r.row('users').setDifference([userId]),
       })
-      .run(rdbConn);
+      .run();
 
     return result.replaced === 1 && result.errors === 0;
   } catch (e) {
@@ -71,11 +71,11 @@ async function leave(rdbConn, gameId, userId) {
   }
 }
 
-async function get(rdbConn, gameId, userId) {
+async function get(gameId, userId) {
   try {
     const foundGame = await r.table('games')
       .get(gameId)
-      .run(rdbConn);
+      .run();
 
     return {
       ...foundGame,
@@ -87,10 +87,10 @@ async function get(rdbConn, gameId, userId) {
   }
 }
 
-async function start(rdbConn, gameId, userId) {
+async function start(gameId, userId) {
   try {
     const gameQuery = r.table('games').get(gameId);
-    const game = await gameQuery.run(rdbConn);
+    const game = await gameQuery.run();
 
     // TODO validate player count
     const state = getInitialState(game.users);
@@ -105,7 +105,7 @@ async function start(rdbConn, gameId, userId) {
         r.error('users changed between validation and write')
       )
     )
-    .run(rdbConn);
+    .run();
 
     if (result.replaced === 1) {
       return asViewedBy(state, userId);
@@ -118,13 +118,11 @@ async function start(rdbConn, gameId, userId) {
   }
 }
 
-export async function getUserGames(rdbConn, userId) {
-  const cursor = await r.table('games')
+export async function getUserGames(userId) {
+  let games = await r.table('games')
     .getAll(userId, { index: 'users' })
     .filter(game => game('status').ne(ENDED))
-    .run(rdbConn);
-
-  let games = await cursor.toArray();
+    .run();
 
   games = _.map(games, game => ({
     ...game,
@@ -134,20 +132,18 @@ export async function getUserGames(rdbConn, userId) {
   return _.keyBy(games, game => game.id);
 }
 
-export async function getNotStarted(rdbConn) {
-  const cursor = await r.table('games')
+export async function getNotStarted() {
+  const games = await r.table('games')
     .filter(game => game('status').eq(NOT_STARTED))
-    .run(rdbConn);
-
-  const games = await cursor.toArray();
+    .run();
 
   return _.keyBy(games, game => game.id);
 }
 
-export async function performGameAction(rdbConn, gameId, userId, action) {
+export async function performGameAction(gameId, userId, action) {
   try {
     const gameQuery = r.table('games').get(gameId);
-    const game = await gameQuery.run(rdbConn);
+    const game = await gameQuery.run();
 
     if (!_.includes(game.users, userId)) {
       return false;
@@ -171,7 +167,7 @@ export async function performGameAction(rdbConn, gameId, userId, action) {
         r.error('game state changed before write')
       )
     )
-    .run(rdbConn);
+    .run();
 
     if (result.replaced === 1) {
       return {

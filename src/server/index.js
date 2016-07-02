@@ -11,9 +11,6 @@ import passport from 'koa-passport';
 import KoaRouter from 'koa-router';
 import favicon from 'koa-favicon';
 import {
-  connectRdb,
-} from './middleware/connectRdb';
-import {
   renderReact,
   initializeReduxStore,
 } from './middleware/renderReact';
@@ -50,7 +47,6 @@ require('./auth');
 app.use(passport.initialize());
 
 router.post('/api/login',
-  connectRdb,
   passport.authenticate('local'),
   refreshJwtCookie,
   sendUserId
@@ -59,7 +55,6 @@ router.post('/api/login',
 router.post('/api/logout', expireJwtCookie);
 
 router.post('/api/register',
-  connectRdb,
   validateUsername,
   validateEmail,
   registerUser,
@@ -68,7 +63,6 @@ router.post('/api/register',
 );
 
 router.get('/api/users',
-  connectRdb,
   getUsers,
 );
 
@@ -77,7 +71,6 @@ router.get('/static/*',
 );
 
 router.get('/*',
-  connectRdb,
   authenticateJwtCookie,
   fetchAuthenticatedUserData,
   refreshJwtCookie,

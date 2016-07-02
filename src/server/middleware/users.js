@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 export async function getUsers(ctx) {
   const userIds = ctx.query.id && ctx.query.id.split(',');
-  let users = await getUsersByIds(ctx.req.rdbConn, userIds);
+  let users = await getUsersByIds(userIds);
   users = _.chain(users)
     .map(getPublicUserData)
     .keyBy('id')

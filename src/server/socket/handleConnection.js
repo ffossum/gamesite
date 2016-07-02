@@ -38,7 +38,6 @@ import { isLobbyRoute, getGameIdFromRoute } from 'util/routeUtils';
 import isInRoom from './isInRoom';
 import { asViewedBy } from 'games/rps/';
 import { getMessageCacheInstance } from './messageCache';
-import connect from '../db/connect';
 
 const messageCache = getMessageCacheInstance();
 
@@ -91,12 +90,11 @@ export default async function handleConnection(socket) {
   const token = getJwt(socket.request);
   if (token) {
     try {
-      socket.rdbConn = await connect();
-      const user = await getUserByJwt(socket.rdbConn, token);
+      const user = await getUserByJwt(token);
 
       socket.join(getUserChannelName(user.id));
 
-      const userGames = await getUserGames(socket.rdbConn, user.id);
+      const userGames = await getUserGames(user.id);
       joinGameChannels(socket, _.keys(userGames));
 
       socket.emit(LOG_IN_SUCCESS, {
@@ -108,10 +106,6 @@ export default async function handleConnection(socket) {
       socket.emit('news', { hello: user.username });
     } catch (e) {
       socket.emit('news', { hello: 'guest' });
-      if (socket.rdbConn) {
-        socket.rdbConn.close();
-        delete socket.rdbConn;
-      }
     }
   } else {
     socket.emit('news', { hello: 'guest' });
@@ -153,14 +147,12 @@ export default async function handleConnection(socket) {
 
   socket.on(CREATE_GAME, async (data, fn) => {
     if (socket.user) {
-      const rdbConn = await connect();
       const { options, custom } = data;
-      const game = await games.create(rdbConn, {
+      const game = await games.create({
         host: socket.user.id,
         options,
         custom,
       });
-      rdbConn.close();
 
       if (game) {
         socket.join(getGameChannelName(game.id));
@@ -173,10 +165,8 @@ export default async function handleConnection(socket) {
 
   socket.on(JOIN_GAME, async (data, fn) => {
     if (socket.user) {
-      const rdbConn = await connect();
       const gameId = data.game.id;
-      const joined = await games.join(rdbConn, gameId, socket.user.id);
-      rdbConn.close();
+      const joined = await games.join(gameId, socket.user.id);
 
       if (joined) {
         socket.leave(getSpectatorChannelName(gameId));
@@ -200,10 +190,8 @@ export default async function handleConnection(socket) {
 
   socket.on(LEAVE_GAME, async (data, fn) => {
     if (socket.user) {
-      const rdbConn = await connect();
       const gameId = data.game.id;
-      const left = await games.leave(rdbConn, gameId, socket.user.id);
-      rdbConn.close();
+      const left = await games.leave(gameId, socket.user.id);
 
       if (left) {
         socket.leave(getGameChannelName(gameId));
@@ -228,10 +216,8 @@ export default async function handleConnection(socket) {
 
   socket.on(START_GAME, async (data, fn) => {
     if (socket.user) {
-      const rdbConn = await connect();
       const gameId = data.game.id;
-      const state = await games.start(rdbConn, gameId, socket.user.id);
-      rdbConn.close();
+      const state = await games.start(gameId, socket.user.id);
 
       if (state) {
         const emitData = { game: { id: gameId, state } };
@@ -251,9 +237,8 @@ export default async function handleConnection(socket) {
   socket.on(PERFORM_ACTION, async (data, fn) => {
     if (socket.user) {
       const gameId = data.game.id;
-      const rdbConn = await connect();
-      const success = await games.performGameAction(rdbConn, gameId, socket.user.id, data.action);
-      rdbConn.close();
+      const success = await games.performGameAction(gameId, socket.user.id, data.action);
+
       if (!success) {
         fn({ ok: false });
       } else {
@@ -289,19 +274,15 @@ export default async function handleConnection(socket) {
   });
 
   socket.on(GET_GAME_DATA, async (gameId, fn) => {
-    const rdbConn = await connect();
-    const game = await games.get(rdbConn, gameId, socket.user && socket.user.id);
+    const game = await games.get(gameId, socket.user && socket.user.id);
     fn(game);
-    rdbConn.close();
   });
 
   socket.on(ENTER_ROOM, async (gameId, fn) => {
     const inGame = isInRoom(socket, getGameChannelName(gameId));
 
     if (!inGame) {
-      const rdbConn = await connect();
-      const game = await games.get(rdbConn, gameId, socket.user && socket.user.id);
-      rdbConn.close();
+      const game = await games.get(gameId, socket.user && socket.user.id);
       if (game) {
         socket.join(getSpectatorChannelName(gameId));
         fn(null, game);
@@ -318,12 +299,10 @@ export default async function handleConnection(socket) {
   });
 
   socket.on(JOIN_LOBBY, async () => {
-    const rdbConn = await connect();
     socket.join('lobby');
     socket.emit(REFRESH_LOBBY, {
-      games: await games.getNotStarted(rdbConn),
+      games: await games.getNotStarted(),
     });
-    rdbConn.close();
   });
 
   socket.on(LEAVE_LOBBY, () => {

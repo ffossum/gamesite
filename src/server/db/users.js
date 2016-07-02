@@ -1,25 +1,23 @@
 import shortid from 'shortid';
 import { hashPassword } from '../crypto';
 import crypto from 'crypto';
-import r from 'rethinkdb';
+import r from './rethinkdb';
 import _ from 'lodash';
 
-export async function getUserById(rdbConn, userId) {
-  return r.table('users').get(userId).run(rdbConn);
+export async function getUserById(userId) {
+  return r.table('users').get(userId).run();
 }
 
-export async function getUsersByIds(rdbConn, userIds) {
-  const cursor = await r.table('users').getAll(...userIds).run(rdbConn);
-  return cursor.toArray();
+export async function getUsersByIds(userIds) {
+  return r.table('users').getAll(...userIds).run();
 }
 
-export async function getUserByName(rdbConn, username) {
-  const cursor = await r.table('users').getAll(username, { index: 'username' }).run(rdbConn);
-  const result = await cursor.toArray();
-  return result[0];
+export async function getUserByName(username) {
+  const users = await r.table('users').getAll(username, { index: 'username' }).run();
+  return users[0];
 }
 
-export async function addUser(rdbConn, email, username, password) {
+export async function addUser(email, username, password) {
   const emailHash = crypto.createHash('md5').update(email).digest('hex');
   const passwordHash = await hashPassword(password);
   const userId = shortid.generate();
@@ -32,27 +30,23 @@ export async function addUser(rdbConn, email, username, password) {
     password: passwordHash,
   };
 
-  await r.table('users').insert(user).run(rdbConn);
+  await r.table('users').insert(user).run();
 
   return user;
 }
 
-export async function isUsernameAvailable(rdbConn, username) {
-  const cursor = await r.table('users')
+export async function isUsernameAvailable(username) {
+  const matches = await r.table('users')
     .filter(user => user('username').upcase().eq(username.toUpperCase()))
-    .run(rdbConn);
-
-  const matches = await cursor.toArray();
+    .run();
 
   return _.isEmpty(matches);
 }
 
-export async function isEmailAvailable(rdbConn, email) {
-  const cursor = await r.table('users')
+export async function isEmailAvailable(email) {
+  const matches = await r.table('users')
     .filter(user => user('email').upcase().eq(email.toUpperCase()))
-    .run(rdbConn);
-
-  const matches = await cursor.toArray();
+    .run();
 
   return _.isEmpty(matches);
 }

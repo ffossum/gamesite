@@ -53,7 +53,7 @@
     "redux-immutablejs": "0.0.8",
     "redux-thunk": "^2.0.1",
     "reselect": "^2.5.1",
-    "rethinkdb": "^2.3.2",
+    "rethinkdbdash": "^2.3.13",
     "shortid": "^2.2.4",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",

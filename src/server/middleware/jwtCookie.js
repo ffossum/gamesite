@@ -59,7 +59,7 @@ export async function requireAuthentication(ctx, next) {
 
 export async function fetchAuthenticatedUserData(ctx, next) {
   if (ctx.isAuthenticated()) {
-    const user = await getUserById(ctx.req.rdbConn, ctx.req.user.id);
+    const user = await getUserById(ctx.req.user.id);
     ctx.req.user = user;
   }
 

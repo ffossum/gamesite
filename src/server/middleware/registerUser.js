@@ -9,7 +9,7 @@ export async function validateUsername(ctx, next) {
   const errors = ctx.state.errors || {};
 
   const { username } = ctx.request.body;
-  const available = await isUsernameAvailable(ctx.req.rdbConn, username);
+  const available = await isUsernameAvailable(username);
   if (!available) {
     errors.username = registerUserErrors.USERNAME_TAKEN;
   }
@@ -25,7 +25,7 @@ export async function validateEmail(ctx, next) {
   if (!validator.isEmail(email)) {
     errors.email = registerUserErrors.INVALID_EMAIL;
   }
-  const available = await isEmailAvailable(ctx.req.rdbConn, email);
+  const available = await isEmailAvailable(email);
   if (!available) {
     errors.email = registerUserErrors.EMAIL_TAKEN;
   }
@@ -42,7 +42,7 @@ export async function registerUser(ctx, next) {
     };
   } else {
     const { email, username, password } = ctx.request.body;
-    const user = await addUser(ctx.req.rdbConn, email, username, password);
+    const user = await addUser(email, username, password);
     ctx.req.user = user;
     await next();
   }
