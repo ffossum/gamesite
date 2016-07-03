@@ -4,6 +4,10 @@
   position: relative;
 }
 
+.title {
+  margin-right: 0.4rem;
+}
+
 .expanded {
   z-index: 4000;
   position: absolute;

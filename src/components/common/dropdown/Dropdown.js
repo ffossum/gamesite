@@ -86,7 +86,8 @@ class Dropdown extends React.Component {
           aria-expanded={this.state.expanded}
           ref={this.setTriggerEl}
         >
-          {this.props.title} <DownArrow />
+          <span className={styles.title}>{this.props.title}</span>
+          <DownArrow />
         </a>
         {
           this.state.expanded &&
