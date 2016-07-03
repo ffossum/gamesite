@@ -3,12 +3,11 @@
 .section {
   max-width: 100vw;
   min-width: 10rem;
-  background-color: white;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  color: var(--darker-gray);
 
   & header {
+    color: var(--darker-gray);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
     padding-top: 1rem;
   }
 }
@@ -19,13 +18,33 @@
 }
 
 .item {
-  padding: 0.5rem 0;
-  display: flex;
-  justify-content: space-between;
+  padding: 0.25rem 0.5rem 0 0.5rem;
+  margin: 0.25rem;
 
   &:not(:last-child) {
-    border-bottom: var(--border);
+    & .gameItem {
+      border-bottom: var(--border);
+    }
   }
+}
+
+.itemSelectable {
+  color: black;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  cursor: pointer;
+  border-radius: 3px;
+  &:hover {
+    color: white;
+    transition-duration: 0.2s;
+    background-color: var(--btn-primary-hover);
+  }
+}
+
+.gameItem {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
 }
 
 .users {

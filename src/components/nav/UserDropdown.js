@@ -12,6 +12,7 @@ export default class UserDropdown extends React.Component {
   }
   handleLogOut(e) {
     e.preventDefault();
+    e.stopPropagation();
     this.props.logOut();
   }
   render() {
@@ -26,11 +27,11 @@ export default class UserDropdown extends React.Component {
       <Dropdown title={dropdownTitle} nav activeClassName={navStyles.active}>
         <section className={styles.section}>
           <ul className={styles.list}>
-            <li className={styles.item}>
-              <CloseDropdown>
-                <a href="" onClick={this.handleLogOut}>Log out</a>
-              </CloseDropdown>
-            </li>
+            <CloseDropdown>
+              <li className={`${styles.item} ${styles.itemSelectable}`} onClick={this.handleLogOut}>
+                Log out
+              </li>
+            </CloseDropdown>
           </ul>
         </section>
       </Dropdown>

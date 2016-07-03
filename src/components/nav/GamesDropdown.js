@@ -25,22 +25,24 @@ export default class GamesDropdown extends React.Component {
                 {
                   _.map(group, game => (
                     <li key={game.id} className={styles.item}>
-                      <span className={styles.users}>
-                        {
-                          _.map(game.users, user => (
-                            <Gravatar
-                              inline
-                              key={user.id}
-                              emailHash={user.emailHash}
-                              name={user.username}
-                            />
+                      <div className={styles.gameItem}>
+                        <span className={styles.users}>
+                          {
+                            _.map(game.users, user => (
+                              <Gravatar
+                                inline
+                                key={user.id}
+                                emailHash={user.emailHash}
+                                name={user.username}
+                              />
+                              )
                             )
-                          )
-                        }
-                      </span>
-                      <CloseDropdown>
-                        <Link to={`/game/${game.id}`}>Open</Link>
-                      </CloseDropdown>
+                          }
+                        </span>
+                        <CloseDropdown>
+                          <Link to={`/game/${game.id}`}>Open</Link>
+                        </CloseDropdown>
+                      </div>
                     </li>
                   ))
                 }
