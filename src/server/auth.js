@@ -20,9 +20,8 @@ async function authenticate(username, password) {
 passport.use(
   new LocalStrategy({
     session: false,
-    passReqToCallback: true,
   },
-  async (req, username, password, done) => {
+  async (username, password, done) => {
     try {
       const user = await authenticate(username, password);
       done(null, user);
