@@ -1,7 +1,7 @@
 import rethinkdbdash from 'rethinkdbdash';
 
 const r = rethinkdbdash({
-  host: 'localhost',
+  host: 'database',
   port: 28015,
 });
 
