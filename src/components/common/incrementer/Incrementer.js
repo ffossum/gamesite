@@ -27,10 +27,10 @@ export default class Incrementer extends React.Component {
     }
   }
   render() {
-    const { value, disabled } = this.props;
+    const { label, value, disabled } = this.props;
     return (
       <div>
-        <label>Players</label>
+        {label && <label>{label}</label>}
         <div className={styles.group}>
           <Button left disabled={disabled}>
             <Minus />
@@ -51,6 +51,7 @@ export default class Incrementer extends React.Component {
 }
 
 Incrementer.propTypes = {
+  label: PropTypes.string,
   disabled: PropTypes.bool,
   value: PropTypes.number,
   onChange: PropTypes.func,

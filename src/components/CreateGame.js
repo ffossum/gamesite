@@ -39,7 +39,10 @@ export default class CreateGame extends React.Component {
             />
           </div>
           <div className={formStyles.formInput}>
-            <Incrementer value={2} disabled />
+            <Incrementer
+              label="Players"
+              value={2} disabled
+            />
           </div>
           <Button
             disabled={disabled}
