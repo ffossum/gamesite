@@ -17,7 +17,8 @@ function replaceHandlers(socket, handlers) {
 }
 
 function init(store) {
-  host = `${location.protocol}//${location.hostname}:8080`;
+  const port = location.port ? `:${location.port}` : '';
+  host = `${location.protocol}//${location.hostname}${port}`;
   currentSocket = io(host);
   currentHandlers = require('./handlers').createHandlers(store);
 
