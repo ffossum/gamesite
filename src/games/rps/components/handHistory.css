@@ -19,8 +19,7 @@
   padding-bottom: 0.5rem;
   width: 6.5rem;
   height: 12.6rem;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
 }
 
 .footer {

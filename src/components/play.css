@@ -45,7 +45,7 @@
   width: calc(100% - 2rem);
   display: inline-block;
   text-overflow: ellipsis;
-  overflow-x: hidden;
+  overflow: hidden;
   white-space: nowrap;
   vertical-align: bottom;
 }
