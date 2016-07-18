@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import Button from 'components/common/Button';
-
+import { isNumber } from 'lodash';
 import styles from './incrementer.css';
 import textInputStyles from '../textInput.css';
 
@@ -27,12 +27,23 @@ export default class Incrementer extends React.Component {
     }
   }
   render() {
-    const { label, value, disabled } = this.props;
+    const { label, value, disabled, maxValue, minValue } = this.props;
+
+    const disabledMinus = disabled ||
+      (isNumber(minValue) && value <= minValue);
+
+    const disabledPlus = disabled ||
+      (isNumber(maxValue) && value >= maxValue);
+
     return (
       <div>
         {label && <label>{label}</label>}
         <div className={styles.group}>
-          <Button left disabled={disabled}>
+          <Button
+            disabled={disabledMinus}
+            left
+            onClick={this.handleMinusClick}
+          >
             <Minus />
           </Button>
           <input
@@ -41,7 +52,11 @@ export default class Incrementer extends React.Component {
             className={`${textInputStyles.textInput} ${styles.input}`}
             value={value}
           />
-          <Button right disabled={disabled}>
+          <Button
+            disabled={disabledPlus}
+            right
+            onClick={this.handlePlusClick}
+          >
             <Plus />
           </Button>
         </div>
@@ -55,6 +70,8 @@ Incrementer.propTypes = {
   disabled: PropTypes.bool,
   value: PropTypes.number,
   onChange: PropTypes.func,
+  maxValue: PropTypes.number,
+  minValue: PropTypes.number,
 };
 
 const Plus = () => (
