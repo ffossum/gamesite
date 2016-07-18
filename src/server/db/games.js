@@ -28,6 +28,7 @@ async function create({ data, host }) {
   const game = {
     id: gameId,
     host,
+    playerCount,
     comment,
     options,
     status: NOT_STARTED,
