@@ -28,7 +28,12 @@ export default class UserDropdown extends React.Component {
         <section className={styles.section}>
           <ul className={styles.list}>
             <CloseDropdown>
-              <li className={`${styles.item} ${styles.itemSelectable}`} onClick={this.handleLogOut}>
+              <li
+                className={`${styles.item} ${styles.itemSelectable}`}
+                onClick={this.handleLogOut}
+                role="link"
+                tabIndex="0"
+              >
                 Log out
               </li>
             </CloseDropdown>

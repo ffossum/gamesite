@@ -34,7 +34,7 @@
   padding-bottom: 0.4rem;
   cursor: pointer;
   border-radius: 3px;
-  &:hover {
+  &:hover, &:focus {
     color: white;
     transition-duration: 0.2s;
     background-color: var(--btn-primary-hover);
