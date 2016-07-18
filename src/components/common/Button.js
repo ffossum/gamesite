@@ -5,7 +5,7 @@ import styles from './button.css';
 
 export default class Button extends React.Component {
   render() {
-    const { btnStyle, left, right } = this.props;
+    const { btnStyle, left, right, ...otherProps } = this.props;
 
     const buttonClassNames = classNames({
       [styles[btnStyle]]: btnStyle,
@@ -14,7 +14,7 @@ export default class Button extends React.Component {
     }, styles.btn);
 
     return (
-      <button {...this.props} className={buttonClassNames}>
+      <button {...otherProps} className={buttonClassNames}>
         {this.props.children}
       </button>
     );
