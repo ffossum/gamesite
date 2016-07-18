@@ -5,6 +5,7 @@ html {
   box-sizing: border-box;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
+  line-height: 1.2;
   height: 100%;
 }
 *, *:before, *:after {
