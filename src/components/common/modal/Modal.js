@@ -7,6 +7,16 @@ export default class Modal extends React.Component {
     super();
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
+  componentWillMount() {
+    if (__CLIENT__) {
+      document.addEventListener('keydown', this.handleKeyDown);
+    }
+  }
+  componentWillUnmount() {
+    if (__CLIENT__) {
+      document.removeEventListener('keydown', this.handleKeyDown);
+    }
+  }
   stopPropagation(e) {
     e.stopPropagation();
   }
@@ -18,11 +28,7 @@ export default class Modal extends React.Component {
   render() {
     return (
       <div className={style.overlay} onClick={this.props.onClose}>
-        <div
-          className={style.modal}
-          onClick={this.stopPropagation}
-          onKeyDown={this.handleKeyDown}
-        >
+        <div className={style.modal} onClick={this.stopPropagation}>
           {this.props.children}
         </div>
       </div>
