@@ -2,12 +2,13 @@ import React, { PropTypes } from 'react';
 import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
 import Button from 'components/common/Button';
-import _ from 'lodash';
+import { map, includes, size } from 'lodash';
 import {
   NOT_STARTED,
 } from 'constants/gameStatus';
 import GameInProgress from './GameInProgress';
 import isUserInGame from 'util/isUserInGame';
+import gameInfo from 'games/rps/info';
 
 import styles from './gameRoom.css';
 
@@ -37,6 +38,11 @@ export default class GameRoom extends React.Component {
       );
     }
 
+    const currentPlayerCount = size(game.users);
+    const validPlayerCount = includes(gameInfo.playerCount, currentPlayerCount) &&
+      currentPlayerCount >= game.playerCount.required &&
+      currentPlayerCount <= game.playerCount.required + game.playerCount.optional;
+
     return (
       <div className={styles.gameRoom}>
         <h1>Game room</h1>
@@ -51,11 +57,12 @@ export default class GameRoom extends React.Component {
             <Button
               btnStyle="primary"
               onClick={this.handleStartClicked}
+              disabled={!validPlayerCount}
             >Start game</Button>}
         </div>
         <ul className={styles.playerList}>
           {
-            _.map(users, gameUser => (
+            map(users, gameUser => (
               <li key={gameUser.id}>
                 <Gravatar inline emailHash={gameUser.emailHash} name={gameUser.username} />
                 {gameUser.username}
