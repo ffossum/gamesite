@@ -17,10 +17,7 @@ import {
   ROCK, PAPER, SCISSORS,
 } from './constants';
 
-const defaultFirstTo = 3;
-
-export function getInitialState(userIds, gameOptions = {}) {
-  const { firstTo = defaultFirstTo } = gameOptions;
+export function getInitialState(userIds) {
   let players = map(userIds, userId => ({
     id: userId,
     score: 0,
@@ -32,7 +29,6 @@ export function getInitialState(userIds, gameOptions = {}) {
   return {
     players,
     active: [...userIds],
-    firstTo,
   };
 }
 
@@ -62,14 +58,14 @@ function moveActionToHistory(player) {
   return modifiedPlayer;
 }
 
-export function isGameOver(state) {
+export function isGameOver({ state, options = {} }) {
   return some(state.players, player => (
-    player.score >= state.firstTo
+    player.score >= options.firstTo
   ));
 }
 
-export function performAction(previousState, userId, action) {
-  if (!includes(previousState.active, userId) || isGameOver(previousState)) {
+export function getNextState(previousState, userId, action, options = {}) {
+  if (!includes(previousState.active, userId) || isGameOver({ state: previousState, options })) {
     return previousState;
   }
 
@@ -90,11 +86,24 @@ export function performAction(previousState, userId, action) {
     state.active = keys(state.players);
   }
 
-  if (isGameOver(state)) {
+  if (isGameOver({ state, options })) {
     state.active = [];
   }
 
   return state;
+}
+
+export function performAction(game, userId, action) {
+  const nextState = getNextState(game.state, userId, action, game.options);
+
+  if (game.state === nextState) {
+    return game;
+  }
+
+  return {
+    ...game,
+    state: nextState,
+  };
 }
 
 export function getGameSummary(state) {

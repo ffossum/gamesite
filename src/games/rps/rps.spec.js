@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { every, find } from 'lodash';
 import {
   getInitialState,
-  performAction,
+  getNextState,
   isGameOver,
   asViewedBy,
 } from './rps';
@@ -20,11 +20,6 @@ describe('rock paper scissors', () => {
     expect(allZero).to.be.true;
   });
 
-  it('required score to win is decided before game begins', () => {
-    const state = getInitialState(['1', '2'], { firstTo: 5 });
-    expect(state.firstTo).to.equal(5);
-  });
-
   it('players take their turns simultaneously', () => {
     const state = getInitialState(['1', '2']);
 
@@ -35,7 +30,7 @@ describe('rock paper scissors', () => {
 
   it('a player chooses rock, paper or scissors', () => {
     let state = getInitialState(['1', '2']);
-    state = performAction(state, '1', ROCK);
+    state = getNextState(state, '1', ROCK);
 
     expect(state.active).to.have.length(1);
 
@@ -45,8 +40,8 @@ describe('rock paper scissors', () => {
 
   it('rock crushes scissors', () => {
     let state = getInitialState(['1', '2']);
-    state = performAction(state, '1', ROCK);
-    state = performAction(state, '2', SCISSORS);
+    state = getNextState(state, '1', ROCK);
+    state = getNextState(state, '2', SCISSORS);
 
     expect(state.players['1'].score).to.equal(1);
     expect(state.players['2'].score).to.equal(0);
@@ -54,8 +49,8 @@ describe('rock paper scissors', () => {
 
   it('paper wraps rock', () => {
     let state = getInitialState(['1', '2']);
-    state = performAction(state, '1', ROCK);
-    state = performAction(state, '2', PAPER);
+    state = getNextState(state, '1', ROCK);
+    state = getNextState(state, '2', PAPER);
 
     expect(state.players['1'].score).to.equal(0);
     expect(state.players['2'].score).to.equal(1);
@@ -63,27 +58,27 @@ describe('rock paper scissors', () => {
 
   it('scissors cut paper', () => {
     let state = getInitialState(['1', '2']);
-    state = performAction(state, '1', ROCK);
-    state = performAction(state, '2', PAPER);
+    state = getNextState(state, '1', ROCK);
+    state = getNextState(state, '2', PAPER);
 
     expect(state.players['1'].score).to.equal(0);
     expect(state.players['2'].score).to.equal(1);
   });
 
   it('game ends when a player reaches required score', () => {
-    let state = getInitialState(['1', '2'], { firstTo: 1 });
+    let state = getInitialState(['1', '2']);
+    const options = { firstTo: 1 };
+    state = getNextState(state, '1', ROCK);
+    expect(isGameOver({ state, options })).to.equal(false);
 
-    state = performAction(state, '1', ROCK);
-    expect(isGameOver(state)).to.equal(false);
-
-    state = performAction(state, '2', PAPER);
-    expect(isGameOver(state)).to.equal(true);
+    state = getNextState(state, '2', PAPER);
+    expect(isGameOver({ state, options })).to.equal(true);
   });
 
   describe('as viewed by players', () => {
     it('hides actions by other players', () => {
       let state = getInitialState(['1', '2']);
-      state = performAction(state, '1', ROCK);
+      state = getNextState(state, '1', ROCK);
 
       expect(state.players['1'].action).to.equal(ROCK);
       const viewedState = asViewedBy(state, '2');
@@ -92,7 +87,7 @@ describe('rock paper scissors', () => {
 
     it('lets users see their own actions', () => {
       let state = getInitialState(['1', '2']);
-      state = performAction(state, '1', ROCK);
+      state = getNextState(state, '1', ROCK);
 
       expect(state.players['1'].action).to.equal(ROCK);
       const viewedState = asViewedBy(state, '1');

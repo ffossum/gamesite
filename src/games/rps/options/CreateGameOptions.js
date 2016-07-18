@@ -2,10 +2,7 @@ import React, { PropTypes } from 'react';
 import { isFunction } from 'lodash';
 import Incrementer from 'components/common/incrementer/Incrementer';
 import formStyles from 'containers/forms/form.css';
-
-const defaultValues = {
-  firstTo: 3,
-};
+import defaultValues from './defaultValues';
 
 export default class CreateGameOptions extends React.Component {
   constructor(props) {

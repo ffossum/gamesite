@@ -78,7 +78,6 @@ RockPaperScissors.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.object).isRequired,
     state: PropTypes.shape({
       active: PropTypes.arrayOf(PropTypes.string).isRequired,
-      firstTo: PropTypes.number.isRequired,
       players: PropTypes.objectOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         emailHash: PropTypes.string,

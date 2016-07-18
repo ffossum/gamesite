@@ -4,6 +4,7 @@ import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 import Incrementer from 'components/common/incrementer/Incrementer';
 import CreateGameOptions from 'games/rps/options/CreateGameOptions';
+import defaultOptions from 'games/rps/options/defaultValues';
 
 import styles from './createGame.css';
 import formStyles from 'containers/forms/form.css';
@@ -14,12 +15,12 @@ export default class CreateGame extends React.Component {
 
     this.state = {
       comment: '',
-      specifics: {},
+      options: defaultOptions,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeComment = this.handleChange.bind(this, 'comment');
-    this.handleChangeSpecifics = specifics => this.setState({ specifics });
+    this.handleChangeOptions = options => this.setState({ options });
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -44,8 +45,8 @@ export default class CreateGame extends React.Component {
           </div>
 
           <CreateGameOptions
-            onChange={this.handleChangeSpecifics}
-            values={this.state.specifics}
+            onChange={this.handleChangeOptions}
+            values={this.state.options}
           />
 
           <div className={formStyles.formInput}>

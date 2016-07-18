@@ -14,14 +14,14 @@ import {
 } from 'games/rps/rps';
 
 async function create(data) {
-  const { host, options } = data;
-  const { comment } = options;
+  const { host, options, comment } = data;
   const gameId = shortid.generate();
 
   const game = {
     id: gameId,
     host,
     comment,
+    options,
     status: NOT_STARTED,
     users: [host],
     created: new Date(),
@@ -149,12 +149,13 @@ export async function performGameAction(gameId, userId, action) {
       return false;
     }
 
-    const newState = performAction(game.state, userId, action);
+    const newGameData = performAction(game, userId, action);
+    const newState = newGameData.state;
     if (newState === game.state) {
       return false;
     }
 
-    const gameOver = isGameOver(newState);
+    const gameOver = isGameOver(newGameData);
     const newStatus = gameOver ? ENDED : game.status;
 
     const result = await gameQuery.replace(

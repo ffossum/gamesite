@@ -60,13 +60,11 @@ function createGameSuccess(game) {
   };
 }
 
-export function createGame(options) {
+export function createGame(data) {
   return dispatch => {
     dispatch({
       type: CREATE_GAME,
-      payload: {
-        options,
-      },
+      payload: data,
       meta: {
         socket: game => {
           if (game) {
