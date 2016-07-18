@@ -7,15 +7,23 @@ import {
   ENDED,
 } from 'constants/gameStatus';
 import {
+  info,
   getInitialState,
   performAction,
   isGameOver,
   asViewedBy,
-} from 'games/rps/rps';
+} from 'games/rps/';
 
-async function create(data) {
-  const { host, options, comment } = data;
+async function create({ data, host }) {
+  const { options, comment, playerCount } = data;
   const gameId = shortid.generate();
+  const { required, optional } = playerCount;
+
+  if (!_.includes(info.playerCount, required) ||
+      !_.includes(info.playerCount, required + optional)) {
+    // Illegal player count
+    return null;
+  }
 
   const game = {
     id: gameId,
@@ -92,7 +100,10 @@ async function start(gameId, userId) {
     const gameQuery = r.table('games').get(gameId);
     const game = await gameQuery.run();
 
-    // TODO validate player count
+    if (!_.includes(info.playerCount, _.size(game.users))) {
+      // Illegal player count
+      return false;
+    }
     const state = getInitialState(game.users);
 
     const result = await gameQuery.replace(

@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import { min } from 'lodash';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 import Incrementer from 'components/common/incrementer/Incrementer';
 import CreateGameOptions from 'games/rps/options/CreateGameOptions';
 import defaultOptions from 'games/rps/options/defaultValues';
+import gameInfo from 'games/rps/info';
 
 import styles from './createGame.css';
 import formStyles from 'containers/forms/form.css';
@@ -14,6 +16,10 @@ export default class CreateGame extends React.Component {
     super();
 
     this.state = {
+      playerCount: {
+        required: min(gameInfo.playerCount),
+        optional: 0,
+      },
       comment: '',
       options: defaultOptions,
     };
@@ -40,7 +46,7 @@ export default class CreateGame extends React.Component {
           <div className={formStyles.formInput}>
             <Incrementer
               label="Players"
-              value={2} disabled
+              value={2} disabled // TODO adjust based on game info
             />
           </div>
 
