@@ -20,14 +20,25 @@ class Dropdown extends React.Component {
     this.setContentEl = this.setContentEl.bind(this);
     this.setTriggerEl = this.setTriggerEl.bind(this);
     this.preventBodyOverflow = this.preventBodyOverflow.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
   getChildContext() {
     return {
       closeDropdown: this.closeDropdown,
     };
   }
+  componentWillMount() {
+    if (__CLIENT__) {
+      document.addEventListener('keydown', this.handleKeyDown);
+    }
+  }
   componentDidUpdate() {
     this.preventBodyOverflow();
+  }
+  componentWillUnmount() {
+    if (__CLIENT__) {
+      document.removeEventListener('keydown', this.handleKeyDown);
+    }
   }
   setContentEl(el) {
     this.contentEl = el;
@@ -44,6 +55,11 @@ class Dropdown extends React.Component {
   }
   handleClickOutside() {
     this.closeDropdown();
+  }
+  handleKeyDown(e) {
+    if (e.keyCode === 27) { // 27 = escape key
+      this.closeDropdown();
+    }
   }
   preventBodyOverflow() {
     const { expanded, alignRight } = this.state;
