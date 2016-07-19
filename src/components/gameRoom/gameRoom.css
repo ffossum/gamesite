@@ -19,13 +19,3 @@
   left: 0;
   right: 0;
 }
-
-.playerList {
-  list-style: none;
-  padding: 0;
-
-  & li {
-    margin-top: .5rem;
-    margin-bottom: .5rem;
-  }
-}

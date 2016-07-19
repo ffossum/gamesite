@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import Chat from 'components/chat/Chat';
-import Gravatar from 'components/common/Gravatar';
+import HorizontalPlayerList from 'components/common/HorizontalPlayerList';
 import Button from 'components/common/Button';
-import { map, includes, size } from 'lodash';
+import { includes, size } from 'lodash';
 import {
   NOT_STARTED,
 } from 'constants/gameStatus';
@@ -60,16 +60,7 @@ export default class GameRoom extends React.Component {
               disabled={!validPlayerCount}
             >Start game</Button>}
         </div>
-        <ul className={styles.playerList}>
-          {
-            map(users, gameUser => (
-              <li key={gameUser.id}>
-                <Gravatar inline emailHash={gameUser.emailHash} name={gameUser.username} />
-                {gameUser.username}
-              </li>
-            ))
-          }
-        </ul>
+        <HorizontalPlayerList users={users} />
         <Chat messages={messages} sendMessage={this.sendGameMessage} readOnly={!inGame} />
       </div>
     );
