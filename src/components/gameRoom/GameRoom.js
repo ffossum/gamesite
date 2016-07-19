@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Chat from 'components/chat/Chat';
 import HorizontalPlayerList from 'components/common/HorizontalPlayerList';
 import Button from 'components/common/Button';
-import { includes, size } from 'lodash';
+import { includes, size, isEmpty } from 'lodash';
 import {
   NOT_STARTED,
 } from 'constants/gameStatus';
@@ -47,6 +47,10 @@ export default class GameRoom extends React.Component {
       <div className={styles.gameRoom}>
         <h1>Game room</h1>
         <div>
+          {!isEmpty(game.comment) && <em>{game.comment}</em>}
+          <ul className={styles.gameInfo}>
+            <li>First to {game.options.firstTo}</li>
+          </ul>
           {!inGame && user &&
             <Button onClick={this.handleJoinClicked}>Join game</Button>}
 

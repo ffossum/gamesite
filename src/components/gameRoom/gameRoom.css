@@ -19,3 +19,9 @@
   left: 0;
   right: 0;
 }
+
+.gameInfo {
+  margin-top: 0;
+  list-style: none;
+  padding-left: 0;
+}
