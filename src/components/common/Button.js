@@ -22,7 +22,7 @@ export default class Button extends React.Component {
 }
 
 Button.propTypes = {
-  btnStyle: PropTypes.oneOf(['primary']),
+  btnStyle: PropTypes.oneOf(['primary', 'danger']),
   children: PropTypes.node.isRequired,
   left: PropTypes.bool,
   right: PropTypes.bool,

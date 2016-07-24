@@ -4,6 +4,8 @@
   --darkest-blue: #123f5c;
   --green: #27ae60;
   --red: #c0392b;
+  --darker-red: #9e3025;
+  --darkest-red: #75231b;
   --orange: #f39c12;
   --light-gray: #eee;
   --gray: #ccc;
@@ -28,4 +30,8 @@
   --btn-primary: var(--blue);
   --btn-primary-hover: var(--darker-blue);
   --btn-primary-active: var(--darkest-blue);
+
+  --btn-danger: var(--red);
+  --btn-danger-hover: var(--darker-red);
+  --btn-danger-active: var(--darkest-red);
 }

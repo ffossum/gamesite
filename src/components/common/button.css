@@ -52,3 +52,22 @@
     background-color: var(--btn-primary);
   }
 }
+
+.danger {
+  color: white;
+  border-color: var(--btn-danger);
+  background-color: var(--btn-danger);
+
+  &:focus,
+  &:hover {
+    border-color: var(--btn-danger-hover);
+    background-color: var(--btn-danger-hover);
+  }
+  &:active {
+    border-color: var(--btn-danger-active);
+    background-color: var(--btn-danger-active);
+  }
+  &[disabled] {
+    background-color: var(--btn-danger);
+  }
+}
