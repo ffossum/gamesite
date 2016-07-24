@@ -15,6 +15,9 @@ export const START_GAME = 'gameRoom/START_GAME';
 export const GAME_STARTED = 'gameRoom/GAME_STARTED';
 export const GAME_ENDED = 'gameRoom/ENDED';
 
+export const CANCEL_GAME = 'gameRoom/CANCEL';
+export const GAME_CANCELED = 'gameRoom/CANCELED';
+
 export function refreshGame(game) {
   return dispatch => {
     dispatch(getUserData(...game.users));
@@ -194,6 +197,33 @@ export function gameEnded(gameId) {
   };
 }
 
+export function gameCanceled(gameId) {
+  return {
+    type: GAME_CANCELED,
+    payload: {
+      game: {
+        id: gameId,
+      },
+    },
+  };
+}
+
+export function cancelGame(gameId) {
+  return dispatch => {
+    dispatch({
+      type: CANCEL_GAME,
+      payload: { game: { id: gameId } },
+      meta: {
+        socket: (err, canceled) => {
+          if (!err && canceled) {
+            dispatch(gameCanceled(gameId));
+          }
+        },
+      },
+    });
+  };
+}
+
 export default {
   joinGame,
   playerJoined,
@@ -203,4 +233,5 @@ export default {
   leaveRoom,
   getGameData,
   startGame,
+  cancelGame,
 };

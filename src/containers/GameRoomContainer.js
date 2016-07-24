@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import gameRoomActions from 'actions/gameRoom';
 import gameChatActions from 'actions/gameChat';
 import GameRoom from 'components/gameRoom/GameRoom';
+import {
+  CANCELED,
+} from 'constants/gameStatus';
 
 import { gameRoomSelector } from 'selectors';
 
@@ -32,6 +35,8 @@ class GameRoomContainer extends React.Component {
       return <div>Game not found</div>;
     } else if (game === undefined) {
       return <div>Fetching game data...</div>;
+    } else if (game.status === CANCELED) {
+      return <div>Game canceled by host.</div>;
     }
 
     return <GameRoom {...this.props} />;

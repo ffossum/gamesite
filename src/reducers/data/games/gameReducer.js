@@ -8,10 +8,12 @@ import {
   GAME_STARTED,
   GAME_NOT_FOUND,
   GAME_ENDED,
+  GAME_CANCELED,
 } from 'actions/gameRoom';
 import {
   IN_PROGRESS,
   ENDED,
+  CANCELED,
 } from 'constants/gameStatus';
 import {
   PERFORM_ACTION,
@@ -72,6 +74,14 @@ export default function gameReducer(state = initialState, action) {
     }
     case GAME_NOT_FOUND: {
       return null;
+    }
+    case GAME_CANCELED: {
+      const { game } = action.payload;
+      return Immutable.fromJS({
+        id: game.id,
+        users: [],
+        status: CANCELED,
+      });
     }
     case PERFORM_ACTION: {
       return state.set('waitingForServer', true);

@@ -130,6 +130,28 @@ async function start(gameId, userId) {
   }
 }
 
+async function cancel(gameId, userId) {
+  try {
+    const gameQuery = r.table('games').get(gameId);
+    const game = await gameQuery.run();
+
+    if (game.host !== userId) {
+      // Only the host may cancel the game
+      return false;
+    }
+
+    const result = await gameQuery.delete().run();
+    if (result.deleted === 1) {
+      return true;
+    }
+
+    return false;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
 export async function getUserGames(userId) {
   let games = await r.table('games')
     .getAll(userId, { index: 'users' })
@@ -203,6 +225,7 @@ export default {
   join,
   leave,
   start,
+  cancel,
   get,
   getNotStarted,
   getUserGames,

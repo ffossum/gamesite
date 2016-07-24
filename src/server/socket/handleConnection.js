@@ -27,6 +27,8 @@ import {
   START_GAME,
   GAME_STARTED,
   GAME_ENDED,
+  CANCEL_GAME,
+  GAME_CANCELED,
 } from 'actions/gameRoom';
 import {
   PERFORM_ACTION,
@@ -229,6 +231,25 @@ export default async function handleConnection(socket) {
       fn(state ? { state } : false);
     } else {
       fn(false);
+    }
+  });
+
+  socket.on(CANCEL_GAME, async (data, fn) => {
+    if (socket.user) {
+      const gameId = data.game.id;
+      const canceled = await games.cancel(gameId, socket.user.id);
+
+      if (canceled) {
+        socket.broadcast
+          .to('lobby')
+          .to(getSpectatorChannelName(gameId))
+          .to(getGameChannelName(gameId))
+          .emit(GAME_CANCELED, data);
+      }
+
+      fn(null, canceled);
+    } else {
+      fn('not logged in');
     }
   });
 

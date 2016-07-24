@@ -19,6 +19,7 @@ export default class GameRoom extends React.Component {
     this.handleJoinClicked = (...args) => this.props.joinGame(this.props.game.id, ...args);
     this.handleLeaveClicked = (...args) => this.props.leaveGame(this.props.game.id, ...args);
     this.handleStartClicked = (...args) => this.props.startGame(this.props.game.id, ...args);
+    this.handleCancelClicked = (...args) => this.props.cancelGame(this.props.game.id, ...args);
     this.sendGameMessage = (...args) => this.props.sendGameMessage(this.props.game.id, ...args);
   }
   render() {
@@ -43,6 +44,8 @@ export default class GameRoom extends React.Component {
       currentPlayerCount >= game.playerCount.required &&
       currentPlayerCount <= game.playerCount.required + game.playerCount.optional;
 
+    const isHost = user && game.host === user.id;
+
     return (
       <div className={styles.gameRoom}>
         <h1>Game room</h1>
@@ -54,15 +57,22 @@ export default class GameRoom extends React.Component {
           {!inGame && user &&
             <Button onClick={this.handleJoinClicked}>Join game</Button>}
 
-          {inGame && game.host !== user.id && game.status === NOT_STARTED &&
+          {inGame && !isHost &&
             <Button onClick={this.handleLeaveClicked}>Leave game</Button>}
 
-          {inGame && game.host === user.id && game.status === NOT_STARTED &&
-            <Button
-              btnStyle="primary"
-              onClick={this.handleStartClicked}
-              disabled={!validPlayerCount}
-            >Start game</Button>}
+          {inGame && isHost &&
+            <div className={styles.buttons}>
+              <Button
+                btnStyle="primary"
+                onClick={this.handleStartClicked}
+                disabled={!validPlayerCount}
+              >Start game</Button>
+              <Button
+                btnStyle="danger"
+                onClick={this.handleCancelClicked}
+              >Cancel game</Button>
+            </div>
+          }
         </div>
         <HorizontalPlayerList users={users} />
         <Chat messages={messages} sendMessage={this.sendGameMessage} readOnly={!inGame} />
@@ -90,5 +100,6 @@ GameRoom.propTypes = {
   enterRoom: PropTypes.func.isRequired,
   leaveRoom: PropTypes.func.isRequired,
   startGame: PropTypes.func.isRequired,
+  cancelGame: PropTypes.func.isRequired,
   sendGameMessage: PropTypes.func.isRequired,
 };

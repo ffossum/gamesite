@@ -47,7 +47,9 @@ export const gameRoomSelector = createSelector(
   userSelector,
   (game, userData, user) => ({
     game: game && addUserDataToGame(userData)(
-      game.update('messages', messages => messages.map(addUserDataToMessage(userData)))
+      game.has('messages')
+        ? game.update('messages', messages => messages.map(addUserDataToMessage(userData)))
+        : game
     ).toJS(),
     user,
   })

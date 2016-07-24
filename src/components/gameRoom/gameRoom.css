@@ -25,3 +25,8 @@
   list-style: none;
   padding-left: 0;
 }
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}

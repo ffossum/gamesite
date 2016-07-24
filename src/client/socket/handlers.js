@@ -13,6 +13,7 @@ import {
   PLAYER_LEFT, playerLeft,
   GAME_STARTED, gameStarted,
   GAME_ENDED, gameEnded,
+  GAME_CANCELED, gameCanceled,
 } from 'actions/gameRoom';
 import {
   NEW_GAME_MESSAGE, newGameMessage,
@@ -36,5 +37,6 @@ export function createHandlers(store) {
     [GAME_STARTED]: ({ game }) => store.dispatch(gameStarted(game.id, game.state)),
     [NEW_ACTION]: ({ game, state }) => store.dispatch(newAction(game, state)),
     [GAME_ENDED]: ({ game }) => store.dispatch(gameEnded(game.id)),
+    [GAME_CANCELED]: ({ game }) => store.dispatch(gameCanceled(game.id)),
   };
 }
