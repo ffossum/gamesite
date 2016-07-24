@@ -101,8 +101,8 @@ async function start(gameId, userId) {
     const gameQuery = r.table('games').get(gameId);
     const game = await gameQuery.run();
 
-    if (!_.includes(info.playerCount, _.size(game.users))) {
-      // Illegal player count
+    if (!_.includes(info.playerCount, _.size(game.users)) || // Illegal player count
+        game.host !== userId) { // User is not host
       return false;
     }
     const state = getInitialState(game.users);
