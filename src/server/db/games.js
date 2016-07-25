@@ -169,6 +169,16 @@ export async function getUserGames(userId) {
 export async function getNotStarted() {
   const games = await r.table('games')
     .filter(game => game('status').eq(NOT_STARTED))
+    .pluck(
+      'comment',
+      'created',
+      'host',
+      'id',
+      'options',
+      'playerCount',
+      'status',
+      'users',
+    )
     .run();
 
   return _.keyBy(games, game => game.id);
