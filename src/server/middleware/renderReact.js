@@ -9,10 +9,13 @@ import { logInSuccess } from 'actions/login';
 import { addUserData } from 'actions/userData';
 import { resetMessages } from 'actions/mainChat';
 import { resetCounter } from 'util/uniqueId';
+import { lobbyRefreshed } from 'actions/gamesList';
 import getPublicUserData from '../../util/getPublicUserData';
 import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
+import { getNotStarted } from '../db/games';
 import _ from 'lodash';
+import { toJSON, fromJSON } from 'transit-immutable-js';
 
 const messageCache = getMessageCacheInstance();
 
@@ -50,9 +53,16 @@ export async function initializeReduxStore(ctx, next) {
     store.dispatch(logInSuccess(getPublicUserData(ctx.req.user)));
   }
 
-  const messages = messageCache.messages;
-  if (!_.isEmpty(messages)) {
-    const userIds = messageCache.userIds;
+  const games = await getNotStarted();
+  store.dispatch(lobbyRefreshed(games));
+
+  const gamesUserIds = _.chain(games)
+      .map(game => game.users)
+      .flatten()
+      .value();
+
+  const userIds = _.uniq([...messageCache.userIds, ...gamesUserIds]);
+  if (!_.isEmpty(userIds)) {
     const users = await getUsersByIds(userIds);
     const publicUserData = _.chain(users)
       .map(getPublicUserData)
@@ -60,8 +70,8 @@ export async function initializeReduxStore(ctx, next) {
       .value();
 
     store.dispatch(addUserData(publicUserData));
-    store.dispatch(resetMessages(messages));
   }
+  store.dispatch(resetMessages(messageCache.messages));
 
   ctx.state.store = store;
   await next();
@@ -82,7 +92,7 @@ export async function renderReact(ctx, next) {
     ctx.body = template({
       __DEVELOPMENT__,
       reactString,
-      initialState: JSON.stringify(store.getState()),
+      initialState: JSON.stringify(toJSON(store.getState())),
     });
   }
   await next();

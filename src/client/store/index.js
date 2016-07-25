@@ -1,4 +1,4 @@
 import configureStore from './configureStore';
-import Immutable from 'immutable';
+import { fromJSON } from 'transit-immutable-js';
 
-export default configureStore(Immutable.fromJS(window.INITIAL_STATE));
+export default configureStore(fromJSON(window.INITIAL_STATE));

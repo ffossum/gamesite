@@ -28,6 +28,15 @@ export function leaveLobby() {
   };
 }
 
+export function lobbyRefreshed(games) {
+  return {
+    type: REFRESH_LOBBY,
+    payload: {
+      games,
+    },
+  };
+}
+
 export function refreshLobby(games) {
   return dispatch => {
     const users = _.chain(games)
@@ -36,12 +45,7 @@ export function refreshLobby(games) {
       .value();
 
     dispatch(getUserData(...users));
-    dispatch({
-      type: REFRESH_LOBBY,
-      payload: {
-        games,
-      },
-    });
+    dispatch(lobbyRefreshed(games));
   };
 }
 
