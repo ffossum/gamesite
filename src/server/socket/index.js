@@ -20,17 +20,6 @@ function init(server) {
   return io;
 }
 
-export function getConnectedUsers() {
-  const room = io.sockets.adapter.rooms.users || {};
-  const socketIds = _.keys(room.sockets);
-
-  const sockets = io.sockets.sockets;
-  let users = _.map(socketIds, socketId => sockets[socketId].user);
-  users = _.uniqBy(users, user => user.id);
-
-  return users;
-}
-
 export default {
   init: _.once(init),
   to(room) {
