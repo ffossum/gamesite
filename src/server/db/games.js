@@ -25,6 +25,8 @@ async function create({ data, host }) {
     return null;
   }
 
+  const creationDate = new Date();
+
   const game = {
     id: gameId,
     host,
@@ -33,7 +35,8 @@ async function create({ data, host }) {
     options,
     status: NOT_STARTED,
     users: [host],
-    created: new Date(),
+    created: creationDate,
+    updated: creationDate,
   };
 
   try {
@@ -54,6 +57,7 @@ async function join(gameId, userId) {
       .get(gameId)
       .update({
         users: r.row('users').setInsert(userId),
+        updated: new Date(),
       })
       .run();
 
@@ -70,6 +74,7 @@ async function leave(gameId, userId) {
       .get(gameId)
       .update({
         users: r.row('users').setDifference([userId]),
+        updated: new Date(),
       })
       .run();
 
@@ -113,6 +118,7 @@ async function start(gameId, userId) {
         r.row.merge({
           state,
           status: IN_PROGRESS,
+          updated: new Date(),
         }),
         r.error('users changed between validation and write')
       )
@@ -177,6 +183,7 @@ export async function getNotStarted() {
       'options',
       'playerCount',
       'status',
+      'updated',
       'users',
     )
     .run();
@@ -208,6 +215,7 @@ export async function performGameAction(gameId, userId, action) {
         r.row.merge({
           state: r.literal(newState),
           status: newStatus,
+          updated: new Date(),
         }),
         r.error('game state changed before write')
       )
