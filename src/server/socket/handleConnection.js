@@ -36,7 +36,6 @@ import {
 } from 'actions/game';
 import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
-import isInRoom from './isInRoom';
 import { asViewedBy } from 'games/rps/';
 import { getMessageCacheInstance } from './messageCache';
 import {
@@ -277,18 +276,20 @@ export default async function handleConnection(socket) {
   });
 
   socket.on(ENTER_ROOM, async (gameId, fn) => {
-    const inGame = isInRoom(socket, getGameChannelName(gameId));
+    const roomName = getGameChannelName(gameId);
+    const isInRoom = socket.rooms[roomName];
 
-    if (!inGame) {
-      const game = await games.get(gameId, socket.user && socket.user.id);
-      if (game) {
-        socket.join(getSpectatorChannelName(gameId));
-        fn(null, game);
-      } else {
-        fn('not found');
-      }
-    } else {
+    if (isInRoom) {
       fn();
+      return;
+    }
+
+    const game = await games.get(gameId, socket.user && socket.user.id);
+    if (game) {
+      socket.join(getSpectatorChannelName(gameId));
+      fn(null, game);
+    } else {
+      fn('not found');
     }
   });
 
