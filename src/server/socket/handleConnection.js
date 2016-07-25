@@ -36,10 +36,15 @@ import {
 } from 'actions/game';
 import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
-import { isLobbyRoute, getGameIdFromRoute } from 'util/routeUtils';
 import isInRoom from './isInRoom';
 import { asViewedBy } from 'games/rps/';
 import { getMessageCacheInstance } from './messageCache';
+import {
+  getGameChannelName,
+  getUserChannelName,
+  getSpectatorChannelName,
+  getUrlChannels,
+} from './channelUtils';
 
 const messageCache = getMessageCacheInstance();
 
@@ -52,18 +57,6 @@ function getJwt(request) {
   return cookies.jwt;
 }
 
-function getUserChannelName(userId) {
-  return `user:${userId}`;
-}
-
-function getGameChannelName(gameId) {
-  return `game:${gameId}`;
-}
-
-function getSpectatorChannelName(gameId) {
-  return `spectator:${gameId}`;
-}
-
 function joinGameChannels(socket, gameIds) {
   _.forEach(gameIds, gameId => {
     socket.leave(getSpectatorChannelName(gameId));
@@ -71,23 +64,9 @@ function joinGameChannels(socket, gameIds) {
   });
 }
 
-/*
-Join channels based on url.
-Useful when socket reconnects without page refresh.
-*/
-function joinUrlChannels(socket) {
-  const { referer } = socket.request.headers;
-  if (isLobbyRoute(referer)) {
-    socket.join('lobby');
-  }
-  const gameId = getGameIdFromRoute(referer);
-  if (gameId) {
-    socket.join(getSpectatorChannelName(gameId));
-  }
-}
-
 export default async function handleConnection(socket) {
-  joinUrlChannels(socket);
+  const urlChannels = getUrlChannels(socket);
+  _.forEach(urlChannels, channel => socket.join(channel));
 
   const token = getJwt(socket.request);
   if (token) {
