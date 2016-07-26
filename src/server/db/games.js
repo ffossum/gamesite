@@ -117,6 +117,7 @@ async function start(gameId, userId) {
           state,
           status: IN_PROGRESS,
           updated: r.now(),
+          started: r.now(),
         }),
         r.error('users changed between validation and write')
       )
@@ -207,14 +208,20 @@ export async function performGameAction(gameId, userId, action) {
     const gameOver = isGameOver(newGameData);
     const newStatus = gameOver ? ENDED : game.status;
 
+    const mergeData = {
+      state: r.literal(newState),
+      status: newStatus,
+      updated: r.now(),
+    };
+
+    if (gameOver) {
+      mergeData.ended = r.now();
+    }
+
     const result = await gameQuery.replace(
       r.branch(
         r.row('state').eq(game.state),
-        r.row.merge({
-          state: r.literal(newState),
-          status: newStatus,
-          updated: r.now(),
-        }),
+        r.row.merge(mergeData),
         r.error('game state changed before write')
       )
     )
