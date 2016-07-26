@@ -138,18 +138,19 @@ async function start(gameId, userId) {
 
 async function cancel(gameId, userId) {
   try {
-    const gameQuery = r.table('games').get(gameId);
-    const game = await gameQuery.run();
-
-    if (game.host !== userId) {
-      // Only the host may cancel the game
-      return false;
-    }
-
-    const result = await gameQuery.update({
-      status: CANCELED,
-      canceled: r.now(),
-    }).run();
+    const result = await r.table('games')
+      .get(gameId)
+      .replace(
+        r.branch(
+          r.row('host').eq(userId),
+          r.row.merge({
+            status: CANCELED,
+            canceled: r.now(),
+          }),
+          r.error('only host may cancel game')
+        )
+      )
+      .run();
 
     if (result.replaced === 1) {
       return true;
