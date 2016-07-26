@@ -25,26 +25,24 @@ async function create({ data, host }) {
     return null;
   }
 
-  const creationDate = new Date();
-
-  const game = {
-    id: gameId,
-    host,
-    playerCount,
-    comment,
-    options,
-    status: NOT_STARTED,
-    users: [host],
-    created: creationDate,
-    updated: creationDate,
-  };
-
   try {
-    await r.table('games')
-      .insert(game)
+    const response = await r.table('games')
+      .insert({
+        id: gameId,
+        host,
+        playerCount,
+        comment,
+        options,
+        status: NOT_STARTED,
+        users: [host],
+        created: r.now(),
+        updated: r.now(),
+      }, {
+        returnChanges: true,
+      })
       .run();
 
-    return game;
+    return response.changes[0].new_val;
   } catch (err) {
     console.log(err);
     return null;
@@ -57,7 +55,7 @@ async function join(gameId, userId) {
       .get(gameId)
       .update({
         users: r.row('users').setInsert(userId),
-        updated: new Date(),
+        updated: r.now(),
       })
       .run();
 
@@ -74,7 +72,7 @@ async function leave(gameId, userId) {
       .get(gameId)
       .update({
         users: r.row('users').setDifference([userId]),
-        updated: new Date(),
+        updated: r.now(),
       })
       .run();
 
@@ -118,7 +116,7 @@ async function start(gameId, userId) {
         r.row.merge({
           state,
           status: IN_PROGRESS,
-          updated: new Date(),
+          updated: r.now(),
         }),
         r.error('users changed between validation and write')
       )
@@ -215,7 +213,7 @@ export async function performGameAction(gameId, userId, action) {
         r.row.merge({
           state: r.literal(newState),
           status: newStatus,
-          updated: new Date(),
+          updated: r.now(),
         }),
         r.error('game state changed before write')
       )
