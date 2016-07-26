@@ -15,7 +15,7 @@ import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
 import { getNotStarted } from '../db/games';
 import _ from 'lodash';
-import { toJSON, fromJSON } from 'transit-immutable-js';
+import { toJSON } from 'transit-immutable-js';
 
 const messageCache = getMessageCacheInstance();
 
