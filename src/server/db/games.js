@@ -5,6 +5,7 @@ import {
   NOT_STARTED,
   IN_PROGRESS,
   ENDED,
+  CANCELED,
 } from 'constants/gameStatus';
 import {
   info,
@@ -145,8 +146,12 @@ async function cancel(gameId, userId) {
       return false;
     }
 
-    const result = await gameQuery.delete().run();
-    if (result.deleted === 1) {
+    const result = await gameQuery.update({
+      status: CANCELED,
+      canceled: r.now(),
+    }).run();
+
+    if (result.replaced === 1) {
       return true;
     }
 
