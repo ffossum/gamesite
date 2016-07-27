@@ -179,17 +179,7 @@ export async function getUserGames(userId) {
 
 export async function getLobbyGames({ lastRefreshed } = {}) {
   let query = r.table('games')
-    .filter(game => game('status').eq(NOT_STARTED))
-    .pluck(
-      'comment',
-      'created',
-      'host',
-      'id',
-      'options',
-      'playerCount',
-      'status',
-      'users',
-    );
+    .filter(game => game('status').eq(NOT_STARTED));
 
   if (lastRefreshed) {
     const lastRefreshedDate = new Date(lastRefreshed);
@@ -210,7 +200,17 @@ export async function getLobbyGames({ lastRefreshed } = {}) {
   }
 
   const result = await r.do(
-    query.coerceTo('array'),
+    query.pluck(
+      'comment',
+      'created',
+      'host',
+      'id',
+      'options',
+      'playerCount',
+      'status',
+      'updated',
+      'users',
+    ).coerceTo('array'),
     r.now(),
     (games, refreshed) => ({ games, refreshed }),
   ).run();
