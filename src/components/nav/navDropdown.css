@@ -3,13 +3,12 @@
 .section {
   max-width: 100vw;
   min-width: 10rem;
+}
 
-  & header {
-    color: var(--darker-gray);
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    padding-top: 1rem;
-  }
+.header {
+  color: var(--darker-gray);
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
 
 .list {

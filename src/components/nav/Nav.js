@@ -52,7 +52,7 @@ export default class Nav extends React.Component {
         {
           user ?
             <ul className={styles.navgroup}>
-              {!_.isEmpty(games) && <li><GamesDropdown games={games} /></li>}
+              <li><GamesDropdown games={games} /></li>
               <li><UserDropdown user={user} logOut={this.props.logOut} /></li>
             </ul>
           :

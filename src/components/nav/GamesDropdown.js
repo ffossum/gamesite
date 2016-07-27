@@ -11,6 +11,19 @@ import navStyles from './nav.css';
 export default class GamesDropdown extends React.Component {
   render() {
     const { games } = this.props;
+
+    if (_.isEmpty(games)) {
+      return (
+        <Dropdown title="Games" nav activeClassName={navStyles.active}>
+          <section className={styles.section}>
+            <header className={styles.header}>
+              No games
+            </header>
+          </section>
+        </Dropdown>
+      );
+    }
+
     const groupedByStatus = _.groupBy(games, 'status');
 
     return (
