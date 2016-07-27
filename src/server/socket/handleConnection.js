@@ -44,6 +44,7 @@ import {
   getSpectatorChannelName,
   getUrlChannels,
 } from './channelUtils';
+import jsonpatch from 'fast-json-patch';
 
 const messageCache = getMessageCacheInstance();
 
@@ -239,20 +240,29 @@ export default async function handleConnection(socket) {
       if (!success) {
         fn({ ok: false });
       } else {
-        const { newState, gameOver, users } = success;
+        const { previousState, newState, gameOver, users } = success;
         fn({
           ok: true,
-          state: asViewedBy(newState, socket.user.id),
+          patch: jsonpatch.compare(
+            asViewedBy(previousState, socket.user.id),
+            asViewedBy(newState, socket.user.id),
+          ),
         });
         _.forEach(users, playerId => {
           socket.broadcast.to(getUserChannelName(playerId)).emit(NEW_ACTION, {
             game: { id: gameId },
-            state: asViewedBy(newState, playerId),
+            patch: jsonpatch.compare(
+              asViewedBy(previousState, playerId),
+              asViewedBy(newState, playerId),
+            ),
           });
         });
         socket.broadcast.to(getSpectatorChannelName(gameId)).emit(NEW_ACTION, {
           game: { id: gameId },
-          state: asViewedBy(newState),
+          patch: jsonpatch.compare(
+            asViewedBy(previousState),
+            asViewedBy(newState),
+          ),
         });
 
         if (gameOver) {

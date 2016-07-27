@@ -35,7 +35,7 @@ export function createHandlers(store) {
     [PLAYER_LEFT]: ({ game, user }) => store.dispatch(playerLeft(game.id, user.id)),
     [NEW_GAME_MESSAGE]: ({ game, message }) => store.dispatch(newGameMessage(game.id, message)),
     [GAME_STARTED]: ({ game }) => store.dispatch(gameStarted(game.id, game.state)),
-    [NEW_ACTION]: ({ game, state }) => store.dispatch(newAction(game, state)),
+    [NEW_ACTION]: ({ game, patch }) => store.dispatch(newAction(game, patch)),
     [GAME_ENDED]: ({ game }) => store.dispatch(gameEnded(game.id)),
     [GAME_CANCELED]: ({ game }) => store.dispatch(gameCanceled(game.id)),
   };

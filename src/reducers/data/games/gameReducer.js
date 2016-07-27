@@ -20,6 +20,7 @@ import {
   NEW_ACTION,
   ACTION_REJECTED,
 } from 'actions/game';
+import jsonpatch from 'fast-json-patch';
 
 const initialState = Immutable.fromJS({});
 
@@ -90,7 +91,9 @@ export default function gameReducer(state = initialState, action) {
       return state.delete('waitingForServer');
     }
     case NEW_ACTION: {
-      const gameState = action.payload.state;
+      const patch = action.payload.patch;
+      const gameState = state.get('state').toJS();
+      jsonpatch.apply(gameState, patch);
       return state
         .delete('waitingForServer')
         .set('state', Immutable.fromJS(gameState));
