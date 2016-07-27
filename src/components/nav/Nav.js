@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { IndexLink, Link } from 'react-router';
 import GamesDropdown from './GamesDropdown';
 import UserDropdown from './UserDropdown';
-import _ from 'lodash';
 import {
   LOGIN_MODAL,
   REGISTER_MODAL,
