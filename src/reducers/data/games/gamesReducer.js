@@ -46,7 +46,11 @@ export default function gamesReducer(state = initialState, action) {
     case LOG_IN_SUCCESS:
     case REFRESH_LOBBY: {
       let newGames = Immutable.fromJS(action.payload.games)
-        .map(newGameState => newGameState.update('users', users => users.toSet()));
+        .map(newGameState => (
+          newGameState.has('users')
+            ? newGameState.update('users', users => users.toSet())
+            : newGameState
+        ));
 
       newGames = newGames.map((newGameState, gameId) => {
         const gameState = state.get(gameId);

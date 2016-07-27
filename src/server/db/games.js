@@ -177,8 +177,8 @@ export async function getUserGames(userId) {
   return _.keyBy(games, game => game.id);
 }
 
-export async function getLobbyGames() {
-  const games = await r.table('games')
+export async function getLobbyGames({ lastRefreshed } = {}) {
+  let query = r.table('games')
     .filter(game => game('status').eq(NOT_STARTED))
     .pluck(
       'comment',
@@ -190,10 +190,37 @@ export async function getLobbyGames() {
       'status',
       'updated',
       'users',
-    )
-    .run();
+    );
 
-  return _.keyBy(games, game => game.id);
+  if (lastRefreshed) {
+    const lastRefreshedDate = new Date(lastRefreshed);
+    query = query.filter(game => game('updated').gt(lastRefreshedDate));
+
+    const removalsQuery = r.table('games')
+      .filter(game => r.or(
+        game.hasFields('started').and(game('started').gt(lastRefreshedDate)),
+        game.hasFields('canceled').and(game('canceled').gt(lastRefreshedDate)),
+        game.hasFields('ended').and(game('ended').gt(lastRefreshedDate))
+      ))
+      .pluck(
+        'id',
+        'status',
+        'updated',
+      );
+
+    query = query.union(removalsQuery);
+  }
+
+  const result = await r.do(
+    query.coerceTo('array'),
+    r.now(),
+    (games, refreshed) => ({ games, refreshed }),
+  ).run();
+
+  return {
+    games: _.keyBy(result.games, game => game.id),
+    refreshed: result.refreshed,
+  };
 }
 
 export async function performGameAction(gameId, userId, action) {

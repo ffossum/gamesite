@@ -30,7 +30,7 @@ export function createHandlers(store) {
     [NEW_MESSAGE]: message => store.dispatch(newMessage(message)),
     [LOG_IN_SUCCESS]: data => store.dispatch(logInSuccess(data.user, data.games)),
     [GAME_CREATED]: data => store.dispatch(gameCreated(data.game)),
-    [REFRESH_LOBBY]: data => store.dispatch(refreshLobby(data.games)),
+    [REFRESH_LOBBY]: ({ games, refreshed }) => store.dispatch(refreshLobby({ games, refreshed })),
     [PLAYER_JOINED]: ({ game, user }) => store.dispatch(playerJoined(game.id, user.id)),
     [PLAYER_LEFT]: ({ game, user }) => store.dispatch(playerLeft(game.id, user.id)),
     [NEW_GAME_MESSAGE]: ({ game, message }) => store.dispatch(newGameMessage(game.id, message)),

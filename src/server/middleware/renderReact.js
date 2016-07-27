@@ -53,8 +53,8 @@ export async function initializeReduxStore(ctx, next) {
     store.dispatch(logInSuccess(getPublicUserData(ctx.req.user)));
   }
 
-  const games = await getLobbyGames();
-  store.dispatch(lobbyRefreshed(games));
+  const { games, refreshed } = await getLobbyGames();
+  store.dispatch(lobbyRefreshed({ games, refreshed }));
 
   const gamesUserIds = _.chain(games)
       .map(game => game.users)

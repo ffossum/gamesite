@@ -11,11 +11,17 @@ export const CREATE_GAME_SUCCESS = 'games/CREATE_GAME_SUCCESS';
 export const GAME_CREATED = 'games/GAME_CREATED';
 
 export function joinLobby() {
-  return {
-    type: JOIN_LOBBY,
-    meta: {
-      socket: true,
-    },
+  return (dispatch, getState) => {
+    const lastRefreshed = getState().getIn(['lobby', 'lastRefreshed']);
+    dispatch({
+      type: JOIN_LOBBY,
+      payload: {
+        lastRefreshed,
+      },
+      meta: {
+        socket: true,
+      },
+    });
   };
 }
 
@@ -28,16 +34,17 @@ export function leaveLobby() {
   };
 }
 
-export function lobbyRefreshed(games) {
+export function lobbyRefreshed({ games, refreshed }) {
   return {
     type: REFRESH_LOBBY,
     payload: {
       games,
+      refreshed,
     },
   };
 }
 
-export function refreshLobby(games) {
+export function refreshLobby({ games, refreshed }) {
   return dispatch => {
     const users = _.chain(games)
       .map(game => game.users)
@@ -45,7 +52,7 @@ export function refreshLobby(games) {
       .value();
 
     dispatch(getUserData(...users));
-    dispatch(lobbyRefreshed(games));
+    dispatch(lobbyRefreshed({ games, refreshed }));
   };
 }
 

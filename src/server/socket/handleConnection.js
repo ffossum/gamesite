@@ -297,10 +297,12 @@ export default async function handleConnection(socket) {
     socket.leave(getSpectatorChannelName(gameId));
   });
 
-  socket.on(JOIN_LOBBY, async () => {
+  socket.on(JOIN_LOBBY, async ({ lastRefreshed } = {}) => {
     socket.join('lobby');
+    const result = await games.getLobbyGames({ lastRefreshed });
     socket.emit(REFRESH_LOBBY, {
-      games: await games.getLobbyGames(),
+      games: result.games,
+      refreshed: result.refreshed,
     });
   });
 
