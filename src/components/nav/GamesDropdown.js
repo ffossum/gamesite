@@ -16,7 +16,7 @@ export default class GamesDropdown extends React.Component {
       return (
         <Dropdown title="Games" nav activeClassName={navStyles.active}>
           <section className={styles.section}>
-            <header className={styles.header}>
+            <header className={`${styles.header} ${styles.headerOnly}`}>
               No games
             </header>
           </section>

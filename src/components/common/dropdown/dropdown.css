@@ -18,8 +18,6 @@
   border-bottom: var(--border);
 
   box-shadow: var(--box-shadow);
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
 }
 
 .right {

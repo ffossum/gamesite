@@ -9,6 +9,11 @@
   color: var(--darker-gray);
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.headerOnly {
+  padding-bottom: 0.75rem;
 }
 
 .list {
