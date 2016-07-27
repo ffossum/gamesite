@@ -29,8 +29,8 @@ export function performAction(gameId, action) {
         action,
       },
       meta: {
-        socket: res => {
-          if (res.ok) {
+        socket: (err, res) => {
+          if (!err && res) {
             dispatch(newAction(game, res.patch));
           } else {
             dispatch(actionRejected(game));

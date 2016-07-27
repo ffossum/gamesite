@@ -238,11 +238,10 @@ export default async function handleConnection(socket) {
       const success = await games.performGameAction(gameId, socket.user.id, data.action);
 
       if (!success) {
-        fn({ ok: false });
+        fn('rejected');
       } else {
         const { previousState, newState, gameOver, users } = success;
-        fn({
-          ok: true,
+        fn(null, {
           patch: jsonpatch.compare(
             asViewedBy(previousState, socket.user.id),
             asViewedBy(newState, socket.user.id),
