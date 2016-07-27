@@ -188,7 +188,6 @@ export async function getLobbyGames({ lastRefreshed } = {}) {
       'options',
       'playerCount',
       'status',
-      'updated',
       'users',
     );
 
@@ -205,7 +204,6 @@ export async function getLobbyGames({ lastRefreshed } = {}) {
       .pluck(
         'id',
         'status',
-        'updated',
       );
 
     query = query.union(removalsQuery);
