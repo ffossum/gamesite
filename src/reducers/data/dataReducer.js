@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux-immutablejs';
+import { combineReducers } from 'redux';
 import games from './games/gamesReducer';
 import users from './users/usersReducer';
 

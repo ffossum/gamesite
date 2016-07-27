@@ -15,7 +15,6 @@ import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
 import { getLobbyGames } from '../db/games';
 import _ from 'lodash';
-import { toJSON } from 'transit-immutable-js';
 
 const messageCache = getMessageCacheInstance();
 
@@ -92,7 +91,7 @@ export async function renderReact(ctx, next) {
     ctx.body = template({
       __DEVELOPMENT__,
       reactString,
-      initialState: JSON.stringify(toJSON(store.getState())),
+      initialState: JSON.stringify(store.getState()),
     });
   }
   await next();

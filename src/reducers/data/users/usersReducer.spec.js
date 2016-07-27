@@ -2,15 +2,15 @@
 /* eslint no-unused-expressions: 0 */
 
 import { expect } from 'chai';
-import { Map } from 'immutable';
 import usersReducer from './usersReducer';
 import { logInSuccess } from 'actions/login';
 import { GET_USER_DATA } from 'actions/userData';
+import { size } from 'lodash';
 
 describe('data/users reducer', () => {
   it('initializes to empty map', () => {
     const initialState = usersReducer(undefined, { type: '@@INIT' });
-    expect(initialState.toJS()).to.be.empty;
+    expect(initialState).to.be.empty;
   });
 
   it('adds user info on login', () => {
@@ -19,9 +19,9 @@ describe('data/users reducer', () => {
       username: 'Jack',
     });
 
-    const initialState = new Map();
+    const initialState = {};
     const state = usersReducer(initialState, action);
-    expect(state.getIn(['12345', 'username'])).to.equal('Jack');
+    expect(state['12345'].username).to.equal('Jack');
   });
 
   it('adds user data after fetching', () => {
@@ -35,10 +35,10 @@ describe('data/users reducer', () => {
       },
     };
 
-    const initialState = new Map();
+    const initialState = {};
     const state = usersReducer(initialState, action);
 
-    expect(state.size).to.equal(2);
-    expect(state.getIn(['2', 'username'])).to.equal('Bob');
+    expect(size(state)).to.equal(2);
+    expect(state['2'].username).to.equal('Bob');
   });
 });

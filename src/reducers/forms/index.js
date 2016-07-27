@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux-immutablejs';
+import { combineReducers } from 'redux';
 import login from './loginFormReducer';
 import registerUser from './registerUserFormReducer';
 

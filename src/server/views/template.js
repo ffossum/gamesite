@@ -11,7 +11,6 @@ const prodHead =
 <style>${prodStyle}</style>
 <script src="https://fb.me/react-15.0.1.min.js" defer></script>
 <script src="https://fb.me/react-dom-15.0.1.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/immutable.js/3.7.6/immutable.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/lodash/4.9.0/lodash.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js" defer></script>
 <script src="/static/dist/client.js" defer></script>

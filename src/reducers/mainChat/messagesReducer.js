@@ -2,19 +2,21 @@ import {
   NEW_MESSAGE,
   RESET_MESSAGES,
 } from 'actions/mainChat';
-import Immutable from 'immutable';
 
-const initialState = Immutable.fromJS([]);
+const initialState = [];
 
 export default function messagesReducer(state = initialState, action) {
   switch (action.type) {
     case NEW_MESSAGE: {
-      const newMessage = Immutable.fromJS(action.payload);
-      return state.push(newMessage);
+      const newMessage = action.payload;
+      return [
+        ...state,
+        newMessage,
+      ];
     }
 
     case RESET_MESSAGES: {
-      const newMessages = Immutable.fromJS(action.payload);
+      const newMessages = action.payload;
       return newMessages;
     }
 

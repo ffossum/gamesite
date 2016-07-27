@@ -53,7 +53,7 @@ Root.propTypes = {
 };
 
 export default connect(
-  state => ({ modal: state.get('modal') }),
+  state => ({ modal: state.modal }),
   dispatch => bindActionCreators(modalActions, dispatch)
 )(Root);
 

@@ -6,6 +6,7 @@ import modalActions from 'actions/modal';
 import { REGISTER_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
+import { get } from 'lodash';
 
 import styles from './form.css';
 
@@ -108,24 +109,10 @@ LoginForm.propTypes = {
   openModal: PropTypes.func.isRequired,
 };
 
-class Wrapper extends React.Component {
-  render() {
-    const props = {
-      ...this.props,
-      formState: this.props.formState.toJS(),
-    };
-    return <LoginForm {...props} />;
-  }
-}
-
-Wrapper.propTypes = {
-  formState: PropTypes.object.isRequired,
-};
-
 export default connect(
   state => ({
-    formState: state.getIn(['forms', 'login']),
-    sessionUserId: state.getIn(['session', 'userId']),
+    formState: get(state, ['forms', 'login']),
+    sessionUserId: get(state, ['session', 'userId']),
   }),
   dispatch => bindActionCreators({ ...actions, ...modalActions }, dispatch),
-)(Wrapper);
+)(LoginForm);

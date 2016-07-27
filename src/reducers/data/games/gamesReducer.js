@@ -1,4 +1,3 @@
-import Immutable from 'immutable';
 import {
   LOG_IN_SUCCESS,
 } from 'actions/login';
@@ -24,10 +23,13 @@ import {
   NEW_ACTION,
   ACTION_REJECTED,
 } from 'actions/game';
+import {
+  mapValues,
+} from 'lodash';
 
 import gameReducer from './gameReducer';
 
-const initialState = Immutable.fromJS({});
+const initialState = {};
 
 export default function gamesReducer(state = initialState, action) {
   switch (action.type) {
@@ -36,30 +38,30 @@ export default function gamesReducer(state = initialState, action) {
     case REFRESH_GAME: {
       const { game } = action.payload;
 
-      const gameState = Immutable.fromJS(game)
-        .set('messages', Immutable.fromJS([]))
-        .update('users', users => users.toSet());
+      const gameState = {
+        ...game,
+        messages: [],
+      };
 
-      return state.set(game.id, gameState);
+      return {
+        ...state,
+        [game.id]: gameState,
+      };
     }
 
     case LOG_IN_SUCCESS:
     case REFRESH_LOBBY: {
-      let newGames = Immutable.fromJS(action.payload.games)
-        .map(newGameState => (
-          newGameState.has('users')
-            ? newGameState.update('users', users => users.toSet())
-            : newGameState
-        ));
-
-      newGames = newGames.map((newGameState, gameId) => {
-        const gameState = state.get(gameId);
-        return gameState
-          ? gameState.merge(newGameState)
-          : newGameState.set('messages', Immutable.fromJS([]));
+      const newGames = mapValues(action.payload.games, (newGameState, gameId) => {
+        const oldGameState = state[gameId];
+        return oldGameState
+          ? { ...oldGameState, ...newGameState }
+          : { ...newGameState, messages: [] };
       });
 
-      return state.merge(newGames);
+      return {
+        ...state,
+        ...newGames,
+      };
     }
 
     case PLAYER_JOINED:
@@ -73,7 +75,10 @@ export default function gamesReducer(state = initialState, action) {
     case ACTION_REJECTED:
     case GAME_CANCELED: {
       const { game } = action.payload;
-      return state.update(game.id, gameState => gameReducer(gameState, action));
+      return {
+        ...state,
+        [game.id]: gameReducer(state[game.id], action),
+      };
     }
 
     default: return state;

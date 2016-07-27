@@ -1,4 +1,5 @@
 import { getUserData } from './userData';
+import { get } from 'lodash';
 
 export const SEND_MESSAGE = 'mainChat/SEND_MESSAGE';
 export const NEW_MESSAGE = 'mainChat/NEW_MESSAGE';
@@ -17,7 +18,7 @@ export function newMessage(message) {
 export function sendMessage(text) {
   return (dispatch, getState) => {
     const state = getState();
-    const userId = state.getIn(['session', 'userId']);
+    const userId = get(state, ['session', 'userId']);
     if (userId) {
       dispatch({
         type: SEND_MESSAGE,
@@ -29,11 +30,11 @@ export function sendMessage(text) {
         },
       });
 
-      const user = state.getIn(['data', 'users', userId]);
+      const user = get(state, ['data', 'users', userId]);
       const message = {
         text,
         time: new Date().toJSON(),
-        user: user.get('id'),
+        user: user.id,
       };
 
       dispatch(newMessage(message));

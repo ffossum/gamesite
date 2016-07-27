@@ -11,13 +11,17 @@ import {
   addUserDataToGame,
   addUserDataToMessage,
 } from './util';
+import {
+  map,
+  mapValues,
+} from 'lodash';
 
 export const playSelector = createSelector(
   gamesNotStartedSelector,
   userDataSelector,
   userSelector,
   (gameData, userData, user) => ({
-    games: gameData.map(addUserDataToGame(userData)).toList().toJS(),
+    games: map(gameData, addUserDataToGame(userData)),
     user,
   })
 );
@@ -26,7 +30,7 @@ export const mainPageSelector = createSelector(
   mainChatWithUserDataSelector,
   userSelector,
   (mainChat, user) => ({
-    messages: mainChat.get('messages').toJS(),
+    messages: mainChat.messages,
     user,
   })
 );
@@ -36,7 +40,7 @@ export const navSelector = createSelector(
   userDataSelector,
   userSelector,
   (gameData, userData, user) => ({
-    games: gameData.map(addUserDataToGame(userData)).toJS(),
+    games: mapValues(gameData, addUserDataToGame(userData)),
     user,
   })
 );
@@ -45,12 +49,26 @@ export const gameRoomSelector = createSelector(
   gameByIdSelector,
   userDataSelector,
   userSelector,
-  (game, userData, user) => ({
-    game: game && addUserDataToGame(userData)(
-      game.has('messages')
-        ? game.update('messages', messages => messages.map(addUserDataToMessage(userData)))
-        : game
-    ).toJS(),
-    user,
-  })
+  (game, userData, user) => {
+    if (!game) {
+      return {
+        game,
+        user,
+      };
+    }
+
+    let gameWithUserData = addUserDataToGame(userData)(game);
+
+    if (gameWithUserData.messages) {
+      gameWithUserData = {
+        ...gameWithUserData,
+        messages: map(gameWithUserData.messages, addUserDataToMessage(userData)),
+      };
+    }
+
+    return {
+      game: gameWithUserData,
+      user,
+    };
+  }
 );

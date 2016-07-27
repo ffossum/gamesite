@@ -1,4 +1,5 @@
 import { getUserData } from './userData';
+import { get } from 'lodash';
 
 export const SEND_GAME_MESSAGE = 'gameChat/SEND_MSG';
 export const NEW_GAME_MESSAGE = 'gameChat/NEW_MSG';
@@ -19,7 +20,7 @@ export function newGameMessage(gameId, message) {
 export function sendGameMessage(gameId, text) {
   return (dispatch, getState) => {
     const state = getState();
-    const userId = state.getIn(['session', 'userId']);
+    const userId = get(state, ['session', 'userId']);
     if (userId) {
       dispatch({
         type: SEND_GAME_MESSAGE,
@@ -32,11 +33,11 @@ export function sendGameMessage(gameId, text) {
         },
       });
 
-      const user = state.getIn(['data', 'users', userId]);
+      const user = get(state, ['data', 'users', userId]);
       const message = {
         text,
         time: new Date().toJSON(),
-        user: user.get('id'),
+        user: user.id,
       };
 
       dispatch(newGameMessage(gameId, message));

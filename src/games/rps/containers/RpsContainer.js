@@ -2,7 +2,10 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from 'actions/game';
-import Immutable from 'immutable';
+import {
+  get,
+  mapValues,
+} from 'lodash';
 import RockPaperScissors from '../components/RockPaperScissors';
 
 class RpsContainer extends React.Component {
@@ -14,15 +17,20 @@ class RpsContainer extends React.Component {
       performAction,
     } = this.props;
 
-    let game = Immutable.fromJS(this.props.game);
-    game = game.updateIn(['state', 'players'], players => (
-      players.map((player, userId) => {
-        const data = userData.get(userId);
-        return data ? data.merge(player) : player;
-      })
-    ));
+    let game = this.props.game;
+    let players = get(game, ['state', 'players']);
+    players = mapValues(players, (player, playerId) => {
+      const data = userData[playerId];
+      return data ? { ...player, ...data } : data;
+    });
 
-    game = game.toJS();
+    game = {
+      ...game,
+      state: {
+        ...game.state,
+        players,
+      },
+    };
 
     return (
       <RockPaperScissors
@@ -45,7 +53,7 @@ RpsContainer.propTypes = {
 
 export default connect(
   state => ({
-    userData: state.getIn(['data', 'users']),
+    userData: get(state, ['data', 'users']),
   }),
   dispatch => bindActionCreators(actions, dispatch)
 )(RpsContainer);

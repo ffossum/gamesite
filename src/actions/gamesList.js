@@ -1,5 +1,8 @@
 import { getUserData } from './userData';
-import _ from 'lodash';
+import {
+  chain,
+  get,
+} from 'lodash';
 
 export const JOIN_LOBBY = 'games/JOIN_LOBBY';
 export const LEAVE_LOBBY = 'games/LEAVE_LOBBY';
@@ -12,7 +15,7 @@ export const GAME_CREATED = 'games/GAME_CREATED';
 
 export function joinLobby() {
   return (dispatch, getState) => {
-    const lastRefreshed = getState().getIn(['lobby', 'lastRefreshed']);
+    const lastRefreshed = get(getState(), ['lobby', 'lastRefreshed']);
     dispatch({
       type: JOIN_LOBBY,
       payload: {
@@ -46,7 +49,7 @@ export function lobbyRefreshed({ games, refreshed }) {
 
 export function refreshLobby({ games, refreshed }) {
   return dispatch => {
-    const users = _.chain(games)
+    const users = chain(games)
       .map(game => game.users)
       .flatten()
       .value();

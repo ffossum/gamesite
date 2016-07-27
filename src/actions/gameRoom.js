@@ -1,4 +1,5 @@
 import { getUserData } from './userData';
+import { get } from 'lodash';
 
 export const JOIN_GAME = 'gameRoom/JOIN_GAME';
 export const PLAYER_JOINED = 'gameRoom/PLAYER_JOINED';
@@ -100,7 +101,7 @@ export function playerJoined(gameId, userId) {
 
 export function joinGame(gameId) {
   return (dispatch, getState) => {
-    const userId = getState().getIn(['session', 'userId']);
+    const userId = get(getState(), ['session', 'userId']);
     if (!userId) {
       return;
     }
@@ -135,7 +136,7 @@ export function playerLeft(gameId, userId) {
 
 export function leaveGame(gameId) {
   return (dispatch, getState) => {
-    const userId = getState().getIn(['session', 'userId']);
+    const userId = get(getState(), ['session', 'userId']);
     if (!userId) {
       return;
     }

@@ -41,7 +41,6 @@ module.exports = {
     "moment": "moment",
     "react": "React",
     "react-dom": "ReactDOM",
-    "immutable": "Immutable"
   },
   resolve: {
     modulesDirectories: [

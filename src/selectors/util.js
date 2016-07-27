@@ -1,18 +1,17 @@
-const getUser = (userData, userId) => userData.get(userId) || { id: userId };
+import {
+  map,
+  get,
+} from 'lodash';
 
-export const addUserDataToGame = userData =>
-  game => (
-    game.update('users', users => (
-      users.map(userId => getUser(userData, userId))
-    ))
-  );
+const getUser = (userData, userId) => userData[userId] || { id: userId };
 
-export const addUserDataToMessage = userData =>
-  message => message
-    .update('user', userId => getUser(userData, userId))
-    .update('args', args => (
-      args && args.map(arg => {
-        const userId = arg.get('user');
-        return userData.getIn([userId, 'username']);
-      })
-    ));
+export const addUserDataToGame = userData => game => ({
+  ...game,
+  users: map(game.users, userId => getUser(userData, userId)),
+});
+
+export const addUserDataToMessage = userData => message => ({
+  ...message,
+  user: getUser(userData, message.user),
+  args: message.args && map(message.args, arg => get(userData, [arg.user, 'username'])),
+});

@@ -1,5 +1,10 @@
 import fetch from 'isomorphic-fetch';
-import _ from 'lodash';
+import {
+  filter,
+  get,
+  isEmpty,
+  uniq,
+} from 'lodash';
 
 export const GET_USER_DATA = 'userData/GET';
 
@@ -16,10 +21,10 @@ export function addUserData(users) {
 
 export function getUserData(...userIds) {
   return (dispatch, getState) => {
-    const stateUsers = getState().getIn(['data', 'users']);
-    const missingUserIds = _.filter(_.uniq(userIds), userId => !stateUsers.has(userId));
+    const stateUsers = get(getState(), ['data', 'users']);
+    const missingUserIds = filter(uniq(userIds), userId => !stateUsers[userId]);
 
-    if (_.isEmpty(missingUserIds)) {
+    if (isEmpty(missingUserIds)) {
       return;
     }
 

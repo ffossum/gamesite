@@ -1,4 +1,3 @@
-import Immutable from 'immutable';
 import {
   NEW_GAME_MESSAGE,
 } from 'actions/gameChat';
@@ -20,9 +19,14 @@ import {
   NEW_ACTION,
   ACTION_REJECTED,
 } from 'actions/game';
+import {
+  cloneDeep,
+  union,
+  without,
+} from 'lodash';
 import jsonpatch from 'fast-json-patch';
 
-const initialState = Immutable.fromJS({});
+const initialState = {};
 
 export default function gameReducer(state = initialState, action) {
   switch (action.type) {
@@ -37,9 +41,14 @@ export default function gameReducer(state = initialState, action) {
         ],
       };
 
-      return state
-        .update('users', users => users.add(user.id))
-        .update('messages', messages => messages.push(Immutable.fromJS(message)));
+      return {
+        ...state,
+        users: union(state.users, [user.id]),
+        messages: [
+          ...state.messages,
+          message,
+        ],
+      };
     }
     case PLAYER_LEFT: {
       const { user } = action.payload;
@@ -52,9 +61,14 @@ export default function gameReducer(state = initialState, action) {
         ],
       };
 
-      return state
-        .update('users', users => users.delete(user.id))
-        .update('messages', messages => messages.push(Immutable.fromJS(message)));
+      return {
+        ...state,
+        users: without(state.users, user.id),
+        messages: [
+          ...state.messages,
+          message,
+        ],
+      };
     }
     case GAME_STARTED: {
       const { game } = action.payload;
@@ -64,39 +78,62 @@ export default function gameReducer(state = initialState, action) {
         args: [],
       };
 
-      return state
-        .set('status', IN_PROGRESS)
-        .update('state', gameState => (game.state ? Immutable.fromJS(game.state) : gameState))
-        .update('messages', messages => messages.push(Immutable.fromJS(message)));
+      return {
+        ...state,
+        status: IN_PROGRESS,
+        state: game.state || state.state,
+        messages: [
+          ...state.messages,
+          message,
+        ],
+      };
     }
     case NEW_GAME_MESSAGE: {
       const { message } = action.payload;
-      return state.update('messages', messages => messages.push(Immutable.fromJS(message)));
+      return {
+        ...state,
+        messages: [
+          ...state.messages,
+          message,
+        ],
+      };
     }
     case GAME_NOT_FOUND: {
       return null;
     }
     case GAME_CANCELED: {
       const { game } = action.payload;
-      return Immutable.fromJS({
+      return {
         id: game.id,
         users: [],
         status: CANCELED,
-      });
+      };
     }
     case PERFORM_ACTION: {
-      return state.set('waitingForServer', true);
+      return {
+        ...state,
+        waitingForServer: true,
+      };
     }
     case ACTION_REJECTED: {
-      return state.delete('waitingForServer');
+      const newState = {
+        ...state,
+      };
+      delete newState.waitingForServer;
+      return newState;
     }
     case NEW_ACTION: {
       const patch = action.payload.patch;
-      const gameState = state.get('state').toJS();
+      const gameState = cloneDeep(state.state);
       jsonpatch.apply(gameState, patch);
-      return state
-        .delete('waitingForServer')
-        .set('state', Immutable.fromJS(gameState));
+
+      const newState = {
+        ...state,
+        state: gameState,
+      };
+      delete newState.waitingForServer;
+
+      return newState;
     }
     case GAME_ENDED: {
       const message = {
@@ -105,9 +142,14 @@ export default function gameReducer(state = initialState, action) {
         args: [],
       };
 
-      return state
-        .set('status', ENDED)
-        .update('messages', messages => messages.push(Immutable.fromJS(message)));
+      return {
+        ...state,
+        status: ENDED,
+        messages: [
+          ...state.messages,
+          message,
+        ],
+      };
     }
     default: return state;
   }

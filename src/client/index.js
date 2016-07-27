@@ -20,9 +20,7 @@ import './client.css';
 match({ history: browserHistory, routes }, (error, redirectLocation, renderProps) => {
   socket.init(store);
 
-  const history = syncHistoryWithStore(browserHistory, store, {
-    selectLocationState: state => state.get('routing'),
-  });
+  const history = syncHistoryWithStore(browserHistory, store);
 
   ReactDOM.render(
     <Provider store={store}>
