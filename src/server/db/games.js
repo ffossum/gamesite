@@ -166,7 +166,7 @@ async function cancel(gameId, userId) {
 export async function getUserGames(userId) {
   let games = await r.table('games')
     .getAll(userId, { index: 'users' })
-    .filter(game => game('status').ne(ENDED))
+    .filter(game => r([NOT_STARTED, IN_PROGRESS]).contains(game('status')))
     .run();
 
   games = _.map(games, game => ({
