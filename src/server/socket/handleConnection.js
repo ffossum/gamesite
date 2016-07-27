@@ -300,7 +300,7 @@ export default async function handleConnection(socket) {
   socket.on(JOIN_LOBBY, async () => {
     socket.join('lobby');
     socket.emit(REFRESH_LOBBY, {
-      games: await games.getNotStarted(),
+      games: await games.getLobbyGames(),
     });
   });
 

@@ -13,7 +13,7 @@ import { lobbyRefreshed } from 'actions/gamesList';
 import getPublicUserData from '../../util/getPublicUserData';
 import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
-import { getNotStarted } from '../db/games';
+import { getLobbyGames } from '../db/games';
 import _ from 'lodash';
 import { toJSON } from 'transit-immutable-js';
 
@@ -53,7 +53,7 @@ export async function initializeReduxStore(ctx, next) {
     store.dispatch(logInSuccess(getPublicUserData(ctx.req.user)));
   }
 
-  const games = await getNotStarted();
+  const games = await getLobbyGames();
   store.dispatch(lobbyRefreshed(games));
 
   const gamesUserIds = _.chain(games)

@@ -177,7 +177,7 @@ export async function getUserGames(userId) {
   return _.keyBy(games, game => game.id);
 }
 
-export async function getNotStarted() {
+export async function getLobbyGames() {
   const games = await r.table('games')
     .filter(game => game('status').eq(NOT_STARTED))
     .pluck(
@@ -256,7 +256,7 @@ export default {
   start,
   cancel,
   get,
-  getNotStarted,
+  getLobbyGames,
   getUserGames,
   performGameAction,
 };
