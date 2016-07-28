@@ -54,7 +54,7 @@ export default class RockPaperScissors extends React.Component {
           )
         }
         {
-          isGameOver &&
+          isGameOver && winner.username &&
             <section className={styles.winnerSection}>
               <h1>{`${winner.username} wins!`}</h1>
             </section>

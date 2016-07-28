@@ -21,7 +21,7 @@ class RpsContainer extends React.Component {
     let players = get(game, ['state', 'players']);
     players = mapValues(players, (player, playerId) => {
       const data = userData[playerId];
-      return data ? { ...player, ...data } : data;
+      return data ? { ...player, ...data } : player;
     });
 
     game = {
