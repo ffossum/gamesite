@@ -13,9 +13,6 @@ import { gameRoomSelector } from 'selectors';
 class GameRoomContainer extends React.Component {
   componentDidMount() {
     this.props.enterRoom(this.props.params.id);
-    if (this.props.game === undefined) {
-      this.props.getGameData(this.props.params.id);
-    }
   }
   componentWillReceiveProps(nextProps) {
     const previousGameId = this.props.params.id;
