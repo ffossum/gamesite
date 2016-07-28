@@ -9,6 +9,7 @@ config.devtool = "#inline-source-map";
 config.externals = {};
 
 config.entry.unshift(
+  "source-map-support/register",
   "webpack-dev-server/client?http://" + hostname + ":" + port,
   "webpack/hot/only-dev-server"
 );
@@ -36,7 +37,10 @@ config.devServer = {
   lazy: false,
   quiet: false,
   noInfo: false,
-  headers: {"Access-Control-Allow-Origin": "*"},
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Expose-Headers': 'SourceMap,X-SourceMap'
+  },
   stats: {colors: true},
   host: hostname,
   port
