@@ -38,7 +38,6 @@ export default ({
   </head>
   <body>
     <div id="root">${reactString}</div>
-    ${__DEVELOPMENT__ ? '<div id="dev-tools"></div>' : ''}
   </body>
 </html>
 `);

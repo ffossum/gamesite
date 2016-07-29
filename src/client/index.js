@@ -30,14 +30,4 @@ match({ history: browserHistory, routes }, (error, redirectLocation, renderProps
     </Provider>,
     document.getElementById('root')
   );
-
-  if (__DEVELOPMENT__) {
-    const DevTools = require('../containers/DevTools').default;
-    ReactDOM.render(
-      <Provider store={store}>
-        <DevTools />
-      </Provider>,
-      document.getElementById('dev-tools')
-    );
-  }
 });

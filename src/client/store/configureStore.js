@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers/';
-import DevTools from 'containers/DevTools';
 import socketMiddleware from './middleware/socketMiddleware';
 import historyMiddleware from './middleware/historyMiddleware';
 
@@ -11,7 +10,7 @@ const finalCreateStore = compose(
     socketMiddleware,
     historyMiddleware,
   ),
-  DevTools.instrument(),
+  window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);
 
 export default function configureStore(initialState) {
