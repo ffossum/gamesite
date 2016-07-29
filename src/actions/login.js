@@ -68,7 +68,7 @@ export function logOutRequest() {
   };
 }
 
-export function logIn(username, password) {
+export function logIn({ username, password, remember }) {
   return dispatch => {
     dispatch(logInRequest());
     fetch('/api/login', {
@@ -81,6 +81,7 @@ export function logIn(username, password) {
       body: JSON.stringify({
         username,
         password,
+        remember,
       }),
     })
     .then(res => {

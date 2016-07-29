@@ -44,9 +44,16 @@ class RegisterUserForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { registerUser, formState } = this.props;
-    if (!formState.pending) {
+    const { pending, remember } = formState;
+    if (!pending) {
       const { email, username, password, repeatPassword } = this.state;
-      registerUser(email, username, password, repeatPassword);
+      registerUser({
+        email,
+        username,
+        password,
+        repeatPassword,
+        remember,
+      });
     }
   }
   handleChange(field, e) {

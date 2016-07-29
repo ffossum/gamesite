@@ -36,9 +36,10 @@ class LoginForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { logIn, formState } = this.props;
-    if (!formState.pending) {
+    const { remember, pending } = formState;
+    if (!pending) {
       const { username, password } = this.state;
-      logIn(username, password);
+      logIn({ username, password, remember });
     }
   }
   handleChange(field, e) {

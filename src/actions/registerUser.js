@@ -48,7 +48,13 @@ function registerUserFailure(registrationErrors) {
   };
 }
 
-export function registerUser(email, username, password, repeatPassword) {
+export function registerUser({
+    email,
+    username,
+    password,
+    repeatPassword,
+    remember,
+  }) {
   return dispatch => {
     const registrationErrors = {};
     if (password !== repeatPassword) {
@@ -73,6 +79,7 @@ export function registerUser(email, username, password, repeatPassword) {
           email,
           username,
           password,
+          remember,
         }),
       })
       .then(res => {
