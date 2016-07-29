@@ -8,6 +8,7 @@ const initialState = {
   username: '',
   password: '',
   repeatPassword: '',
+  remember: false,
 };
 
 export default function registerUserFormReducer(state = initialState, action) {

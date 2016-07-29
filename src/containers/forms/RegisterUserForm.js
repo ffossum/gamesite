@@ -29,6 +29,7 @@ class RegisterUserForm extends React.Component {
     this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
     this.handleRepeatPasswordChange = this.handleChange.bind(this, 'repeatPassword');
     this.handleRepeatPasswordBlur = this.handleBlur.bind(this, 'repeatPassword');
+    this.handleRememberMeChange = this.handleCheckboxChange.bind(this, 'remember');
     this.openLoginModal = this.openLoginModal.bind(this);
   }
   componentWillReceiveProps(nextProps) {
@@ -61,6 +62,14 @@ class RegisterUserForm extends React.Component {
       });
     }
   }
+  handleCheckboxChange(field, e) {
+    const { formState, updateForm } = this.props;
+    if (formState[field] !== e.target.checked) {
+      updateForm({
+        [field]: e.target.checked,
+      });
+    }
+  }
   openLoginModal(e) {
     e.preventDefault();
     this.props.openModal(LOGIN_MODAL);
@@ -69,7 +78,7 @@ class RegisterUserForm extends React.Component {
     if (this.props.sessionUserId) {
       return null;
     }
-    const { errors, pending } = this.props.formState;
+    const { errors, pending, remember } = this.props.formState;
     const { email, username, password, repeatPassword } = this.state;
     return (
       <section>
@@ -133,6 +142,14 @@ class RegisterUserForm extends React.Component {
 
             {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH &&
               <span>Passwords do not match.</span>}
+          </div>
+
+          <div className={styles.formInput}>
+            <input
+              onChange={this.handleRememberMeChange}
+              type="checkbox"
+              value={remember}
+            /> <label>Remember me</label>
           </div>
 
           <Button btnStyle="primary" disabled={pending}>

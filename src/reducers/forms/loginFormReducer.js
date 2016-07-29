@@ -5,6 +5,7 @@ const initialState = {
   error: false,
   username: '',
   password: '',
+  remember: false,
 };
 
 export default function loginFormReducer(state = initialState, action) {

@@ -23,6 +23,7 @@ class LoginForm extends React.Component {
     this.handleUsernameBlur = this.handleBlur.bind(this, 'username');
     this.handlePasswordChange = this.handleChange.bind(this, 'password');
     this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
+    this.handleRememberMeChange = this.handleCheckboxChange.bind(this, 'remember');
     this.openRegisterModal = this.openRegisterModal.bind(this);
   }
   componentWillReceiveProps(nextProps) {
@@ -53,6 +54,14 @@ class LoginForm extends React.Component {
       });
     }
   }
+  handleCheckboxChange(field, e) {
+    const { formState, updateForm } = this.props;
+    if (formState[field] !== e.target.checked) {
+      updateForm({
+        [field]: e.target.checked,
+      });
+    }
+  }
   openRegisterModal(e) {
     e.preventDefault();
     this.props.openModal(REGISTER_MODAL);
@@ -61,7 +70,7 @@ class LoginForm extends React.Component {
     if (this.props.sessionUserId) {
       return null;
     }
-    const { error, pending } = this.props.formState;
+    const { error, pending, remember } = this.props.formState;
     const { username, password } = this.state;
     return (
       <section>
@@ -87,6 +96,13 @@ class LoginForm extends React.Component {
               onBlur={this.handlePasswordBlur}
             />
             {error && <div>Incorrect username and/or password</div>}
+          </div>
+          <div className={styles.formInput}>
+            <input
+              onChange={this.handleRememberMeChange}
+              type="checkbox"
+              value={remember}
+            /> <label>Remember me</label>
           </div>
 
           <Button btnStyle="primary" disabled={pending}>
