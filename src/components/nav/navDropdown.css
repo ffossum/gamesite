@@ -22,22 +22,30 @@
 }
 
 .item {
-  padding: 0.25rem 0.5rem 0 0.5rem;
   margin: 0.25rem;
+}
+
+.gameItem {
+  margin: 0.25rem;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+
+  padding: 0;
+  padding-top: 0.25rem;
 
   &:not(:last-child) {
-    & .gameItem {
-      border-bottom: var(--border);
-    }
+    border-bottom: var(--border);
   }
 }
 
-.itemSelectable {
-  color: black;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
+.itemLink {
+  display: block;
   cursor: pointer;
+  color: black;
+  padding: 0;
   border-radius: 3px;
+  padding: 0.5rem;
+
   &:hover, &:focus {
     color: white;
     transition-duration: 0.2s;
