@@ -5,16 +5,19 @@ import UserDropdown from './UserDropdown';
 import {
   LOGIN_MODAL,
   REGISTER_MODAL,
+  USER_SETTINGS_MODAL,
 } from 'constants/modalType';
 
 import styles from './nav.css';
 
 export default class Nav extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.openLoginModal = this.openModal.bind(this, LOGIN_MODAL);
     this.openRegisterModal = this.openModal.bind(this, REGISTER_MODAL);
+
+    this.openUserSettingsModal = () => props.openModal(USER_SETTINGS_MODAL);
   }
   openModal(modalType, e) {
     e.preventDefault();
@@ -52,7 +55,13 @@ export default class Nav extends React.Component {
           user ?
             <ul className={styles.navgroup}>
               <li><GamesDropdown games={games} /></li>
-              <li><UserDropdown user={user} logOut={this.props.logOut} /></li>
+              <li>
+                <UserDropdown
+                  logOut={this.props.logOut}
+                  openSettings={this.openUserSettingsModal}
+                  user={user}
+                />
+              </li>
             </ul>
           :
             <ul className={styles.navgroup}>

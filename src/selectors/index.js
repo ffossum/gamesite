@@ -72,3 +72,8 @@ export const gameRoomSelector = createSelector(
     };
   }
 );
+
+export const userSettingsSelector = createSelector(
+  userSelector,
+  user => ({ user }),
+);

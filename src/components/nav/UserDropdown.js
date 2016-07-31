@@ -9,11 +9,16 @@ export default class UserDropdown extends React.Component {
   constructor() {
     super();
     this.handleLogOut = this.handleLogOut.bind(this);
+    this.handleSettingsClick = this.handleSettingsClick.bind(this);
   }
   handleLogOut(e) {
     e.preventDefault();
     e.stopPropagation();
     this.props.logOut();
+  }
+  handleSettingsClick(e) {
+    e.preventDefault();
+    this.props.openSettings();
   }
   render() {
     const { user } = this.props;
@@ -27,6 +32,13 @@ export default class UserDropdown extends React.Component {
       <Dropdown title={dropdownTitle} nav activeClassName={navStyles.active}>
         <section className={styles.section}>
           <ul className={styles.list}>
+            <CloseDropdown>
+              <li className={styles.item}>
+                <a className={styles.itemLink} onClick={this.handleSettingsClick}>
+                  Settings
+                </a>
+              </li>
+            </CloseDropdown>
             <CloseDropdown>
               <li className={styles.item}>
                 <a className={styles.itemLink} onClick={this.handleLogOut}>
@@ -44,4 +56,5 @@ export default class UserDropdown extends React.Component {
 UserDropdown.propTypes = {
   user: PropTypes.object.isRequired,
   logOut: PropTypes.func.isRequired,
+  openSettings: PropTypes.func.isRequired,
 };

@@ -5,11 +5,13 @@ import Nav from 'containers/NavContainer';
 import Modal from 'components/common/modal/Modal';
 import LoginForm from './forms/LoginForm';
 import RegisterUserForm from './forms/RegisterUserForm';
+import UserSettingsContainer from './UserSettingsContainer';
 import modalActions from 'actions/modal';
 
 import {
   LOGIN_MODAL,
   REGISTER_MODAL,
+  USER_SETTINGS_MODAL,
 } from 'constants/modalType';
 
 import styles from 'client/client.css';
@@ -19,6 +21,7 @@ function getModalContent(modalType) {
   switch (modalType) {
     case LOGIN_MODAL: return <LoginForm />;
     case REGISTER_MODAL: return <RegisterUserForm />;
+    case USER_SETTINGS_MODAL: return <UserSettingsContainer />;
     default: throw Error('Unknown modal type');
   }
 }
