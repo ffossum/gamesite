@@ -43,12 +43,12 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
   text-decoration: none;
+  cursor: pointer;
   color: var(--link-color);
   &:hover {
     color: var(--link-hover-color);
   }
 }
-
 
 @media (min-width: 600px) {
   html {
