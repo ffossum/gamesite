@@ -7,6 +7,7 @@ import { REGISTER_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 import { get } from 'lodash';
+import { uniqueId } from 'util/uniqueId';
 
 import styles from './form.css';
 
@@ -73,6 +74,8 @@ class LoginForm extends React.Component {
     }
     const { error, pending, remember } = this.props.formState;
     const { username, password } = this.state;
+    const checkboxId = uniqueId('remember');
+
     return (
       <section>
         <h2>Log in</h2>
@@ -96,10 +99,11 @@ class LoginForm extends React.Component {
           />
           <div className={styles.formInput}>
             <input
+              id={checkboxId}
               onChange={this.handleRememberMeChange}
               type="checkbox"
               value={remember}
-            /> <label>Remember me</label>
+            /> <label htmlFor={checkboxId}>Remember me</label>
           </div>
 
           <Button btnStyle="primary" disabled={pending}>

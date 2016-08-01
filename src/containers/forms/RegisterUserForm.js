@@ -7,6 +7,7 @@ import { LOGIN_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 import { get } from 'lodash';
+import { uniqueId } from 'util/uniqueId';
 
 import styles from './form.css';
 
@@ -95,6 +96,7 @@ class RegisterUserForm extends React.Component {
       emailError = 'Invalid email';
     }
 
+    const checkboxId = uniqueId('remember');
     return (
       <section>
         <h2>Registration</h2>
@@ -146,10 +148,11 @@ class RegisterUserForm extends React.Component {
 
           <div className={styles.formInput}>
             <input
+              id={checkboxId}
               onChange={this.handleRememberMeChange}
               type="checkbox"
               value={remember}
-            /> <label>Remember me</label>
+            /> <label htmlFor={checkboxId}>Remember me</label>
           </div>
 
           <Button btnStyle="primary" disabled={pending}>
