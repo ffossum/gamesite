@@ -9,7 +9,7 @@ const devHead =
 const prodHead =
 `
 <style>${prodStyle}</style>
-<script src="https://fb.me/react-15.3.0.min.js" defer></script>
+<script src="https://fb.me/react-with-addons-15.3.0.min.js" defer></script>
 <script src="https://fb.me/react-dom-15.3.0.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/lodash/4.14.0/lodash.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js" defer></script>
