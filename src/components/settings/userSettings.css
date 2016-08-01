@@ -1,0 +1,32 @@
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  max-height: 100%;
+  height: 25rem;
+
+}
+
+.nav {
+  min-width: 10rem;
+}
+
+.sectionContainer {
+  width: 20rem;
+}
+
+.sectionList {
+  list-style: none;
+  padding: 0;
+  & li {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.section {
+  padding-top: 1rem;
+}
+
+.active {
+  text-decoration: underline;
+}
