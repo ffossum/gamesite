@@ -77,27 +77,23 @@ class LoginForm extends React.Component {
       <section>
         <h2>Log in</h2>
         <form onSubmit={this.handleSubmit} className={styles.form}>
-          <div className={styles.formInput}>
-            <TextInput
-              label="Username"
-              required
-              value={username}
-              onChange={this.handleUsernameChange}
-              onBlur={this.handleUsernameBlur}
-              autoFocus
-            />
-          </div>
-          <div className={styles.formInput}>
-            <TextInput
-              label="Password"
-              type="password"
-              required
-              value={password}
-              onChange={this.handlePasswordChange}
-              onBlur={this.handlePasswordBlur}
-            />
-            {error && <div>Incorrect username and/or password</div>}
-          </div>
+          <TextInput
+            label="Username"
+            required
+            value={username}
+            onChange={this.handleUsernameChange}
+            onBlur={this.handleUsernameBlur}
+            autoFocus
+          />
+          <TextInput
+            label="Password"
+            type="password"
+            required
+            value={password}
+            onChange={this.handlePasswordChange}
+            onBlur={this.handlePasswordBlur}
+            error={error && 'Incorrect username and/or password'}
+          />
           <div className={styles.formInput}>
             <input
               onChange={this.handleRememberMeChange}

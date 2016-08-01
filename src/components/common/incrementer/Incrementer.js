@@ -37,7 +37,7 @@ export default class Incrementer extends React.Component {
 
     return (
       <div>
-        {label && <label>{label}</label>}
+        {label && <label className={textInputStyles.label}>{label}</label>}
         <div className={styles.group}>
           <Button
             disabled={disabledMinus}

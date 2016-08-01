@@ -37,6 +37,7 @@ export default class ChatInput extends React.Component {
       <form className={styles.chatForm} onSubmit={this.handleSubmit}>
         <div className={styles.messageInput}>
           <TextInput
+            compact
             value={this.state.message}
             onChange={this.handleChange}
             placeholder="Say something..."

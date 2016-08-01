@@ -1,5 +1,15 @@
 @import "../../client/variables.css";
 
+.margin {
+  margin-bottom: 0.75rem;
+}
+
+.label {
+  color: var(--darker-gray);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
 .textInput {
   padding: 0.5rem;
   border-top: var(--border);

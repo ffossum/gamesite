@@ -87,69 +87,62 @@ class RegisterUserForm extends React.Component {
     }
     const { errors, pending, remember } = this.props.formState;
     const { email, username, password, repeatPassword } = this.state;
+
+    let emailError;
+    if (errors.email === errorTypes.EMAIL_TAKEN) {
+      emailError = 'A user with this email already exists.';
+    } else if (errors.email === errorTypes.INVALID_EMAIL) {
+      emailError = 'Invalid email';
+    }
+
     return (
       <section>
         <h2>Registration</h2>
         <form onSubmit={this.handleSubmit} className={styles.form}>
+          <TextInput
+            label="Email"
+            type="email"
+            required
+            disabled={pending}
+            value={email}
+            onChange={this.handleEmailChange}
+            onBlur={this.handleEmailBlur}
+            autoFocus
+            error={emailError}
+          />
 
-          <div className={styles.formInput}>
-            <TextInput
-              label="Email"
-              type="email"
-              required
-              disabled={pending}
-              value={email}
-              onChange={this.handleEmailChange}
-              onBlur={this.handleEmailBlur}
-              autoFocus
-            />
+          <TextInput
+            label="Username"
+            required
+            disabled={pending}
+            value={username}
+            onChange={this.handleUsernameChange}
+            onBlur={this.handleUsernameBlur}
+            error={errors.username === errorTypes.USERNAME_TAKEN &&
+              'Username is already taken.'}
+          />
 
-            {errors.email === errorTypes.EMAIL_TAKEN &&
-              <span>A user with this email already exists.</span>}
+          <TextInput
+            label="Password"
+            type="password"
+            required
+            disabled={pending}
+            value={password}
+            onChange={this.handlePasswordChange}
+            onBlur={this.handlePasswordBlur}
+          />
 
-            {errors.email === errorTypes.INVALID_EMAIL &&
-              <span>Invalid email</span>}
-          </div>
-
-          <div className={styles.formInput}>
-            <TextInput
-              label="Username"
-              required
-              disabled={pending}
-              value={username}
-              onChange={this.handleUsernameChange}
-              onBlur={this.handleUsernameBlur}
-            />
-
-            {errors.username === errorTypes.USERNAME_TAKEN &&
-              <span>Username is already taken.</span>}
-          </div>
-
-          <div className={styles.formInput}>
-            <TextInput
-              label="Password"
-              type="password"
-              required
-              disabled={pending}
-              value={password}
-              onChange={this.handlePasswordChange}
-              onBlur={this.handlePasswordBlur}
-            />
-          </div>
-          <div className={styles.formInput}>
-            <TextInput
-              label="Repeat password"
-              type="password"
-              required
-              disabled={pending}
-              value={repeatPassword}
-              onChange={this.handleRepeatPasswordChange}
-              onBlur={this.handleRepeatPasswordBlur}
-            />
-
-            {errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH &&
-              <span>Passwords do not match.</span>}
-          </div>
+          <TextInput
+            label="Repeat password"
+            type="password"
+            required
+            disabled={pending}
+            value={repeatPassword}
+            onChange={this.handleRepeatPasswordChange}
+            onBlur={this.handleRepeatPasswordBlur}
+            error={errors.repeatPassword === errorTypes.PASSWORDS_DO_NOT_MATCH &&
+              'Passwords do not match.'}
+          />
 
           <div className={styles.formInput}>
             <input

@@ -42,7 +42,6 @@ export default class CreateGame extends React.Component {
     return (
       <div className={styles.container}>
         <form onSubmit={this.handleSubmit}>
-
           <div className={formStyles.formInput}>
             <Incrementer
               label="Players"
@@ -55,12 +54,10 @@ export default class CreateGame extends React.Component {
             values={this.state.options}
           />
 
-          <div className={formStyles.formInput}>
-            <TextInput
-              label="Comment"
-              onChange={this.handleChangeComment}
-            />
-          </div>
+          <TextInput
+            label="Comment"
+            onChange={this.handleChangeComment}
+          />
 
           <Button
             disabled={disabled}
