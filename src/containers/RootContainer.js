@@ -7,6 +7,7 @@ import LoginForm from './forms/LoginForm';
 import RegisterUserForm from './forms/RegisterUserForm';
 import UserSettingsContainer from './UserSettingsContainer';
 import modalActions from 'actions/modal';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import {
   LOGIN_MODAL,
@@ -38,12 +39,18 @@ class Root extends React.Component {
             {this.props.children}
           </main>
         </div>
-        {
-          modal &&
-            <Modal onClose={closeModal}>
-              {getModalContent(modal)}
-            </Modal>
-        }
+        <ReactCSSTransitionGroup
+          transitionName="modal"
+          transitionEnterTimeout={150}
+          transitionLeaveTimeout={150}
+        >
+          {
+            modal &&
+              <Modal key={modal} onClose={closeModal}>
+                {getModalContent(modal)}
+              </Modal>
+          }
+        </ReactCSSTransitionGroup>
       </div>
     );
   }
