@@ -10,7 +10,7 @@ import { addUserData } from 'actions/userData';
 import { resetMessages } from 'actions/mainChat';
 import { resetCounter } from 'util/uniqueId';
 import { lobbyRefreshed } from 'actions/gamesList';
-import getPublicUserData from '../../util/getPublicUserData';
+import { getPublicUserData, getOwnUserData } from '../../util/userDataUtils';
 import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
 import { getLobbyGames } from '../db/games';
@@ -49,7 +49,7 @@ function matchRoutes(routes, location) {
 export async function initializeReduxStore(ctx, next) {
   const store = createStore(reducer);
   if (ctx.isAuthenticated()) {
-    store.dispatch(logInSuccess(getPublicUserData(ctx.req.user)));
+    store.dispatch(logInSuccess(getOwnUserData(ctx.req.user)));
   }
 
   const { games, refreshed } = await getLobbyGames();

@@ -2,7 +2,7 @@
 
 import cookie from 'cookie';
 import { getUserByJwt } from '../jwt';
-import getPublicUserData from '../../util/getPublicUserData';
+import { getOwnUserData } from 'util/userDataUtils';
 import { LOG_OUT, LOG_IN_SUCCESS } from 'actions/login';
 import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
 import {
@@ -79,7 +79,7 @@ export default async function handleConnection(socket) {
       joinGameChannels(socket, _.keys(userGames));
 
       socket.emit(LOG_IN_SUCCESS, {
-        user: getPublicUserData(user),
+        user: getOwnUserData(user),
         games: userGames,
       });
 

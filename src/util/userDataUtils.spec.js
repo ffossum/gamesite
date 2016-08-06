@@ -2,7 +2,7 @@
 /* eslint no-unused-expressions: 0 */
 
 import { expect } from 'chai';
-import getPublicUserData from './getPublicUserData';
+import { getPublicUserData } from './userDataUtils';
 
 describe('getPublicUserData', () => {
   const user = {
