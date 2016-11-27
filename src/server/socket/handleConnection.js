@@ -37,7 +37,6 @@ import {
 import games, { getUserGames } from '../db/games';
 import _ from 'lodash';
 import { asViewedBy } from 'games/rps/';
-import { getMessageCacheInstance } from './messageCache';
 import {
   getGameChannelName,
   getUserChannelName,
@@ -45,8 +44,6 @@ import {
   getUrlChannels,
 } from './channelUtils';
 import jsonpatch from 'fast-json-patch';
-
-const messageCache = getMessageCacheInstance();
 
 function getJwt(request) {
   const { headers } = request;
@@ -91,18 +88,6 @@ export default async function handleConnection(socket) {
   } else {
     socket.emit('news', { hello: 'guest' });
   }
-
-  socket.on(SEND_MESSAGE, data => {
-    if (socket.user) {
-      const message = {
-        text: data.text,
-        time: new Date().toJSON(),
-        user: socket.user.id,
-      };
-      messageCache.add(message);
-      socket.broadcast.emit(NEW_MESSAGE, message);
-    }
-  });
 
   socket.on(SEND_GAME_MESSAGE, message => {
     if (socket.user) {
