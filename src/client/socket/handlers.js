@@ -2,6 +2,7 @@ import {
   LOG_IN_SUCCESS, logInSuccess,
 } from 'actions/login';
 import {
+  SEND_MESSAGE,
   NEW_MESSAGE, newMessage,
 } from 'actions/mainChat';
 import {
@@ -27,7 +28,17 @@ export function createHandlers(store) {
     news: data => {
       console.log(data);
     },
-    [NEW_MESSAGE]: message => store.dispatch(newMessage(message)),
+    [SEND_MESSAGE]: message => {
+      store.dispatch(newMessage(message));
+    },
+    mainchat: ([type, message]) => {
+      switch (type) {
+        case SEND_MESSAGE:
+          store.dispatch(newMessage(message));
+          break;
+        default:
+      }
+    },
     [LOG_IN_SUCCESS]: data => store.dispatch(logInSuccess(data.user, data.games)),
     [GAME_CREATED]: data => store.dispatch(gameCreated(data.game)),
     [REFRESH_LOBBY]: ({ games, refreshed }) => store.dispatch(refreshLobby({ games, refreshed })),

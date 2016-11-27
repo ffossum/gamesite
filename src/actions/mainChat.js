@@ -6,11 +6,16 @@ export const NEW_MESSAGE = 'mainChat/NEW_MESSAGE';
 export const RESET_MESSAGES = 'mainChat/RESET';
 
 export function newMessage(message) {
+  const time = new Date().toJSON();
+
   return dispatch => {
     dispatch(getUserData(message.user));
     dispatch({
       type: NEW_MESSAGE,
-      payload: message,
+      payload: {
+        ...message,
+        time,
+      },
     });
   };
 }
@@ -23,21 +28,15 @@ export function sendMessage(text) {
       dispatch({
         type: SEND_MESSAGE,
         payload: {
+          user: userId,
           text,
         },
         meta: {
-          socket: true,
+          deepstream: {
+            event: 'mainchat',
+          },
         },
       });
-
-      const user = get(state, ['data', 'users', userId]);
-      const message = {
-        text,
-        time: new Date().toJSON(),
-        user: user.id,
-      };
-
-      dispatch(newMessage(message));
     }
   };
 }

@@ -10,6 +10,7 @@ import router from './router/router';
 import http from 'http';
 import socket from './socket/';
 import initDb from './db/init';
+import deepstream from './socket/deepstream';
 
 initDb();
 
@@ -27,6 +28,8 @@ app.use(router.routes(), router.allowedMethods());
 
 const server = new http.Server(app.callback());
 socket.init(server);
+
+deepstream.init();
 
 const PORT = 8080;
 server.listen(PORT, '0.0.0.0', err => {
