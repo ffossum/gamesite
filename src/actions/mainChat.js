@@ -33,7 +33,7 @@ export function sendMessage(text) {
         },
         meta: {
           deepstream: {
-            event: 'mainchat',
+            publish: 'mainchat',
           },
         },
       });
