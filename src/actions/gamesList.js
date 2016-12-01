@@ -13,6 +13,16 @@ export const CREATE_GAME_SUCCESS = 'games/CREATE_GAME_SUCCESS';
 
 export const GAME_CREATED = 'games/GAME_CREATED';
 
+export function lobbyRefreshed({ games, refreshed }) {
+  return {
+    type: REFRESH_LOBBY,
+    payload: {
+      games,
+      refreshed,
+    },
+  };
+}
+
 export function joinLobby() {
   return (dispatch, getState) => {
     const lastRefreshed = get(getState(), ['lobby', 'lastRefreshed']);
@@ -23,6 +33,11 @@ export function joinLobby() {
       },
       meta: {
         socket: true,
+        deepstream: {
+          rpc: (err, result) => {
+            dispatch(lobbyRefreshed(result));
+          },
+        },
       },
     });
   };
@@ -33,16 +48,6 @@ export function leaveLobby() {
     type: LEAVE_LOBBY,
     meta: {
       socket: true,
-    },
-  };
-}
-
-export function lobbyRefreshed({ games, refreshed }) {
-  return {
-    type: REFRESH_LOBBY,
-    payload: {
-      games,
-      refreshed,
     },
   };
 }

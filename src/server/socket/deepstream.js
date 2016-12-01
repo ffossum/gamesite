@@ -3,6 +3,8 @@ import deepstreamClient from './deepstreamClient';
 import { getMessageCacheInstance } from './messageCache';
 import { once } from 'lodash';
 import { SEND_MESSAGE } from 'actions/mainChat';
+import { JOIN_LOBBY } from 'actions/gamesList';
+import games from '../db/games';
 
 export const init = once(async () => {
   await server.init();
@@ -23,6 +25,15 @@ export const init = once(async () => {
       }
       default:
     }
+  });
+
+  client.rpc.provide(JOIN_LOBBY, async (data, res) => {
+    const { lastRefreshed } = data;
+    const result = await games.getLobbyGames({ lastRefreshed });
+    res.send({
+      games: result.games,
+      refreshed: result.refreshed,
+    });
   });
 });
 

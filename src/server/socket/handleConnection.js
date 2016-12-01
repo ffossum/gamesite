@@ -8,9 +8,6 @@ import {
   NEW_GAME_MESSAGE,
 } from 'actions/gameChat';
 import {
-  JOIN_LOBBY,
-  LEAVE_LOBBY,
-  REFRESH_LOBBY,
   CREATE_GAME,
   GAME_CREATED,
 } from 'actions/gamesList';
@@ -281,18 +278,5 @@ export default async function handleConnection(socket) {
 
   socket.on(LEAVE_ROOM, gameId => {
     socket.leave(getSpectatorChannelName(gameId));
-  });
-
-  socket.on(JOIN_LOBBY, async ({ lastRefreshed } = {}) => {
-    socket.join('lobby');
-    const result = await games.getLobbyGames({ lastRefreshed });
-    socket.emit(REFRESH_LOBBY, {
-      games: result.games,
-      refreshed: result.refreshed,
-    });
-  });
-
-  socket.on(LEAVE_LOBBY, () => {
-    socket.leave('lobby');
   });
 }
