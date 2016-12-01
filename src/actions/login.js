@@ -87,6 +87,10 @@ export function logIn({ username, password, remember }) {
     .then(res => {
       if (res.ok) {
         socket.reconnect();
+        res.json().then(json => {
+          const { user, games } = json;
+          dispatch(logInSuccess(user, games));
+        });
       } else {
         dispatch(logInFailure());
       }

@@ -2,9 +2,7 @@
 
 import cookie from 'cookie';
 import { getUserByJwt } from '../jwt';
-import { getOwnUserData } from 'util/userDataUtils';
-import { LOG_OUT, LOG_IN_SUCCESS } from 'actions/login';
-import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
+import { LOG_OUT } from 'actions/login';
 import {
   SEND_GAME_MESSAGE,
   NEW_GAME_MESSAGE,
@@ -69,16 +67,10 @@ export default async function handleConnection(socket) {
   if (token) {
     try {
       const user = await getUserByJwt(token);
-
       socket.join(getUserChannelName(user.id));
 
       const userGames = await getUserGames(user.id);
       joinGameChannels(socket, _.keys(userGames));
-
-      socket.emit(LOG_IN_SUCCESS, {
-        user: getOwnUserData(user),
-        games: userGames,
-      });
 
       socket.user = user;
       socket.emit('news', { hello: user.username });
