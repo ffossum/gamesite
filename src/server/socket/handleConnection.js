@@ -96,32 +96,6 @@ export default async function handleConnection(socket) {
     socket.disconnect(true);
   });
 
-  socket.on(LEAVE_GAME, async (data, fn) => {
-    if (socket.user) {
-      const gameId = data.game.id;
-      const left = await games.leave(gameId, socket.user.id);
-
-      if (left) {
-        socket.leave(getGameChannelName(gameId));
-        socket.join(getSpectatorChannelName(gameId));
-
-        const emitData = {
-          user: { id: socket.user.id },
-          game: { id: gameId },
-        };
-        socket.broadcast
-          .to('lobby')
-          .to(getSpectatorChannelName(gameId))
-          .to(getGameChannelName(gameId))
-          .emit(PLAYER_LEFT, emitData);
-      }
-
-      fn(!!left);
-    } else {
-      fn(false);
-    }
-  });
-
   socket.on(START_GAME, async (data, fn) => {
     if (socket.user) {
       const gameId = data.game.id;

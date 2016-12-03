@@ -11,6 +11,8 @@ import {
 import {
   JOIN_GAME,
   PLAYER_JOINED,
+  LEAVE_GAME,
+  PLAYER_LEFT,
 } from 'actions/gameRoom';
 import games from '../db/games';
 import { getGameChannelName } from 'util/channelUtils';
@@ -65,6 +67,15 @@ export const init = once(async () => {
       client.event.emit(getGameChannelName(game.id), [PLAYER_JOINED, data]);
     }
     res.send(joined);
+  });
+
+  client.rpc.provide(LEAVE_GAME, async (data, res) => {
+    const { user, game } = data;
+    const left = await games.leave(game.id, user.id);
+    if (left) {
+      client.event.emit(getGameChannelName(game.id), [PLAYER_LEFT, data]);
+    }
+    res.send(left);
   });
 });
 

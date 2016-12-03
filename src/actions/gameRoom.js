@@ -140,18 +140,17 @@ export function leaveGame(gameId) {
       return;
     }
 
+    const type = LEAVE_GAME;
+    const payload = {
+      game: { id: gameId },
+      user: { id: userId },
+    };
     dispatch({
-      type: LEAVE_GAME,
-      payload: {
-        game: {
-          id: gameId,
-        },
-      },
+      type,
+      payload,
       meta: {
-        socket: left => {
-          if (left) {
-            dispatch(playerLeft(gameId, userId));
-          }
+        deepstream: socket => {
+          socket.rpc(type, payload, () => {});
         },
       },
     });
