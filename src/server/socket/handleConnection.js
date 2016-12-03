@@ -100,22 +100,6 @@ export default async function handleConnection(socket) {
     socket.disconnect(true);
   });
 
-  socket.on(CREATE_GAME, async (data, fn) => {
-    if (socket.user) {
-      const game = await games.create({
-        data,
-        host: socket.user.id,
-      });
-
-      if (game) {
-        socket.join(getGameChannelName(game.id));
-        socket.broadcast.to('lobby').emit(GAME_CREATED, { game });
-      }
-
-      fn(game);
-    }
-  });
-
   socket.on(JOIN_GAME, async (data, fn) => {
     if (socket.user) {
       const gameId = data.game.id;

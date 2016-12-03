@@ -39,6 +39,14 @@ export function createHandlers(store) {
         default:
       }
     },
+    lobby: ([type, data]) => {
+      switch (type) {
+        case GAME_CREATED:
+          store.dispatch(gameCreated(data));
+          break;
+        default:
+      }
+    },
     [LOG_IN_SUCCESS]: data => store.dispatch(logInSuccess(data.user, data.games)),
     [GAME_CREATED]: data => store.dispatch(gameCreated(data.game)),
     [REFRESH_LOBBY]: ({ games, refreshed }) => store.dispatch(refreshLobby({ games, refreshed })),

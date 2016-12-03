@@ -80,15 +80,21 @@ function createGameSuccess(game) {
 }
 
 export function createGame(data) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = get(getState(), ['session', 'userId']);
     dispatch({
       type: CREATE_GAME,
-      payload: data,
+      payload: {
+        user: userId,
+        game: data,
+      },
       meta: {
-        socket: game => {
-          if (game) {
-            dispatch(createGameSuccess(game));
-          }
+        deepstream: {
+          rpc: (err, game) => {
+            if (game) {
+              dispatch(createGameSuccess(game));
+            }
+          },
         },
       },
     });
