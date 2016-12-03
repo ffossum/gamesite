@@ -74,22 +74,6 @@ export default async function handleConnection(socket) {
     socket.emit('news', { hello: 'guest' });
   }
 
-  socket.on(SEND_GAME_MESSAGE, message => {
-    if (socket.user) {
-      socket.broadcast
-        .to(getGameChannelName(message.game.id))
-        .to(getSpectatorChannelName(message.game.id))
-        .emit(NEW_GAME_MESSAGE, {
-          game: { id: message.game.id },
-          message: {
-            text: message.text,
-            time: new Date().toJSON(),
-            user: socket.user.id,
-          },
-        });
-    }
-  });
-
   socket.on(LOG_OUT, () => {
     socket.leave(getUserChannelName(socket.user.id));
     delete socket.user;

@@ -18,6 +18,7 @@ import {
 } from 'actions/gameRoom';
 import {
   NEW_GAME_MESSAGE, newGameMessage,
+  SEND_GAME_MESSAGE,
 } from 'actions/gameChat';
 import {
   NEW_ACTION, newAction,
@@ -37,6 +38,9 @@ export function createHandler(store) {
         break;
       case PLAYER_LEFT:
         store.dispatch(playerLeft(data.game.id, data.user.id));
+        break;
+      case SEND_GAME_MESSAGE:
+        store.dispatch(newGameMessage(data));
         break;
       default:
     }

@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import deepstream from 'deepstream.io-client-js';
-import { forEach, once, isFunction } from 'lodash';
+import { forEach, once, isFunction, noop } from 'lodash';
 import {
   userGamesSelector,
 } from 'selectors/commonSelectors';
@@ -68,7 +68,7 @@ export function publish(eventName, data) {
   currentDeepstream.event.emit(eventName, data);
 }
 
-export function rpc(procedureName, data, fn) {
+export function rpc(procedureName, data, fn = noop) {
   currentDeepstream.rpc.make(procedureName, data, fn);
 }
 

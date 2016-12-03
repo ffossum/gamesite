@@ -116,7 +116,7 @@ export function joinGame(gameId) {
       payload,
       meta: {
         deepstream: socket => {
-          socket.rpc(JOIN_GAME, payload, () => {});
+          socket.rpc(type, payload);
         },
       },
     });
@@ -150,7 +150,7 @@ export function leaveGame(gameId) {
       payload,
       meta: {
         deepstream: socket => {
-          socket.rpc(type, payload, () => {});
+          socket.rpc(type, payload);
         },
       },
     });

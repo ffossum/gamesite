@@ -14,6 +14,10 @@ import {
   LEAVE_GAME,
   PLAYER_LEFT,
 } from 'actions/gameRoom';
+import {
+  SEND_GAME_MESSAGE,
+  NEW_GAME_MESSAGE,
+} from 'actions/gameChat';
 import games from '../db/games';
 import { getGameChannelName } from 'util/channelUtils';
 
@@ -78,7 +82,6 @@ export const init = once(async () => {
     res.send(left);
   });
 });
-
 
 export default {
   init,
