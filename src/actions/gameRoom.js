@@ -106,18 +106,17 @@ export function joinGame(gameId) {
       return;
     }
 
+    const type = JOIN_GAME;
+    const payload = {
+      game: { id: gameId },
+      user: { id: userId },
+    };
     dispatch({
-      type: JOIN_GAME,
-      payload: {
-        game: {
-          id: gameId,
-        },
-      },
+      type,
+      payload,
       meta: {
-        socket: joined => {
-          if (joined) {
-            dispatch(playerJoined(gameId, userId));
-          }
+        deepstream: socket => {
+          socket.rpc(JOIN_GAME, payload, () => {});
         },
       },
     });

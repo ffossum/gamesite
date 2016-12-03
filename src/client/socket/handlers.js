@@ -3,7 +3,7 @@ import {
 } from 'actions/login';
 import {
   SEND_MESSAGE,
-  NEW_MESSAGE, newMessage,
+  newMessage,
 } from 'actions/mainChat';
 import {
   GAME_CREATED, gameCreated,
@@ -31,6 +31,9 @@ export function createHandler(store) {
         break;
       case GAME_CREATED:
         store.dispatch(gameCreated(data));
+        break;
+      case PLAYER_JOINED:
+        store.dispatch(playerJoined(data.game.id, data.user.id));
         break;
       default:
     }

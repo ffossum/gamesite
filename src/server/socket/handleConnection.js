@@ -8,10 +8,6 @@ import {
   NEW_GAME_MESSAGE,
 } from 'actions/gameChat';
 import {
-  CREATE_GAME,
-  GAME_CREATED,
-} from 'actions/gamesList';
-import {
   JOIN_GAME,
   PLAYER_JOINED,
   LEAVE_GAME,
@@ -98,31 +94,6 @@ export default async function handleConnection(socket) {
     socket.leave(getUserChannelName(socket.user.id));
     delete socket.user;
     socket.disconnect(true);
-  });
-
-  socket.on(JOIN_GAME, async (data, fn) => {
-    if (socket.user) {
-      const gameId = data.game.id;
-      const joined = await games.join(gameId, socket.user.id);
-
-      if (joined) {
-        socket.leave(getSpectatorChannelName(gameId));
-        socket.join(getGameChannelName(gameId));
-
-        const emitData = {
-          user: { id: socket.user.id },
-          game: { id: gameId },
-        };
-        socket.broadcast
-          .to('lobby')
-          .to(getSpectatorChannelName(gameId))
-          .to(getGameChannelName(gameId))
-          .emit(PLAYER_JOINED, emitData);
-      }
-      fn(!!joined);
-    } else {
-      fn(false);
-    }
   });
 
   socket.on(LEAVE_GAME, async (data, fn) => {

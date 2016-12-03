@@ -8,7 +8,12 @@ import {
   CREATE_GAME,
   GAME_CREATED,
 } from 'actions/gamesList';
+import {
+  JOIN_GAME,
+  PLAYER_JOINED,
+} from 'actions/gameRoom';
 import games from '../db/games';
+import { getGameChannelName } from 'util/channelUtils';
 
 export const init = once(async () => {
   await server.init();
@@ -43,7 +48,7 @@ export const init = once(async () => {
   client.rpc.provide(CREATE_GAME, async (data, res) => {
     const game = await games.create({
       data: data.game,
-      host: data.user,
+      host: data.user, // TODO change user format to { user: { id: 'asdf'} }
     });
     if (game) {
       client.event.emit('lobby', [GAME_CREATED, game]);
@@ -52,7 +57,17 @@ export const init = once(async () => {
       res.error();
     }
   });
+
+  client.rpc.provide(JOIN_GAME, async (data, res) => {
+    const { user, game } = data;
+    const joined = await games.join(game.id, user.id);
+    if (joined) {
+      client.event.emit(getGameChannelName(game.id), [PLAYER_JOINED, data]);
+    }
+    res.send(joined);
+  });
 });
+
 
 export default {
   init,
