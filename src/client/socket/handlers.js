@@ -23,29 +23,24 @@ import {
   NEW_ACTION, newAction,
 } from 'actions/game';
 
+export function createHandler(store) {
+  return function socketEventHandler([type, data]) {
+    switch (type) {
+      case SEND_MESSAGE:
+        store.dispatch(newMessage(data));
+        break;
+      case GAME_CREATED:
+        store.dispatch(gameCreated(data));
+        break;
+      default:
+    }
+  };
+}
+
 export function createHandlers(store) {
   return {
     news: data => {
       console.log(data);
-    },
-    [SEND_MESSAGE]: message => {
-      store.dispatch(newMessage(message));
-    },
-    mainchat: ([type, message]) => {
-      switch (type) {
-        case SEND_MESSAGE:
-          store.dispatch(newMessage(message));
-          break;
-        default:
-      }
-    },
-    lobby: ([type, data]) => {
-      switch (type) {
-        case GAME_CREATED:
-          store.dispatch(gameCreated(data));
-          break;
-        default:
-      }
     },
     [LOG_IN_SUCCESS]: data => store.dispatch(logInSuccess(data.user, data.games)),
     [GAME_CREATED]: data => store.dispatch(gameCreated(data.game)),

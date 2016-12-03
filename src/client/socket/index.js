@@ -1,26 +1,24 @@
 import io from 'socket.io-client';
 import deepstream from 'deepstream.io-client-js';
-import { forEach, once } from 'lodash';
+import { forEach, once, isFunction, union, without } from 'lodash';
 
 let host;
 let currentSocket;
 let currentHandlers;
+let currentHandler;
+let currentEvents = [];
 
 let currentDeepstream;
 
-function addHandlers(deepstreamClient, socket, handlers) {
+function addHandlers(socket, handlers) {
   forEach(handlers, (handler, event) => {
     socket.on(event, handler);
-    deepstreamClient.event.subscribe(event, handler);
   });
 }
 
-function replaceHandlers(deepstreamClient, socket, previousHandlers, handlers) {
-  forEach(previousHandlers, (handler, event) => {
-    deepstreamClient.event.unsubscribe(event);
-  });
+function replaceHandlers(socket, handlers) {
   socket.off();
-  addHandlers(deepstreamClient, socket, handlers);
+  addHandlers(socket, handlers);
 }
 
 function init(store) {
@@ -29,16 +27,26 @@ function init(store) {
 
   currentSocket = io(host);
   currentHandlers = require('./handlers').createHandlers(store);
+  currentHandler = require('./handlers').createHandler(store);
 
   currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
-    addHandlers(currentDeepstream, currentSocket, currentHandlers);
+    currentEvents = ['lobby', 'mainchat'];
+    currentEvents.forEach(eventName => {
+      currentDeepstream.event.subscribe(eventName, currentHandler);
+    });
   });
 
   if (module.hot) {
     module.hot.accept('./handlers', () => {
-      const previousHandlers = currentHandlers;
       currentHandlers = require('./handlers').createHandlers(store);
-      replaceHandlers(currentDeepstream, currentSocket, previousHandlers, currentHandlers);
+      replaceHandlers(currentSocket, currentHandlers);
+
+      const previousHandler = currentHandler;
+      currentHandler = require('./handlers').createHandler(store);
+      currentEvents.forEach(eventName => {
+        currentDeepstream.event.unsubscribe(eventName, previousHandler);
+        currentDeepstream.event.subscribe(eventName, currentHandler);
+      });
     });
   }
 }
@@ -57,7 +65,11 @@ export function rpc(procedureName, data, fn) {
 
 export function reconnect() {
   currentDeepstream.close();
-  currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login();
+  currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
+    currentEvents.forEach(eventName => {
+      currentDeepstream.event.subscribe(eventName, currentHandler);
+    });
+  });
 
   currentSocket.disconnect();
   currentSocket = io(host, {
@@ -66,10 +78,24 @@ export function reconnect() {
   addHandlers(currentSocket, currentHandlers);
 }
 
+export function subscribe(eventName, handler = currentHandler) {
+  if (isFunction(handler)) {
+    currentEvents = union(currentEvents, [eventName]);
+    currentDeepstream.event.subscribe(eventName, handler);
+  }
+}
+
+export function unsubscribe(eventName) {
+  currentEvents = without(currentEvents, eventName);
+  currentDeepstream.event.unsubscribe(eventName);
+}
+
 export default {
   init: once(init),
   emit,
   publish,
   rpc,
   reconnect,
+  subscribe,
+  unsubscribe,
 };
