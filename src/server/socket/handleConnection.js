@@ -37,7 +37,7 @@ import {
   getUserChannelName,
   getSpectatorChannelName,
   getUrlChannels,
-} from './channelUtils';
+} from 'util/channelUtils';
 import jsonpatch from 'fast-json-patch';
 
 function getJwt(request) {
