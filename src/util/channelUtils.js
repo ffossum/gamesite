@@ -1,15 +1,19 @@
 import { isLobbyRoute, getGameIdFromRoute } from 'util/routeUtils';
 
 export function getUserChannelName(userId) {
-  return `user:${userId}`;
+  return `user/${userId}`;
 }
 
 export function getGameChannelName(gameId) {
-  return `game:${gameId}`;
+  return `game/${gameId}`;
+}
+
+export function getGameChatChannelName(gameId) {
+  return `game/${gameId}/chat`;
 }
 
 export function getSpectatorChannelName(gameId) {
-  return `spectator:${gameId}`;
+  return `game/${gameId}/spec`;
 }
 
 /*

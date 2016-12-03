@@ -1,7 +1,15 @@
 import fetch from 'isomorphic-fetch';
 import socket from 'client/socket';
 import { getUserData } from './userData';
-import _ from 'lodash';
+import {
+  forEach,
+  union,
+  reduce,
+} from 'lodash';
+import {
+  getGameChannelName,
+  getGameChatChannelName,
+} from 'util/channelUtils';
 
 export const LOG_IN_REQUEST = 'login/LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'login/LOG_IN_SUCCESS';
@@ -41,7 +49,7 @@ export function logInSuccess(user, games) {
   }
 
   return dispatch => {
-    const users = _.reduce(games, (result, game) => _.union(result, game.users), []);
+    const users = reduce(games, (result, game) => union(result, game.users), []);
     dispatch(getUserData(...users));
     dispatch({
       type: LOG_IN_SUCCESS,
@@ -86,10 +94,10 @@ export function logIn({ username, password, remember }) {
     })
     .then(res => {
       if (res.ok) {
-        socket.reconnect();
         res.json().then(json => {
           const { user, games } = json;
           dispatch(logInSuccess(user, games));
+          socket.reconnect({ games });
         });
       } else {
         dispatch(logInFailure());

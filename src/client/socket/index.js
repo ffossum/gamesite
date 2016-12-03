@@ -1,13 +1,19 @@
 import io from 'socket.io-client';
 import deepstream from 'deepstream.io-client-js';
-import { forEach, once, isFunction, union, without } from 'lodash';
+import { forEach, once, isFunction } from 'lodash';
+import {
+  userGamesSelector,
+} from 'selectors/commonSelectors';
+import {
+  getGameChannelName,
+  getGameChatChannelName,
+} from 'util/channelUtils';
 
 let host;
+let currentStore;
 let currentSocket;
 let currentHandlers;
 let currentHandler;
-let currentEvents = [];
-
 let currentDeepstream;
 
 function addHandlers(socket, handlers) {
@@ -16,39 +22,42 @@ function addHandlers(socket, handlers) {
   });
 }
 
-function replaceHandlers(socket, handlers) {
-  socket.off();
-  addHandlers(socket, handlers);
+function getUserGames() {
+  return userGamesSelector(currentStore.getState());
+}
+
+export function subscribe(eventName, handler = currentHandler) {
+  if (isFunction(handler)) {
+    currentDeepstream.event.subscribe(eventName, handler);
+  }
+}
+
+export function unsubscribe(eventName) {
+  currentDeepstream.event.unsubscribe(eventName);
 }
 
 function init(store) {
+  currentStore = store;
   const port = location.port ? `:${location.port}` : '';
   host = `${location.protocol}//${location.hostname}${port}`;
 
   currentSocket = io(host);
-  currentHandlers = require('./handlers').createHandlers(store);
-  currentHandler = require('./handlers').createHandler(store);
+  currentHandlers = require('./handlers').createHandlers(currentStore);
+  currentHandler = require('./handlers').createHandler(currentStore);
 
-  currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
-    currentEvents = ['lobby', 'mainchat'];
-    currentEvents.forEach(eventName => {
-      currentDeepstream.event.subscribe(eventName, currentHandler);
+  const games = getUserGames();
+
+  return new Promise(resolve => {
+    currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
+      ['mainchat', 'lobby'].forEach(subscribe);
+      forEach(games, game => {
+        subscribe(getGameChannelName(game.id));
+        subscribe(getGameChatChannelName(game.id));
+      });
+      // TODO join game channel if currently on game page
+      resolve();
     });
   });
-
-  if (module.hot) {
-    module.hot.accept('./handlers', () => {
-      currentHandlers = require('./handlers').createHandlers(store);
-      replaceHandlers(currentSocket, currentHandlers);
-
-      const previousHandler = currentHandler;
-      currentHandler = require('./handlers').createHandler(store);
-      currentEvents.forEach(eventName => {
-        currentDeepstream.event.unsubscribe(eventName, previousHandler);
-        currentDeepstream.event.subscribe(eventName, currentHandler);
-      });
-    });
-  }
 }
 
 export function emit(...rest) {
@@ -63,32 +72,28 @@ export function rpc(procedureName, data, fn) {
   currentDeepstream.rpc.make(procedureName, data, fn);
 }
 
-export function reconnect() {
-  currentDeepstream.close();
-  currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
-    currentEvents.forEach(eventName => {
-      currentDeepstream.event.subscribe(eventName, currentHandler);
-    });
-  });
 
+export function reconnect({ games = getUserGames() } = {}) {
   currentSocket.disconnect();
   currentSocket = io(host, {
     forceNew: true,
   });
   addHandlers(currentSocket, currentHandlers);
+
+  currentDeepstream.close();
+  return new Promise(resolve => {
+    currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
+      ['mainchat', 'lobby'].forEach(subscribe);
+      forEach(games, game => {
+        subscribe(getGameChannelName(game.id));
+        subscribe(getGameChatChannelName(game.id));
+      });
+      // TODO join game channel if currently on game page
+      resolve();
+    });
+  });
 }
 
-export function subscribe(eventName, handler = currentHandler) {
-  if (isFunction(handler)) {
-    currentEvents = union(currentEvents, [eventName]);
-    currentDeepstream.event.subscribe(eventName, handler);
-  }
-}
-
-export function unsubscribe(eventName) {
-  currentEvents = without(currentEvents, eventName);
-  currentDeepstream.event.unsubscribe(eventName);
-}
 
 export default {
   init: once(init),
