@@ -26,17 +26,17 @@ export function lobbyRefreshed({ games, refreshed }) {
 export function joinLobby() {
   return (dispatch, getState) => {
     const lastRefreshed = get(getState(), ['lobby', 'lastRefreshed']);
+    const type = JOIN_LOBBY;
+    const payload = { lastRefreshed };
     dispatch({
-      type: JOIN_LOBBY,
-      payload: {
-        lastRefreshed,
-      },
+      type,
+      payload,
       meta: {
         socket: true,
-        deepstream: {
-          rpc: (err, result) => {
+        deepstream: socket => {
+          socket.rpc(type, payload, (err, result) => {
             dispatch(lobbyRefreshed(result));
-          },
+          });
         },
       },
     });
@@ -82,19 +82,22 @@ function createGameSuccess(game) {
 export function createGame(data) {
   return (dispatch, getState) => {
     const userId = get(getState(), ['session', 'userId']);
+    const type = CREATE_GAME;
+    const payload = {
+      user: userId,
+      game: data,
+    };
+
     dispatch({
-      type: CREATE_GAME,
-      payload: {
-        user: userId,
-        game: data,
-      },
+      type,
+      payload,
       meta: {
-        deepstream: {
-          rpc: (err, game) => {
+        deepstream: socket => {
+          socket.rpc(type, payload, (err, game) => {
             if (game) {
               dispatch(createGameSuccess(game));
             }
-          },
+          });
         },
       },
     });

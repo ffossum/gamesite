@@ -5,16 +5,10 @@ import { isFunction, noop } from 'lodash';
 
 export default store => next => action => {
   if (action.meta && action.meta.deepstream) {
-    const { rpc, publish } = action.meta.deepstream;
-
-    if (rpc) {
-      const fn = isFunction(rpc) ? rpc : noop;
-      socket.rpc(action.type, action.payload, rpc);
-    } else if (publish) {
-      const eventName = publish;
-      socket.publish(eventName, [action.type, action.payload]);
+    const fn = action.meta.deepstream;
+    if (isFunction(fn)) {
+      fn(socket);
     }
   }
-
   next(action);
 };

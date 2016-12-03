@@ -24,16 +24,19 @@ export function sendMessage(text) {
   return (dispatch, getState) => {
     const state = getState();
     const userId = get(state, ['session', 'userId']);
+
+    const type = SEND_MESSAGE;
+    const payload = {
+      user: userId,
+      text,
+    };
     if (userId) {
       dispatch({
-        type: SEND_MESSAGE,
-        payload: {
-          user: userId,
-          text,
-        },
+        type,
+        payload,
         meta: {
-          deepstream: {
-            publish: 'mainchat',
+          deepstream: socket => {
+            socket.publish('mainchat', [type, payload]);
           },
         },
       });
