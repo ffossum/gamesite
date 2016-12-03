@@ -2,7 +2,16 @@ import { getUserData } from './userData';
 import {
   chain,
   get,
+  forEach,
+  map,
+  difference,
 } from 'lodash';
+import {
+  gamesNotStartedSelector,
+} from 'selectors/commonSelectors';
+import {
+  getGameChannelName,
+} from 'util/channelUtils';
 
 export const JOIN_LOBBY = 'games/JOIN_LOBBY';
 export const LEAVE_LOBBY = 'games/LEAVE_LOBBY';
@@ -28,14 +37,30 @@ export function joinLobby() {
     const lastRefreshed = get(getState(), ['lobby', 'lastRefreshed']);
     const type = JOIN_LOBBY;
     const payload = { lastRefreshed };
+
     dispatch({
       type,
       payload,
       meta: {
         socket: true,
         deepstream: socket => {
+          const previousGames = gamesNotStartedSelector(getState());
+          const previousIds = map(previousGames, game => game.id);
+          forEach(previousIds, gameId => socket.subscribe(getGameChannelName(gameId)));
+
           socket.rpc(type, payload, (err, result) => {
-            dispatch(lobbyRefreshed(result));
+            if (!err) {
+              dispatch(lobbyRefreshed(result));
+
+              const games = gamesNotStartedSelector(getState());
+              const gameIds = map(games, game => game.id);
+
+              const addedIds = difference(gameIds, previousIds);
+              const removedIds = difference(previousIds, gameIds);
+
+              forEach(addedIds, gameId => socket.subscribe(getGameChannelName(gameId)));
+              forEach(removedIds, gameId => socket.unsubscribe(getGameChannelName(gameId)));
+            }
           });
         },
       },
