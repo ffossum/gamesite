@@ -12,7 +12,7 @@ export const gameDataSelector = state => get(state, ['data', 'games']);
 
 export const userDataSelector = state => get(state, ['data', 'users']);
 
-const userIdSelector = state => get(state, ['session', 'userId']);
+export const userIdSelector = state => get(state, ['session', 'userId']);
 
 export const userSelector = createSelector(
   userIdSelector,

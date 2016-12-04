@@ -2,9 +2,11 @@ import io from 'socket.io-client';
 import deepstream from 'deepstream.io-client-js';
 import { forEach, once, isFunction, noop } from 'lodash';
 import {
+  userIdSelector,
   userGamesSelector,
 } from 'selectors/commonSelectors';
 import {
+  getUserChannelName,
   getGameChannelName,
   getGameChatChannelName,
 } from 'util/channelUtils';
@@ -24,6 +26,10 @@ function addHandlers(socket, handlers) {
 
 function getUserGames() {
   return userGamesSelector(currentStore.getState());
+}
+
+function getUserId() {
+  return userIdSelector(currentStore.getState());
 }
 
 export function subscribe(eventName, handler = currentHandler) {
@@ -50,6 +56,11 @@ function init(store) {
   return new Promise(resolve => {
     currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
       ['mainchat', 'lobby'].forEach(subscribe);
+      const userId = getUserId();
+      if (userId) {
+        subscribe(getUserChannelName(userId));
+      }
+
       forEach(games, game => {
         subscribe(getGameChannelName(game.id));
         subscribe(getGameChatChannelName(game.id));
@@ -84,6 +95,10 @@ export function reconnect({ games = getUserGames() } = {}) {
   return new Promise(resolve => {
     currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
       ['mainchat', 'lobby'].forEach(subscribe);
+      const userId = getUserId();
+      if (userId) {
+        subscribe(getUserChannelName(userId));
+      }
       forEach(games, game => {
         subscribe(getGameChannelName(game.id));
         subscribe(getGameChatChannelName(game.id));
