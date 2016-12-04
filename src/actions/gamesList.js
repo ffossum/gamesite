@@ -2,16 +2,7 @@ import { getUserData } from './userData';
 import {
   chain,
   get,
-  forEach,
-  map,
-  difference,
 } from 'lodash';
-import {
-  gamesNotStartedSelector,
-} from 'selectors/commonSelectors';
-import {
-  getGameChannelName,
-} from 'util/channelUtils';
 
 export const JOIN_LOBBY = 'games/JOIN_LOBBY';
 export const LEAVE_LOBBY = 'games/LEAVE_LOBBY';
@@ -21,6 +12,16 @@ export const CREATE_GAME = 'games/CREATE_GAME';
 export const CREATE_GAME_SUCCESS = 'games/CREATE_GAME_SUCCESS';
 
 export const GAME_CREATED = 'games/GAME_CREATED';
+export const UPDATE_GAME = 'games/UPDATE_GAME';
+
+export function updateGame(game) {
+  return {
+    type: UPDATE_GAME,
+    payload: {
+      game,
+    },
+  };
+}
 
 export function lobbyRefreshed({ games, refreshed }) {
   return {
@@ -28,51 +29,6 @@ export function lobbyRefreshed({ games, refreshed }) {
     payload: {
       games,
       refreshed,
-    },
-  };
-}
-
-export function joinLobby() {
-  return (dispatch, getState) => {
-    const lastRefreshed = get(getState(), ['lobby', 'lastRefreshed']);
-    const type = JOIN_LOBBY;
-    const payload = { lastRefreshed };
-
-    dispatch({
-      type,
-      payload,
-      meta: {
-        socket: true,
-        deepstream: socket => {
-          const previousGames = gamesNotStartedSelector(getState());
-          const previousIds = map(previousGames, game => game.id);
-          forEach(previousIds, gameId => socket.subscribe(getGameChannelName(gameId)));
-
-          socket.rpc(type, payload, (err, result) => {
-            if (!err) {
-              dispatch(lobbyRefreshed(result));
-
-              const games = gamesNotStartedSelector(getState());
-              const gameIds = map(games, game => game.id);
-
-              const addedIds = difference(gameIds, previousIds);
-              const removedIds = difference(previousIds, gameIds);
-
-              forEach(addedIds, gameId => socket.subscribe(getGameChannelName(gameId)));
-              forEach(removedIds, gameId => socket.unsubscribe(getGameChannelName(gameId)));
-            }
-          });
-        },
-      },
-    });
-  };
-}
-
-export function leaveLobby() {
-  return {
-    type: LEAVE_LOBBY,
-    meta: {
-      socket: true,
     },
   };
 }
@@ -86,6 +42,40 @@ export function refreshLobby({ games, refreshed }) {
 
     dispatch(getUserData(...users));
     dispatch(lobbyRefreshed({ games, refreshed }));
+  };
+}
+
+export function joinLobby() {
+  return (dispatch, getState) => {
+    const lastRefreshed = get(getState(), ['lobby', 'lastRefreshed']);
+    const type = JOIN_LOBBY;
+    const payload = { lastRefreshed };
+
+    dispatch({
+      type,
+      payload,
+      meta: {
+        deepstream: socket => {
+          socket.rpc(type, payload, (err, result) => {
+            if (!err) {
+              dispatch(refreshLobby(result));
+              socket.subscribe('lobby');
+            }
+          });
+        },
+      },
+    });
+  };
+}
+
+export function leaveLobby() {
+  return {
+    type: LEAVE_LOBBY,
+    meta: {
+      deepstream: socket => {
+        socket.unsubscribe('lobby');
+      },
+    },
   };
 }
 

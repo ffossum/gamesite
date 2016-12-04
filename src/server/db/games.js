@@ -57,10 +57,10 @@ async function join(gameId, userId) {
       .update({
         users: r.row('users').setInsert(userId),
         updated: r.now(),
-      })
+      }, { returnChanges: true })
       .run();
 
-    return result.replaced === 1 && result.errors === 0;
+    return result.replaced === 1 && result.errors === 0 && result.changes[0].new_val;
   } catch (e) {
     console.log(e);
     return false;
@@ -74,10 +74,10 @@ async function leave(gameId, userId) {
       .update({
         users: r.row('users').setDifference([userId]),
         updated: r.now(),
-      })
+      }, { returnChanges: true })
       .run();
 
-    return result.replaced === 1 && result.errors === 0;
+    return result.replaced === 1 && result.errors === 0 && result.changes[0].new_val;
   } catch (e) {
     console.log(e);
     return false;

@@ -5,6 +5,7 @@ import {
   CREATE_GAME_SUCCESS,
   GAME_CREATED,
   REFRESH_LOBBY,
+  UPDATE_GAME,
 } from 'actions/gamesList';
 import {
   PLAYER_JOINED,
@@ -73,7 +74,8 @@ export default function gamesReducer(state = initialState, action) {
     case NEW_ACTION:
     case GAME_ENDED:
     case ACTION_REJECTED:
-    case GAME_CANCELED: {
+    case GAME_CANCELED:
+    case UPDATE_GAME: {
       const { game } = action.payload;
       return {
         ...state,

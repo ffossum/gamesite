@@ -14,6 +14,7 @@ import {
   ENDED,
   CANCELED,
 } from 'constants/gameStatus';
+import { UPDATE_GAME } from 'actions/gamesList';
 import {
   PERFORM_ACTION,
   NEW_ACTION,
@@ -30,6 +31,12 @@ const initialState = {};
 
 export default function gameReducer(state = initialState, action) {
   switch (action.type) {
+    case UPDATE_GAME: {
+      return {
+        ...state,
+        ...action.payload.game,
+      };
+    }
     case PLAYER_JOINED: {
       const { user } = action.payload;
 

@@ -8,6 +8,7 @@ import {
 import {
   GAME_CREATED, gameCreated,
   REFRESH_LOBBY, refreshLobby,
+  UPDATE_GAME, updateGame,
 } from 'actions/gamesList';
 import {
   PLAYER_JOINED, playerJoined,
@@ -27,21 +28,12 @@ import {
 export function createHandler(store) {
   return function socketEventHandler([type, data]) {
     switch (type) {
-      case SEND_MESSAGE:
-        store.dispatch(newMessage(data));
-        break;
-      case GAME_CREATED:
-        store.dispatch(gameCreated(data));
-        break;
-      case PLAYER_JOINED:
-        store.dispatch(playerJoined(data.game.id, data.user.id));
-        break;
-      case PLAYER_LEFT:
-        store.dispatch(playerLeft(data.game.id, data.user.id));
-        break;
-      case SEND_GAME_MESSAGE:
-        store.dispatch(newGameMessage(data));
-        break;
+      case SEND_MESSAGE: store.dispatch(newMessage(data)); break;
+      case GAME_CREATED: store.dispatch(gameCreated(data)); break;
+      case PLAYER_JOINED: store.dispatch(playerJoined(data.game.id, data.user.id)); break;
+      case PLAYER_LEFT: store.dispatch(playerLeft(data.game.id, data.user.id)); break;
+      case SEND_GAME_MESSAGE: store.dispatch(newGameMessage(data)); break;
+      case UPDATE_GAME: store.dispatch(updateGame(data)); break;
       default:
     }
   };

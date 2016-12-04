@@ -55,7 +55,7 @@ function init(store) {
 
   return new Promise(resolve => {
     currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
-      ['mainchat', 'lobby'].forEach(subscribe);
+      subscribe('mainchat');
       const userId = getUserId();
       if (userId) {
         subscribe(getUserChannelName(userId));
@@ -94,7 +94,7 @@ export function reconnect({ games = getUserGames() } = {}) {
   currentDeepstream.close();
   return new Promise(resolve => {
     currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
-      ['mainchat', 'lobby'].forEach(subscribe);
+      subscribe('mainchat');
       const userId = getUserId();
       if (userId) {
         subscribe(getUserChannelName(userId));

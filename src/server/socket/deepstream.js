@@ -7,6 +7,7 @@ import {
   JOIN_LOBBY,
   CREATE_GAME,
   GAME_CREATED,
+  UPDATE_GAME,
 } from 'actions/gamesList';
 import {
   JOIN_GAME,
@@ -69,8 +70,12 @@ export const init = once(async () => {
     const joined = await games.join(game.id, user.id);
     if (joined) {
       client.event.emit(getGameChannelName(game.id), [PLAYER_JOINED, data]);
+      client.event.emit('lobby', [UPDATE_GAME, {
+        id: game.id,
+        users: joined.users,
+      }]);
     }
-    res.send(joined);
+    res.send(!!joined);
   });
 
   client.rpc.provide(LEAVE_GAME, async (data, res) => {
@@ -78,8 +83,12 @@ export const init = once(async () => {
     const left = await games.leave(game.id, user.id);
     if (left) {
       client.event.emit(getGameChannelName(game.id), [PLAYER_LEFT, data]);
+      client.event.emit('lobby', [UPDATE_GAME, {
+        id: game.id,
+        users: left.users,
+      }]);
     }
-    res.send(left);
+    res.send(!!left);
   });
 });
 
