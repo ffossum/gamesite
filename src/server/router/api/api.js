@@ -5,7 +5,6 @@ import KoaRouter from 'koa-router';
 import {
   refreshJwtCookie,
   expireJwtCookie,
-  fetchAuthenticatedUserData,
 } from '../../middleware/jwtCookie';
 import {
   validateUsername,
@@ -16,25 +15,23 @@ import {
 import {
   getUsers,
 } from '../../middleware/users';
-import { getOwnUserData } from 'util/userDataUtils';
-import { getUserGames } from 'server/db/games';
 
 const api = new KoaRouter();
 
 api.post('/login',
   passport.authenticate('local'),
   refreshJwtCookie,
-  fetchAuthenticatedUserData,
-  async ctx => {
-    const userGames = await getUserGames(ctx.req.user.id);
-    ctx.body = {
-      user: getOwnUserData(ctx.req.user),
-      games: userGames,
-    };
-  },
+  ctx => {
+    ctx.status = 200;
+  }
 );
 
-api.post('/logout', expireJwtCookie);
+api.post('/logout',
+  expireJwtCookie,
+  ctx => {
+    ctx.status = 200;
+  }
+);
 
 api.post('/register',
   validateUsername,

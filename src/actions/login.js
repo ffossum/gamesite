@@ -89,11 +89,7 @@ export function logIn({ username, password, remember }) {
     })
     .then(res => {
       if (res.ok) {
-        res.json().then(json => {
-          const { user, games } = json;
-          dispatch(logInSuccess(user, games));
-          socket.reconnect({ games });
-        });
+        location.reload();
       } else {
         dispatch(logInFailure());
       }
@@ -109,7 +105,7 @@ export function logOut() {
       credentials: 'same-origin',
     })
     .then(() => {
-      socket.reconnect();
+      location.reload();
     });
   };
 }

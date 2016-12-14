@@ -35,7 +35,6 @@ export async function expireJwtCookie(ctx, next) {
     httpOnly: true,
     expires: lastWeek(),
   });
-  ctx.status = 200;
 
   await next();
 }
