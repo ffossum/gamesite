@@ -2,14 +2,9 @@ import fetch from 'isomorphic-fetch';
 import socket from 'client/socket';
 import { getUserData } from './userData';
 import {
-  forEach,
   union,
   reduce,
 } from 'lodash';
-import {
-  getGameChannelName,
-  getGameChatChannelName,
-} from 'util/channelUtils';
 
 export const LOG_IN_REQUEST = 'login/LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'login/LOG_IN_SUCCESS';

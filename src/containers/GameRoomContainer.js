@@ -51,7 +51,6 @@ GameRoomContainer.propTypes = {
   enterRoom: PropTypes.func.isRequired,
   leaveRoom: PropTypes.func.isRequired,
   sendGameMessage: PropTypes.func.isRequired,
-  getGameData: PropTypes.func.isRequired,
 };
 
 const actions = {

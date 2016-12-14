@@ -8,10 +8,6 @@ export function getGameChannelName(gameId) {
   return `game/${gameId}`;
 }
 
-export function getGameChatChannelName(gameId) {
-  return `game/${gameId}/chat`;
-}
-
 export function getSpectatorChannelName(gameId) {
   return `game/${gameId}/spec`;
 }

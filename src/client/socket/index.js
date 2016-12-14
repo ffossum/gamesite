@@ -8,7 +8,6 @@ import {
 import {
   getUserChannelName,
   getGameChannelName,
-  getGameChatChannelName,
 } from 'util/channelUtils';
 
 let host;
@@ -38,8 +37,12 @@ export function subscribe(eventName, handler = currentHandler) {
   }
 }
 
-export function unsubscribe(eventName) {
-  currentDeepstream.event.unsubscribe(eventName);
+export function unsubscribe(eventName, handler = currentHandler) {
+  try {
+    currentDeepstream.event.unsubscribe(eventName, handler);
+  } catch (err) {
+    // do nothing
+  }
 }
 
 function init(store) {
@@ -63,7 +66,6 @@ function init(store) {
 
       forEach(games, game => {
         subscribe(getGameChannelName(game.id));
-        subscribe(getGameChatChannelName(game.id));
       });
       // TODO join game channel if currently on game page
       resolve();
@@ -101,7 +103,6 @@ export function reconnect({ games = getUserGames() } = {}) {
       }
       forEach(games, game => {
         subscribe(getGameChannelName(game.id));
-        subscribe(getGameChatChannelName(game.id));
       });
       // TODO join game channel if currently on game page
       resolve();

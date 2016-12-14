@@ -14,6 +14,8 @@ import {
   PLAYER_JOINED,
   LEAVE_GAME,
   PLAYER_LEFT,
+  ENTER_ROOM,
+  LEAVE_ROOM,
 } from 'actions/gameRoom';
 import {
   SEND_GAME_MESSAGE,
@@ -89,6 +91,12 @@ export const init = once(async () => {
       }]);
     }
     res.send(!!left);
+  });
+
+  client.rpc.provide(ENTER_ROOM, async (data, res) => {
+    const { user, game } = data;
+    const gameData = await games.get(game.id, user.id);
+    res.send(gameData);
   });
 });
 

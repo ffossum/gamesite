@@ -1,5 +1,6 @@
 import { getUserData } from './userData';
 import { get } from 'lodash';
+import { getGameChannelName } from 'util/channelUtils';
 
 export const JOIN_GAME = 'gameRoom/JOIN_GAME';
 export const PLAYER_JOINED = 'gameRoom/PLAYER_JOINED';
@@ -10,7 +11,6 @@ export const ENTER_ROOM = 'gameRoom/ENTER_ROOM';
 export const LEAVE_ROOM = 'gameRoom/LEAVE_ROOM';
 export const REFRESH_GAME = 'gameRoom/REFRESH';
 export const GAME_NOT_FOUND = 'gameRoom/NOT_FOUND';
-export const GET_GAME_DATA = 'gameRoom/GET_DATA';
 
 export const START_GAME = 'gameRoom/START_GAME';
 export const GAME_STARTED = 'gameRoom/GAME_STARTED';
@@ -40,36 +40,27 @@ function gameNotFound(gameId) {
   };
 }
 
-export function getGameData(gameId) {
-  return dispatch => {
-    dispatch({
-      type: GET_GAME_DATA,
-      payload: gameId,
-      meta: {
-        socket: game => {
-          if (game) {
-            dispatch(refreshGame(game));
-          } else {
-            dispatch(gameNotFound(gameId));
-          }
-        },
-      },
-    });
-  };
-}
-
 export function enterRoom(gameId) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = get(getState(), ['session', 'userId']);
+    const type = ENTER_ROOM;
+    const payload = {
+      game: { id: gameId },
+      user: { id: userId },
+    };
     dispatch({
-      type: ENTER_ROOM,
-      payload: gameId,
+      type,
+      payload,
       meta: {
-        socket: (err, game) => {
-          if (game) {
-            dispatch(refreshGame(game));
-          } else if (err) {
-            dispatch(gameNotFound(gameId));
-          }
+        deepstream: socket => {
+          socket.rpc(type, payload, (err, game) => {
+            if (game) {
+              socket.subscribe(getGameChannelName(gameId));
+              dispatch(refreshGame(game));
+            } else if (err) {
+              dispatch(gameNotFound(gameId));
+            }
+          });
         },
       },
     });
@@ -81,7 +72,9 @@ export function leaveRoom(gameId) {
     type: LEAVE_ROOM,
     payload: gameId,
     meta: {
-      socket: true,
+      deepstream: socket => {
+        socket.unsubscribe(getGameChannelName(gameId));
+      },
     },
   };
 }
@@ -230,7 +223,6 @@ export default {
   playerLeft,
   enterRoom,
   leaveRoom,
-  getGameData,
   startGame,
   cancelGame,
 };

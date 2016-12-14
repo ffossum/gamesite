@@ -1,6 +1,6 @@
 import { getUserData } from './userData';
 import { get } from 'lodash';
-import { getGameChatChannelName } from 'util/channelUtils';
+import { getGameChannelName } from 'util/channelUtils';
 
 export const SEND_GAME_MESSAGE = 'gameChat/SEND_MSG';
 export const NEW_GAME_MESSAGE = 'gameChat/NEW_MSG';
@@ -44,7 +44,7 @@ export function sendGameMessage(gameId, text) {
         payload,
         meta: {
           deepstream: socket => {
-            socket.publish(getGameChatChannelName(gameId), [type, payload]);
+            socket.publish(getGameChannelName(gameId), [type, payload]);
           },
         },
       });

@@ -14,7 +14,6 @@ import {
   PLAYER_LEFT,
   ENTER_ROOM,
   LEAVE_ROOM,
-  GET_GAME_DATA,
   START_GAME,
   GAME_STARTED,
   GAME_ENDED,
@@ -164,32 +163,5 @@ export default async function handleConnection(socket) {
         }
       }
     }
-  });
-
-  socket.on(GET_GAME_DATA, async (gameId, fn) => {
-    const game = await games.get(gameId, socket.user && socket.user.id);
-    fn(game);
-  });
-
-  socket.on(ENTER_ROOM, async (gameId, fn) => {
-    const roomName = getGameChannelName(gameId);
-    const isInRoom = socket.rooms[roomName];
-
-    if (isInRoom) {
-      fn();
-      return;
-    }
-
-    const game = await games.get(gameId, socket.user && socket.user.id);
-    if (game) {
-      socket.join(getSpectatorChannelName(gameId));
-      fn(null, game);
-    } else {
-      fn('not found');
-    }
-  });
-
-  socket.on(LEAVE_ROOM, gameId => {
-    socket.leave(getSpectatorChannelName(gameId));
   });
 }
