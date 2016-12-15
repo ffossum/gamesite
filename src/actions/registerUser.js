@@ -85,7 +85,7 @@ export function registerUser({
       .then(res => {
         res.json().then(json => {
           if (res.ok) {
-            socket.reconnect();
+            location.reload();
           } else {
             dispatch(registerUserFailure(json.errors));
           }
