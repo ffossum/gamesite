@@ -16,11 +16,16 @@ import {
   PLAYER_LEFT,
   ENTER_ROOM,
   LEAVE_ROOM,
+  START_GAME,
+  GAME_STARTED,
 } from 'actions/gameRoom';
 import {
   SEND_GAME_MESSAGE,
   NEW_GAME_MESSAGE,
 } from 'actions/gameChat';
+import {
+  IN_PROGRESS,
+} from 'constants/gameStatus';
 import games from '../db/games';
 import { getGameChannelName } from 'util/channelUtils';
 
@@ -97,6 +102,26 @@ export const init = once(async () => {
     const { user, game } = data;
     const gameData = await games.get(game.id, user.id);
     res.send(gameData);
+  });
+
+  client.rpc.provide(START_GAME, async (data, res) => {
+    const { user, game } = data;
+    const state = await games.start(game.id, user.id);
+
+    if (state) {
+      client.event.emit(getGameChannelName(game.id), [GAME_STARTED, {
+        startedBy: user.id,
+        game: {
+          id: game.id,
+          state,
+        },
+      }]);
+      client.event.emit('lobby', [UPDATE_GAME, {
+        id: game.id,
+        status: IN_PROGRESS,
+      }]);
+    }
+    res.send(!!state);
   });
 });
 

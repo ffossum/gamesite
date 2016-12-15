@@ -163,15 +163,19 @@ export function gameStarted(gameId, gameState) {
 }
 
 export function startGame(gameId) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = get(getState(), ['session', 'userId']);
+    const type = START_GAME;
+    const payload = {
+      game: { id: gameId },
+      user: { id: userId },
+    };
     dispatch({
-      type: START_GAME,
-      payload: { game: { id: gameId } },
+      type,
+      payload,
       meta: {
-        socket: started => {
-          if (started) {
-            dispatch(gameStarted(gameId, started.state));
-          }
+        deepstream: socket => {
+          socket.rpc(type, payload);
         },
       },
     });

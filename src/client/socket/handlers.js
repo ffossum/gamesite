@@ -34,6 +34,7 @@ export function createHandler(store) {
       case PLAYER_LEFT: store.dispatch(playerLeft(data.game.id, data.user.id)); break;
       case SEND_GAME_MESSAGE: store.dispatch(newGameMessage(data)); break;
       case UPDATE_GAME: store.dispatch(updateGame(data)); break;
+      case GAME_STARTED: store.dispatch(gameStarted(data.game.id, data.game.state)); break;
       default:
     }
   };
