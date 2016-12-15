@@ -17,6 +17,8 @@ let currentHandlers;
 let currentHandler;
 let currentDeepstream;
 
+const currentHandlerSubscriptionCounts = {};
+
 function addHandlers(socket, handlers) {
   forEach(handlers, (handler, event) => {
     socket.on(event, handler);
@@ -32,14 +34,33 @@ function getUserId() {
 }
 
 export function subscribe(eventName, handler = currentHandler) {
-  if (isFunction(handler)) {
+  if (handler === currentHandler) {
+    let count = currentHandlerSubscriptionCounts[eventName] || 0;
+    count++;
+    currentHandlerSubscriptionCounts[eventName] = count;
+    if (count === 1) {
+      currentDeepstream.event.subscribe(eventName, handler);
+    }
+  } else {
     currentDeepstream.event.subscribe(eventName, handler);
   }
 }
 
 export function unsubscribe(eventName, handler = currentHandler) {
   try {
-    currentDeepstream.event.unsubscribe(eventName, handler);
+    if (handler === currentHandler) {
+      let count = currentHandlerSubscriptionCounts[eventName] || 0;
+      if (count === 0) {
+        return;
+      }
+      count--;
+      currentHandlerSubscriptionCounts[eventName] = count;
+      if (count === 0) {
+        currentDeepstream.event.unsubscribe(eventName, handler);
+      }
+    } else {
+      currentDeepstream.event.unsubscribe(eventName, handler);
+    }
   } catch (err) {
     // do nothing
   }
@@ -85,38 +106,11 @@ export function rpc(procedureName, data, fn = noop) {
   currentDeepstream.rpc.make(procedureName, data, fn);
 }
 
-
-export function reconnect({ games = getUserGames() } = {}) {
-  currentSocket.disconnect();
-  currentSocket = io(host, {
-    forceNew: true,
-  });
-  addHandlers(currentSocket, currentHandlers);
-
-  currentDeepstream.close();
-  return new Promise(resolve => {
-    currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
-      subscribe('mainchat');
-      const userId = getUserId();
-      if (userId) {
-        subscribe(getUserChannelName(userId));
-      }
-      forEach(games, game => {
-        subscribe(getGameChannelName(game.id));
-      });
-      // TODO join game channel if currently on game page
-      resolve();
-    });
-  });
-}
-
-
 export default {
   init: once(init),
   emit,
   publish,
   rpc,
-  reconnect,
   subscribe,
   unsubscribe,
 };
