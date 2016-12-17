@@ -1,14 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers/';
-import socketMiddleware from './middleware/socketMiddleware';
 import historyMiddleware from './middleware/historyMiddleware';
 import deepstreamMiddleware from './middleware/deepstreamMiddleware';
 
 const finalCreateStore = compose(
   applyMiddleware(
     thunk,
-    socketMiddleware,
     deepstreamMiddleware,
     historyMiddleware,
   ),

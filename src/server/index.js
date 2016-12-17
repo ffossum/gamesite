@@ -8,7 +8,6 @@ import passport from 'koa-passport';
 import favicon from 'koa-favicon';
 import router from './router/router';
 import http from 'http';
-import socket from './socket/';
 import initDb from './db/init';
 import deepstream from './socket/deepstream';
 
@@ -27,7 +26,6 @@ app.use(passport.initialize());
 app.use(router.routes(), router.allowedMethods());
 
 const server = new http.Server(app.callback());
-socket.init(server);
 
 deepstream.init();
 

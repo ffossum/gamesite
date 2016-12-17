@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-fetch';
-import socket from 'client/socket';
 import { getUserData } from './userData';
 import {
   union,
@@ -65,9 +64,6 @@ function logInFailure() {
 export function logOutRequest() {
   return {
     type: LOG_OUT,
-    meta: {
-      socket: true,
-    },
   };
 }
 

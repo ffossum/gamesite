@@ -1,4 +1,3 @@
-import socket from 'client/socket';
 import validator from 'validator';
 import _ from 'lodash';
 

@@ -1,6 +1,5 @@
-import io from 'socket.io-client';
 import deepstream from 'deepstream.io-client-js';
-import { forEach, once, isFunction, noop } from 'lodash';
+import { forEach, once, noop } from 'lodash';
 import {
   userIdSelector,
   userGamesSelector,
@@ -10,20 +9,11 @@ import {
   getGameChannelName,
 } from 'util/channelUtils';
 
-let host;
 let currentStore;
-let currentSocket;
-let currentHandlers;
 let currentHandler;
 let currentDeepstream;
 
 const currentHandlerSubscriptionCounts = {};
-
-function addHandlers(socket, handlers) {
-  forEach(handlers, (handler, event) => {
-    socket.on(event, handler);
-  });
-}
 
 function getUserGames() {
   return userGamesSelector(currentStore.getState());
@@ -68,11 +58,6 @@ export function unsubscribe(eventName, handler = currentHandler) {
 
 function init(store) {
   currentStore = store;
-  const port = location.port ? `:${location.port}` : '';
-  host = `${location.protocol}//${location.hostname}${port}`;
-
-  currentSocket = io(host);
-  currentHandlers = require('./handlers').createHandlers(currentStore);
   currentHandler = require('./handlers').createHandler(currentStore);
 
   const games = getUserGames();
@@ -88,14 +73,10 @@ function init(store) {
       forEach(games, game => {
         subscribe(getGameChannelName(game.id));
       });
-      // TODO join game channel if currently on game page
+
       resolve();
     });
   });
-}
-
-export function emit(...rest) {
-  currentSocket.emit(...rest);
 }
 
 export function publish(eventName, data) {
@@ -108,7 +89,6 @@ export function rpc(procedureName, data, fn = noop) {
 
 export default {
   init: once(init),
-  emit,
   publish,
   rpc,
   subscribe,
