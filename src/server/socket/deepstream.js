@@ -1,7 +1,7 @@
 import server from './deepstreamServer';
 import deepstreamClient from './deepstreamClient';
 import { getMessageCacheInstance } from './messageCache';
-import { once } from 'lodash';
+import { once, forEach } from 'lodash';
 import { SEND_MESSAGE } from 'actions/mainChat';
 import {
   JOIN_LOBBY,
@@ -15,22 +15,28 @@ import {
   LEAVE_GAME,
   PLAYER_LEFT,
   ENTER_ROOM,
-  LEAVE_ROOM,
   START_GAME,
   GAME_STARTED,
   CANCEL_GAME,
   GAME_CANCELED,
+  GAME_ENDED,
 } from 'actions/gameRoom';
 import {
-  SEND_GAME_MESSAGE,
-  NEW_GAME_MESSAGE,
-} from 'actions/gameChat';
+  PERFORM_ACTION,
+  NEW_ACTION,
+} from 'actions/game';
 import {
   IN_PROGRESS,
   CANCELED,
 } from 'constants/gameStatus';
 import games from '../db/games';
-import { getGameChannelName } from 'util/channelUtils';
+import {
+  getGameChannelName,
+  getSpectatorChannelName,
+  getUserChannelName,
+} from 'util/channelUtils';
+import { asViewedBy } from 'games/rps/';
+import jsonpatch from 'fast-json-patch';
 
 export const init = once(async () => {
   await server.init();
@@ -145,6 +151,38 @@ export const init = once(async () => {
       }]);
     }
     res.send(canceled);
+  });
+
+  client.rpc.provide(PERFORM_ACTION, async (data, res) => {
+    const { game, user } = data;
+    const success = await games.performGameAction(game.id, user.id, data.action);
+    if (!success) {
+      res.error();
+    } else {
+      const { previousState, newState, gameOver, users } = success;
+      forEach(users, playerId => {
+        client.event.emit(getUserChannelName(playerId), [NEW_ACTION, {
+          game: { id: game.id },
+          patch: jsonpatch.compare(
+            asViewedBy(previousState, playerId),
+            asViewedBy(newState, playerId),
+          ),
+        }]);
+      });
+      client.event.emit(getSpectatorChannelName(game.id), [NEW_ACTION, {
+        game: { id: game.id },
+        patch: jsonpatch.compare(
+          asViewedBy(previousState),
+          asViewedBy(newState),
+        ),
+      }]);
+      if (gameOver) {
+        client.event.emit(getGameChannelName(game.id), [GAME_ENDED, {
+          game: { id: game.id },
+        }]);
+      }
+      res.send();
+    }
   });
 });
 

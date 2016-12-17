@@ -1,3 +1,5 @@
+import { get } from 'lodash';
+
 export const PERFORM_ACTION = 'game/ACTION';
 export const NEW_ACTION = 'game/NEW_ACTION';
 export const ACTION_REJECTED = 'game/ACTION_REJECTED';
@@ -20,21 +22,25 @@ export function actionRejected(game) {
 }
 
 export function performAction(gameId, action) {
-  return dispatch => {
-    const game = { id: gameId };
+  return (dispatch, getState) => {
+    const userId = get(getState(), ['session', 'userId']);
+    const type = PERFORM_ACTION;
+    const payload = {
+      action,
+      game: { id: gameId },
+      user: { id: userId },
+    };
+
     dispatch({
-      type: PERFORM_ACTION,
-      payload: {
-        game,
-        action,
-      },
+      type,
+      payload,
       meta: {
-        socket: (err, res) => {
-          if (!err && res) {
-            dispatch(newAction(game, res.patch));
-          } else {
-            dispatch(actionRejected(game));
-          }
+        deepstream: socket => {
+          socket.rpc(type, payload, err => {
+            if (err) {
+              dispatch(actionRejected({ id: gameId }));
+            }
+          });
         },
       },
     });
