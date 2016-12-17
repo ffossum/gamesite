@@ -35,6 +35,7 @@ export function createHandler(store) {
       case SEND_GAME_MESSAGE: store.dispatch(newGameMessage(data)); break;
       case UPDATE_GAME: store.dispatch(updateGame(data)); break;
       case GAME_STARTED: store.dispatch(gameStarted(data.game.id, data.game.state)); break;
+      case GAME_CANCELED: store.dispatch(gameCanceled(data.game.id)); break;
       default:
     }
   };

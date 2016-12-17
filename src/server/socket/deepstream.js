@@ -18,6 +18,8 @@ import {
   LEAVE_ROOM,
   START_GAME,
   GAME_STARTED,
+  CANCEL_GAME,
+  GAME_CANCELED,
 } from 'actions/gameRoom';
 import {
   SEND_GAME_MESSAGE,
@@ -25,6 +27,7 @@ import {
 } from 'actions/gameChat';
 import {
   IN_PROGRESS,
+  CANCELED,
 } from 'constants/gameStatus';
 import games from '../db/games';
 import { getGameChannelName } from 'util/channelUtils';
@@ -122,6 +125,26 @@ export const init = once(async () => {
       }]);
     }
     res.send(!!state);
+  });
+
+  client.rpc.provide(CANCEL_GAME, async (data, res) => {
+    const { game, user } = data;
+    const canceled = await games.cancel(game.id, user.id);
+
+    if (canceled) {
+      client.event.emit(getGameChannelName(game.id), [GAME_CANCELED, {
+        canceledBy: user.id,
+        game: {
+          id: game.id,
+        },
+      }]);
+      client.event.emit('lobby', [UPDATE_GAME, {
+        id: game.id,
+        status: CANCELED,
+        users: [],
+      }]);
+    }
+    res.send(canceled);
   });
 });
 

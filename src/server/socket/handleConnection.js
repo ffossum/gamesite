@@ -73,25 +73,6 @@ export default async function handleConnection(socket) {
     socket.emit('news', { hello: 'guest' });
   }
 
-  socket.on(CANCEL_GAME, async (data, fn) => {
-    if (socket.user) {
-      const gameId = data.game.id;
-      const canceled = await games.cancel(gameId, socket.user.id);
-
-      if (canceled) {
-        socket.broadcast
-          .to('lobby')
-          .to(getSpectatorChannelName(gameId))
-          .to(getGameChannelName(gameId))
-          .emit(GAME_CANCELED, data);
-      }
-
-      fn(null, canceled);
-    } else {
-      fn('not logged in');
-    }
-  });
-
   socket.on(PERFORM_ACTION, async (data, fn) => {
     if (socket.user) {
       const gameId = data.game.id;

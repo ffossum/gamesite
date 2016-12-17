@@ -205,15 +205,19 @@ export function gameCanceled(gameId) {
 }
 
 export function cancelGame(gameId) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = get(getState(), ['session', 'userId']);
+    const type = CANCEL_GAME;
+    const payload = {
+      game: { id: gameId },
+      user: { id: userId },
+    };
     dispatch({
-      type: CANCEL_GAME,
-      payload: { game: { id: gameId } },
+      type,
+      payload,
       meta: {
-        socket: (err, canceled) => {
-          if (!err && canceled) {
-            dispatch(gameCanceled(gameId));
-          }
+        deepstream: socket => {
+          socket.rpc(type, payload);
         },
       },
     });
