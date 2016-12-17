@@ -12,6 +12,7 @@ import {
   addUserDataToMessage,
 } from './util';
 import {
+  get,
   map,
   mapValues,
 } from 'lodash';
@@ -46,7 +47,7 @@ export const navSelector = createSelector(
 );
 
 export const gameRoomSelector = createSelector(
-  gameByIdSelector,
+  (state, props) => gameByIdSelector(state, get(props, ['params', 'id'])),
   userDataSelector,
   userSelector,
   (game, userData, user) => {

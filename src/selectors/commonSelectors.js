@@ -9,6 +9,7 @@ import {
 } from 'lodash';
 
 export const gameDataSelector = state => get(state, ['data', 'games']);
+export const gameByIdSelector = (state, gameId) => get(state, ['data', 'games', gameId]);
 
 export const userDataSelector = state => get(state, ['data', 'users']);
 
@@ -41,9 +42,3 @@ export const userGamesSelector = createSelector(
   gameDataSelector,
   (userId, games) => filter(games, game => game && includes(game.users, userId))
 );
-
-export const gameByIdSelector = (state, props = {}) => {
-  const games = gameDataSelector(state);
-  const gameId = props.params && props.params.id;
-  return games[gameId];
-};

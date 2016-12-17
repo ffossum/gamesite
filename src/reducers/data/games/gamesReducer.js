@@ -18,6 +18,7 @@ import {
 } from 'actions/gameRoom';
 import {
   NEW_GAME_MESSAGE,
+  CLEAR_CHAT,
 } from 'actions/gameChat';
 import {
   PERFORM_ACTION,
@@ -35,8 +36,7 @@ const initialState = {};
 export default function gamesReducer(state = initialState, action) {
   switch (action.type) {
     case CREATE_GAME_SUCCESS:
-    case GAME_CREATED:
-    case REFRESH_GAME: {
+    case GAME_CREATED: {
       const { game } = action.payload;
 
       const gameState = {
@@ -75,7 +75,9 @@ export default function gamesReducer(state = initialState, action) {
     case GAME_ENDED:
     case ACTION_REJECTED:
     case GAME_CANCELED:
-    case UPDATE_GAME: {
+    case UPDATE_GAME:
+    case REFRESH_GAME:
+    case CLEAR_CHAT: {
       const { game } = action.payload;
       return {
         ...state,

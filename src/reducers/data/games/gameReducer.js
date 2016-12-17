@@ -1,5 +1,6 @@
 import {
   NEW_GAME_MESSAGE,
+  CLEAR_CHAT,
 } from 'actions/gameChat';
 import {
   PLAYER_JOINED,
@@ -8,6 +9,7 @@ import {
   GAME_NOT_FOUND,
   GAME_ENDED,
   GAME_CANCELED,
+  REFRESH_GAME,
 } from 'actions/gameRoom';
 import {
   IN_PROGRESS,
@@ -31,6 +33,19 @@ const initialState = {};
 
 export default function gameReducer(state = initialState, action) {
   switch (action.type) {
+    case REFRESH_GAME: {
+      const { game } = action.payload;
+      return {
+        ...game,
+        messages: state.messages || [],
+      };
+    }
+    case CLEAR_CHAT: {
+      return {
+        ...state,
+        messages: [],
+      };
+    }
     case UPDATE_GAME: {
       return {
         ...state,

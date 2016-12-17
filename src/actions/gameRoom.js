@@ -1,6 +1,8 @@
 import { getUserData } from './userData';
-import { get } from 'lodash';
+import { get, includes } from 'lodash';
 import { getGameChannelName } from 'util/channelUtils';
+import { gameByIdSelector, userIdSelector } from 'selectors/commonSelectors';
+import { clearChat } from './gameChat';
 
 export const JOIN_GAME = 'gameRoom/JOIN_GAME';
 export const PLAYER_JOINED = 'gameRoom/PLAYER_JOINED';
@@ -67,15 +69,29 @@ export function enterRoom(gameId) {
   };
 }
 
+function isInGame(state, gameId, userId) {
+  const game = gameByIdSelector(state, gameId) || {};
+  return includes(game.users, userId);
+}
+
 export function leaveRoom(gameId) {
-  return {
-    type: LEAVE_ROOM,
-    payload: gameId,
-    meta: {
-      deepstream: socket => {
-        socket.unsubscribe(getGameChannelName(gameId));
+  return (dispatch, getState) => {
+    const state = getState();
+    const userId = userIdSelector(state);
+
+    dispatch({
+      type: LEAVE_ROOM,
+      payload: gameId,
+      meta: {
+        deepstream: socket => {
+          socket.unsubscribe(getGameChannelName(gameId));
+        },
       },
-    },
+    });
+
+    if (!isInGame(state, gameId, userId)) {
+      dispatch(clearChat(gameId));
+    }
   };
 }
 

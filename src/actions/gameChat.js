@@ -4,6 +4,7 @@ import { getGameChannelName } from 'util/channelUtils';
 
 export const SEND_GAME_MESSAGE = 'gameChat/SEND_MSG';
 export const NEW_GAME_MESSAGE = 'gameChat/NEW_MSG';
+export const CLEAR_CHAT = 'gameChat/CLEAR_CHAT';
 
 export function newGameMessage({ user, game, text }) {
   const time = new Date().toJSON();
@@ -49,6 +50,13 @@ export function sendGameMessage(gameId, text) {
         },
       });
     }
+  };
+}
+
+export function clearChat(gameId) {
+  return {
+    type: CLEAR_CHAT,
+    payload: { game: { id: gameId } },
   };
 }
 
