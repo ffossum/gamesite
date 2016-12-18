@@ -71,7 +71,7 @@ export const init = once(async () => {
   client.rpc.provide(CREATE_GAME, async (data, res) => {
     const game = await games.create({
       data: data.game,
-      host: data.user, // TODO change user format to { user: { id: 'asdf'} }
+      host: data.user.id,
     });
     if (game) {
       client.event.emit('lobby', [GAME_CREATED, game]);

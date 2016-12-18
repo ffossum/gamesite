@@ -99,7 +99,7 @@ export function createGame(data) {
     const userId = userIdSelector(getState());
     const type = CREATE_GAME;
     const payload = {
-      user: userId,
+      user: { id: userId },
       game: data,
     };
 
