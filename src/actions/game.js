@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { userIdSelector } from 'selectors/commonSelectors';
 
 export const PERFORM_ACTION = 'game/ACTION';
 export const NEW_ACTION = 'game/NEW_ACTION';
@@ -23,7 +23,7 @@ export function actionRejected(game) {
 
 export function performAction(gameId, action) {
   return (dispatch, getState) => {
-    const userId = get(getState(), ['session', 'userId']);
+    const userId = userIdSelector(getState());
     const type = PERFORM_ACTION;
     const payload = {
       action,

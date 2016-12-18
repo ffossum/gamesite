@@ -1,5 +1,5 @@
 import { getUserData } from './userData';
-import { get, includes } from 'lodash';
+import { includes } from 'lodash';
 import { getGameChannelName } from 'util/channelUtils';
 import { gameByIdSelector, userIdSelector } from 'selectors/commonSelectors';
 import { clearChat } from './gameChat';
@@ -44,7 +44,7 @@ function gameNotFound(gameId) {
 
 export function enterRoom(gameId) {
   return (dispatch, getState) => {
-    const userId = get(getState(), ['session', 'userId']);
+    const userId = userIdSelector(getState());
     const type = ENTER_ROOM;
     const payload = {
       game: { id: gameId },
@@ -110,7 +110,7 @@ export function playerJoined(gameId, userId) {
 
 export function joinGame(gameId) {
   return (dispatch, getState) => {
-    const userId = get(getState(), ['session', 'userId']);
+    const userId = userIdSelector(getState());
     if (!userId) {
       return;
     }
@@ -144,7 +144,7 @@ export function playerLeft(gameId, userId) {
 
 export function leaveGame(gameId) {
   return (dispatch, getState) => {
-    const userId = get(getState(), ['session', 'userId']);
+    const userId = userIdSelector(getState());
     if (!userId) {
       return;
     }
@@ -180,7 +180,7 @@ export function gameStarted(gameId, gameState) {
 
 export function startGame(gameId) {
   return (dispatch, getState) => {
-    const userId = get(getState(), ['session', 'userId']);
+    const userId = userIdSelector(getState());
     const type = START_GAME;
     const payload = {
       game: { id: gameId },
@@ -222,7 +222,7 @@ export function gameCanceled(gameId) {
 
 export function cancelGame(gameId) {
   return (dispatch, getState) => {
-    const userId = get(getState(), ['session', 'userId']);
+    const userId = userIdSelector(getState());
     const type = CANCEL_GAME;
     const payload = {
       game: { id: gameId },

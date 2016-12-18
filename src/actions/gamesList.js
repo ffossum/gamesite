@@ -3,7 +3,7 @@ import {
   chain,
   get,
 } from 'lodash';
-
+import { userIdSelector } from 'selectors/commonSelectors';
 export const JOIN_LOBBY = 'games/JOIN_LOBBY';
 export const LEAVE_LOBBY = 'games/LEAVE_LOBBY';
 export const REFRESH_LOBBY = 'games/REFRESH_LOBBY';
@@ -96,7 +96,7 @@ function createGameSuccess(game) {
 
 export function createGame(data) {
   return (dispatch, getState) => {
-    const userId = get(getState(), ['session', 'userId']);
+    const userId = userIdSelector(getState());
     const type = CREATE_GAME;
     const payload = {
       user: userId,
