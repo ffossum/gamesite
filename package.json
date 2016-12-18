@@ -5,8 +5,11 @@
   "scripts": {
     "start": "node node_modules/forever/bin/forever --minUptime 1000 --spinSleepTime 1000 -c \"node --harmony\" ./dist/server.js",
     "build": "npm run build-client && npm run build-server",
+    "build-docker": "npm run build-client-docker && npm run build-server-docker",
     "build-server": "node node_modules/webpack/bin/webpack --colors --display-error-details --config configs/webpack.server.js",
+    "build-server-docker": "node node_modules/webpack/bin/webpack --colors --display-error-details --config configs/webpack.server-docker.js",
     "build-client": "node node_modules/webpack/bin/webpack --colors --display-error-details --config configs/webpack.client.js",
+    "build-client-docker": "node node_modules/webpack/bin/webpack --colors --display-error-details --config configs/webpack.client-docker.js",
     "watch-server": "node node_modules/webpack/bin/webpack --watch --verbose --colors --display-error-details --config configs/webpack.server-watch.js",
     "watch-server-start": "node node_modules/just-wait --pattern \"dist/*.js\" && npm run start",
     "watch-client": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config configs/webpack.client-watch.js",

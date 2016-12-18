@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-const prodStyle = __PRODUCTION__ ? require('!!raw!../../../static/dist/style.css') : '';
+const prodStyle = !__DEVELOPMENT__ ? require('!!raw!../../../static/dist/style.css') : '';
 
 const devHead =
 `

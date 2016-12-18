@@ -63,7 +63,11 @@ function init(store) {
   const games = getUserGames();
 
   return new Promise(resolve => {
-    currentDeepstream = deepstream(`ws://${location.hostname}:6020/deepstream`).login({}, () => {
+    let host = location.hostname;
+    if (!__DOCKER__) {
+      host += ':6020';
+    }
+    currentDeepstream = deepstream(`${host}/deepstream`).login({}, () => {
       subscribe('mainchat');
       const userId = getUserId();
       if (userId) {

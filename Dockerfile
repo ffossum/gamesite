@@ -1,6 +1,7 @@
 FROM node:6
 
 EXPOSE 8080
+EXPOSE 6020
 
 COPY ./package.json /workdir/
 WORKDIR /workdir

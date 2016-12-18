@@ -9,7 +9,11 @@ config.entry.unshift(
 );
 
 config.plugins = [
-  new webpack.DefinePlugin({__CLIENT__: false, __SERVER__: true, __PRODUCTION__: false,  __DEVELOPMENT__: true}),
+  new webpack.DefinePlugin({
+    __CLIENT__: false,
+    __DEVELOPMENT__: true,
+    __DOCKER__: false
+  }),
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin()
 ];

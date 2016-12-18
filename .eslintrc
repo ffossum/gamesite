@@ -6,9 +6,8 @@
   ],
   "globals": {
     "__CLIENT__": false,
-    "__SERVER__": false,
-    "__PRODUCTION__": false,
     "__DEVELOPMENT__": false,
+    "__DOCKER__": false,
   },
   "rules": {
     "react/no-multi-comp": 0,
