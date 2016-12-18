@@ -42,7 +42,6 @@
     "moment": "2.14.1",
     "normalize.css": "^4.0.0",
     "passport-local": "^1.0.0",
-    "postcss-import": "^8.0.2",
     "raw-loader": "^0.5.1",
     "react": "15.4.1",
     "react-addons-css-transition-group": "^15.3.0",
@@ -91,7 +90,8 @@
     "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.7",
     "postcss-cssnext": "^2.4.0",
-    "postcss-loader": "^0.9.1",
+    "postcss-import": "^9.0.0",
+    "postcss-loader": "^1.0.0",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1"
