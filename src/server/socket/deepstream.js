@@ -49,6 +49,7 @@ export const init = once(async () => {
       case SEND_MESSAGE: {
         const message = {
           ...payload,
+          user: payload.user.id,
           time: new Date().toJSON(),
         };
 

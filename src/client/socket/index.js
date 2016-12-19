@@ -12,16 +12,7 @@ import {
 let currentStore;
 let currentHandler;
 let currentDeepstream;
-
 const currentHandlerSubscriptionCounts = {};
-
-function getUserGames() {
-  return userGamesSelector(currentStore.getState());
-}
-
-function getUserId() {
-  return userIdSelector(currentStore.getState());
-}
 
 export function subscribe(eventName, handler = currentHandler) {
   if (handler === currentHandler) {
@@ -60,16 +51,20 @@ function init(store) {
   currentStore = store;
   currentHandler = require('./handlers').createHandler(currentStore);
 
-  const games = getUserGames();
+  const games = userGamesSelector(currentStore.getState());
 
   return new Promise(resolve => {
     let host = location.hostname;
     if (!__DOCKER__) {
       host += ':6020';
     }
-    currentDeepstream = deepstream(`${host}/deepstream`).login({}, () => {
+    const state = currentStore.getState();
+    const userId = userIdSelector(state);
+    // TODO use jwt cookie to send user data
+    currentDeepstream = deepstream(`${host}/deepstream`).login({
+      id: userId,
+    }, () => {
       subscribe('mainchat');
-      const userId = getUserId();
       if (userId) {
         subscribe(getUserChannelName(userId));
       }

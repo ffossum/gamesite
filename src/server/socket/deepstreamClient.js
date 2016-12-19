@@ -5,7 +5,9 @@ let client;
 
 export const init = once(() => new Promise((resolve, reject) => {
   client = deepstream('localhost:6020');
-  client.login({}, (success) => {
+  client.login({
+    id: 'node server',
+  }, (success) => {
     if (success) {
       resolve(client);
     } else {
