@@ -1,11 +1,9 @@
 import {
-  LOG_IN_SUCCESS,
-} from 'actions/login';
-import {
   CREATE_GAME_SUCCESS,
   GAME_CREATED,
   REFRESH_LOBBY,
   UPDATE_GAME,
+  GAMES_UPDATED,
 } from 'actions/gamesList';
 import {
   PLAYER_JOINED,
@@ -50,7 +48,7 @@ export default function gamesReducer(state = initialState, action) {
       };
     }
 
-    case LOG_IN_SUCCESS:
+    case GAMES_UPDATED:
     case REFRESH_LOBBY: {
       const newGames = mapValues(action.payload.games, (newGameState, gameId) => {
         const oldGameState = state[gameId];

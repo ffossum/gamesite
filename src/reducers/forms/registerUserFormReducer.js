@@ -1,4 +1,3 @@
-import { types as login } from 'actions/login';
 import { types } from 'actions/registerUser';
 
 const initialState = {
@@ -34,8 +33,6 @@ export default function registerUserFormReducer(state = initialState, action) {
         pending: false,
       };
     }
-    case login.LOG_IN_SUCCESS:
-      return initialState;
 
     default: return state;
   }

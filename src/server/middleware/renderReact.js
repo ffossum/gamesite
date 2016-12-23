@@ -9,11 +9,11 @@ import { logInSuccess } from 'actions/login';
 import { addUserData } from 'actions/userData';
 import { resetMessages } from 'actions/mainChat';
 import { resetCounter } from 'util/uniqueId';
-import { lobbyRefreshed } from 'actions/gamesList';
+import { lobbyRefreshed, gamesUpdated } from 'actions/gamesList';
 import { getPublicUserData, getOwnUserData } from '../../util/userDataUtils';
 import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
-import { getLobbyGames } from '../db/games';
+import { getLobbyGames, getUserGames } from '../db/games';
 import _ from 'lodash';
 
 const messageCache = getMessageCacheInstance();
@@ -48,14 +48,22 @@ function matchRoutes(routes, location) {
 
 export async function initializeReduxStore(ctx, next) {
   const store = createStore(reducer);
+
+  let getUserGamesPromise = Promise.resolve({});
   if (ctx.isAuthenticated()) {
     store.dispatch(logInSuccess(getOwnUserData(ctx.req.user)));
+    getUserGamesPromise = getUserGames(ctx.req.user.id);
   }
 
-  const { games, refreshed } = await getLobbyGames();
-  store.dispatch(lobbyRefreshed({ games, refreshed }));
+  const [{ games, refreshed }, userGames] = await Promise.all([
+    getLobbyGames(),
+    getUserGamesPromise,
+  ]);
 
-  const gamesUserIds = _.chain(games)
+  store.dispatch(lobbyRefreshed({ games, refreshed }));
+  store.dispatch(gamesUpdated(userGames));
+
+  const gamesUserIds = _.chain({ ...games, ...userGames })
       .map(game => game.users)
       .flatten()
       .value();

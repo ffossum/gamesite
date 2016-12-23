@@ -32,7 +32,6 @@ export default function loginFormReducer(state = initialState, action) {
       };
     }
 
-    case types.LOG_IN_SUCCESS: return initialState;
     default: return state;
   }
 }

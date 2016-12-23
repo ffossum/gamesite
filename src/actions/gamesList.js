@@ -14,11 +14,22 @@ export const CREATE_GAME_SUCCESS = 'games/CREATE_GAME_SUCCESS';
 export const GAME_CREATED = 'games/GAME_CREATED';
 export const UPDATE_GAME = 'games/UPDATE_GAME';
 
+export const GAMES_UPDATED = 'games/UPDATED';
+
 export function updateGame(game) {
   return {
     type: UPDATE_GAME,
     payload: {
       game,
+    },
+  };
+}
+
+export function gamesUpdated(games) {
+  return {
+    type: GAMES_UPDATED,
+    payload: {
+      games,
     },
   };
 }
