@@ -1,6 +1,6 @@
 import { getUserData } from './userData';
 import { includes } from 'lodash';
-import { getGameChannelName } from 'util/channelUtils';
+import { getGameChannelName, getSpectatorChannelName } from 'util/channelUtils';
 import { gameByIdSelector, userIdSelector } from 'selectors/commonSelectors';
 import { clearChat } from './gameChat';
 
@@ -42,6 +42,11 @@ function gameNotFound(gameId) {
   };
 }
 
+function isInGame(state, gameId, userId) {
+  const game = gameByIdSelector(state, gameId) || {};
+  return includes(game.users, userId);
+}
+
 export function enterRoom(gameId) {
   return (dispatch, getState) => {
     const userId = userIdSelector(getState());
@@ -58,6 +63,9 @@ export function enterRoom(gameId) {
           socket.rpc(type, payload, (err, game) => {
             if (game) {
               socket.subscribe(getGameChannelName(gameId));
+              if (!isInGame(getState(), gameId, userId)) {
+                socket.subscribe(getSpectatorChannelName(gameId));
+              }
               dispatch(refreshGame(game));
             } else if (err) {
               dispatch(gameNotFound(gameId));
@@ -67,11 +75,6 @@ export function enterRoom(gameId) {
       },
     });
   };
-}
-
-function isInGame(state, gameId, userId) {
-  const game = gameByIdSelector(state, gameId) || {};
-  return includes(game.users, userId);
 }
 
 export function leaveRoom(gameId) {
@@ -85,6 +88,7 @@ export function leaveRoom(gameId) {
       meta: {
         deepstream: socket => {
           socket.unsubscribe(getGameChannelName(gameId));
+          socket.unsubscribe(getSpectatorChannelName(gameId));
         },
       },
     });
