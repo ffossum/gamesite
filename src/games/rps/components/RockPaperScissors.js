@@ -23,6 +23,9 @@ export default class RockPaperScissors extends React.Component {
 
     return (
       <article className={styles.rpsContainer}>
+        <section className={styles.historySection}>
+          <HandHistory players={playersArray} />
+        </section>
         <section className={styles.playerSection}>
             {
               _.map(playersArray, player => (
@@ -42,9 +45,6 @@ export default class RockPaperScissors extends React.Component {
                 </div>
               ))
             }
-        </section>
-        <section className={styles.historySection}>
-          <HandHistory players={playersArray} />
         </section>
         {
           inGame && !isGameOver && (
