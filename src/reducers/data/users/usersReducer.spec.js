@@ -4,7 +4,7 @@
 import { expect } from 'chai';
 import usersReducer from './usersReducer';
 import { logInSuccess } from 'actions/login';
-import { GET_USER_DATA } from 'actions/userData';
+import { GET_USER_DATA_SUCCESS } from 'actions/userData';
 import { size } from 'lodash';
 
 describe('data/users reducer', () => {
@@ -26,7 +26,7 @@ describe('data/users reducer', () => {
 
   it('adds user data after fetching', () => {
     const action = {
-      type: GET_USER_DATA,
+      type: GET_USER_DATA_SUCCESS,
       payload: {
         users: {
           1: { username: 'Jack' },

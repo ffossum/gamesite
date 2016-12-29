@@ -1,18 +1,9 @@
-import fetch from 'isomorphic-fetch';
-import {
-  filter,
-  get,
-  isEmpty,
-  uniq,
-} from 'lodash';
+export const GET_USER_DATA_REQUEST = 'userData/REQUEST';
+export const GET_USER_DATA_SUCCESS = 'userData/SUCCESS';
 
-export const GET_USER_DATA = 'userData/GET';
-
-const pendingFetches = {};
-
-export function addUserData(users) {
+export function getUserDataSuccess(users) {
   return {
-    type: GET_USER_DATA,
+    type: GET_USER_DATA_SUCCESS,
     payload: {
       users,
     },
@@ -20,37 +11,13 @@ export function addUserData(users) {
 }
 
 export function getUserData(...userIds) {
-  return (dispatch, getState) => {
-    const stateUsers = get(getState(), ['data', 'users']);
-    const missingUserIds = filter(uniq(userIds), userId => !stateUsers[userId]);
-
-    if (isEmpty(missingUserIds)) {
-      return;
-    }
-
-    missingUserIds.sort();
-    const fetchUrl = `/api/users?id=${missingUserIds.join(',')}`;
-
-    if (!pendingFetches[fetchUrl]) {
-      pendingFetches[fetchUrl] = true;
-
-      fetch(fetchUrl)
-        .then(res => {
-          res.json()
-            .then(json => {
-              if (res.ok) {
-                dispatch(addUserData(json.users));
-              }
-              delete pendingFetches[fetchUrl];
-            })
-            .catch(() => {
-              delete pendingFetches[fetchUrl];
-            });
-        });
-    }
+  return {
+    type: GET_USER_DATA_REQUEST,
+    payload: userIds,
   };
 }
 
 export default {
   getUserData,
+  getUserDataSuccess,
 };

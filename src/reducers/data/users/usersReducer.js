@@ -1,5 +1,5 @@
 import { LOG_IN_SUCCESS } from 'actions/login';
-import { GET_USER_DATA } from 'actions/userData';
+import { GET_USER_DATA_SUCCESS } from 'actions/userData';
 
 const initialState = {};
 
@@ -12,7 +12,7 @@ export default function usersReducer(state = initialState, action) {
         [user.id]: user,
       };
     }
-    case GET_USER_DATA: {
+    case GET_USER_DATA_SUCCESS: {
       return {
         ...state,
         ...action.payload.users,

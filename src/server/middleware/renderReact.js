@@ -6,7 +6,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import { logInSuccess } from 'actions/login';
-import { addUserData } from 'actions/userData';
+import { getUserDataSuccess } from 'actions/userData';
 import { resetMessages } from 'actions/mainChat';
 import { resetCounter } from 'util/uniqueId';
 import { lobbyRefreshed, gamesUpdated } from 'actions/gamesList';
@@ -76,7 +76,7 @@ export async function initializeReduxStore(ctx, next) {
       .keyBy('id')
       .value();
 
-    store.dispatch(addUserData(publicUserData));
+    store.dispatch(getUserDataSuccess(publicUserData));
   }
   store.dispatch(resetMessages(messageCache.messages));
 
