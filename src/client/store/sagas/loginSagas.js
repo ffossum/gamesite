@@ -7,7 +7,7 @@ import {
 } from 'actions/login';
 import { reloadPage } from 'client/util/clientUtils';
 
-function* logInSaga(action) {
+export function* logInSaga(action) {
   try {
     const res = yield call(fetch, '/api/login', {
       method: 'post',
@@ -29,7 +29,7 @@ function* logInSaga(action) {
   }
 }
 
-function* logOutSaga() {
+export function* logOutSaga() {
   try {
     yield call(fetch, '/api/logout', {
       method: 'post',
