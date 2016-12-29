@@ -3,7 +3,7 @@
 
 import { expect } from 'chai';
 import sessionReducer from './sessionReducer';
-import { logInSuccess, logOutRequest } from 'actions/login';
+import { logInSuccess, logOut } from 'actions/login';
 
 describe('session reducer', () => {
   it('initializes userId to null', () => {
@@ -24,7 +24,7 @@ describe('session reducer', () => {
 
   it('reverts back to null after logout', () => {
     const initialState = '12345';
-    const state = sessionReducer(initialState, logOutRequest());
+    const state = sessionReducer(initialState, logOut());
 
     expect(state.userId).to.be.null;
   });
