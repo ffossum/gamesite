@@ -1,6 +1,7 @@
 import { watchLogInRequest, watchLogOut } from './loginSagas';
 import { watchRegisterUser } from './registerUserSaga';
 import { watchUserDataRequest } from './userDataSaga';
+import { watchMainChatSendMessage, watchMainChatNewMessage } from './mainChatSaga';
 
 export default function* rootSaga() {
   yield [
@@ -8,5 +9,7 @@ export default function* rootSaga() {
     watchLogOut,
     watchRegisterUser,
     watchUserDataRequest,
+    watchMainChatNewMessage,
+    watchMainChatSendMessage,
   ];
 }

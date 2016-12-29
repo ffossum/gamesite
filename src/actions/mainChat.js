@@ -1,6 +1,3 @@
-import { getUserData } from './userData';
-import { get } from 'lodash';
-
 export const SEND_MESSAGE = 'mainChat/SEND_MESSAGE';
 export const NEW_MESSAGE = 'mainChat/NEW_MESSAGE';
 export const RESET_MESSAGES = 'mainChat/RESET';
@@ -14,36 +11,18 @@ export function newMessage({ user, text }) {
     text,
   };
 
-  return dispatch => {
-    dispatch(getUserData(message.user));
-    dispatch({
-      type: NEW_MESSAGE,
-      payload: message,
-    });
+  return {
+    type: NEW_MESSAGE,
+    payload: message,
   };
 }
 
 export function sendMessage(text) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const userId = get(state, ['session', 'userId']);
-
-    const type = SEND_MESSAGE;
-    const payload = {
-      user: { id: userId },
+  return {
+    type: SEND_MESSAGE,
+    payload: {
       text,
-    };
-    if (userId) {
-      dispatch({
-        type,
-        payload,
-        meta: {
-          deepstream: socket => {
-            socket.publish('mainchat', [type, payload]);
-          },
-        },
-      });
-    }
+    },
   };
 }
 
