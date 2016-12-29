@@ -86,10 +86,19 @@ export function rpc(procedureName, data, fn = noop) {
   currentDeepstream.rpc.make(procedureName, data, fn);
 }
 
+export function rpcPromise(procedureName, data) {
+  return new Promise((resolve, reject) => {
+    currentDeepstream.rpc.make(procedureName, data, (err, res) => (
+      err ? reject(err) : resolve(res))
+    );
+  });
+}
+
 export default {
   init: once(init),
   publish,
   rpc,
+  rpcPromise,
   subscribe,
   unsubscribe,
 };

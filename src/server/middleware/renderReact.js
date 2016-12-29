@@ -9,7 +9,7 @@ import { logInSuccess } from 'actions/login';
 import { getUserDataSuccess } from 'actions/userData';
 import { resetMessages } from 'actions/mainChat';
 import { resetCounter } from 'util/uniqueId';
-import { lobbyRefreshed, gamesUpdated } from 'actions/lobbyActions';
+import { refreshLobbySuccess, gamesUpdated } from 'actions/lobbyActions';
 import { getPublicUserData, getOwnUserData } from '../../util/userDataUtils';
 import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
@@ -60,7 +60,7 @@ export async function initializeReduxStore(ctx, next) {
     getUserGamesPromise,
   ]);
 
-  store.dispatch(lobbyRefreshed({ games, refreshed }));
+  store.dispatch(refreshLobbySuccess({ games, refreshed }));
   store.dispatch(gamesUpdated(userGames));
 
   const gamesUserIds = _.chain({ ...games, ...userGames })

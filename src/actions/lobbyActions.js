@@ -1,12 +1,10 @@
 import { getUserData } from './userData';
-import {
-  chain,
-  get,
-} from 'lodash';
 import { userIdSelector } from 'selectors/commonSelectors';
 export const JOIN_LOBBY = 'games/JOIN_LOBBY';
 export const LEAVE_LOBBY = 'games/LEAVE_LOBBY';
-export const REFRESH_LOBBY = 'games/REFRESH_LOBBY';
+
+export const REFRESH_LOBBY_REQUEST = 'games/REFRESH_LOBBY_REQUEST';
+export const REFRESH_LOBBY_SUCCESS = 'games/REFRESH_LOBBY_SUCCESS';
 
 export const CREATE_GAME = 'games/CREATE_GAME';
 export const CREATE_GAME_SUCCESS = 'games/CREATE_GAME_SUCCESS';
@@ -34,9 +32,9 @@ export function gamesUpdated(games) {
   };
 }
 
-export function lobbyRefreshed({ games, refreshed }) {
+export function refreshLobbySuccess({ games, refreshed }) {
   return {
-    type: REFRESH_LOBBY,
+    type: REFRESH_LOBBY_SUCCESS,
     payload: {
       games,
       refreshed,
@@ -45,48 +43,24 @@ export function lobbyRefreshed({ games, refreshed }) {
 }
 
 export function refreshLobby({ games, refreshed }) {
-  return dispatch => {
-    const users = chain(games)
-      .map(game => game.users)
-      .flatten()
-      .value();
-
-    dispatch(getUserData(...users));
-    dispatch(lobbyRefreshed({ games, refreshed }));
+  return {
+    type: REFRESH_LOBBY_REQUEST,
+    payload: {
+      games,
+      refreshed,
+    },
   };
 }
 
 export function joinLobby() {
-  return (dispatch, getState) => {
-    const lastRefreshed = get(getState(), ['lobby', 'lastRefreshed']);
-    const type = JOIN_LOBBY;
-    const payload = { lastRefreshed };
-
-    dispatch({
-      type,
-      payload,
-      meta: {
-        deepstream: socket => {
-          socket.rpc(type, payload, (err, result) => {
-            if (!err) {
-              dispatch(refreshLobby(result));
-              socket.subscribe('lobby');
-            }
-          });
-        },
-      },
-    });
+  return {
+    type: JOIN_LOBBY,
   };
 }
 
 export function leaveLobby() {
   return {
     type: LEAVE_LOBBY,
-    meta: {
-      deepstream: socket => {
-        socket.unsubscribe('lobby');
-      },
-    },
   };
 }
 

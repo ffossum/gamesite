@@ -1,7 +1,7 @@
 import {
   CREATE_GAME_SUCCESS,
   GAME_CREATED,
-  REFRESH_LOBBY,
+  REFRESH_LOBBY_SUCCESS,
   UPDATE_GAME,
   GAMES_UPDATED,
 } from 'actions/lobbyActions';
@@ -49,7 +49,7 @@ export default function gamesReducer(state = initialState, action) {
     }
 
     case GAMES_UPDATED:
-    case REFRESH_LOBBY: {
+    case REFRESH_LOBBY_SUCCESS: {
       const newGames = mapValues(action.payload.games, (newGameState, gameId) => {
         const oldGameState = state[gameId];
         return oldGameState
