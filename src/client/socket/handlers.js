@@ -5,7 +5,7 @@ import {
 import {
   GAME_CREATED, gameCreated,
   UPDATE_GAME, updateGame,
-} from 'actions/gamesList';
+} from 'actions/lobbyActions';
 import {
   PLAYER_JOINED, playerJoined,
   PLAYER_LEFT, playerLeft,

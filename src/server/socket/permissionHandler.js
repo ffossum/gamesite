@@ -16,7 +16,7 @@ import {
 } from 'actions/gameRoom';
 import {
   CREATE_GAME,
-} from 'actions/gamesList';
+} from 'actions/lobbyActions';
 import {
   SEND_MESSAGE,
 } from 'actions/mainChat';

@@ -1,6 +1,6 @@
 import {
   REFRESH_LOBBY,
-} from 'actions/gamesList';
+} from 'actions/lobbyActions';
 
 const initialState = {};
 

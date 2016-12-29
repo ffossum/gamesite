@@ -9,7 +9,7 @@ import { logInSuccess } from 'actions/login';
 import { getUserDataSuccess } from 'actions/userData';
 import { resetMessages } from 'actions/mainChat';
 import { resetCounter } from 'util/uniqueId';
-import { lobbyRefreshed, gamesUpdated } from 'actions/gamesList';
+import { lobbyRefreshed, gamesUpdated } from 'actions/lobbyActions';
 import { getPublicUserData, getOwnUserData } from '../../util/userDataUtils';
 import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';

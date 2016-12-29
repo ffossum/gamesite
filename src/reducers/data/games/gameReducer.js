@@ -16,7 +16,7 @@ import {
   ENDED,
   CANCELED,
 } from 'constants/gameStatus';
-import { UPDATE_GAME } from 'actions/gamesList';
+import { UPDATE_GAME } from 'actions/lobbyActions';
 import {
   PERFORM_ACTION,
   NEW_ACTION,

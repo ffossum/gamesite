@@ -4,7 +4,7 @@ import {
   REFRESH_LOBBY,
   UPDATE_GAME,
   GAMES_UPDATED,
-} from 'actions/gamesList';
+} from 'actions/lobbyActions';
 import {
   PLAYER_JOINED,
   PLAYER_LEFT,

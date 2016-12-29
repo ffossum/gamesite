@@ -8,7 +8,7 @@ import {
   CREATE_GAME,
   GAME_CREATED,
   UPDATE_GAME,
-} from 'actions/gamesList';
+} from 'actions/lobbyActions';
 import {
   JOIN_GAME,
   PLAYER_JOINED,
