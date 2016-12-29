@@ -42,6 +42,9 @@ module.exports = function (config) {
           { test: /\.css$/, loader: 'css-loader/locals!postcss-loader' },
         ],
       },
+      postcss() {
+        return [require('postcss-import'), require('postcss-cssnext')];
+      },
     },
     webpackServer: {
       noInfo: true,
