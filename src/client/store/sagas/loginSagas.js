@@ -5,10 +5,7 @@ import {
   logInFailure,
   LOG_OUT,
 } from 'actions/login';
-
-function reloadPage() {
-  location.reload();
-}
+import { reloadPage } from 'client/util/clientUtils';
 
 function* logInSaga(action) {
   try {

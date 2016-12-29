@@ -1,6 +1,3 @@
-import validator from 'validator';
-import _ from 'lodash';
-
 export const REGISTER_USER_REQUEST = 'registerUser/REGISTER_USER_REQUEST';
 export const REGISTER_USER_FAILURE = 'registerUser/REGISTER_USER_FAILURE';
 export const UPDATE_FORM = 'registerUser/UPDATE_FORM';
@@ -32,65 +29,19 @@ export function updateForm(values) {
   };
 }
 
-function registerUserRequest() {
+export function registerUser(formData) {
   return {
     type: REGISTER_USER_REQUEST,
+    payload: formData,
   };
 }
 
-function registerUserFailure(registrationErrors) {
+export function registerUserFailure(registrationErrors) {
   return {
     type: REGISTER_USER_FAILURE,
     payload: {
       errors: registrationErrors,
     },
-  };
-}
-
-export function registerUser({
-    email,
-    username,
-    password,
-    repeatPassword,
-    remember,
-  }) {
-  return dispatch => {
-    const registrationErrors = {};
-    if (password !== repeatPassword) {
-      registrationErrors.repeatPassword = PASSWORDS_DO_NOT_MATCH;
-    }
-    if (!validator.isEmail(email)) {
-      registrationErrors.email = INVALID_EMAIL;
-    }
-
-    if (!_.isEmpty(registrationErrors)) {
-      dispatch(registerUserFailure(registrationErrors));
-    } else {
-      dispatch(registerUserRequest());
-      fetch('/api/register', {
-        method: 'post',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        credentials: 'same-origin',
-        body: JSON.stringify({
-          email,
-          username,
-          password,
-          remember,
-        }),
-      })
-      .then(res => {
-        res.json().then(json => {
-          if (res.ok) {
-            location.reload();
-          } else {
-            dispatch(registerUserFailure(json.errors));
-          }
-        });
-      });
-    }
   };
 }
 
