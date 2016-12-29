@@ -18,7 +18,8 @@
     "watch-build-test": "node node_modules/webpack/bin/webpack --colors --config configs/webpack.test-watch.js",
     "test": "npm run lint && npm run coverage",
     "coverage": "node node_modules/karma/bin/karma start karma.conf.js",
-    "watch-test": "(cd test && mocha test.js --watch)"
+    "watch-test": "(cd test && mocha test.js --watch)",
+    "postinstall": "node node_modules/phantomjs-prebuilt/install.js"
   },
   "author": "Fredrik Fossum <fredrik.fossum@gmail.com>",
   "license": "MIT",
