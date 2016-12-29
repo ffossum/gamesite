@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 /* eslint no-unused-expressions: 0 */
+import fetch from 'isomorphic-fetch';
 import { logInSaga, logOutSaga } from './loginSagas';
 import { logIn, logOut, logInFailure } from 'actions/login';
 import { call, put } from 'redux-saga/effects';

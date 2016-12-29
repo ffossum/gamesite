@@ -7,6 +7,7 @@ module.exports = function (config) {
     singleRun: true,
     frameworks: ['mocha'],
     files: [
+      'node_modules/babel-polyfill/dist/polyfill.js',
       'src/**/*.spec.js',
     ],
     preprocessors: {
