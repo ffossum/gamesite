@@ -3,9 +3,14 @@ import thunk from 'redux-thunk';
 import rootReducer from 'reducers/';
 import historyMiddleware from './middleware/historyMiddleware';
 import deepstreamMiddleware from './middleware/deepstreamMiddleware';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas/rootSaga';
+
+const sagaMiddleware = createSagaMiddleware();
 
 const finalCreateStore = compose(
   applyMiddleware(
+    sagaMiddleware,
     thunk,
     deepstreamMiddleware,
     historyMiddleware,
@@ -15,6 +20,8 @@ const finalCreateStore = compose(
 
 export default function configureStore(initialState) {
   const store = finalCreateStore(rootReducer, initialState);
+
+  sagaMiddleware.run(rootSaga);
 
   if (module.hot) {
     module.hot.accept('reducers/', () => {

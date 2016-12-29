@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-fetch';
-
 export const LOG_IN_REQUEST = 'login/LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'login/LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'login/LOG_IN_FAILURE';
@@ -23,12 +21,6 @@ export function updateForm(values) {
   };
 }
 
-function logInRequest() {
-  return {
-    type: LOG_IN_REQUEST,
-  };
-}
-
 export function logInSuccess(user) {
   return {
     type: LOG_IN_SUCCESS,
@@ -36,54 +28,26 @@ export function logInSuccess(user) {
   };
 }
 
-function logInFailure() {
+export function logInFailure() {
   return {
     type: LOG_IN_FAILURE,
   };
 }
 
-export function logOutRequest() {
+export function logOut() {
   return {
     type: LOG_OUT,
   };
 }
 
 export function logIn({ username, password, remember }) {
-  return dispatch => {
-    dispatch(logInRequest());
-    fetch('/api/login', {
-      method: 'post',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify({
-        username,
-        password,
-        remember,
-      }),
-    })
-    .then(res => {
-      if (res.ok) {
-        location.reload();
-      } else {
-        dispatch(logInFailure());
-      }
-    });
-  };
-}
-
-export function logOut() {
-  return dispatch => {
-    dispatch(logOutRequest());
-    fetch('/api/logout', {
-      method: 'post',
-      credentials: 'same-origin',
-    })
-    .then(() => {
-      location.reload();
-    });
+  return {
+    type: LOG_IN_REQUEST,
+    payload: {
+      username,
+      password,
+      remember,
+    },
   };
 }
 
