@@ -15,6 +15,8 @@ import {
   PLAYER_JOINED,
   JOIN_GAME,
   LEAVE_GAME,
+  CANCEL_GAME,
+  START_GAME,
 } from 'actions/gameRoom';
 
 export function* refreshGameSaga(action) {
@@ -81,19 +83,9 @@ export function* joinGameSaga(action) {
   }
 }
 
-export function* leaveGameSaga(action) {
-  const userId = yield select(userIdSelector);
-
-  if (userId) {
-    const gameId = action.payload;
-    const payload = {
-      game: { id: gameId },
-      user: { id: userId },
-    };
-
-    yield call(socket.rpcPromise, action.type, payload);
-  }
-}
+const leaveGameSaga = joinGameSaga;
+const cancelGameSaga = joinGameSaga;
+const startGameSaga = joinGameSaga;
 
 export default function* gameRoomSaga() {
   yield [
@@ -103,5 +95,7 @@ export default function* gameRoomSaga() {
     takeEvery(PLAYER_JOINED, playerJoinedSaga),
     takeEvery(JOIN_GAME, joinGameSaga),
     takeEvery(LEAVE_GAME, leaveGameSaga),
+    takeEvery(CANCEL_GAME, cancelGameSaga),
+    takeEvery(START_GAME, startGameSaga),
   ];
 }

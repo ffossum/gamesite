@@ -1,5 +1,3 @@
-import { userIdSelector } from 'selectors/commonSelectors';
-
 export const JOIN_GAME = 'gameRoom/JOIN_GAME';
 export const PLAYER_JOINED = 'gameRoom/PLAYER_JOINED';
 export const LEAVE_GAME = 'gameRoom/LEAVE_GAME';
@@ -96,22 +94,9 @@ export function gameStarted(gameId, gameState) {
 }
 
 export function startGame(gameId) {
-  return (dispatch, getState) => {
-    const userId = userIdSelector(getState());
-    const type = START_GAME;
-    const payload = {
-      game: { id: gameId },
-      user: { id: userId },
-    };
-    dispatch({
-      type,
-      payload,
-      meta: {
-        deepstream: socket => {
-          socket.rpc(type, payload);
-        },
-      },
-    });
+  return {
+    type: START_GAME,
+    payload: gameId,
   };
 }
 
@@ -138,22 +123,9 @@ export function gameCanceled(gameId) {
 }
 
 export function cancelGame(gameId) {
-  return (dispatch, getState) => {
-    const userId = userIdSelector(getState());
-    const type = CANCEL_GAME;
-    const payload = {
-      game: { id: gameId },
-      user: { id: userId },
-    };
-    dispatch({
-      type,
-      payload,
-      meta: {
-        deepstream: socket => {
-          socket.rpc(type, payload);
-        },
-      },
-    });
+  return {
+    type: CANCEL_GAME,
+    payload: gameId,
   };
 }
 
