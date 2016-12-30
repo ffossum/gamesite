@@ -1,6 +1,3 @@
-/* eslint-disable import/no-unresolved */
-const prodStyle = !__DEVELOPMENT__ ? require('!!raw!../../../static/dist/style.css') : '';
-
 const devHead =
 `
 <script src="http://localhost:3000/dist/client.js" defer></script>
@@ -8,7 +5,7 @@ const devHead =
 
 const prodHead =
 `
-<style>${prodStyle}</style>
+<link rel="stylesheet" href="/static/dist/style.css"></link>
 <script src="https://cdn.jsdelivr.net/react/15.4.1/react-with-addons.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/react/15.4.1/react-dom.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/lodash/4.14.0/lodash.min.js" defer></script>
