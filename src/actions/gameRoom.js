@@ -77,26 +77,9 @@ export function playerLeft(gameId, userId) {
 }
 
 export function leaveGame(gameId) {
-  return (dispatch, getState) => {
-    const userId = userIdSelector(getState());
-    if (!userId) {
-      return;
-    }
-
-    const type = LEAVE_GAME;
-    const payload = {
-      game: { id: gameId },
-      user: { id: userId },
-    };
-    dispatch({
-      type,
-      payload,
-      meta: {
-        deepstream: socket => {
-          socket.rpc(type, payload);
-        },
-      },
-    });
+  return {
+    type: LEAVE_GAME,
+    payload: gameId,
   };
 }
 
