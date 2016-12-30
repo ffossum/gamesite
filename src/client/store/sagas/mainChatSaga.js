@@ -7,12 +7,14 @@ import { userIdSelector } from 'selectors/commonSelectors';
 export function* sendMessageSaga(action) {
   const userId = yield select(userIdSelector);
 
-  const message = {
-    ...action.payload,
-    user: { id: userId },
-  };
+  if (userId) {
+    const message = {
+      ...action.payload,
+      user: { id: userId },
+    };
 
-  yield call(socket.publish, 'mainchat', [action.type, message]);
+    yield call(socket.publish, 'mainchat', [action.type, message]);
+  }
 }
 
 export function* newMessageSaga(action) {
