@@ -1,4 +1,3 @@
-import { getUserData } from './userData';
 import { userIdSelector } from 'selectors/commonSelectors';
 
 export const JOIN_GAME = 'gameRoom/JOIN_GAME';
@@ -51,39 +50,19 @@ export function leaveRoom(gameId) {
 }
 
 export function playerJoined(gameId, userId) {
-  return dispatch => {
-    dispatch(getUserData(userId));
-    dispatch({
-      type: PLAYER_JOINED,
-      payload: {
-        game: { id: gameId },
-        user: { id: userId },
-      },
-    });
+  return {
+    type: PLAYER_JOINED,
+    payload: {
+      game: { id: gameId },
+      user: { id: userId },
+    },
   };
 }
 
 export function joinGame(gameId) {
-  return (dispatch, getState) => {
-    const userId = userIdSelector(getState());
-    if (!userId) {
-      return;
-    }
-
-    const type = JOIN_GAME;
-    const payload = {
-      game: { id: gameId },
-      user: { id: userId },
-    };
-    dispatch({
-      type,
-      payload,
-      meta: {
-        deepstream: socket => {
-          socket.rpc(type, payload);
-        },
-      },
-    });
+  return {
+    type: JOIN_GAME,
+    payload: gameId,
   };
 }
 

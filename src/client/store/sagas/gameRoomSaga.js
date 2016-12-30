@@ -12,6 +12,8 @@ import {
   gameNotFound,
   ENTER_ROOM,
   LEAVE_ROOM,
+  PLAYER_JOINED,
+  JOIN_GAME,
 } from 'actions/gameRoom';
 
 export function* refreshGameSaga(action) {
@@ -59,6 +61,31 @@ export function* leaveRoomSaga(action) {
   }
 }
 
-export const watchEnterRoom = takeEvery(ENTER_ROOM, enterRoomSaga);
-export const watchLeaveRoom = takeEvery(LEAVE_ROOM, leaveRoomSaga);
-export const watchRefreshGame = takeEvery(REFRESH_GAME, refreshGameSaga);
+export function* playerJoinedSaga(action) {
+  const userId = action.payload.user.id;
+  yield put(getUserData(userId));
+}
+
+export function* joinGameSaga(action) {
+  const userId = yield select(userIdSelector);
+  const gameId = action.payload;
+
+  if (userId) {
+    const payload = {
+      game: { id: gameId },
+      user: { id: userId },
+    };
+
+    yield call(socket.rpcPromise, action.type, payload);
+  }
+}
+
+export default function* gameRoomSaga() {
+  yield [
+    takeEvery(ENTER_ROOM, enterRoomSaga),
+    takeEvery(LEAVE_ROOM, leaveRoomSaga),
+    takeEvery(REFRESH_GAME, refreshGameSaga),
+    takeEvery(PLAYER_JOINED, playerJoinedSaga),
+    takeEvery(JOIN_GAME, joinGameSaga),
+  ];
+}

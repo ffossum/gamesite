@@ -9,11 +9,7 @@ import {
   watchLeaveLobby,
   watchRefreshLobby,
 } from './lobbySaga';
-import {
-  watchEnterRoom,
-  watchLeaveRoom,
-  watchRefreshGame,
-} from './gameRoomSaga';
+import gameRoomSaga from './gameRoomSaga';
 
 export default function* rootSaga() {
   yield [
@@ -28,8 +24,6 @@ export default function* rootSaga() {
     watchJoinLobby,
     watchLeaveLobby,
     watchRefreshLobby,
-    watchEnterRoom,
-    watchLeaveRoom,
-    watchRefreshGame,
+    gameRoomSaga(),
   ];
 }
