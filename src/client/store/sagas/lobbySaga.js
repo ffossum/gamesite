@@ -42,18 +42,20 @@ export function* leaveLobbySaga() {
 export function* createGameSaga(action) {
   const userId = yield select(userIdSelector);
 
-  const payload = {
-    ...action.payload,
-    user: { id: userId },
-  };
+  if (userId) {
+    const payload = {
+      ...action.payload,
+      user: { id: userId },
+    };
 
-  try {
-    const game = yield call(socket.rpc, action.type, payload);
-    if (game) {
-      yield put(createGameSuccess(game));
+    try {
+      const game = yield call(socket.rpc, action.type, payload);
+      if (game) {
+        yield put(createGameSuccess(game));
+      }
+    } catch (err) {
+      // do nothing
     }
-  } catch (err) {
-    // do nothing
   }
 }
 
