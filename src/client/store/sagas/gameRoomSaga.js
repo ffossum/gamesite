@@ -38,7 +38,7 @@ export function* enterRoomSaga(action) {
   };
 
   try {
-    const refreshedGame = yield call(socket.rpcPromise, action.type, payload);
+    const refreshedGame = yield call(socket.rpc, action.type, payload);
 
     yield call(socket.subscribe, getGameChannelName(gameId));
     if (!isInGame(refreshedGame, userId)) {
@@ -79,7 +79,7 @@ export function* joinGameSaga(action) {
       user: { id: userId },
     };
 
-    yield call(socket.rpcPromise, action.type, payload);
+    yield call(socket.rpc, action.type, payload);
   }
 }
 

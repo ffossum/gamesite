@@ -11,7 +11,7 @@ export function* performActionSaga(action) {
       user: { id: userId },
     };
     try {
-      yield call(socket.rpcPromise, action.type, payload);
+      yield call(socket.rpc, action.type, payload);
     } catch (err) {
       const gameId = payload.game.id;
       yield put(actionRejected({ id: gameId }));

@@ -26,7 +26,7 @@ export function* joinLobbySaga(action) {
   const lastRefreshed = yield select(lobbyLastRefreshedSelector);
 
   try {
-    const result = yield call(socket.rpcPromise, action.type, { lastRefreshed });
+    const result = yield call(socket.rpc, action.type, { lastRefreshed });
     if (result) {
       yield put(refreshLobby(result));
     }
@@ -48,7 +48,7 @@ export function* createGameSaga(action) {
   };
 
   try {
-    const game = yield call(socket.rpcPromise, action.type, payload);
+    const game = yield call(socket.rpc, action.type, payload);
     if (game) {
       yield put(createGameSuccess(game));
     }
