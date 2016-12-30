@@ -1,8 +1,5 @@
 import { getUserData } from './userData';
-import { includes } from 'lodash';
-import { getGameChannelName, getSpectatorChannelName } from 'util/channelUtils';
-import { gameByIdSelector, userIdSelector } from 'selectors/commonSelectors';
-import { clearChat } from './gameChat';
+import { userIdSelector } from 'selectors/commonSelectors';
 
 export const JOIN_GAME = 'gameRoom/JOIN_GAME';
 export const PLAYER_JOINED = 'gameRoom/PLAYER_JOINED';
@@ -22,18 +19,15 @@ export const CANCEL_GAME = 'gameRoom/CANCEL';
 export const GAME_CANCELED = 'gameRoom/CANCELED';
 
 export function refreshGame(game) {
-  return dispatch => {
-    dispatch(getUserData(...game.users));
-    dispatch({
-      type: REFRESH_GAME,
-      payload: {
-        game,
-      },
-    });
+  return {
+    type: REFRESH_GAME,
+    payload: {
+      game,
+    },
   };
 }
 
-function gameNotFound(gameId) {
+export function gameNotFound(gameId) {
   return {
     type: GAME_NOT_FOUND,
     payload: {
@@ -42,60 +36,17 @@ function gameNotFound(gameId) {
   };
 }
 
-function isInGame(state, gameId, userId) {
-  const game = gameByIdSelector(state, gameId) || {};
-  return includes(game.users, userId);
-}
-
 export function enterRoom(gameId) {
-  return (dispatch, getState) => {
-    const userId = userIdSelector(getState());
-    const type = ENTER_ROOM;
-    const payload = {
-      game: { id: gameId },
-      user: { id: userId },
-    };
-    dispatch({
-      type,
-      payload,
-      meta: {
-        deepstream: socket => {
-          socket.rpc(type, payload, (err, game) => {
-            if (game) {
-              socket.subscribe(getGameChannelName(gameId));
-              if (!isInGame(getState(), gameId, userId)) {
-                socket.subscribe(getSpectatorChannelName(gameId));
-              }
-              dispatch(refreshGame(game));
-            } else if (err) {
-              dispatch(gameNotFound(gameId));
-            }
-          });
-        },
-      },
-    });
+  return {
+    type: ENTER_ROOM,
+    payload: gameId,
   };
 }
 
 export function leaveRoom(gameId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const userId = userIdSelector(state);
-
-    dispatch({
-      type: LEAVE_ROOM,
-      payload: gameId,
-      meta: {
-        deepstream: socket => {
-          socket.unsubscribe(getGameChannelName(gameId));
-          socket.unsubscribe(getSpectatorChannelName(gameId));
-        },
-      },
-    });
-
-    if (!isInGame(state, gameId, userId)) {
-      dispatch(clearChat(gameId));
-    }
+  return {
+    type: LEAVE_ROOM,
+    payload: gameId,
   };
 }
 
