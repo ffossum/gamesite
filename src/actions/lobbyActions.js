@@ -1,5 +1,3 @@
-import { getUserData } from './userData';
-import { userIdSelector } from 'selectors/commonSelectors';
 export const JOIN_LOBBY = 'games/JOIN_LOBBY';
 export const LEAVE_LOBBY = 'games/LEAVE_LOBBY';
 
@@ -64,7 +62,7 @@ export function leaveLobby() {
   };
 }
 
-function createGameSuccess(game) {
+export function createGameSuccess(game) {
   return {
     type: CREATE_GAME_SUCCESS,
     payload: {
@@ -80,39 +78,20 @@ function createGameSuccess(game) {
 }
 
 export function createGame(data) {
-  return (dispatch, getState) => {
-    const userId = userIdSelector(getState());
-    const type = CREATE_GAME;
-    const payload = {
-      user: { id: userId },
+  return {
+    type: CREATE_GAME,
+    payload: {
       game: data,
-    };
-
-    dispatch({
-      type,
-      payload,
-      meta: {
-        deepstream: socket => {
-          socket.rpc(type, payload, (err, game) => {
-            if (game) {
-              dispatch(createGameSuccess(game));
-            }
-          });
-        },
-      },
-    });
+    },
   };
 }
 
 export function gameCreated(game) {
-  return dispatch => {
-    dispatch(getUserData(...game.users));
-    dispatch({
-      type: GAME_CREATED,
-      payload: {
-        game,
-      },
-    });
+  return {
+    type: GAME_CREATED,
+    payload: {
+      game,
+    },
   };
 }
 
