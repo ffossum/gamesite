@@ -5,6 +5,7 @@ import mainChatSaga from './mainChatSaga';
 import lobbySaga from './lobbySaga';
 import gameRoomSaga from './gameRoomSaga';
 import gameChatSaga from './gameChatSaga';
+import gameSaga from './gameSaga';
 
 export default function* rootSaga() {
   yield [
@@ -15,5 +16,6 @@ export default function* rootSaga() {
     lobbySaga(),
     gameRoomSaga(),
     gameChatSaga(),
+    gameSaga(),
   ];
 }

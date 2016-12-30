@@ -1,5 +1,3 @@
-import { userIdSelector } from 'selectors/commonSelectors';
-
 export const PERFORM_ACTION = 'game/ACTION';
 export const NEW_ACTION = 'game/NEW_ACTION';
 export const ACTION_REJECTED = 'game/ACTION_REJECTED';
@@ -22,28 +20,12 @@ export function actionRejected(game) {
 }
 
 export function performAction(gameId, action) {
-  return (dispatch, getState) => {
-    const userId = userIdSelector(getState());
-    const type = PERFORM_ACTION;
-    const payload = {
+  return {
+    type: PERFORM_ACTION,
+    payload: {
       action,
       game: { id: gameId },
-      user: { id: userId },
-    };
-
-    dispatch({
-      type,
-      payload,
-      meta: {
-        deepstream: socket => {
-          socket.rpc(type, payload, err => {
-            if (err) {
-              dispatch(actionRejected({ id: gameId }));
-            }
-          });
-        },
-      },
-    });
+    },
   };
 }
 
