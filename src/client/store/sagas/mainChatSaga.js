@@ -4,7 +4,6 @@ import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
 import socket from 'client/socket';
 import { userIdSelector } from 'selectors/commonSelectors';
 
-
 export function* sendMessageSaga(action) {
   const userId = yield select(userIdSelector);
 
@@ -21,5 +20,9 @@ export function* newMessageSaga(action) {
   yield put(getUserData(user));
 }
 
-export const watchMainChatSendMessage = takeEvery(SEND_MESSAGE, sendMessageSaga);
-export const watchMainChatNewMessage = takeEvery(NEW_MESSAGE, newMessageSaga);
+export default function* mainChatSaga() {
+  yield [
+    takeEvery(SEND_MESSAGE, sendMessageSaga),
+    takeEvery(NEW_MESSAGE, newMessageSaga),
+  ];
+}

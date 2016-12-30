@@ -9,7 +9,7 @@ import {
   registerUserFailure,
 } from 'actions/registerUser';
 
-function* registerUserSaga(action) {
+function* registerUserRequestSaga(action) {
   const {
     email,
     username,
@@ -56,4 +56,8 @@ function* registerUserSaga(action) {
   }
 }
 
-export const watchRegisterUser = takeEvery(REGISTER_USER_REQUEST, registerUserSaga);
+export default function* registerUserSaga() {
+  yield [
+    takeEvery(REGISTER_USER_REQUEST, registerUserRequestSaga),
+  ];
+}

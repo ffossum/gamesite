@@ -40,5 +40,9 @@ export function* logOutSaga() {
   }
 }
 
-export const watchLogInRequest = takeEvery(LOG_IN_REQUEST, logInSaga);
-export const watchLogOut = takeEvery(LOG_OUT, logOutSaga);
+export default function* loginSaga() {
+  yield [
+    takeEvery(LOG_IN_REQUEST, logInSaga),
+    takeEvery(LOG_OUT, logOutSaga),
+  ];
+}

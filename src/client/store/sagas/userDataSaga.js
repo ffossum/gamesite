@@ -37,4 +37,8 @@ export function* getUserDataSaga(action) {
   }
 }
 
-export const watchUserDataRequest = takeEvery(GET_USER_DATA_REQUEST, getUserDataSaga);
+export default function* userDataSaga() {
+  yield [
+    takeEvery(GET_USER_DATA_REQUEST, getUserDataSaga),
+  ];
+}

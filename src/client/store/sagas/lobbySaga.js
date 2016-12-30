@@ -62,8 +62,12 @@ export function* gameCreatedSaga(action) {
   yield put(getUserData(...game.users));
 }
 
-export const watchJoinLobby = takeEvery(JOIN_LOBBY, joinLobbySaga);
-export const watchLeaveLobby = takeEvery(LEAVE_LOBBY, leaveLobbySaga);
-export const watchRefreshLobby = takeEvery(REFRESH_LOBBY_REQUEST, refreshLobbySaga);
-export const watchCreateGame = takeEvery(CREATE_GAME, createGameSaga);
-export const watchGameCreated = takeEvery(GAME_CREATED, gameCreatedSaga);
+export default function* lobbySaga() {
+  yield [
+    takeEvery(JOIN_LOBBY, joinLobbySaga),
+    takeEvery(LEAVE_LOBBY, leaveLobbySaga),
+    takeEvery(REFRESH_LOBBY_REQUEST, refreshLobbySaga),
+    takeEvery(CREATE_GAME, createGameSaga),
+    takeEvery(GAME_CREATED, gameCreatedSaga),
+  ];
+}
