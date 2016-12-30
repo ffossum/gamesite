@@ -1,8 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
 import rootReducer from 'reducers/';
 import historyMiddleware from './middleware/historyMiddleware';
-import deepstreamMiddleware from './middleware/deepstreamMiddleware';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas/rootSaga';
 
@@ -11,8 +9,6 @@ const sagaMiddleware = createSagaMiddleware();
 const finalCreateStore = compose(
   applyMiddleware(
     sagaMiddleware,
-    thunk,
-    deepstreamMiddleware,
     historyMiddleware,
   ),
   window.devToolsExtension ? window.devToolsExtension() : f => f
