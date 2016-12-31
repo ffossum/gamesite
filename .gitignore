@@ -2,3 +2,4 @@ dist/
 static/dist/
 node_modules/
 test/
+webpack-assets.json

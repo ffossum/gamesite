@@ -14,9 +14,13 @@ config.entry.unshift(
   "webpack/hot/only-dev-server"
 );
 
-config.output.publicPath = "http://" + hostname + ":" + port + "/dist/";
-config.output.hotUpdateMainFilename = "update/[hash]/update.json";
-config.output.hotUpdateChunkFilename = "update/[hash]/[id].update.js";
+config.output = {
+  filename: "bundle.js",
+  chunkFilename: '[id].js',
+  publicPath: "http://" + hostname + ":" + port + "/dist/",
+  hotUpdateMainFilename: "update/[hash]/update.json",
+  hotUpdateChunkFilename: "update/[hash]/[id].updatejs",
+}
 
 config.plugins = [
   new webpack.DefinePlugin({

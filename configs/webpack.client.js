@@ -1,6 +1,7 @@
 var webpack = require("webpack");
 var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var AssetsPlugin = require('assets-webpack-plugin');
 
 module.exports = {
   target: "web",
@@ -12,8 +13,8 @@ module.exports = {
   output: {
     path: path.join(__dirname, "../static/dist"),
     publicPath: "/static/dist/",
-    filename: "client.js",
-    chunkFilename: "[name].[id].js"
+    filename: "bundle.[hash].js",
+    chunkFilename: "[id].[hash].js"
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -25,9 +26,10 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
-    new ExtractTextPlugin('style.css', {
+    new ExtractTextPlugin('style.[hash].css', {
       allChunks: true,
     }),
+    new AssetsPlugin()
   ],
   module: {
     loaders: [
