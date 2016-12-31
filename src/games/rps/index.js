@@ -4,6 +4,5 @@ export {
   getInitialState,
   performAction,
   isGameOver,
-  getGameSummary,
   asViewedBy,
 } from './rps';

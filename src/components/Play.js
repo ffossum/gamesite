@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import { map, isEmpty, size } from 'lodash';
+import { map, isEmpty, size } from 'lodash/fp';
 import HorizontalPlayerList from 'components/common/HorizontalPlayerList';
 
 import styles from './play.css';
@@ -28,7 +28,7 @@ export default class Play extends React.Component {
           <h2>{`${gameCount} available game${gameCount !== 1 ? 's' : ''}`}</h2>
           <ul className={styles.availableGames}>
           {
-            map(games, game => (
+            map(game => (
               <li key={game.id} className={styles.listItem}>
                 <div className={styles.listItemHead}>
                   <HorizontalPlayerList users={game.users} />
@@ -41,7 +41,7 @@ export default class Play extends React.Component {
                     </div>
                 }
               </li>
-            ))
+            ), games)
           }
           </ul>
         </section>

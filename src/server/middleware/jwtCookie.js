@@ -2,7 +2,7 @@
 
 import { verifyJwt, signJwt } from '../jwt';
 import { getUserById } from '../db/users';
-import { get } from 'lodash';
+import { get } from 'lodash/fp';
 
 const COOKIE_NAME = 'jwt';
 const EXPIRATION_AGE = 604800000; // 7 days
@@ -13,7 +13,7 @@ function getExpirationDate() {
 
 export async function refreshJwtCookie(ctx, next) {
   if (ctx.isAuthenticated()) {
-    const remember = get(ctx, 'req.user.remember') || get(ctx, 'request.body.remember') || false;
+    const remember = get('req.user.remember', ctx) || get('request.body.remember', ctx) || false;
     const jwt = await signJwt(
       { id: ctx.req.user.id, remember },
       { expiresIn: remember ? '7d' : '10s' }

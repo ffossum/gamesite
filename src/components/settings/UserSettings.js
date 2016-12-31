@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import AccountSettings from './account/AccountSettings';
 import LocaleSettings from './locale/LocaleSettings';
 import classnames from 'classnames';
-import { map } from 'lodash';
+import { map } from 'lodash/fp';
 
 import styles from './userSettings.css';
 
@@ -41,7 +41,7 @@ export default class UserSettings extends React.Component {
             <h2>Settings</h2>
             <ul className={styles.sectionList}>
               {
-                map(this.sections, (value, key) => (
+                map((value, key) => (
                   <li key={key}>
                     <a
                       className={classnames({ [styles.active]: key === this.state.active })}
@@ -51,7 +51,7 @@ export default class UserSettings extends React.Component {
                       {value}
                     </a>
                   </li>
-                ))
+                ), this.sections)
               }
             </ul>
           </nav>

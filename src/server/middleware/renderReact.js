@@ -14,7 +14,7 @@ import { getPublicUserData, getOwnUserData } from '../../util/userDataUtils';
 import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
 import { getLobbyGames, getUserGames } from '../db/games';
-import _ from 'lodash';
+import { flatten, flow, isEmpty, keyBy, map, uniq } from 'lodash/fp';
 
 const messageCache = getMessageCacheInstance();
 
@@ -63,18 +63,18 @@ export async function initializeReduxStore(ctx, next) {
   store.dispatch(refreshLobbySuccess({ games, refreshed }));
   store.dispatch(gamesUpdated(userGames));
 
-  const gamesUserIds = _.chain({ ...games, ...userGames })
-      .map(game => game.users)
-      .flatten()
-      .value();
+  const gamesUserIds = flow(
+    map(game => game.users),
+    flatten,
+  )({ ...games, ...userGames });
 
-  const userIds = _.uniq([...messageCache.userIds, ...gamesUserIds]);
-  if (!_.isEmpty(userIds)) {
+  const userIds = uniq([...messageCache.userIds, ...gamesUserIds]);
+  if (!isEmpty(userIds)) {
     const users = await getUsersByIds(userIds);
-    const publicUserData = _.chain(users)
-      .map(getPublicUserData)
-      .keyBy('id')
-      .value();
+    const publicUserData = flow(
+      map(getPublicUserData),
+      keyBy('id'),
+    )(users);
 
     store.dispatch(getUserDataSuccess(publicUserData));
   }

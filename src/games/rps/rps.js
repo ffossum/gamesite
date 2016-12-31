@@ -8,23 +8,21 @@ import {
   some,
   omit,
   values,
-  pick,
-  orderBy,
   isEmpty,
   keys,
-} from 'lodash';
+  flow,
+  get,
+  cloneDeep,
+} from 'lodash/fp';
 import {
   ROCK, PAPER, SCISSORS,
 } from './constants';
 
 export function getInitialState(userIds) {
-  let players = map(userIds, userId => ({
-    id: userId,
-    score: 0,
-    history: [],
-  }));
-
-  players = keyBy(players, player => player.id);
+  const players = flow(
+    map(id => ({ id, score: 0, history: [] })),
+    keyBy(get('id')),
+  )(userIds);
 
   return {
     players,
@@ -53,33 +51,33 @@ function getWinner(players) {
 
 function moveActionToHistory(player) {
   const playerAction = player.action;
-  const modifiedPlayer = omit(player, 'action');
-  modifiedPlayer.history.push(playerAction);
+  const modifiedPlayer = omit('action', player);
+  modifiedPlayer.history = [...modifiedPlayer.history, playerAction];
   return modifiedPlayer;
 }
 
 export function isGameOver({ state, options = {} }) {
-  return some(state.players, player => (
+  return some(player => (
     player.score >= options.firstTo
-  ));
+  ), state.players);
 }
 
 export function getNextState(previousState, userId, action, options = {}) {
-  if (!includes(previousState.active, userId) || isGameOver({ state: previousState, options })) {
+  if (!includes(userId, previousState.active) || isGameOver({ state: previousState, options })) {
     return previousState;
   }
 
-  const state = JSON.parse(JSON.stringify(previousState));
+  const state = cloneDeep(previousState);
 
   state.players[userId].action = action;
-  state.active = without(state.active, userId);
+  state.active = without([userId], state.active);
 
-  if (every(state.players, player => player.action)) {
+  if (every(player => player.action, state.players)) {
     const winner = getWinner(values(state.players));
     if (winner) {
       winner.score++;
     }
-    state.players = mapValues(state.players, moveActionToHistory);
+    state.players = mapValues(moveActionToHistory, state.players);
   }
 
   if (isEmpty(state.active)) {
@@ -106,22 +104,14 @@ export function performAction(game, userId, action) {
   };
 }
 
-export function getGameSummary(state) {
-  const players = map(state.players, player => (
-    pick(player, ['id', 'score'])
-  ));
-
-  return orderBy(players, 'score', 'desc');
-}
-
 export function asViewedBy(state, userId = false) {
   if (!state) {
     return state;
   }
 
-  const viewedPlayers = mapValues(state.players, player => (
-    player.id === userId ? player : omit(player, 'action')
-  ));
+  const viewedPlayers = mapValues(player => (
+    player.id === userId ? player : omit('action', player)
+  ), state.players);
 
   return {
     ...state,

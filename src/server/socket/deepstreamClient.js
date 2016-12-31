@@ -1,5 +1,5 @@
 import deepstream from 'deepstream.io-client-js';
-import { once } from 'lodash';
+import { once } from 'lodash/fp';
 
 let client;
 

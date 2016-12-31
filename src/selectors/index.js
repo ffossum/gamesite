@@ -15,14 +15,14 @@ import {
   get,
   map,
   mapValues,
-} from 'lodash';
+} from 'lodash/fp';
 
 export const playSelector = createSelector(
   gamesNotStartedSelector,
   userDataSelector,
   userSelector,
   (gameData, userData, user) => ({
-    games: map(gameData, addUserDataToGame(userData)),
+    games: map(addUserDataToGame(userData), gameData),
     user,
   })
 );
@@ -41,13 +41,13 @@ export const navSelector = createSelector(
   userDataSelector,
   userSelector,
   (gameData, userData, user) => ({
-    games: mapValues(gameData, addUserDataToGame(userData)),
+    games: mapValues(addUserDataToGame(userData), gameData),
     user,
   })
 );
 
 export const gameRoomSelector = createSelector(
-  (state, props) => gameByIdSelector(state, get(props, ['params', 'id'])),
+  (state, props) => gameByIdSelector(state, get(['params', 'id'], props)),
   userDataSelector,
   userSelector,
   (game, userData, user) => {
@@ -63,7 +63,7 @@ export const gameRoomSelector = createSelector(
     if (gameWithUserData.messages) {
       gameWithUserData = {
         ...gameWithUserData,
-        messages: map(gameWithUserData.messages, addUserDataToMessage(userData)),
+        messages: map(addUserDataToMessage(userData), gameWithUserData.messages),
       };
     }
 

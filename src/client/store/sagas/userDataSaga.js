@@ -3,7 +3,7 @@ import {
   filter,
   isEmpty,
   uniq,
-} from 'lodash';
+} from 'lodash/fp';
 import { userDataSelector } from 'selectors/commonSelectors';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { GET_USER_DATA_REQUEST, getUserDataSuccess } from 'actions/userData';
@@ -14,7 +14,7 @@ export function* getUserDataSaga(action) {
   const userIds = action.payload;
   const stateUsers = yield select(userDataSelector);
 
-  const missingUserIds = filter(uniq(userIds), userId => !stateUsers[userId]);
+  const missingUserIds = filter(userId => !stateUsers[userId], uniq(userIds));
 
   if (!isEmpty(missingUserIds)) {
     missingUserIds.sort();

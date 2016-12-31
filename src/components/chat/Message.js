@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Gravatar from 'components/common/Gravatar';
 import getTimestamp from 'util/getTimestamp';
 import styles from './message.css';
-import _ from 'lodash';
+import { isArray } from 'lodash/fp';
 
 export default class Message extends React.Component {
   render() {
@@ -24,8 +24,8 @@ export default class Message extends React.Component {
           </div>
           <div>
             {
-              _.isArray(text)
-                ? _.map(text, (line, index) => <div key={index}>{line}</div>)
+              isArray(text)
+                ? text.map((line, index) => <div key={index}>{line}</div>)
                 : text
             }
           </div>

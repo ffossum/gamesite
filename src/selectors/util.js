@@ -1,17 +1,17 @@
 import {
   map,
   get,
-} from 'lodash';
+} from 'lodash/fp';
 
 const getUser = (userData, userId) => userData[userId] || { id: userId };
 
 export const addUserDataToGame = userData => game => ({
   ...game,
-  users: map(game.users, userId => getUser(userData, userId)),
+  users: map(userId => getUser(userData, userId), game.users),
 });
 
 export const addUserDataToMessage = userData => message => ({
   ...message,
   user: getUser(userData, message.user),
-  args: message.args && map(message.args, arg => get(userData, [arg.user, 'username'])),
+  args: message.args && map(arg => get([arg.user, 'username'], userData), message.args),
 });

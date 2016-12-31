@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { map, takeRight, uniq } from 'lodash/fp';
 
 export default class MessageCache {
   constructor(maxSize = 100) {
@@ -7,12 +7,12 @@ export default class MessageCache {
   }
 
   add(message) {
-    this.messages = _.takeRight([...this.messages, message], this.maxSize);
+    this.messages = takeRight(this.maxSize, [...this.messages, message]);
   }
 
   get userIds() {
-    const userIds = _.map(this.messages, message => message.user);
-    return _.uniq(userIds);
+    const userIds = map(message => message.user, this.messages);
+    return uniq(userIds);
   }
 }
 

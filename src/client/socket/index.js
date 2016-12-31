@@ -1,5 +1,5 @@
 import deepstream from 'deepstream.io-client-js';
-import { forEach, once } from 'lodash';
+import { forEach, once } from 'lodash/fp';
 import {
   userIdSelector,
   userGamesSelector,
@@ -69,9 +69,9 @@ function init(store) {
         subscribe(getUserChannelName(userId));
       }
 
-      forEach(games, game => {
+      forEach(game => {
         subscribe(getGameChannelName(game.id));
-      });
+      }, games);
 
       resolve();
     });

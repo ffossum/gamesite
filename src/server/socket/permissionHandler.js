@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { get, memoize } from 'lodash';
+import { get, memoize } from 'lodash/fp';
 import Deepstream, { constants as C } from 'deepstream.io';
 import {
   PERFORM_ACTION,
@@ -48,7 +48,7 @@ function getType(message) {
     const data = convertTyped(message.data[1]);
     return data && data[0];
   } else if (isRpcRequest(message)) {
-    return get(message, ['data', 1]);
+    return get(['data', 1], message);
   }
 
   return null;
@@ -62,10 +62,10 @@ function userIdRequired(message) {
 function getUserId(message) {
   if (isEventRequest(message)) {
     const data = convertTyped(message.data[1]);
-    return get(data, [1, 'user', 'id']);
+    return get([1, 'user', 'id'], data);
   } else if (isRpcRequest(message)) {
     const data = convertTyped(message.data[2]);
-    return get(data, ['user', 'id']);
+    return get(['user', 'id'], data);
   }
 
   return null;

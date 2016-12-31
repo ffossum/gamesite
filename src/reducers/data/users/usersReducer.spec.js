@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import usersReducer from './usersReducer';
 import { logInSuccess } from 'actions/login';
 import { GET_USER_DATA_SUCCESS } from 'actions/userData';
-import { size } from 'lodash';
+import { size } from 'lodash/fp';
 
 describe('data/users reducer', () => {
   it('initializes to empty map', () => {

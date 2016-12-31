@@ -6,7 +6,7 @@ import modalActions from 'actions/modal';
 import { REGISTER_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
-import { get } from 'lodash';
+import { get } from 'lodash/fp';
 import { uniqueId } from 'util/uniqueId';
 
 import styles from './form.css';
@@ -128,8 +128,8 @@ LoginForm.propTypes = {
 
 export default connect(
   state => ({
-    formState: get(state, ['forms', 'login']),
-    sessionUserId: get(state, ['session', 'userId']),
+    formState: get(['forms', 'login'], state),
+    sessionUserId: get(['session', 'userId'], state),
   }),
   dispatch => bindActionCreators({ ...actions, ...modalActions }, dispatch),
 )(LoginForm);

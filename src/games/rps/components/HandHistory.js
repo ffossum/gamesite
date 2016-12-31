@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react';
-import {
-  map,
-  zip,
-} from 'lodash';
+import { map, zip } from 'lodash/fp';
 import Hand from './hands/Hand';
 import Gravatar from 'components/common/Gravatar';
 import KeepBottomScroll from 'components/common/KeepBottomScroll';
@@ -13,25 +10,25 @@ export default class HandHistory extends React.Component {
   render() {
     const { players } = this.props;
 
-    const history = zip(...map(players, player => player.history));
+    const history = zip(...map(player => player.history, players));
     return (
       <div>
         <div className={`${styles.row} ${styles.header}`}>
           {
-            map(players, player => (
+            map(player => (
               <span key={player.id} className={styles.cell}>
                 <Gravatar emailHash={player.emailHash} name={player.username} />
               </span>
-            ))
+            ), players)
           }
         </div>
         <KeepBottomScroll>
           <div className={styles.body}>
               {
-                map(history, (hands, rowIndex) => (
+                history.map((hands, rowIndex) => (
                   <div key={rowIndex} className={styles.row}>
                     {
-                      map(hands, (hand, cellIndex) => (
+                      hands.map((hand, cellIndex) => (
                         <span key={cellIndex} className={styles.cell}>
                           <Hand
                             small
@@ -48,11 +45,11 @@ export default class HandHistory extends React.Component {
         </KeepBottomScroll>
         <div className={`${styles.row} ${styles.footer}`}>
           {
-            map(players, player => (
+            map(player => (
               <span key={player.id} className={styles.cell}>
                 {player.score}
               </span>
-            ))
+            ), players)
           }
         </div>
       </div>

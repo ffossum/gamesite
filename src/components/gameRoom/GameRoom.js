@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Chat from 'components/chat/Chat';
 import HorizontalPlayerList from 'components/common/HorizontalPlayerList';
 import Button from 'components/common/Button';
-import { includes, size, isEmpty } from 'lodash';
+import { includes, size, isEmpty } from 'lodash/fp';
 import {
   NOT_STARTED,
 } from 'constants/gameStatus';
@@ -40,7 +40,7 @@ export default class GameRoom extends React.Component {
     }
 
     const currentPlayerCount = size(game.users);
-    const validPlayerCount = includes(gameInfo.playerCount, currentPlayerCount) &&
+    const validPlayerCount = includes(currentPlayerCount, gameInfo.playerCount) &&
       currentPlayerCount >= game.playerCount.required &&
       currentPlayerCount <= game.playerCount.required + game.playerCount.optional;
 

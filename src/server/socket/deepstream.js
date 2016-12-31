@@ -1,7 +1,7 @@
 import server from './deepstreamServer';
 import deepstreamClient from './deepstreamClient';
 import { getMessageCacheInstance } from './messageCache';
-import { once, forEach } from 'lodash';
+import { once, forEach } from 'lodash/fp';
 import { SEND_MESSAGE } from 'actions/mainChat';
 import {
   JOIN_LOBBY,
@@ -161,7 +161,7 @@ export const init = once(async () => {
       res.error();
     } else {
       const { previousState, newState, gameOver, users } = success;
-      forEach(users, playerId => {
+      forEach(playerId => {
         client.event.emit(getUserChannelName(playerId), [NEW_ACTION, {
           game: { id: game.id },
           patch: jsonpatch.compare(
@@ -169,7 +169,7 @@ export const init = once(async () => {
             asViewedBy(newState, playerId),
           ),
         }]);
-      });
+      }, users);
       client.event.emit(getSpectatorChannelName(game.id), [NEW_ACTION, {
         game: { id: game.id },
         patch: jsonpatch.compare(

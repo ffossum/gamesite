@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
-import _ from 'lodash';
+import { includes, map, maxBy, toArray } from 'lodash/fp';
 import HandHistory from './HandHistory';
 import ActionButtons from './ActionButtons';
 import isUserInGame from 'util/isUserInGame';
@@ -17,9 +17,8 @@ export default class RockPaperScissors extends React.Component {
 
     const isGameOver = game.status === ENDED;
 
-    const playersArray = _.toArray(state.players);
-
-    const winner = _.maxBy(playersArray, player => player.score);
+    const playersArray = toArray(state.players);
+    const winner = maxBy(player => player.score, playersArray);
 
     return (
       <article className={styles.rpsContainer}>
@@ -28,7 +27,7 @@ export default class RockPaperScissors extends React.Component {
         </section>
         <section className={styles.playerSection}>
             {
-              _.map(playersArray, player => (
+              map(player => (
                 <div key={player.id} className={styles.player}>
                   <div className={styles.playerInfo}>
                     <div>
@@ -36,14 +35,14 @@ export default class RockPaperScissors extends React.Component {
                         inline
                         emailHash={player.emailHash}
                         name={player.username}
-                        active={_.includes(state.active, player.id)}
+                        active={includes(player.id, state.active)}
                       />
                       {' '}
                       <div className={styles.playerName}>{player.username}</div>
                     </div>
                   </div>
                 </div>
-              ))
+              ), playersArray)
             }
         </section>
         {

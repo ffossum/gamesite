@@ -6,16 +6,16 @@ import {
   get,
   includes,
   map,
-} from 'lodash';
+} from 'lodash/fp';
 
-export const gameDataSelector = state => get(state, ['data', 'games']);
-export const gameByIdSelector = (state, gameId) => get(state, ['data', 'games', gameId]);
+export const gameDataSelector = state => get(['data', 'games'], state);
+export const gameByIdSelector = (state, gameId) => get(['data', 'games', gameId], state);
 
-export const userDataSelector = state => get(state, ['data', 'users']);
+export const userDataSelector = state => get(['data', 'users'], state);
 
-export const userIdSelector = state => get(state, ['session', 'userId']);
+export const userIdSelector = state => get(['session', 'userId'], state);
 
-export const lobbyLastRefreshedSelector = state => get(state, ['lobby', 'lastRefreshed']);
+export const lobbyLastRefreshedSelector = state => get(['lobby', 'lastRefreshed'], state);
 
 export const userSelector = createSelector(
   userIdSelector,
@@ -25,7 +25,7 @@ export const userSelector = createSelector(
 
 export const gamesNotStartedSelector = createSelector(
   gameDataSelector,
-  games => filter(games, game => game && game.status === NOT_STARTED)
+  games => filter(game => game && game.status === NOT_STARTED, games)
 );
 
 const mainChatSelector = state => state.mainChat;
@@ -35,12 +35,12 @@ export const mainChatWithUserDataSelector = createSelector(
   mainChatSelector,
   (userData, mainChat) => ({
     ...mainChat,
-    messages: map(mainChat.messages, addUserDataToMessage(userData)),
+    messages: map(addUserDataToMessage(userData), mainChat.messages),
   })
 );
 
 export const userGamesSelector = createSelector(
   userIdSelector,
   gameDataSelector,
-  (userId, games) => filter(games, game => game && includes(game.users, userId))
+  (userId, games) => filter(game => game && includes(userId, game.users), games)
 );

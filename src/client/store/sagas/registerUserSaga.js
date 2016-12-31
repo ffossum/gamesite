@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import validator from 'validator';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash/fp';
 import { reloadPage } from 'client/util/clientUtils';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import {

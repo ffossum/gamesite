@@ -2,7 +2,7 @@
 /* eslint no-unused-expressions: 0 */
 
 import { expect } from 'chai';
-import { every, find } from 'lodash';
+import { every, find } from 'lodash/fp';
 import {
   getInitialState,
   getNextState,
@@ -16,7 +16,7 @@ import {
 describe('rock paper scissors', () => {
   it('players start with score 0', () => {
     const state = getInitialState(['1', '2']);
-    const allZero = every(state.players, player => player.score === 0);
+    const allZero = every(player => player.score === 0, state.players);
     expect(allZero).to.be.true;
   });
 
@@ -34,8 +34,16 @@ describe('rock paper scissors', () => {
 
     expect(state.active).to.have.length(1);
 
-    const player = find(state.players, { id: '1' });
+    const player = find({ id: '1' }, state.players);
     expect(player.action).to.equal(ROCK);
+  });
+
+  describe('game state object', () => {
+    it('is not mutated', () => {
+      const initialState = getInitialState(['1', '2']);
+      const nextState = getNextState(initialState, '1', ROCK);
+      expect(initialState).not.to.equal(nextState);
+    });
   });
 
   it('rock crushes scissors', () => {

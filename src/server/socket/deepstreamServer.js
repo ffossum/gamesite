@@ -1,5 +1,5 @@
 import Deepstream from 'deepstream.io';
-import { once } from 'lodash';
+import { once } from 'lodash/fp';
 import JwtAuthenticationHandler from './jwtAuthenticationHandler';
 import PermissionHandler from './permissionHandler';
 

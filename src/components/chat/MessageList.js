@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
-import _ from 'lodash';
 import Message from './Message';
 import InfoMessage from './InfoMessage';
 import groupAdjacentBy from 'util/groupAdjacentBy';
 import getTimestamp from 'util/getTimestamp';
 import { keepBottomScroll } from 'components/common/KeepBottomScroll';
+import { flatten, map } from 'lodash/fp';
 
 import styles from './chat.css';
 
@@ -17,13 +17,12 @@ function groupMessages(messages) {
     msg => `${msg.user && msg.user.id}${getTimestamp(msg.time)}`,
     { ignore: msg => msg.key }
   );
-  groupedMessages = _.map(groupedMessages, group => (
+  groupedMessages = map(group => (
     group.length === 1
       ? group
-      : [{ ...group[0], text: _.map(group, msg => msg.text) }]
-    )
-  );
-  return _.flatten(groupedMessages);
+      : [{ ...group[0], text: map(msg => msg.text, group) }]
+  ), groupedMessages);
+  return flatten(groupedMessages);
 }
 
 class MessagesList extends React.Component {
@@ -34,11 +33,11 @@ class MessagesList extends React.Component {
     return (
       <div className={styles.messages}>
         {
-          _.map(groupedMessages, msg => (
+          map(msg => (
             msg.key
             ? <InfoMessage key={`${msg.key}${msg.time}`} message={msg} />
             : <Message key={`${msg.user.id}${msg.time}`} message={msg} />
-          ))
+          ), groupedMessages)
         }
       </div>
     );

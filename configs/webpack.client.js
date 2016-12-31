@@ -41,7 +41,7 @@ module.exports = {
     return [require('postcss-import'), require('postcss-cssnext')];
   },
   externals: {
-    "lodash": "_",
+    "lodash/fp": "_",
     "moment": "moment",
     "react": "React",
     "react-dom": "ReactDOM",

@@ -2,7 +2,7 @@ import shortid from 'shortid';
 import { hashPassword } from '../crypto';
 import crypto from 'crypto';
 import r from './rethinkdb';
-import _ from 'lodash';
+import { isEmpty } from 'lodash/fp';
 
 export async function getUserById(userId) {
   return r.table('users').get(userId).run();
@@ -40,7 +40,7 @@ export async function isUsernameAvailable(username) {
     .filter(user => user('username').upcase().eq(username.toUpperCase()))
     .run();
 
-  return _.isEmpty(matches);
+  return isEmpty(matches);
 }
 
 export async function isEmailAvailable(email) {
@@ -48,5 +48,5 @@ export async function isEmailAvailable(email) {
     .filter(user => user('email').upcase().eq(email.toUpperCase()))
     .run();
 
-  return _.isEmpty(matches);
+  return isEmpty(matches);
 }

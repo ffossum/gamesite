@@ -1,17 +1,17 @@
-import _ from 'lodash';
+import { identity, last } from 'lodash/fp';
 
 const defaultIgnoreFunc = () => false;
 
-export default function groupAdjacentBy(arr, func = _.identity, options = {}) {
+export default function groupAdjacentBy(arr, func = identity, options = {}) {
   const { ignore = defaultIgnoreFunc } = options;
   const result = [];
 
   let prev;
-  _.forEach(arr, value => {
+  arr.forEach(value => {
     const current = func(value);
 
     if (prev === current && !ignore(value)) {
-      _.last(result).push(value);
+      last(result).push(value);
     } else {
       result.push([value]);
       prev = current;

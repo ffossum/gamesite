@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react';
 import DownArrow from './DownArrow';
 import classnames from 'classnames';
 import onClickOutside from 'react-onclickoutside';
-import _ from 'lodash';
-
+import { isEmpty } from 'lodash/fp';
 import styles from './dropdown.css';
 import navStyles from 'components/nav/nav.css';
 
@@ -73,7 +72,7 @@ class Dropdown extends React.Component {
         newState.alignRight = rightOverflow;
       }
 
-      if (!_.isEmpty(newState)) {
+      if (!isEmpty(newState)) {
         this.setState(newState);
       }
     }

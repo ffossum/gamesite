@@ -1,5 +1,10 @@
 import shortid from 'shortid';
-import _ from 'lodash';
+import {
+  includes,
+  keyBy,
+  map,
+  size,
+} from 'lodash/fp';
 import r from './rethinkdb';
 import {
   NOT_STARTED,
@@ -20,8 +25,8 @@ async function create({ data, host }) {
   const gameId = shortid.generate();
   const { required, optional } = playerCount;
 
-  if (!_.includes(info.playerCount, required) ||
-      !_.includes(info.playerCount, required + optional)) {
+  if (!includes(required, info.playerCount) ||
+      !includes(required + optional, info.playerCount)) {
     // Illegal player count
     return null;
   }
@@ -105,8 +110,10 @@ async function start(gameId, userId) {
     const gameQuery = r.table('games').get(gameId);
     const game = await gameQuery.run();
 
-    if (!_.includes(info.playerCount, _.size(game.users)) || // Illegal player count
-        game.host !== userId) { // User is not host
+    if (
+      !includes(size(game.users), info.playerCount) || // Illegal player count
+      game.host !== userId // User is not host
+    ) {
       return false;
     }
     const state = getInitialState(game.users);
@@ -169,12 +176,12 @@ export async function getUserGames(userId) {
     .filter(game => r([NOT_STARTED, IN_PROGRESS]).contains(game('status')))
     .run();
 
-  games = _.map(games, game => ({
+  games = map(game => ({
     ...game,
     state: asViewedBy(game.state, userId),
-  }));
+  }), games);
 
-  return _.keyBy(games, game => game.id);
+  return keyBy(game => game.id, games);
 }
 
 export async function getLobbyGames({ lastRefreshed } = {}) {
@@ -216,7 +223,7 @@ export async function getLobbyGames({ lastRefreshed } = {}) {
   ).run();
 
   return {
-    games: _.keyBy(result.games, game => game.id),
+    games: keyBy(game => game.id, result.games),
     refreshed: result.refreshed,
   };
 }
@@ -226,7 +233,7 @@ export async function performGameAction(gameId, userId, action) {
     const gameQuery = r.table('games').get(gameId);
     const game = await gameQuery.run();
 
-    if (!_.includes(game.users, userId)) {
+    if (!includes(userId, game.users)) {
       return false;
     }
 

@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import Button from 'components/common/Button';
-import { isNumber } from 'lodash';
+import { isNumber } from 'lodash/fp';
 import styles from './incrementer.css';
 import textInputStyles from '../textInput.css';
 

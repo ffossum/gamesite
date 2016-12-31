@@ -1,9 +1,4 @@
-import _ from 'lodash';
+import { pick } from 'lodash/fp';
 
-export function getPublicUserData(user) {
-  return _.pick(user, ['id', 'emailHash', 'username']);
-}
-
-export function getOwnUserData(user) {
-  return _.pick(user, ['id', 'email', 'emailHash', 'username']);
-}
+export const getPublicUserData = pick(['id', 'emailHash', 'username']);
+export const getOwnUserData = pick(['id', 'email', 'emailHash', 'username']);

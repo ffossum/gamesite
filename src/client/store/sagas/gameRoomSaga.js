@@ -1,7 +1,7 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { getUserData } from 'actions/userData';
 import { gameByIdSelector, userIdSelector } from 'selectors/commonSelectors';
-import { includes } from 'lodash';
+import { includes } from 'lodash/fp';
 import socket from 'client/socket';
 import { getGameChannelName, getSpectatorChannelName } from 'util/channelUtils';
 import { clearChat } from 'actions/gameChat';
@@ -25,7 +25,7 @@ export function* refreshGameSaga(action) {
 }
 
 function isInGame(game = {}, userId) {
-  return includes(game.users, userId);
+  return includes(userId, game.users);
 }
 
 export function* enterRoomSaga(action) {

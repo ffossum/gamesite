@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import TextInput from 'components/common/TextInput';
 import Button from 'components/common/Button';
-import _ from 'lodash';
+import { isEmpty } from 'lodash/fp';
 
 import styles from './chat.css';
 
@@ -23,7 +23,7 @@ export default class ChatInput extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    if (!_.isEmpty(this.state.message)) {
+    if (!isEmpty(this.state.message)) {
       this.props.sendMessage(this.state.message);
       this.setState({
         message: '',

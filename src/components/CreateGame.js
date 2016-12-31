@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import { min } from 'lodash';
+import { min } from 'lodash/fp';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 import Incrementer from 'components/common/incrementer/Incrementer';

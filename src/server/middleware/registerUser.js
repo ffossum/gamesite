@@ -2,7 +2,7 @@
 
 import { addUser, isUsernameAvailable, isEmailAvailable } from '../db/users';
 import validator from 'validator';
-import _ from 'lodash';
+import { isEmpty } from 'lodash/fp';
 import { errors as registerUserErrors } from 'actions/registerUser';
 
 export async function validateUsername(ctx, next) {
@@ -35,7 +35,7 @@ export async function validateEmail(ctx, next) {
 }
 
 export async function registerUser(ctx, next) {
-  if (!_.isEmpty(ctx.state.errors)) {
+  if (!isEmpty(ctx.state.errors)) {
     ctx.status = 403;
     ctx.body = {
       errors: ctx.state.errors,

@@ -8,7 +8,7 @@ const prodHead =
 <link rel="stylesheet" href="/static/dist/style.css"></link>
 <script src="https://cdn.jsdelivr.net/react/15.4.1/react-with-addons.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/react/15.4.1/react-dom.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/lodash/4.14.0/lodash.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/g/lodash@4.17.3(lodash.min.js+lodash.fp.min.js)" defer></script>
 <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js" defer></script>
 <script src="/static/dist/client.js" defer></script>
 `;

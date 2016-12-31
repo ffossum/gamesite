@@ -5,7 +5,7 @@ import actions from 'actions/game';
 import {
   get,
   mapValues,
-} from 'lodash';
+} from 'lodash/fp';
 import RockPaperScissors from '../components/RockPaperScissors';
 
 class RpsContainer extends React.Component {
@@ -18,11 +18,11 @@ class RpsContainer extends React.Component {
     } = this.props;
 
     let game = this.props.game;
-    let players = get(game, ['state', 'players']);
-    players = mapValues(players, (player, playerId) => {
-      const data = userData[playerId];
+    let players = get(['state', 'players'], game);
+    players = mapValues(player => {
+      const data = userData[player.id];
       return data ? { ...player, ...data } : player;
-    });
+    }, players);
 
     game = {
       ...game,
@@ -53,7 +53,7 @@ RpsContainer.propTypes = {
 
 export default connect(
   state => ({
-    userData: get(state, ['data', 'users']),
+    userData: get(['data', 'users'], state),
   }),
   dispatch => bindActionCreators(actions, dispatch)
 )(RpsContainer);

@@ -26,7 +26,7 @@ import {
   cloneDeep,
   union,
   without,
-} from 'lodash';
+} from 'lodash/fp';
 import jsonpatch from 'fast-json-patch';
 
 const initialState = {};
@@ -85,7 +85,7 @@ export default function gameReducer(state = initialState, action) {
 
       return {
         ...state,
-        users: without(state.users, user.id),
+        users: without([user.id], state.users),
         messages: [
           ...state.messages,
           message,

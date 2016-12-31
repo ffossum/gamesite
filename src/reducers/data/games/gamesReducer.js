@@ -25,7 +25,7 @@ import {
 } from 'actions/game';
 import {
   mapValues,
-} from 'lodash';
+} from 'lodash/fp';
 
 import gameReducer from './gameReducer';
 
@@ -50,12 +50,12 @@ export default function gamesReducer(state = initialState, action) {
 
     case GAMES_UPDATED:
     case REFRESH_LOBBY_SUCCESS: {
-      const newGames = mapValues(action.payload.games, (newGameState, gameId) => {
-        const oldGameState = state[gameId];
+      const newGames = mapValues(newGameState => {
+        const oldGameState = state[newGameState.id];
         return oldGameState
           ? { ...oldGameState, ...newGameState }
           : { ...newGameState, messages: [] };
-      });
+      }, action.payload.games);
 
       return {
         ...state,

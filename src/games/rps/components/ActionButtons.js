@@ -3,7 +3,7 @@ import Hand from './hands/Hand';
 import {
   ROCK, PAPER, SCISSORS,
 } from '../constants';
-import _ from 'lodash';
+import { includes } from 'lodash/fp';
 
 import styles from './actionButtons.css';
 
@@ -22,7 +22,7 @@ export default class ActionButtons extends React.Component {
   }
   render() {
     const { user, game } = this.props;
-    const active = _.includes(game.state.active, user.id) && !game.waitingForServer;
+    const active = includes(user.id, game.state.active) && !game.waitingForServer;
 
     return (
       <div className={styles.group}>

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { map } from 'lodash';
+import { map } from 'lodash/fp';
 import Gravatar from './Gravatar';
 import styles from './horizontalPlayerList.css';
 
@@ -9,12 +9,12 @@ export default class HorizontalPlayerList extends React.Component {
     return (
       <ul className={styles.players}>
         {
-          map(users, user => (
+          map(user => (
             <li key={user.id || ''} className={styles.player}>
               <Gravatar inline emailHash={user.emailHash} name={user.username} />
               <div className={styles.playerName}>{user.username}</div>
             </li>
-          ))
+          ), users)
         }
       </ul>
     );

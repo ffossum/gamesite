@@ -11,12 +11,12 @@ import {
   refreshLobby,
 } from 'actions/lobbyActions';
 import { lobbyLastRefreshedSelector, userIdSelector } from 'selectors/commonSelectors';
-import { map, flatten } from 'lodash';
+import { map, flatten } from 'lodash/fp';
 import socket from 'client/socket';
 
 export function* refreshLobbySaga(action) {
   const { games, refreshed } = action.payload;
-  const users = flatten(map(games, game => game.users));
+  const users = flatten(map(game => game.users, games));
 
   yield put(getUserData(...users));
   yield put(refreshLobbySuccess({ games, refreshed }));
