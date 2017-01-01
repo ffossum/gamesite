@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import AccountSettings from './account/AccountSettings';
 import LocaleSettings from './locale/LocaleSettings';
 import classnames from 'classnames';
-import { map } from 'lodash/fp';
 
 import styles from './userSettings.css';
 
@@ -29,7 +28,8 @@ export default class UserSettings extends React.Component {
       active: e.target.name,
     });
   }
-  sections = {
+  sectionKeys = ['account', 'locale']
+  sectionNames = {
     account: 'Account',
     locale: 'Locale',
   }
@@ -41,17 +41,17 @@ export default class UserSettings extends React.Component {
             <h2>Settings</h2>
             <ul className={styles.sectionList}>
               {
-                map((value, key) => (
+                this.sectionKeys.map(key => (
                   <li key={key}>
                     <a
                       className={classnames({ [styles.active]: key === this.state.active })}
                       name={key}
                       onClick={this.handleLinkClicked}
                     >
-                      {value}
+                      {this.sectionNames[key]}
                     </a>
                   </li>
-                ), this.sections)
+                ))
               }
             </ul>
           </nav>
