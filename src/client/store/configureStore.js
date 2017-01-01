@@ -6,12 +6,19 @@ import rootSaga from './sagas/rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 
+let devToolsExtension = f => f;
+if (__DEVELOPMENT__) {
+  if (window.devToolsExtension) {
+    devToolsExtension = window.devToolsExtension();
+  }
+}
+
 const finalCreateStore = compose(
   applyMiddleware(
     sagaMiddleware,
     historyMiddleware,
   ),
-  window.devToolsExtension ? window.devToolsExtension() : f => f
+  devToolsExtension,
 )(createStore);
 
 export default function configureStore(initialState) {
