@@ -4,7 +4,7 @@ function getHeadContent() {
   if (__DEVELOPMENT__) {
     return '<script src="http://localhost:3000/dist/bundle.js" defer></script>';
   }
-  const assets = JSON.parse(fs.readFileSync('webpack-assets.json', 'utf8'));
+  const assets = JSON.parse(fs.readFileSync('dist/webpack-assets.json', 'utf8'));
   return `
     <link rel="stylesheet" href="${assets.main.css}"></link>
     <script src="https://cdn.jsdelivr.net/react/15.4.1/react-with-addons.min.js" defer></script>

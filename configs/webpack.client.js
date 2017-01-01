@@ -29,7 +29,7 @@ module.exports = {
     new ExtractTextPlugin('style.[hash].css', {
       allChunks: true,
     }),
-    new AssetsPlugin()
+    new AssetsPlugin({path: path.join(__dirname, '..', 'dist')})
   ],
   module: {
     loaders: [

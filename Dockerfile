@@ -8,5 +8,6 @@ WORKDIR /workdir
 RUN npm install
 
 COPY ./dist/*server.js /workdir/dist/
+COPY ./dist/webpack-assets.json /workdir/dist/
 
 CMD npm run start
