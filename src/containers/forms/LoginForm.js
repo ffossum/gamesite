@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from 'actions/login';
 import modalActions from 'actions/modal';
-import { REGISTER_MODAL } from 'constants/modalType';
+import { REGISTER_MODAL, REQUEST_PASSWORD_RESET_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';
 import { get } from 'lodash/fp';
@@ -25,7 +25,8 @@ class LoginForm extends React.Component {
     this.handlePasswordChange = this.handleChange.bind(this, 'password');
     this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
     this.handleRememberMeChange = this.handleCheckboxChange.bind(this, 'remember');
-    this.openRegisterModal = this.openRegisterModal.bind(this);
+    this.handleRegisterClicked = this.handleModalLinkClicked.bind(this, REGISTER_MODAL);
+    this.handleResetClicked = this.handleModalLinkClicked.bind(this, REQUEST_PASSWORD_RESET_MODAL);
   }
   componentWillReceiveProps(nextProps) {
     const { username, password } = nextProps.formState;
@@ -64,9 +65,9 @@ class LoginForm extends React.Component {
       });
     }
   }
-  openRegisterModal(e) {
+  handleModalLinkClicked(modalType, e) {
     e.preventDefault();
-    this.props.openModal(REGISTER_MODAL);
+    this.props.openModal(modalType);
   }
   render() {
     if (this.props.sessionUserId) {
@@ -77,7 +78,7 @@ class LoginForm extends React.Component {
     const checkboxId = uniqueId('remember');
 
     return (
-      <section>
+      <section className={styles.modalForm}>
         <h2>Log in</h2>
         <form onSubmit={this.handleSubmit} className={styles.form}>
           <TextInput
@@ -110,7 +111,10 @@ class LoginForm extends React.Component {
             Log in
           </Button>
           <p>
-            Not yet registered? <a href="" onClick={this.openRegisterModal}>Register</a>
+            Not yet registered? <a href="" onClick={this.handleRegisterClicked}>Register</a>
+          </p>
+          <p>
+            Forgot your password? <a href="" onClick={this.handleResetClicked}>Reset</a>
           </p>
         </form>
       </section>

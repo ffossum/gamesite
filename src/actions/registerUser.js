@@ -8,18 +8,6 @@ export const types = {
   UPDATE_FORM,
 };
 
-const USERNAME_TAKEN = 'registerUser/USERNAME_TAKEN';
-const PASSWORDS_DO_NOT_MATCH = 'registerUser/PASSWORDS_DO_NOT_MATCH';
-const INVALID_EMAIL = 'registerUser/INVALID_EMAIL';
-const EMAIL_TAKEN = 'registerUser/EMAIL_TAKEN';
-
-export const errors = {
-  USERNAME_TAKEN,
-  PASSWORDS_DO_NOT_MATCH,
-  INVALID_EMAIL,
-  EMAIL_TAKEN,
-};
-
 export function updateForm(values) {
   return {
     type: UPDATE_FORM,

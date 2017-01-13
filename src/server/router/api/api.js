@@ -15,6 +15,7 @@ import {
 import {
   getUsers,
 } from '../../middleware/users';
+import forgotPassword from '../../middleware/forgotPassword';
 
 const api = new KoaRouter();
 
@@ -43,6 +44,10 @@ api.post('/register',
 
 api.get('/users',
   getUsers,
+);
+
+api.post('/forgot',
+  forgotPassword,
 );
 
 export default api;

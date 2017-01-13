@@ -3,7 +3,7 @@
 import { addUser, isUsernameAvailable, isEmailAvailable } from '../db/users';
 import validator from 'validator';
 import { isEmpty } from 'lodash/fp';
-import { errors as registerUserErrors } from 'actions/registerUser';
+import errorTypes from 'constants/errorType';
 
 export async function validateUsername(ctx, next) {
   const errors = ctx.state.errors || {};
@@ -11,7 +11,7 @@ export async function validateUsername(ctx, next) {
   const { username } = ctx.request.body;
   const available = await isUsernameAvailable(username);
   if (!available) {
-    errors.username = registerUserErrors.USERNAME_TAKEN;
+    errors.username = errorTypes.USERNAME_TAKEN;
   }
 
   ctx.state.errors = errors;
@@ -23,11 +23,11 @@ export async function validateEmail(ctx, next) {
 
   const { email } = ctx.request.body;
   if (!validator.isEmail(email)) {
-    errors.email = registerUserErrors.INVALID_EMAIL;
+    errors.email = errorTypes.INVALID_EMAIL;
   }
   const available = await isEmailAvailable(email);
   if (!available) {
-    errors.email = registerUserErrors.EMAIL_TAKEN;
+    errors.email = errorTypes.EMAIL_TAKEN;
   }
 
   ctx.state.errors = errors;

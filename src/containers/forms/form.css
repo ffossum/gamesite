@@ -1,8 +1,15 @@
+.modalForm {
+  width: 15rem;
+}
+
 .form {
-  max-width: 25rem;
   margin: 1rem auto;
 }
 
 .formInput {
   margin-bottom: 0.75rem;
+}
+
+.success {
+  color: green;
 }

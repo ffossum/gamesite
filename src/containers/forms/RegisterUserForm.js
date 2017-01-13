@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import actions, { errors as errorTypes } from 'actions/registerUser';
+import actions from 'actions/registerUser';
+import errorTypes from 'constants/errorType';
 import modalActions from 'actions/modal';
 import { LOGIN_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
@@ -98,7 +99,7 @@ class RegisterUserForm extends React.Component {
 
     const checkboxId = uniqueId('remember');
     return (
-      <section>
+      <section className={styles.modalForm}>
         <h2>Registration</h2>
         <form onSubmit={this.handleSubmit} className={styles.form}>
           <TextInput

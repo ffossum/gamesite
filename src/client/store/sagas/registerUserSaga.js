@@ -3,8 +3,8 @@ import validator from 'validator';
 import { isEmpty } from 'lodash/fp';
 import { reloadPage } from 'client/util/clientUtils';
 import { call, put, takeEvery } from 'redux-saga/effects';
+import errorTypes from 'constants/errorType';
 import {
-  errors,
   REGISTER_USER_REQUEST,
   registerUserFailure,
 } from 'actions/registerUser';
@@ -20,10 +20,10 @@ function* registerUserRequestSaga(action) {
 
   const registrationErrors = {};
   if (password !== repeatPassword) {
-    registrationErrors.repeatPassword = errors.PASSWORDS_DO_NOT_MATCH;
+    registrationErrors.repeatPassword = errorTypes.PASSWORDS_DO_NOT_MATCH;
   }
   if (!validator.isEmail(email)) {
-    registrationErrors.email = errors.INVALID_EMAIL;
+    registrationErrors.email = errorTypes.INVALID_EMAIL;
   }
 
   if (!isEmpty(registrationErrors)) {
@@ -44,10 +44,10 @@ function* registerUserRequestSaga(action) {
           remember,
         }),
       });
-      const json = yield res.json();
       if (res.ok) {
         yield call(reloadPage);
       } else {
+        const json = yield res.json();
         yield put(registerUserFailure(json.errors));
       }
     } catch (err) {
