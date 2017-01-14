@@ -8,7 +8,7 @@ import {
 import gameReducer from './gameReducer';
 
 describe('data/games/[gameId] reducer', () => {
-  it('initializes to empty map', () => {
+  it('initializes to empty object', () => {
     const initialState = gameReducer(undefined, { type: '@@INIT' });
     expect(initialState).to.be.empty;
   });
