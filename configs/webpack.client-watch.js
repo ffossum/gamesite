@@ -8,14 +8,14 @@ config.debug = true;
 config.devtool = "#inline-source-map";
 config.externals = {};
 
-config.entry.unshift(
+config.entry.main.unshift(
   "source-map-support/register",
   "webpack-dev-server/client?http://" + hostname + ":" + port,
   "webpack/hot/only-dev-server"
 );
 
 config.output = {
-  filename: "bundle.js",
+  filename: "[name].js",
   chunkFilename: '[id].js',
   publicPath: "http://" + hostname + ":" + port + "/dist/",
   hotUpdateMainFilename: "update/[hash]/update.json",

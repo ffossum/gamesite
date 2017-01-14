@@ -10,10 +10,9 @@ async function initRdb() {
       await r.tableCreate('games').run().error(noop),
     ]);
 
-    await r.table('users')
-      .indexCreate('username')
-      .run()
-      .error(noop);
+    const usersTable = r.table('users');
+    await usersTable.indexCreate('username').run().error(noop);
+    await usersTable.indexCreate('email').run().error(noop);
 
     await r.table('games')
       .indexCreate('users', { multi: true })

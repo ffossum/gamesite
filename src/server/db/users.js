@@ -50,3 +50,45 @@ export async function isEmailAvailable(email) {
 
   return isEmpty(matches);
 }
+
+export async function saveForgotPasswordToken(email, token) {
+  const result = await r.table('users')
+    .getAll(email, { index: 'email' })
+    .update({
+      forgotPasswordToken: token,
+      forgotPasswordDate: r.now(),
+    }, { returnChanges: true })
+    .run();
+
+  return result.replaced === 1 &&
+    result.errors === 0 &&
+    result.changes[0].new_val;
+}
+
+export async function isValidResetPasswordToken(userId, token) {
+  try {
+    return r.table('users').get(userId)
+      .do(
+        r.and(
+          r.row.hasFields('forgotPasswordToken', 'forgotPasswordDate'),
+          r.row('forgotPasswordToken').eq(token),
+          r.row('forgotPasswordDate').gt(r.now().sub(60 * 60)) // 60 * 60 seconds = 1 hour
+        )
+      )
+      .run();
+  } catch (err) {
+    return false;
+  }
+}
+
+export async function changePassword(userId, password) {
+  const passwordHash = await hashPassword(password);
+  const result = await r.table('users').get(userId)
+    .replace(
+      r.row.without('forgotPasswordToken', 'forgotPasswordDate')
+        .merge({ password: passwordHash })
+    )
+    .run();
+
+  return result.replaced === 1 && result.errors === 0;
+}

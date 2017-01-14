@@ -3,6 +3,7 @@ import serve from 'koa-static';
 import KoaRouter from 'koa-router';
 import {
   renderReact,
+  renderResetPasswordPage,
   initializeReduxStore,
 } from '../middleware/renderReact';
 import {
@@ -16,9 +17,12 @@ const router = new KoaRouter();
 
 router.use('/api', api.routes(), api.allowedMethods());
 
+router.get('/reset', renderResetPasswordPage);
+
 router.get('/static/*',
   convert(serve('.')),
 );
+
 
 router.get('/*',
   authenticateJwtCookie,

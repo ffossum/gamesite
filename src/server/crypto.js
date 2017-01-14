@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 const BCRYPT_SALT_ROUNDS = 10;
 
@@ -9,3 +10,5 @@ export function hashPassword(password) {
 export function comparePassword(password, hash) {
   return bcrypt.compare(password, hash);
 }
+
+export const randomBytes = crypto.randomBytesAsync;

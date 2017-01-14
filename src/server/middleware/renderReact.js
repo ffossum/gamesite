@@ -15,6 +15,9 @@ import { getMessageCacheInstance } from '../socket/messageCache';
 import { getUsersByIds } from '../db/users';
 import { getLobbyGames, getUserGames } from '../db/games';
 import { flatten, flow, isEmpty, keyBy, map, uniq } from 'lodash/fp';
+import resetPasswordReducer from '../../reducers/resetPasswordReducer';
+import resetPasswordRoutes from '../../routes/resetPasswordRoutes';
+import resetPasswordTemplate from '../views/resetPasswordTemplate';
 
 const messageCache = getMessageCacheInstance();
 
@@ -97,10 +100,24 @@ export async function renderReact(ctx, next) {
     );
 
     ctx.body = template({
-      __DEVELOPMENT__,
       reactString,
       initialState: JSON.stringify(store.getState()),
     });
   }
   await next();
+}
+
+export async function renderResetPasswordPage(ctx) {
+  const { renderProps } = await matchRoutes(resetPasswordRoutes, ctx.url);
+  if (renderProps) {
+    const store = createStore(resetPasswordReducer);
+    resetCounter();
+    const reactString = renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    );
+
+    ctx.body = resetPasswordTemplate({ reactString });
+  }
 }

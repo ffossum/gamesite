@@ -9,12 +9,15 @@ module.exports = {
   context: path.join(__dirname, '..'),
   debug: false,
   devtool: false,
-  entry: ["babel-polyfill", "./src/client"],
+  entry: {
+    main: ["babel-polyfill", "./src/client"],
+    resetpwd: ["babel-polyfill", "./src/client/resetPasswordPage"],
+  },
   output: {
     path: path.join(__dirname, "../static/dist"),
     publicPath: "/static/dist/",
-    filename: "bundle.[hash].js",
-    chunkFilename: "[id].[hash].js"
+    filename: "[name].[hash].js",
+    chunkFilename: "[id].[chunkhash].js"
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -26,7 +29,7 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
-    new ExtractTextPlugin('style.[hash].css', {
+    new ExtractTextPlugin('style.[chunkhash].css', {
       allChunks: true,
     }),
     new AssetsPlugin({path: path.join(__dirname, '..', 'dist')})
