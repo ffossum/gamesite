@@ -1,7 +1,11 @@
+// @flow
+import type { ModalType } from '../constants/modalType';
+import type { Action } from './types';
+
 export const OPEN_MODAL = 'modal/OPEN';
 export const CLOSE_MODAL = 'modal/CLOSE';
 
-export function openModal(modalType) {
+export function openModal(modalType: ModalType): Action {
   return {
     type: OPEN_MODAL,
     payload: {
@@ -10,7 +14,7 @@ export function openModal(modalType) {
   };
 }
 
-export function closeModal() {
+export function closeModal(): Action {
   return {
     type: CLOSE_MODAL,
   };

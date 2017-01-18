@@ -1,6 +1,21 @@
-import { types } from 'actions/login';
+// @flow
+import type { Action } from 'actions/types';
 
-const initialState = {
+import {
+  UPDATE_FORM,
+  LOG_IN_REQUEST,
+  LOG_IN_FAILURE,
+ } from 'actions/login';
+
+type LoginFormState = {
+  pending: boolean,
+  error: boolean,
+  username: string,
+  password: string,
+  remember: boolean,
+}
+
+const initialState: LoginFormState = {
   pending: false,
   error: false,
   username: '',
@@ -8,23 +23,23 @@ const initialState = {
   remember: false,
 };
 
-export default function loginFormReducer(state = initialState, action) {
+export default function loginFormReducer(state: LoginFormState = initialState, action: Action) {
   switch (action.type) {
-    case types.UPDATE_FORM: {
+    case UPDATE_FORM: {
       const newState = action.payload.values;
       return {
         ...state,
         ...newState,
       };
     }
-    case types.LOG_IN_REQUEST: {
+    case LOG_IN_REQUEST: {
       return {
         ...state,
         pending: true,
         error: false,
       };
     }
-    case types.LOG_IN_FAILURE: {
+    case LOG_IN_FAILURE: {
       return {
         ...state,
         pending: false,

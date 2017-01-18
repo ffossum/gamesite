@@ -1,6 +1,23 @@
-import { types } from 'actions/registerUser';
+// @flow
+import type { Action } from 'actions/types';
 
-const initialState = {
+import {
+  UPDATE_FORM,
+  REGISTER_USER_FAILURE,
+  REGISTER_USER_REQUEST,
+} from 'actions/registerUser';
+
+type RegisterUserFormState = {
+  errors: any,
+  pending: boolean,
+  email: string,
+  username: string,
+  password: string,
+  repeatPassword: string,
+  remember: boolean,
+}
+
+const initialState: RegisterUserFormState = {
   errors: {},
   pending: false,
   email: '',
@@ -10,23 +27,26 @@ const initialState = {
   remember: false,
 };
 
-export default function registerUserFormReducer(state = initialState, action) {
+export default function registerUserFormReducer(
+  state: RegisterUserFormState = initialState,
+  action: Action
+) {
   switch (action.type) {
-    case types.UPDATE_FORM: {
+    case UPDATE_FORM: {
       const newState = action.payload.values;
       return {
         ...state,
         ...newState,
       };
     }
-    case types.REGISTER_USER_REQUEST: {
+    case REGISTER_USER_REQUEST: {
       return {
         ...state,
         errors: {},
         pending: true,
       };
     }
-    case types.REGISTER_USER_FAILURE: {
+    case REGISTER_USER_FAILURE: {
       return {
         ...state,
         errors: action.payload.errors,

@@ -3,6 +3,7 @@
   "parser": "babel-eslint",
   "plugins": [
     "react",
+    "flowtype",
   ],
   "globals": {
     "__CLIENT__": false,

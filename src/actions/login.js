@@ -1,18 +1,25 @@
+// @flow
+
 export const LOG_IN_REQUEST = 'login/LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'login/LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'login/LOG_IN_FAILURE';
 export const LOG_OUT = 'login/LOG_OUT';
 export const UPDATE_FORM = 'login/UPDATE_FORM';
 
-export const types = {
-  LOG_IN_REQUEST,
-  LOG_IN_SUCCESS,
-  LOG_IN_FAILURE,
-  LOG_OUT,
-  UPDATE_FORM,
-};
+type LogInFormValues = {
+  username: string,
+  password: string,
+  remember: boolean,
+}
 
-export function updateForm(values) {
+type OwnUserData = {
+  id: string,
+  username: string,
+  email: string,
+  emailHash: string,
+}
+
+export function updateForm(values: LogInFormValues) {
   return {
     type: UPDATE_FORM,
     payload: {
@@ -21,7 +28,7 @@ export function updateForm(values) {
   };
 }
 
-export function logInSuccess(user) {
+export function logInSuccess(user: OwnUserData) {
   return {
     type: LOG_IN_SUCCESS,
     payload: { user },
@@ -40,7 +47,7 @@ export function logOut() {
   };
 }
 
-export function logIn({ username, password, remember }) {
+export function logIn({ username, password, remember }: LogInFormValues) {
   return {
     type: LOG_IN_REQUEST,
     payload: {

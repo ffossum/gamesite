@@ -1,14 +1,19 @@
+// @flow
+import type { Action } from 'actions/types';
+
 export const REGISTER_USER_REQUEST = 'registerUser/REGISTER_USER_REQUEST';
 export const REGISTER_USER_FAILURE = 'registerUser/REGISTER_USER_FAILURE';
 export const UPDATE_FORM = 'registerUser/UPDATE_FORM';
 
-export const types = {
-  REGISTER_USER_REQUEST,
-  REGISTER_USER_FAILURE,
-  UPDATE_FORM,
-};
+type RegisterUserFormValues = {
+  email: string,
+  username: string,
+  password: string,
+  repeatPassword: string,
+  remember: boolean,
+}
 
-export function updateForm(values) {
+export function updateForm(values: RegisterUserFormValues): Action {
   return {
     type: UPDATE_FORM,
     payload: {
@@ -17,14 +22,15 @@ export function updateForm(values) {
   };
 }
 
-export function registerUser(formData) {
+export function registerUser(formData: RegisterUserFormValues): Action {
   return {
     type: REGISTER_USER_REQUEST,
     payload: formData,
   };
 }
 
-export function registerUserFailure(registrationErrors) {
+// TODO errors type
+export function registerUserFailure(registrationErrors: any): Action {
   return {
     type: REGISTER_USER_FAILURE,
     payload: {
