@@ -1,11 +1,22 @@
+// @flow
+
 import React, { PropTypes } from 'react';
 import { isFunction } from 'lodash/fp';
 import Incrementer from 'components/common/incrementer/Incrementer';
 import formStyles from 'containers/forms/form.css';
 import defaultValues from './defaultValues';
 
+import type { Options } from '../types';
+type Props = {
+  onChange: (options: Options) => void,
+  values: Options,
+}
+type State = {
+  values: Options,
+}
+
 export default class CreateGameOptions extends React.Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       values: {
@@ -13,16 +24,16 @@ export default class CreateGameOptions extends React.Component {
         ...props.values,
       },
     };
-
-    this.handleFirstToChange = firstTo => this.setState({ values: { firstTo } });
   }
-
-  componentWillUpdate(nextProps, nextState) {
+  state: State;
+  componentWillUpdate(nextProps: Props, nextState: State) {
     if (isFunction(nextProps.onChange) &&
       this.state.values !== nextState.values) {
       nextProps.onChange(nextState.values);
     }
   }
+  handleFirstToChange = (firstTo: number) => this.setState({ values: { firstTo } });
+  props: Props;
 
   render() {
     const { values } = this.state;

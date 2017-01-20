@@ -1,3 +1,6 @@
-export const ROCK = 'R';
-export const PAPER = 'P';
-export const SCISSORS = 'S';
+// @flow
+import type { Hand } from './types';
+
+export const ROCK: Hand = 'R';
+export const PAPER: Hand = 'P';
+export const SCISSORS: Hand = 'S';

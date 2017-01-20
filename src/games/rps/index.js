@@ -1,5 +1,7 @@
-export Game from './containers/RpsContainer';
-export info from './info';
+// @flow
+
+export { default as Game } from './containers/RpsContainer';
+export { default as info } from './info';
 export {
   getInitialState,
   performAction,
