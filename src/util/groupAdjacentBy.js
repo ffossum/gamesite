@@ -1,8 +1,18 @@
+// @flow
+
 import { identity, last } from 'lodash/fp';
 
 const defaultIgnoreFunc = () => false;
 
-export default function groupAdjacentBy(arr, func = identity, options = {}) {
+type Options = {
+  ignore?: Function,
+}
+
+export default function groupAdjacentBy<T>(
+  arr: T[],
+  func: Function = identity,
+  options: Options = {}
+): T[][] {
   const { ignore = defaultIgnoreFunc } = options;
   const result = [];
 

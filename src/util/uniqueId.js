@@ -1,6 +1,8 @@
+// @flow
+
 let counter = 0;
 
-export function uniqueId(prefix = '') {
+export function uniqueId(prefix: string = '') {
   counter++;
   return prefix + counter;
 }

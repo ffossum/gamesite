@@ -1,3 +1,4 @@
+// @flow
 /* eslint-env mocha */
 /* eslint no-unused-expressions: 0 */
 
