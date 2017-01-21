@@ -2,4 +2,6 @@ import React from 'react';
 
 import styles from './downArrow.css';
 
-export default () => <span className={styles.arrow}></span>;
+const DownArrow = () => <span className={styles.arrow}></span>;
+
+export default DownArrow;

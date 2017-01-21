@@ -5,12 +5,15 @@ import Button from 'components/common/Button';
 import { isNumber } from 'lodash/fp';
 import styles from './incrementer.css';
 import textInputStyles from '../textInput.css';
+import { uniqueId } from 'util/uniqueId';
 
 export default class Incrementer extends React.Component {
   constructor() {
     super();
     this.handlePlusClick = this.handlePlusClick.bind(this);
     this.handleMinusClick = this.handleMinusClick.bind(this);
+
+    this.elementId = uniqueId('incrementer');
   }
   handlePlusClick(e) {
     e.preventDefault();
@@ -37,8 +40,8 @@ export default class Incrementer extends React.Component {
 
     return (
       <div>
-        {label && <label className={textInputStyles.label}>{label}</label>}
-        <div className={styles.group}>
+        {label && <label htmlFor={this.elementId} className={textInputStyles.label}>{label}</label>}
+        <div id={this.elementId} className={styles.group}>
           <Button
             disabled={disabledMinus}
             left

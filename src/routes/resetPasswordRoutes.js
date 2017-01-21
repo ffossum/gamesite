@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Route } from 'react-router';
 import ResetPasswordForm from 'containers/forms/ResetPasswordForm';
 
@@ -13,6 +13,10 @@ class Container extends React.PureComponent {
     );
   }
 }
+
+Container.propTypes = {
+  children: PropTypes.node,
+};
 
 export default (
   <Route path="/" component={Container}>

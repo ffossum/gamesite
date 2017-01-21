@@ -1,25 +1,47 @@
 {
-  "extends": "airbnb",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:flowtype/recommended",
+    "plugin:import/errors"
+  ],
   "parser": "babel-eslint",
   "plugins": [
     "react",
+    "jsx-a11y",
     "flowtype",
+    "import"
   ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
   "globals": {
     "__CLIENT__": false,
     "__DEVELOPMENT__": false,
-    "__DOCKER__": false,
+    "__DOCKER__": false
   },
   "rules": {
-    "react/no-multi-comp": 0,
-    "react/prefer-stateless-function": 1,
-    "global-require": 1,
+    "comma-dangle": ["error", "always-multiline"],
+    "global-require": "warn",
+    "no-console": "warn",
+    "no-use-before-define": ["error", { "functions": true, "classes": true }],
+    "object-curly-spacing": ["error", "always"],
+    "semi": ["error", "always"],
+
+    "react/prefer-stateless-function": "warn"
   },
   "settings": {
     "import/resolver": {
       "webpack": {
         "config": "configs/webpack.server.js"
       }
-    }
+    },
+    "import/ignore": [
+      "node_modules",
+      "\\.(css|svg|json)$"
+    ]
   }
 }

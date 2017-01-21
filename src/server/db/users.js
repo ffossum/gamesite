@@ -5,11 +5,11 @@ import r from './rethinkdb';
 import { isEmpty } from 'lodash/fp';
 
 export async function getUserById(userId) {
-  return r.table('users').get(userId).run();
+  return await r.table('users').get(userId).run();
 }
 
 export async function getUsersByIds(userIds) {
-  return r.table('users').getAll(...userIds).run();
+  return await r.table('users').getAll(...userIds).run();
 }
 
 export async function getUserByName(username) {
@@ -67,7 +67,7 @@ export async function saveForgotPasswordToken(email, token) {
 
 export async function isValidResetPasswordToken(userId, token) {
   try {
-    return r.table('users').get(userId)
+    return await r.table('users').get(userId)
       .do(
         r.and(
           r.row.hasFields('forgotPasswordToken', 'forgotPasswordDate'),

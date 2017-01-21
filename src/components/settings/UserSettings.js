@@ -44,6 +44,7 @@ export default class UserSettings extends React.Component {
                 this.sectionKeys.map(key => (
                   <li key={key}>
                     <a
+                      href =""
                       className={classnames({ [styles.active]: key === this.state.active })}
                       name={key}
                       onClick={this.handleLinkClicked}

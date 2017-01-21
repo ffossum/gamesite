@@ -1,6 +1,27 @@
 import React, { PropTypes } from 'react';
+import onClickOutside from 'react-onclickoutside';
 
 import style from './modal.css';
+
+class ModalInner extends React.Component {
+  handleClickOutside() {
+    this.props.onClose();
+  }
+  render() {
+    return (
+      <div role="dialog" className={style.modal}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+ModalInner.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+const WrappedInner = onClickOutside(ModalInner);
 
 export default class Modal extends React.Component {
   constructor() {
@@ -17,9 +38,6 @@ export default class Modal extends React.Component {
       document.removeEventListener('keydown', this.handleKeyDown);
     }
   }
-  stopPropagation(e) {
-    e.stopPropagation();
-  }
   handleKeyDown(e) {
     if (e.keyCode === 27) { // 27 = escape key
       this.props.onClose();
@@ -27,10 +45,10 @@ export default class Modal extends React.Component {
   }
   render() {
     return (
-      <div className={style.overlay} onClick={this.props.onClose}>
-        <div className={style.modal} onClick={this.stopPropagation}>
+      <div role="presentation" className={style.overlay}>
+        <WrappedInner onClose={this.props.onClose}>
           {this.props.children}
-        </div>
+        </WrappedInner>
       </div>
     );
   }

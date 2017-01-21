@@ -34,14 +34,14 @@ export default class UserDropdown extends React.Component {
           <ul className={styles.list}>
             <CloseDropdown>
               <li className={styles.item}>
-                <a className={styles.itemLink} onClick={this.handleSettingsClick}>
+                <a href="" className={styles.itemLink} onClick={this.handleSettingsClick}>
                   Settings
                 </a>
               </li>
             </CloseDropdown>
             <CloseDropdown>
               <li className={styles.item}>
-                <a className={styles.itemLink} onClick={this.handleLogOut}>
+                <a href="" className={styles.itemLink} onClick={this.handleLogOut}>
                   Log out
                 </a>
               </li>
