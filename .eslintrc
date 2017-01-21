@@ -26,7 +26,9 @@
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
     "global-require": "warn",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "no-console": "warn",
+    "no-trailing-spaces": "error",
     "no-use-before-define": ["error", { "functions": true, "classes": true }],
     "object-curly-spacing": ["error", "always"],
     "semi": ["error", "always"],
