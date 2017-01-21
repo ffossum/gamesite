@@ -7,4 +7,5 @@ export type Action =
   | LoginAction
   | ModalAction
   | RegisterUserAction
+  | { type: '@@INIT' } // Only for use in testing
   ;

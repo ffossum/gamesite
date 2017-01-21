@@ -1,3 +1,4 @@
+// @flow
 /* eslint-env mocha */
 /* eslint no-unused-expressions: 0 */
 
@@ -7,7 +8,7 @@ import { logInSuccess, logOut } from 'actions/login';
 
 describe('session reducer', () => {
   it('initializes userId to null', () => {
-    const initialState = sessionReducer(undefined, { type: 'INIT' });
+    const initialState = sessionReducer(undefined, { type: '@@INIT' });
 
     expect(initialState.userId).to.be.null;
   });
@@ -23,7 +24,9 @@ describe('session reducer', () => {
   });
 
   it('reverts back to null after logout', () => {
-    const initialState = '12345';
+    const initialState = {
+      userId: '12345',
+    };
     const state = sessionReducer(initialState, logOut());
 
     expect(state.userId).to.be.null;
