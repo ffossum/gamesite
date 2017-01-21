@@ -49,7 +49,10 @@ config.devServer = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Expose-Headers': 'SourceMap,X-SourceMap'
   },
-  stats: {colors: true},
+  stats: {
+    chunks: false,
+    colors: true
+  },
   host: hostname,
   port
 };
