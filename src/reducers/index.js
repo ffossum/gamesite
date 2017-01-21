@@ -9,7 +9,21 @@ import mainChat from './mainChat';
 import modal from './modal';
 import lobby from './lobby/lobbyReducer';
 
-export default combineReducers({
+import type { Action } from 'actions/types';
+import type { Session } from './session/sessionReducer';
+import type { ModalState } from './modal/';
+
+export type State = {
+  routing: any,
+  data: any,
+  mainChat: any,
+  lobby: any,
+  forms: any,
+  session: Session,
+  modal: ModalState,
+}
+
+const reducer: (state: State, action: Action) => State = combineReducers({
   routing,
   data,
   mainChat,
@@ -18,3 +32,5 @@ export default combineReducers({
   session,
   modal,
 });
+
+export default reducer;

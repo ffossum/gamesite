@@ -1,8 +1,12 @@
+// @flow
+
 import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from 'reducers/';
 import historyMiddleware from './middleware/historyMiddleware';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas/rootSaga';
+
+import type { State } from 'reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -21,7 +25,7 @@ const finalCreateStore = compose(
   devToolsExtension,
 )(createStore);
 
-export default function configureStore(initialState) {
+export default function configureStore(initialState: State) {
   const store = finalCreateStore(rootReducer, initialState);
 
   sagaMiddleware.run(rootSaga);

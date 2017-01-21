@@ -7,7 +7,7 @@ import {
   CLOSE_MODAL,
 } from 'actions/modal';
 
-type ModalState = ModalType | null;
+export type ModalState = ModalType | null;
 
 const initialState = null;
 

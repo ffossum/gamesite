@@ -21,9 +21,9 @@ type LogInFormValues = {
 
 type OwnUserData = {
   id: string,
-  username: string,
-  email: string,
-  emailHash: string,
+  username?: string,
+  email?: string,
+  emailHash?: string,
 }
 
 type UpdateLoginFormAction = {
@@ -84,14 +84,10 @@ export function logOut(): Action {
   };
 }
 
-export function logIn({ username, password, remember }: LogInFormValues): Action {
+export function logIn(values: LogInFormValues): Action {
   return {
     type: LOG_IN_REQUEST,
-    payload: {
-      username,
-      password,
-      remember,
-    },
+    payload: values,
   };
 }
 
