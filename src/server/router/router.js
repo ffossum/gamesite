@@ -1,3 +1,4 @@
+// @flow
 import convert from 'koa-convert';
 import serve from 'koa-static';
 import KoaRouter from 'koa-router';

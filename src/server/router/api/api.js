@@ -1,3 +1,4 @@
+// @flow
 /* eslint no-param-reassign: 0 */
 
 import passport from 'koa-passport';

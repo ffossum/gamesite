@@ -1,3 +1,5 @@
+// @flow
+
 import { noop, once } from 'lodash/fp';
 import r from './rethinkdb';
 
@@ -33,8 +35,4 @@ async function initRdb() {
   }
 }
 
-function init() {
-  initRdb();
-}
-
-export default once(init);
+export default once(initRdb);

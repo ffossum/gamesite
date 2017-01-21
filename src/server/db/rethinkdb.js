@@ -1,3 +1,5 @@
+// @flow
+
 import rethinkdbdash from 'rethinkdbdash';
 
 const r = rethinkdbdash({
