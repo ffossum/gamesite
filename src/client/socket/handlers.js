@@ -1,3 +1,4 @@
+// @flow
 import {
   SEND_MESSAGE,
   newMessage,
@@ -21,7 +22,11 @@ import {
   NEW_ACTION, newAction,
 } from 'actions/game';
 
-export function createHandler(store) {
+import type { Store } from '../store';
+
+export type SocketEventHandler = (typeAndData: [string, any]) => void;
+
+export function createHandler(store: Store): SocketEventHandler {
   return function socketEventHandler([type, data]) {
     switch (type) {
       case SEND_MESSAGE: store.dispatch(newMessage(data)); break;

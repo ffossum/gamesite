@@ -1,3 +1,4 @@
+// @flow
 import deepstream from 'deepstream.io-client-js';
 import { forEach, once } from 'lodash/fp';
 import {
@@ -9,12 +10,14 @@ import {
   getGameChannelName,
 } from 'util/channelUtils';
 
+import type { SocketEventHandler } from './handlers';
+
 let currentStore;
-let currentHandler;
+let currentHandler: SocketEventHandler;
 let currentDeepstream;
 const currentHandlerSubscriptionCounts = {};
 
-export function subscribe(eventName, handler = currentHandler) {
+export function subscribe(eventName: string, handler: SocketEventHandler = currentHandler) {
   if (handler === currentHandler) {
     let count = currentHandlerSubscriptionCounts[eventName] || 0;
     count++;
@@ -27,7 +30,7 @@ export function subscribe(eventName, handler = currentHandler) {
   }
 }
 
-export function unsubscribe(eventName, handler = currentHandler) {
+export function unsubscribe(eventName: string, handler: SocketEventHandler = currentHandler) {
   try {
     if (handler === currentHandler) {
       let count = currentHandlerSubscriptionCounts[eventName] || 0;
@@ -78,11 +81,11 @@ function init(store) {
   });
 }
 
-export function publish(eventName, data) {
+export function publish(eventName: string, data?: any) {
   currentDeepstream.event.emit(eventName, data);
 }
 
-export function rpc(procedureName, data) {
+export function rpc(procedureName: string, data?: any) {
   return new Promise((resolve, reject) => {
     currentDeepstream.rpc.make(procedureName, data, (err, res) => (
       err ? reject(err) : resolve(res))
