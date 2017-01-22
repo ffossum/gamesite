@@ -1,11 +1,20 @@
+// @flow
 import {
   NEW_MESSAGE,
   RESET_MESSAGES,
 } from 'actions/mainChat';
+import type { Action } from 'actions/types';
+import type { Reducer } from 'redux';
 
-const initialState = [];
+export type UserMessage = {
+  user: string,
+  time: string,
+  text: string,
+}
+export type MessagesState = UserMessage[];
 
-export default function messagesReducer(state = initialState, action) {
+const initialState: MessagesState = [];
+const messagesReducer: Reducer<MessagesState, Action> = (state = initialState, action) => {
   switch (action.type) {
     case NEW_MESSAGE: {
       const newMessage = action.payload;
@@ -23,4 +32,6 @@ export default function messagesReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default messagesReducer;
