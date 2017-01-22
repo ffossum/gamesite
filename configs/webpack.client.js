@@ -7,7 +7,6 @@ module.exports = {
   target: "web",
   cache: false,
   context: path.join(__dirname, '..'),
-  debug: false,
   devtool: false,
   entry: {
     main: ["babel-polyfill", "./src/client"],
@@ -16,7 +15,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "../static/dist"),
     publicPath: "/static/dist/",
-    filename: "[name].[hash].js",
+    filename: "[name].[chunkhash].js",
     chunkFilename: "[id].[chunkhash].js"
   },
   plugins: [
@@ -26,18 +25,16 @@ module.exports = {
       __DOCKER__: false
     }),
     new webpack.DefinePlugin({"process.env": {NODE_ENV: '"production"'}}),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
-    new ExtractTextPlugin('style.[chunkhash].css', {
+    new ExtractTextPlugin('style.[contenthash].css', {
       allChunks: true,
     }),
     new AssetsPlugin({path: path.join(__dirname, '..', 'dist')})
   ],
   module: {
     loaders: [
-      {test: /\.json$/, loaders: ["json"]},
-      {test: /\.js$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/},
+      {test: /\.json$/, loaders: ["json-loader"]},
+      {test: /\.js$/, loaders: ["babel-loader"], exclude: /node_modules/},
       {test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader?modules&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader")}
     ],
     noParse: /\.min\.js/
@@ -55,10 +52,8 @@ module.exports = {
   resolve: {
     modulesDirectories: [
       "src",
-      "node_modules",
-      "web_modules"
-    ],
-    extensions: ["", ".json", ".js"]
+      "node_modules"
+    ]
   },
   node: {
     __dirname: true,

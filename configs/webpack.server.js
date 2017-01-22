@@ -16,9 +16,7 @@ module.exports = {
   target: "node",
   cache: false,
   context: path.join(__dirname, '..'),
-  debug: false,
-  devtool: "source-map",
-  entry: ["source-map-support/register", "babel-polyfill", "./src/server/bluebirdPolyfill", "./src/server"],
+  entry: ["babel-polyfill", "./src/server/bluebirdPolyfill", "./src/server"],
   output: {
     path: path.join(__dirname, "../dist"),
     filename: "server.js"
@@ -33,8 +31,8 @@ module.exports = {
   ],
   module: {
     loaders: [
-      {test: /\.json$/, loaders: ["json"]},
-      {test: /\.js$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/},
+      {test: /\.json$/, loaders: ["json-loader"]},
+      {test: /\.js$/, loaders: ["babel-loader"], exclude: /node_modules/},
       {test: /\.css$/, loader: "css-loader/locals?modules&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader"}
     ],
     noParse: /\.min\.js/
@@ -46,10 +44,8 @@ module.exports = {
   resolve: {
     modulesDirectories: [
       "src",
-      "node_modules",
-      "web_modules"
-    ],
-    extensions: ["", ".json", ".js"]
+      "node_modules"
+    ]
   },
   node: {
     __dirname: true,
