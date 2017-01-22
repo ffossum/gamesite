@@ -18,7 +18,8 @@
     "watch-build-test": "node node_modules/webpack/bin/webpack --colors --config configs/webpack.test-watch.js",
     "test": "node node_modules/flow-bin/cli check && npm run lint && npm run coverage",
     "coverage": "node node_modules/karma/bin/karma start karma.conf.js",
-    "watch-test": "(cd test && mocha test.js --watch)",
+    "watch-test": "./node_modules/.bin/just-wait -p \"test/test.js\" && (cd test && mocha test.js --colors -R min --watch)",
+    "tdd": "node node_modules/concurrently --kill-others \"npm run watch-build-test\" \"npm run watch-test\"",
     "postinstall": "node node_modules/phantomjs-prebuilt/install.js"
   },
   "author": "Fredrik Fossum <fredrik.fossum@gmail.com>",
@@ -86,6 +87,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "flow-bin": "^0.37.4",
     "glob": "^7.0.0",
+    "just-wait": "^1.0.9",
     "karma": "^1.1.0",
     "karma-coverage": "^1.0.0",
     "karma-mocha": "^1.1.1",
