@@ -1,16 +1,30 @@
+// @flow
 import EventEmitter from 'events';
+import { parse } from 'cookie';
+import { verifyJwt } from '../jwt';
+
+async function getClientId(connectionData: http$IncomingMessage): Promise<?string> {
+  const cookies = parse(connectionData.headers.cookie || '');
+  try {
+    const decoded = await verifyJwt(cookies.jwt);
+    return decoded.id;
+  } catch(err) {
+    return;
+  }
+}
 
 export default class JwtAuthenticationHandler extends EventEmitter {
-  constructor(...args) {
-    super(...args);
-    this.isReady = true;
+  isReady = true;
+  constructor() {
+    super();
     this.emit('ready');
   }
-  isValidUser(connectionData, authData, callback) {
-    // TODO check jwt cookie in connectionData.headers when deepstream bug is published to npm
+  async isValidUser(connectionData: http$IncomingMessage, authData: Object = {}, callback: Function) {
 
-    callback(true, {
-      username: authData.id || 'open',
-    });
+    const clientId = authData.password === 'secret deepstream password'
+      ? authData.id
+      : await getClientId(connectionData);
+
+    callback(true, { username: clientId });
   }
 }

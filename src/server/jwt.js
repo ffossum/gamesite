@@ -10,7 +10,7 @@ export async function signJwt(
   return await jwt.signAsync(payload, secret, options);
 }
 
-export async function verifyJwt(token: string) {
+export async function verifyJwt(token: string): { [key: string]: string } {
   return await jwt.verifyAsync(token, secret);
 }
 

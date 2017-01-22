@@ -7,6 +7,7 @@ export const init = once(() => new Promise((resolve, reject) => {
   client = deepstream('localhost:6020');
   client.login({
     id: 'node server',
+    password: 'secret deepstream password', // TODO
   }, (success) => {
     if (success) {
       resolve(client);

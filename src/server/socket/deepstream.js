@@ -1,3 +1,4 @@
+// @flow
 import server from './deepstreamServer';
 import deepstreamClient from './deepstreamClient';
 import { getMessageCacheInstance } from './messageCache';
