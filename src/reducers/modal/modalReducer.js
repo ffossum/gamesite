@@ -12,7 +12,7 @@ export type ModalState = ModalType | null;
 const initialState = null;
 
 export default function modalReducer(
-  state: ModalState = initialState,
+  state?: ModalState = initialState,
   action: Action): ModalState {
 
   switch (action.type) {

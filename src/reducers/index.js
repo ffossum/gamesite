@@ -6,12 +6,12 @@ import forms from './forms';
 import session from './session/sessionReducer';
 import data from './data/dataReducer';
 import mainChat from './mainChat';
-import modal from './modal';
+import modal from './modal/modalReducer';
 
 import type { Reducer } from 'redux';
 import type { Action } from 'actions/types';
 import type { Session } from './session/sessionReducer';
-import type { ModalState } from './modal/';
+import type { ModalState } from './modal/modalReducer';
 import type { MainChatState } from './mainChat/';
 
 export type State = {
