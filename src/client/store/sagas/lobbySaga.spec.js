@@ -18,7 +18,7 @@ import {
   gameCreated,
 } from 'actions/lobbyActions';
 import { getUserData } from 'actions/userData';
-import { lobbyLastRefreshedSelector, userIdSelector } from 'selectors/commonSelectors';
+import { userIdSelector } from 'selectors/commonSelectors';
 import socket from 'client/socket';
 
 describe('lobby saga', () => {
@@ -46,13 +46,9 @@ describe('lobby saga', () => {
   it('refreshes lobby and subscribes to lobby events when user enters lobby', () => {
     const action = joinLobby();
     const generator = joinLobbySaga(action);
-    expect(generator.next().value).to.deep.equal(
-      select(lobbyLastRefreshedSelector)
-    );
 
-    const lastRefreshed = new Date().toJSON();
-    expect(generator.next(lastRefreshed).value).to.deep.equal(
-      call(socket.rpc, action.type, { lastRefreshed })
+    expect(generator.next().value).to.deep.equal(
+      call(socket.rpc, action.type)
     );
 
     const refreshed = new Date().toJSON();

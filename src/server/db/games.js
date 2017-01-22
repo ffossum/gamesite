@@ -184,30 +184,10 @@ export async function getUserGames(userId) {
   return keyBy(game => game.id, games);
 }
 
-export async function getLobbyGames({ lastRefreshed } = {}) {
-  let query = r.table('games')
-    .filter(game => game('status').eq(NOT_STARTED));
-
-  if (lastRefreshed) {
-    const lastRefreshedDate = new Date(lastRefreshed);
-    query = query.filter(game => game('updated').gt(lastRefreshedDate));
-
-    const removalsQuery = r.table('games')
-      .filter(game => r.or(
-        game.hasFields('started').and(game('started').gt(lastRefreshedDate)),
-        game.hasFields('canceled').and(game('canceled').gt(lastRefreshedDate)),
-        game.hasFields('ended').and(game('ended').gt(lastRefreshedDate))
-      ))
-      .pluck(
-        'id',
-        'status',
-      );
-
-    query = query.union(removalsQuery);
-  }
-
-  const result = await r.do(
-    query.pluck(
+export async function getLobbyGames() {
+  const games = await r.table('games')
+    .filter(game => game('status').eq(NOT_STARTED))
+    .pluck(
       'comment',
       'created',
       'host',
@@ -217,14 +197,11 @@ export async function getLobbyGames({ lastRefreshed } = {}) {
       'status',
       'updated',
       'users',
-    ).coerceTo('array'),
-    r.now(),
-    (games, refreshed) => ({ games, refreshed }),
-  ).run();
+    )
+    .run();
 
   return {
-    games: keyBy(game => game.id, result.games),
-    refreshed: result.refreshed,
+    games: keyBy(game => game.id, games),
   };
 }
 

@@ -10,7 +10,7 @@ import {
   refreshLobbySuccess,
   refreshLobby,
 } from 'actions/lobbyActions';
-import { lobbyLastRefreshedSelector, userIdSelector } from 'selectors/commonSelectors';
+import { userIdSelector } from 'selectors/commonSelectors';
 import { map, flatten } from 'lodash/fp';
 import socket from 'client/socket';
 
@@ -23,10 +23,8 @@ export function* refreshLobbySaga(action) {
 }
 
 export function* joinLobbySaga(action) {
-  const lastRefreshed = yield select(lobbyLastRefreshedSelector);
-
   try {
-    const result = yield call(socket.rpc, action.type, { lastRefreshed });
+    const result = yield call(socket.rpc, action.type);
     if (result) {
       yield put(refreshLobby(result));
     }

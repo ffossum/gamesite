@@ -15,8 +15,6 @@ export const userDataSelector = state => get(['data', 'users'], state);
 
 export const userIdSelector = state => get(['session', 'userId'], state);
 
-export const lobbyLastRefreshedSelector = state => get(['lobby', 'lastRefreshed'], state);
-
 export const userSelector = createSelector(
   userIdSelector,
   userDataSelector,

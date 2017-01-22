@@ -62,11 +62,9 @@ export const init = once(async () => {
   });
 
   client.rpc.provide(JOIN_LOBBY, async (data, res) => {
-    const { lastRefreshed } = data;
-    const result = await games.getLobbyGames({ lastRefreshed });
+    const result = await games.getLobbyGames();
     res.send({
       games: result.games,
-      refreshed: result.refreshed,
     });
   });
 

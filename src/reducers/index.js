@@ -7,7 +7,6 @@ import session from './session/sessionReducer';
 import data from './data/dataReducer';
 import mainChat from './mainChat';
 import modal from './modal';
-import lobby from './lobby/lobbyReducer';
 
 import type { Reducer } from 'redux';
 import type { Action } from 'actions/types';
@@ -19,7 +18,6 @@ export type State = {
   routing: any,
   data: any,
   mainChat: MainChatState,
-  lobby: any,
   forms: any,
   session: Session,
   modal: ModalState,
@@ -29,7 +27,6 @@ const reducer: Reducer<State, Action> = combineReducers({
   routing,
   data,
   mainChat,
-  lobby,
   forms,
   session,
   modal,
