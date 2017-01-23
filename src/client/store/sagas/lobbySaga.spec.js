@@ -29,17 +29,16 @@ describe('lobby saga', () => {
         users: ['user1', 'user2'],
       },
     };
-    const refreshed = new Date().toJSON();
+
     const action = refreshLobby({
       games,
-      refreshed,
     });
     const generator = refreshLobbySaga(action);
     expect(generator.next().value).to.deep.equal(
       put(getUserData('user1', 'user2'))
     );
     expect(generator.next().value).to.deep.equal(
-      put(refreshLobbySuccess({ games, refreshed }))
+      put(refreshLobbySuccess({ games }))
     );
   });
 
@@ -51,10 +50,9 @@ describe('lobby saga', () => {
       call(socket.rpc, action.type)
     );
 
-    const refreshed = new Date().toJSON();
     const games = { game1: { id: 'game1' } };
-    expect(generator.next({ games, refreshed }).value).to.deep.equal(
-      put(refreshLobby({ games, refreshed }))
+    expect(generator.next({ games }).value).to.deep.equal(
+      put(refreshLobby({ games }))
     );
 
     expect(generator.next().value).to.deep.equal(

@@ -15,11 +15,11 @@ import { map, flatten } from 'lodash/fp';
 import socket from 'client/socket';
 
 export function* refreshLobbySaga(action) {
-  const { games, refreshed } = action.payload;
+  const { games } = action.payload;
   const users = flatten(map(game => game.users, games));
 
   yield put(getUserData(...users));
-  yield put(refreshLobbySuccess({ games, refreshed }));
+  yield put(refreshLobbySuccess({ games }));
 }
 
 export function* joinLobbySaga(action) {

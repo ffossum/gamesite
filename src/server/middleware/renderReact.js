@@ -58,12 +58,12 @@ export async function initializeReduxStore(ctx, next) {
     getUserGamesPromise = getUserGames(ctx.req.user.id);
   }
 
-  const [{ games, refreshed }, userGames] = await Promise.all([
+  const [{ games }, userGames] = await Promise.all([
     getLobbyGames(),
     getUserGamesPromise,
   ]);
 
-  store.dispatch(refreshLobbySuccess({ games, refreshed }));
+  store.dispatch(refreshLobbySuccess({ games }));
   store.dispatch(gamesUpdated(userGames));
 
   const gamesUserIds = flow(
