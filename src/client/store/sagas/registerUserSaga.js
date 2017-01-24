@@ -9,7 +9,7 @@ import {
   registerUserFailure,
 } from 'actions/registerUser';
 
-function* registerUserRequestSaga(action) {
+export function* registerUserRequestSaga(action) {
   const {
     email,
     username,

@@ -1,5 +1,5 @@
 // @flow
-
+import type { Action } from './types';
 type UpdateFormType = 'register user: update form';
 type RegisterRequestType = 'register user: request';
 type RegisterFailureType = 'register user: failure';
@@ -16,10 +16,18 @@ type RegisterUserFormValues = {
   remember: boolean,
 }
 
+type UpdateFormValues = {
+  email?: string,
+  username?: string,
+  password?: string,
+  repeatPassword?: string,
+  remember?: boolean,
+}
+
 type UpdateFormAction = {
   type: UpdateFormType,
   payload: {
-    values: RegisterUserFormValues,
+    values: UpdateFormValues,
   }
 }
 type RegisterRequestAction = {
@@ -38,7 +46,7 @@ export type RegisterUserAction =
   | RegisterFailureAction
   ;
 
-export function updateForm(values: RegisterUserFormValues): UpdateFormAction {
+export function updateForm(values: UpdateFormValues): Action {
   return {
     type: UPDATE_FORM,
     payload: {
@@ -47,7 +55,7 @@ export function updateForm(values: RegisterUserFormValues): UpdateFormAction {
   };
 }
 
-export function registerUser(formData: RegisterUserFormValues): RegisterRequestAction {
+export function registerUser(formData: RegisterUserFormValues): Action {
   return {
     type: REGISTER_USER_REQUEST,
     payload: formData,
@@ -55,7 +63,7 @@ export function registerUser(formData: RegisterUserFormValues): RegisterRequestA
 }
 
 // TODO errors type
-export function registerUserFailure(registrationErrors: any): RegisterFailureAction {
+export function registerUserFailure(registrationErrors: any): Action {
   return {
     type: REGISTER_USER_FAILURE,
     payload: {
