@@ -85,7 +85,7 @@
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
     "extract-text-webpack-plugin": "^1.0.1",
-    "flow-bin": "^0.37.4",
+    "flow-bin": "^0.38.0",
     "glob": "^7.0.0",
     "just-wait": "^1.0.9",
     "karma": "^1.1.0",
