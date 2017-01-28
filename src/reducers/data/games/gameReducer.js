@@ -27,6 +27,7 @@ import {
   cloneDeep,
   union,
   without,
+  includes,
 } from 'lodash/fp';
 import jsonpatch from 'fast-json-patch';
 
@@ -71,6 +72,9 @@ export default function gameReducer(state: Game, action: Action): Game | null {
     case PLAYER_JOINED: {
       const { user } = action.payload;
 
+      if (includes(user.id, state.users)) {
+        return state;
+      }
       const message = {
         time: new Date().toJSON(),
         key: PLAYER_JOINED,
