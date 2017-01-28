@@ -1,6 +1,4 @@
 // @flow
-import type { Action } from './types';
-
 type LoginRequestType = 'login: request';
 type LoginSuccessType = 'login: success';
 type LoginFailureType = 'login: failure';
@@ -56,7 +54,7 @@ export type LoginAction =
   | LogInRequestAction
   ;
 
-export function updateForm(values: LogInFormValues): Action {
+export function updateForm(values: LogInFormValues): UpdateLoginFormAction {
   return {
     type: UPDATE_FORM,
     payload: {
@@ -65,26 +63,26 @@ export function updateForm(values: LogInFormValues): Action {
   };
 }
 
-export function logInSuccess(user: OwnUserData): Action {
+export function logInSuccess(user: OwnUserData): LogInSuccessAction {
   return {
     type: LOG_IN_SUCCESS,
     payload: { user },
   };
 }
 
-export function logInFailure(): Action {
+export function logInFailure(): LogInFailureAction {
   return {
     type: LOG_IN_FAILURE,
   };
 }
 
-export function logOut(): Action {
+export function logOut(): LogOutAction {
   return {
     type: LOG_OUT,
   };
 }
 
-export function logIn(values: LogInFormValues): Action {
+export function logIn(values: LogInFormValues): LogInRequestAction {
   return {
     type: LOG_IN_REQUEST,
     payload: values,

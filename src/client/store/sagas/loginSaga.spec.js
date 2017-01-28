@@ -1,3 +1,4 @@
+/* @flow */
 /* eslint-env mocha */
 /* eslint no-unused-expressions: 0 */
 import fetch from 'isomorphic-fetch';
@@ -9,7 +10,11 @@ import { reloadPage } from 'client/util/clientUtils';
 
 describe('login saga', () => {
   it('calls login api', () => {
-    const action = logIn('Bob', 'hunter2');
+    const action = logIn({
+      username: 'Bob',
+      password: 'hunter2',
+      remember: true,
+    });
     const generator = logInSaga(action);
 
     expect(generator.next().value).to.deep.equal(
@@ -26,7 +31,11 @@ describe('login saga', () => {
   });
 
   it('reloads page after successful login', () => {
-    const action = logIn('Bob', 'hunter2');
+    const action = logIn({
+      username: 'Bob',
+      password: 'hunter2',
+      remember: true,
+    });
     const generator = logInSaga(action);
     generator.next();
     expect(generator.next({ ok: true }).value).to.deep.equal(
@@ -35,7 +44,11 @@ describe('login saga', () => {
   });
 
   it('dispatches loginFailure action if login is not successful', () => {
-    const action = logIn('Bob', 'hunter2');
+    const action = logIn({
+      username: 'Bob',
+      password: 'hunter2',
+      remember: true,
+    });
     const generator = logInSaga(action);
     generator.next();
     expect(generator.next({ ok: false }).value).to.deep.equal(
