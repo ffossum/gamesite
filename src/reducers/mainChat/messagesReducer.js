@@ -5,11 +5,6 @@ import {
 } from 'actions/mainChat';
 import type { Action } from 'actions/types';
 
-export type UserMessage = {
-  user: string,
-  time: string,
-  text: string,
-}
 export type MessagesState = UserMessage[];
 
 const initialState: MessagesState = [];

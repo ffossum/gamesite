@@ -1,6 +1,5 @@
 /* @flow */
 import { map, takeRight, uniq } from 'lodash/fp';
-import type { UserMessage } from 'reducers/mainChat/messagesReducer';
 
 export default class MessageCache {
   maxSize: number;
