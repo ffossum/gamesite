@@ -1,16 +1,20 @@
+/* @flow */
 import { map, takeRight, uniq } from 'lodash/fp';
+import type { UserMessage } from 'reducers/mainChat/messagesReducer';
 
 export default class MessageCache {
-  constructor(maxSize = 100) {
+  maxSize: number;
+  messages: UserMessage[];
+  constructor(maxSize: number = 100) {
     this.maxSize = maxSize;
     this.messages = [];
   }
 
-  add(message) {
+  add(message: UserMessage) {
     this.messages = takeRight(this.maxSize, [...this.messages, message]);
   }
 
-  get userIds() {
+  getUserIds() {
     const userIds = map(message => message.user, this.messages);
     return uniq(userIds);
   }

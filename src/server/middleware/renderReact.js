@@ -1,5 +1,4 @@
-/* eslint no-param-reassign: 0 */
-
+/* @flow */
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { createStore } from 'redux';
@@ -18,6 +17,14 @@ import { flatten, flow, isEmpty, keyBy, map, uniq } from 'lodash/fp';
 import resetPasswordReducer from '../../reducers/resetPasswordReducer';
 import resetPasswordRoutes from '../../routes/resetPasswordRoutes';
 import resetPasswordTemplate from '../views/resetPasswordTemplate';
+
+import type { Context } from 'koa';
+type PassportContext = Context & {
+  isAuthenticated: () => boolean,
+  req: {
+    user: Object
+  }
+}
 
 const messageCache = getMessageCacheInstance();
 
@@ -49,7 +56,7 @@ function matchRoutes(routes, location) {
   });
 }
 
-export async function initializeReduxStore(ctx, next) {
+export async function initializeReduxStore(ctx: PassportContext, next: () => Promise<void>) {
   const store = createStore(reducer);
 
   let getUserGamesPromise = Promise.resolve({});
@@ -71,7 +78,7 @@ export async function initializeReduxStore(ctx, next) {
     flatten,
   )({ ...games, ...userGames });
 
-  const userIds = uniq([...messageCache.userIds, ...gamesUserIds]);
+  const userIds = uniq([...messageCache.getUserIds(), ...gamesUserIds]);
   if (!isEmpty(userIds)) {
     const users = await getUsersByIds(userIds);
     const publicUserData = flow(
@@ -87,7 +94,7 @@ export async function initializeReduxStore(ctx, next) {
   await next();
 }
 
-export async function renderReact(ctx, next) {
+export async function renderReact(ctx: Context, next: () => Promise<void>) {
   const { renderProps } = await matchRoutes(appRoutes, ctx.url);
   if (renderProps) {
     const { store } = ctx.state;
@@ -107,7 +114,7 @@ export async function renderReact(ctx, next) {
   await next();
 }
 
-export async function renderResetPasswordPage(ctx) {
+export async function renderResetPasswordPage(ctx: Context) {
   const { renderProps } = await matchRoutes(resetPasswordRoutes, ctx.url);
   if (renderProps) {
     const store = createStore(resetPasswordReducer);
