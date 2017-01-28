@@ -1,3 +1,4 @@
+/* @flow */
 import {
   NEW_GAME_MESSAGE,
   CLEAR_CHAT,
@@ -29,9 +30,24 @@ import {
 } from 'lodash/fp';
 import jsonpatch from 'fast-json-patch';
 
-const initialState = {};
+import type { Action } from 'actions/types';
+import type { GameStatus } from 'constants/gameStatus';
 
-export default function gameReducer(state = initialState, action) {
+export type Game = {
+  comment: string,
+  created: string,
+  host: string,
+  id: GameId,
+  options: Object,
+  playerCount: Object,
+  status: GameStatus,
+  updated: string,
+  messages: (UserMessage | InfoMessage)[],
+  users: string[],
+  state?: Object,
+}
+
+export default function gameReducer(state: Game, action: Action): Game | null {
   switch (action.type) {
     case REFRESH_GAME: {
       const { game } = action.payload;

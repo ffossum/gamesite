@@ -3,16 +3,17 @@ type JoinLobbyType = 'lobby: join';
 type LeaveLobbyType = 'lobby: leave';
 type RefreshRequestType = 'lobby: refresh request';
 type RefreshSuccessType = 'lobby: refresh success';
-type CreateGameType = 'lobby: create game request';
-type CreateGameSuccessType = 'lobby: create game success';
-type GameCreatedType = 'lobby: game created';
-type UpdateGameType = 'lobby: update game';
-type GamesUpdatedType = 'lobby: games updated';
 
 export const JOIN_LOBBY: JoinLobbyType = 'lobby: join';
 export const LEAVE_LOBBY: LeaveLobbyType = 'lobby: leave';
 export const REFRESH_LOBBY_REQUEST: RefreshRequestType = 'lobby: refresh request';
 export const REFRESH_LOBBY_SUCCESS: RefreshSuccessType = 'lobby: refresh success';
+
+type CreateGameType = 'lobby: create game request';
+type CreateGameSuccessType = 'lobby: create game success';
+type GameCreatedType = 'lobby: game created';
+type UpdateGameType = 'lobby: update game';
+type GamesUpdatedType = 'lobby: games updated';
 export const CREATE_GAME: CreateGameType = 'lobby: create game request';
 export const CREATE_GAME_SUCCESS: CreateGameSuccessType =  'lobby: create game success';
 export const GAME_CREATED: GameCreatedType = 'lobby: game created';
@@ -67,17 +68,7 @@ type PlayerCount = {
   required: number,
   optional: number,
 }
-type Game = {
-  comment: string,
-  created: string,
-  host: string,
-  id: string,
-  options: Object,
-  playerCount: PlayerCount,
-  status: GameStatus,
-  updated: string,
-  users: string[],
-}
+import type { Game } from 'reducers/data/games/gameReducer';
 type RefreshLobbyData = {
   games: {
     [id: string]: Game,

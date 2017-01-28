@@ -1,3 +1,4 @@
+/* @flow */
 import {
   CREATE_GAME_SUCCESS,
   GAME_CREATED,
@@ -29,9 +30,16 @@ import {
 
 import gameReducer from './gameReducer';
 
+import type { Game } from './gameReducer';
+import type { Action } from 'actions/types';
+
+export type GamesState = {
+  [key: GameId]: Game
+};
+
 const initialState = {};
 
-export default function gamesReducer(state = initialState, action) {
+export default function gamesReducer(state: GamesState = initialState, action: Action) {
   switch (action.type) {
     case CREATE_GAME_SUCCESS:
     case GAME_CREATED: {

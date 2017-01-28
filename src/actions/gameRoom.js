@@ -29,21 +29,7 @@ type GameCanceledType = 'gameRoom/CANCELED';
 export const CANCEL_GAME: CancelGameType = 'gameRoom/CANCEL';
 export const GAME_CANCELED: GameCanceledType = 'gameRoom/CANCELED';
 
-import type { GameStatus } from 'constants/gameStatus';
-
-export type Game = {
-  comment: string,
-  created: string,
-  host: string,
-  id: GameId,
-  options: Object,
-  playerCount: Object,
-  status: GameStatus,
-  updated: string,
-  messages: (UserMessage | InfoMessage)[],
-  users: string[],
-  state?: Object,
-}
+import type { Game } from 'reducers/data/games/gameReducer';
 
 type RefreshGameAction = {
   type: RefreshGameType,
