@@ -1,6 +1,5 @@
 // @flow
 import type { Action } from 'actions/types';
-import type { UserMessage } from 'reducers/mainChat/messagesReducer';
 
 type SendMessageType = 'main chat: send message';
 type NewMessageType = 'main chat: new message';

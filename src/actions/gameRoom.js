@@ -1,21 +1,57 @@
-export const JOIN_GAME = 'gameRoom/JOIN_GAME';
-export const PLAYER_JOINED = 'gameRoom/PLAYER_JOINED';
-export const LEAVE_GAME = 'gameRoom/LEAVE_GAME';
-export const PLAYER_LEFT = 'gameRoom/PLAYER_LEFT';
+/* @flow */
+type JoinGameType = 'gameRoom/JOIN_GAME';
+type PlayerJoinedType = 'gameRoom/PLAYER_JOINED';
+type LeaveGameType = 'gameRoom/LEAVE_GAME';
+type PlayerLeftType = 'gameRoom/PLAYER_LEFT';
+export const JOIN_GAME: JoinGameType = 'gameRoom/JOIN_GAME';
+export const PLAYER_JOINED: PlayerJoinedType = 'gameRoom/PLAYER_JOINED';
+export const LEAVE_GAME: LeaveGameType = 'gameRoom/LEAVE_GAME';
+export const PLAYER_LEFT: PlayerLeftType = 'gameRoom/PLAYER_LEFT';
 
-export const ENTER_ROOM = 'gameRoom/ENTER_ROOM';
-export const LEAVE_ROOM = 'gameRoom/LEAVE_ROOM';
-export const REFRESH_GAME = 'gameRoom/REFRESH';
-export const GAME_NOT_FOUND = 'gameRoom/NOT_FOUND';
+type EnterRoomType = 'gameRoom/ENTER_ROOM';
+type LeaveRoomType = 'gameRoom/LEAVE_ROOM';
+type RefreshGameType = 'gameRoom/REFRESH';
+type GameNotFoundType = 'gameRoom/NOT_FOUND';
+export const ENTER_ROOM: EnterRoomType = 'gameRoom/ENTER_ROOM';
+export const LEAVE_ROOM: LeaveRoomType = 'gameRoom/LEAVE_ROOM';
+export const REFRESH_GAME: RefreshGameType = 'gameRoom/REFRESH';
+export const GAME_NOT_FOUND: GameNotFoundType = 'gameRoom/NOT_FOUND';
 
-export const START_GAME = 'gameRoom/START_GAME';
-export const GAME_STARTED = 'gameRoom/GAME_STARTED';
-export const GAME_ENDED = 'gameRoom/ENDED';
+type StartGameType = 'gameRoom/START_GAME';
+type GameStartedType = 'gameRoom/GAME_STARTED';
+type GameEndedType = 'gameRoom/ENDED';
+export const START_GAME: StartGameType = 'gameRoom/START_GAME';
+export const GAME_STARTED: GameStartedType = 'gameRoom/GAME_STARTED';
+export const GAME_ENDED: GameEndedType = 'gameRoom/ENDED';
 
-export const CANCEL_GAME = 'gameRoom/CANCEL';
-export const GAME_CANCELED = 'gameRoom/CANCELED';
+type CancelGameType = 'gameRoom/CANCEL';
+type GameCanceledType = 'gameRoom/CANCELED';
+export const CANCEL_GAME: CancelGameType = 'gameRoom/CANCEL';
+export const GAME_CANCELED: GameCanceledType = 'gameRoom/CANCELED';
 
-export function refreshGame(game) {
+import type { GameStatus } from 'constants/gameStatus';
+
+export type Game = {
+  comment: string,
+  created: string,
+  host: string,
+  id: GameId,
+  options: Object,
+  playerCount: Object,
+  status: GameStatus,
+  updated: string,
+  messages: (UserMessage | InfoMessage)[],
+  users: string[],
+  state?: Object,
+}
+
+type RefreshGameAction = {
+  type: RefreshGameType,
+  payload: {
+    game: Game,
+  }
+}
+export function refreshGame(game: Game): RefreshGameAction {
   return {
     type: REFRESH_GAME,
     payload: {
@@ -24,7 +60,14 @@ export function refreshGame(game) {
   };
 }
 
-export function gameNotFound(gameId) {
+
+type GameNotFoundAction = {
+  type: GameNotFoundType,
+  payload: {
+    game: GameWithId,
+  }
+}
+export function gameNotFound(gameId: string): GameNotFoundAction {
   return {
     type: GAME_NOT_FOUND,
     payload: {
@@ -33,21 +76,36 @@ export function gameNotFound(gameId) {
   };
 }
 
-export function enterRoom(gameId) {
+type EnterRoomAction = {
+  type: EnterRoomType,
+  payload: string,
+}
+export function enterRoom(gameId: string): EnterRoomAction {
   return {
     type: ENTER_ROOM,
     payload: gameId,
   };
 }
 
-export function leaveRoom(gameId) {
+type LeaveRoomAction = {
+  type: LeaveRoomType,
+  payload: string,
+}
+export function leaveRoom(gameId: string): LeaveRoomAction {
   return {
     type: LEAVE_ROOM,
     payload: gameId,
   };
 }
 
-export function playerJoined(gameId, userId) {
+type PlayerJoinedAction = {
+  type: PlayerJoinedType,
+  payload: {
+    game: GameWithId,
+    user: UserWithId,
+  }
+}
+export function playerJoined(gameId: string, userId: string): PlayerJoinedAction {
   return {
     type: PLAYER_JOINED,
     payload: {
@@ -57,14 +115,25 @@ export function playerJoined(gameId, userId) {
   };
 }
 
-export function joinGame(gameId) {
+type JoinGameAction = {
+  type: JoinGameType,
+  payload: string,
+}
+export function joinGame(gameId: string): JoinGameAction {
   return {
     type: JOIN_GAME,
     payload: gameId,
   };
 }
 
-export function playerLeft(gameId, userId) {
+type PlayerLeftAction = {
+  type: PlayerLeftType,
+  payload: {
+    game: GameWithId,
+    user: UserWithId,
+  }
+}
+export function playerLeft(gameId: string, userId: string): PlayerLeftAction {
   return {
     type: PLAYER_LEFT,
     payload: {
@@ -74,14 +143,26 @@ export function playerLeft(gameId, userId) {
   };
 }
 
-export function leaveGame(gameId) {
+type LeaveGameAction = {
+  type: LeaveGameType,
+  payload: string,
+}
+export function leaveGame(gameId: string): LeaveGameAction {
   return {
     type: LEAVE_GAME,
     payload: gameId,
   };
 }
 
-export function gameStarted(gameId, gameState) {
+type GameStartedAction = {
+  type: GameStartedType,
+  payload: {
+    game: GameWithId & {
+      state: Object,
+    }
+  }
+}
+export function gameStarted(gameId: string, gameState: Object): GameStartedAction {
   return {
     type: GAME_STARTED,
     payload: {
@@ -93,14 +174,24 @@ export function gameStarted(gameId, gameState) {
   };
 }
 
-export function startGame(gameId) {
+type StartGameAction = {
+  type: StartGameType,
+  payload: string,
+}
+export function startGame(gameId: string): StartGameAction {
   return {
     type: START_GAME,
     payload: gameId,
   };
 }
 
-export function gameEnded(gameId) {
+type GameEndedAction = {
+  type: GameEndedType,
+  payload: {
+    game: GameWithId,
+  }
+}
+export function gameEnded(gameId: string): GameEndedAction {
   return {
     type: GAME_ENDED,
     payload: {
@@ -111,7 +202,13 @@ export function gameEnded(gameId) {
   };
 }
 
-export function gameCanceled(gameId) {
+type GameCanceledAction = {
+  type: GameCanceledType,
+  payload: {
+    game: GameWithId,
+  },
+}
+export function gameCanceled(gameId: string): GameCanceledAction {
   return {
     type: GAME_CANCELED,
     payload: {
@@ -122,12 +219,32 @@ export function gameCanceled(gameId) {
   };
 }
 
-export function cancelGame(gameId) {
+type CancelGameAction = {
+  type: CancelGameType,
+  payload: string,
+}
+export function cancelGame(gameId: string): CancelGameAction {
   return {
     type: CANCEL_GAME,
     payload: gameId,
   };
 }
+
+export type GameRoomAction =
+  | RefreshGameAction
+  | GameNotFoundAction
+  | EnterRoomAction
+  | LeaveRoomAction
+  | PlayerJoinedAction
+  | JoinGameAction
+  | PlayerLeftAction
+  | LeaveGameAction
+  | GameStartedAction
+  | StartGameAction
+  | GameEndedAction
+  | GameCanceledAction
+  | CancelGameAction
+  ;
 
 export default {
   joinGame,
