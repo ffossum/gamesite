@@ -15,6 +15,7 @@ services:
 
   server:
     build: .
+    restart: always
     depends_on:
       - database
 

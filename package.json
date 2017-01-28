@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A website for playing board and card games... some day.",
   "scripts": {
-    "start": "node node_modules/forever/bin/forever --minUptime 1000 --spinSleepTime 1000 -c \"node --harmony\" ./dist/server.js",
+    "start": "node --harmony ./dist/server.js",
     "build": "npm run build-client && npm run build-server",
     "build-docker": "npm run build-client-docker && npm run build-server-docker",
     "build-server": "node node_modules/webpack/bin/webpack --colors --display-error-details --config configs/webpack.server.js",
@@ -33,7 +33,6 @@
     "deepstream.io": "^2.1.2",
     "deepstream.io-client-js": "^2.1.1",
     "fast-json-patch": "^1.0.0",
-    "forever": "^0.15.1",
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^7.0.1",
     "koa": "^2.0.0",
