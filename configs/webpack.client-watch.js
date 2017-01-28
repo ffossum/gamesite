@@ -8,7 +8,6 @@ config.devtool = "#inline-source-map";
 config.externals = {};
 
 config.entry.main.unshift(
-  "source-map-support/register",
   "webpack-dev-server/client?http://" + hostname + ":" + port,
   "webpack/hot/only-dev-server"
 );
