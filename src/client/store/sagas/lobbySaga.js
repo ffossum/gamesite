@@ -9,6 +9,7 @@ import {
   GAME_CREATED,
   refreshLobbySuccess,
   refreshLobby,
+  UPDATE_GAME,
 } from 'actions/lobbyActions';
 import { userIdSelector } from 'selectors/commonSelectors';
 import { map, flatten } from 'lodash/fp';
@@ -62,6 +63,13 @@ export function* gameCreatedSaga(action) {
   yield put(getUserData(...game.users));
 }
 
+export function* updateGameSaga(action) {
+  const { game } = action.payload;
+  if (game.users) {
+    yield put(getUserData(...game.users));
+  }
+}
+
 export default function* lobbySaga() {
   yield [
     takeEvery(JOIN_LOBBY, joinLobbySaga),
@@ -69,5 +77,6 @@ export default function* lobbySaga() {
     takeEvery(REFRESH_LOBBY_REQUEST, refreshLobbySaga),
     takeEvery(CREATE_GAME, createGameSaga),
     takeEvery(GAME_CREATED, gameCreatedSaga),
+    takeEvery(UPDATE_GAME, updateGameSaga),
   ];
 }
