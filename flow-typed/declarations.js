@@ -37,3 +37,9 @@ declare type GameWithId = {
 declare type UserWithId = {
   id: UserId,
 }
+
+declare type PublicUserData = {
+  id: UserId,
+  emailHash: string,
+  username: string,
+}

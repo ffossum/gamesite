@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 import type { ModalAction } from './modal';
 import type { RegisterUserAction } from './registerUser';
 import type { LoginAction } from './login';
@@ -7,6 +7,7 @@ import type { GameChatAction } from './gameChat';
 import type { LobbyAction } from './lobbyActions';
 import type { GameRoomAction } from './gameRoom';
 import type { GameAction } from './game';
+import type { UserDataAction } from './userData';
 
 export type Action =
   | LoginAction
@@ -17,5 +18,6 @@ export type Action =
   | LobbyAction
   | GameRoomAction
   | GameAction
+  | UserDataAction
   | { type: '@@INIT' } // Only for use in testing
   ;
