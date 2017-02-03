@@ -7,7 +7,7 @@ import {
 import { createGetUserDataSaga } from './userDataSaga';
 import { expect } from 'chai';
 import { userDataSelector } from 'selectors/commonSelectors';
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import fetch from 'isomorphic-fetch';
 
 describe('get user data saga', () => {
@@ -69,8 +69,8 @@ describe('get user data saga', () => {
 
     const json = {
       users: {
-        userA: { id: 'userA' },
-        userB: { id: 'userB' },
+        userA: { id: 'userA', emailHash: '#', username: 'A' },
+        userB: { id: 'userB', emailHash: '#', username: 'B' },
       },
     };
     expect(generator.next(json).value).to.deep.equal(
