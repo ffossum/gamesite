@@ -1,3 +1,4 @@
+/* @flow */
 import fetch from 'isomorphic-fetch';
 import {
   filter,
@@ -8,36 +9,44 @@ import { userDataSelector } from 'selectors/commonSelectors';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { GET_USER_DATA_REQUEST, getUserDataSuccess } from 'actions/userData';
 
-const pendingFetches = {};
+import type { Action } from 'actions/types';
 
-export function* getUserDataSaga(action) {
-  const userIds = action.payload;
-  const stateUsers = yield select(userDataSelector);
+export function createGetUserDataSaga() {
+  const pendingFetches = {};
 
-  const missingUserIds = filter(userId => !stateUsers[userId], uniq(userIds));
+  return function* getUserDataSaga(action: Action): Generator<*, *, *> {
+    if (action.type === GET_USER_DATA_REQUEST) {
+      const userIds = action.payload;
+      const stateUsers = yield select(userDataSelector);
 
-  if (!isEmpty(missingUserIds)) {
-    missingUserIds.sort();
-    const fetchUrl = `/api/users?id=${missingUserIds.join(',')}`;
+      const missingUserIds = filter(userId => !stateUsers[userId], uniq(userIds));
 
-    if (!pendingFetches[fetchUrl]) {
-      pendingFetches[fetchUrl] = true;
+      if (!isEmpty(missingUserIds)) {
+        missingUserIds.sort();
+        const fetchUrl = `/api/users?id=${missingUserIds.join(',')}`;
 
-      try {
-        const res = yield call(fetch, fetchUrl);
+        if (!pendingFetches[fetchUrl]) {
+          pendingFetches[fetchUrl] = true;
 
-        if (res.ok) {
-          const json = yield res.json();
-          yield put(getUserDataSuccess(json.users));
+          try {
+            const res = yield call(fetch, fetchUrl);
+
+            if (res.ok) {
+              const json = yield res.json();
+              yield put(getUserDataSuccess(json.users));
+            }
+          } finally {
+            delete pendingFetches[fetchUrl];
+          }
         }
-      } finally {
-        delete pendingFetches[fetchUrl];
       }
     }
-  }
+  };
 }
 
-export default function* userDataSaga() {
+export const getUserDataSaga = createGetUserDataSaga();
+
+export default function* userDataSaga(): Generator<*, *, *> {
   yield [
     takeEvery(GET_USER_DATA_REQUEST, getUserDataSaga),
   ];
