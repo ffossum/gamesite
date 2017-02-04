@@ -8,6 +8,7 @@ import type { LobbyAction } from './lobbyActions';
 import type { GameRoomAction } from './gameRoom';
 import type { GameAction } from './game';
 import type { UserDataAction } from './userData';
+import type { ForgotPasswordAction } from './forgotPasswordActions';
 
 export type Action =
   | LoginAction
@@ -19,5 +20,6 @@ export type Action =
   | GameRoomAction
   | GameAction
   | UserDataAction
+  | ForgotPasswordAction
   | { type: '@@INIT' } // Only for use in testing
   ;
