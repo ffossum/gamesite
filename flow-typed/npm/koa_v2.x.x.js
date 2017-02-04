@@ -1,5 +1,5 @@
-// flow-typed signature: 3e1659e72a05080c1b16cd0ff2521471
-// flow-typed version: 0f80ad8af0/koa_v2.x.x/flow_>=v0.37.x
+// flow-typed signature: e01fe71ba48a073a72de9498164f02c1
+// flow-typed version: a909ef33a9/koa_v2.x.x/flow_>=v0.38.x
 
 // Its a bit different from Typescript def, i thought something in d.ts is typo.
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/types-2.0/koa/index.d.ts#L158
@@ -295,7 +295,7 @@ declare module 'koa' {
   declare class Application extends events$EventEmitter {
     context: Context,
     // request handler for node's native http server.
-    callback: (req: http$IncomingMessage, res: http$ServerResponse) => void,
+    callback: () => (req: http$IncomingMessage, res: http$ServerResponse) => void,
     env: string,
     keys?: Array<string>|Object, // https://github.com/crypto-utils/keygrip
     middleware: Array<Middleware>,

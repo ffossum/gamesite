@@ -1,5 +1,5 @@
-// flow-typed signature: 7484c4dca25cff44e654d2c8d938d4ca
-// flow-typed version: 666888bf86/lodash_v4.x.x/flow_>=v0.28.x
+// flow-typed signature: ef3ba0ad105839652bede588f150ca4b
+// flow-typed version: 90ba41eb32/lodash_v4.x.x/flow_>=v0.38.x
 
 declare module 'lodash' {
   declare type TemplateSettings = {
