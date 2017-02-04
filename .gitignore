@@ -1,7 +1,10 @@
+.nyc_output/
 .vscode/
+.tmp/
 
+coverage/
 dist/
-static/dist/
 node_modules/
-test/
+static/dist/
+
 webpack-assets.json

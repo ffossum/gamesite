@@ -14,13 +14,21 @@
     "watch-client": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config configs/webpack.client-watch.js",
     "watch": "node node_modules/concurrently --kill-others \"npm run watch-server\" \"npm run watch-client\"",
     "lint": "node node_modules/eslint/bin/eslint src",
-    "build-test": "node node_modules/webpack/bin/webpack --colors --config configs/webpack.test.js",
-    "watch-build-test": "node node_modules/webpack/bin/webpack --colors --config configs/webpack.test-watch.js",
     "test": "node node_modules/flow-bin/cli check && npm run lint && npm run coverage",
-    "coverage": "node node_modules/karma/bin/karma start karma.conf.js",
-    "watch-test": "./node_modules/.bin/just-wait -p \"test/test.js\" && (cd test && mocha test.js --colors -R min --watch)",
-    "tdd": "node node_modules/concurrently --kill-others \"npm run watch-build-test\" \"npm run watch-test\"",
-    "postinstall": "node node_modules/phantomjs-prebuilt/install.js"
+    "tdd": "mocha-webpack --watch --require babel-polyfill --webpack-config configs/webpack.server.js \"src/**/*.spec.js\"",
+    "coverage": "NODE_ENV=test nyc mocha-webpack --require babel-polyfill --webpack-config configs/webpack.server.js \"src/**/*.spec.js\""
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "exclude": [
+      ".tmp",
+      "configs",
+      "node_modules",
+      "**/*.spec.js"
+    ]
   },
   "author": "Fredrik Fossum <fredrik.fossum@gmail.com>",
   "license": "MIT",
@@ -64,9 +72,8 @@
     "assets-webpack-plugin": "^3.5.1",
     "babel-core": "^6.4.5",
     "babel-eslint": "^7.1.1",
-    "babel-istanbul": "^0.8.0",
-    "babel-istanbul-loader": "^0.1.0",
     "babel-loader": "^6.2.1",
+    "babel-plugin-istanbul": "^3.1.2",
     "babel-polyfill": "^6.3.14",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
@@ -84,15 +91,9 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "flow-bin": "^0.38.0",
     "glob": "^7.0.0",
-    "just-wait": "^1.0.9",
-    "karma": "^1.1.0",
-    "karma-coverage": "^1.0.0",
-    "karma-mocha": "^1.1.1",
-    "karma-mocha-reporter": "^2.0.0",
-    "karma-phantomjs-launcher": "^1.0.0",
-    "karma-webpack": "^1.7.0",
     "mocha": "^2.4.5",
-    "phantomjs-prebuilt": "^2.1.7",
+    "mocha-webpack": "^0.7.0",
+    "nyc": "^10.1.2",
     "postcss-cssnext": "^2.4.0",
     "postcss-import": "^9.0.0",
     "postcss-loader": "^1.0.0",
