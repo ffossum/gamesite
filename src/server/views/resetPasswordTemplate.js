@@ -1,4 +1,5 @@
 import fs from 'fs';
+import externalScripts from './externalScriptsTemplate';
 
 function getHeadContent() {
   if (__DEVELOPMENT__) {
@@ -7,10 +8,7 @@ function getHeadContent() {
   const assets = JSON.parse(fs.readFileSync('dist/webpack-assets.json', 'utf8'));
   return `
     <link rel="stylesheet" href="${assets.resetpwd.css}"></link>
-    <script src="https://cdn.jsdelivr.net/react/15.4.1/react-with-addons.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/react/15.4.1/react-dom.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/g/lodash@4.17.3(lodash.min.js+lodash.fp.min.js)" defer></script>
-    <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js" defer></script>
+    ${externalScripts()}
     <script src="${assets.resetpwd.js}" defer></script>
   `;
 }
@@ -24,7 +22,7 @@ export default ({
 <!doctype html>
 <html>
   <head>
-    <title>Game site</title>
+    <title>Game site - Reset password</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
