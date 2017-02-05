@@ -47,7 +47,11 @@ class ResetPasswordForm extends React.Component {
           success ?
             <div>
               <p className={styles.success}>
-                <b>✔</b> Password has been successfully reset.
+                <b>
+                  <span role="img" aria-label="checkmark">✔</span>
+                </b>
+                {' '}
+                Password has been successfully reset.
               </p>
               <p>
                 Return to <a href="/">main page</a>.

@@ -52,7 +52,11 @@ class ForgotPasswordForm extends React.Component {
         {
           success ?
             <p className={styles.success}>
-              <b>✔</b> An email with further instructions has been sent to
+              <b>
+                <span role="img" aria-label="checkmark">✔</span>
+              </b>
+              {' '}
+              An email with further instructions has been sent to
               {' '}
               <em>{this.state.submittedEmail}</em>.
             </p>

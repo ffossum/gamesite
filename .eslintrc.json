@@ -33,6 +33,7 @@
     "object-curly-spacing": ["error", "always"],
     "semi": ["error", "always"],
 
+    "jsx-a11y/no-autofocus": "warn",
     "react/prefer-stateless-function": "warn"
   },
   "settings": {

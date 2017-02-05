@@ -27,7 +27,7 @@ export default class Nav extends React.Component {
     const { user, games } = this.props;
 
     return (
-      <nav role="navigation" className={styles.navbar}>
+      <nav className={styles.navbar}>
         <ul className={styles.navgroup}>
           <li>
             <IndexLink
