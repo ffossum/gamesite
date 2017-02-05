@@ -12,6 +12,15 @@ html {
   box-sizing: inherit;
 }
 
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+}
+
 body {
   height: 100%;
   margin: 0;
