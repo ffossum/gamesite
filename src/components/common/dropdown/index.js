@@ -1,2 +1,4 @@
-export default from './Dropdown';
-export CloseDropdown from './CloseDropdown';
+import Dropdown from './Dropdown';
+import CloseDropdown from './CloseDropdown';
+
+export { Dropdown as default, CloseDropdown };

@@ -32,7 +32,7 @@ config.plugins = [
 
 config.module.loaders = [
   {test: /\.json$/, loaders: ["json-loader"]},
-  {test: /\.js$/, loaders: ["babel-loader?cacheDirectory&presets[]=es2015&presets[]=stage-0&presets[]=react&presets[]=react-hmre"], exclude: /node_modules/},
+  {test: /\.js$/, loaders: ["babel-loader?cacheDirectory&presets[]=latest&presets[]=stage-2&presets[]=react&presets[]=react-hmre"], exclude: /node_modules/},
   {test: /\.css$/, loader: "style-loader!css-loader?modules&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader"}
 ];
 
