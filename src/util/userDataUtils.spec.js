@@ -1,7 +1,6 @@
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
+/* @flow */
+/* eslint-env jest */
 
-import { expect } from 'chai';
 import { getPublicUserData } from './userDataUtils';
 
 describe('getPublicUserData', () => {
@@ -15,7 +14,7 @@ describe('getPublicUserData', () => {
 
   it('strips away non-public data from user object', () => {
     const publicData = getPublicUserData(user);
-    expect(publicData).to.deep.equal({
+    expect(publicData).toEqual({
       username: 'asdf',
       id: 'asdf',
       emailHash: 'asdfasdfasdf',
@@ -24,7 +23,7 @@ describe('getPublicUserData', () => {
 
   it('does not mutate the original object', () => {
     getPublicUserData(user);
-    expect(user).to.deep.equal({
+    expect(user).toEqual({
       username: 'asdf',
       id: 'asdf',
       email: 'secret',

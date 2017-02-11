@@ -1,11 +1,10 @@
 /* @flow */
-/* eslint-env mocha */
+/* eslint-env jest */
 import {
   getUserData,
   getUserDataSuccess,
 } from 'actions/userData';
 import { createGetUserDataSaga } from './userDataSaga';
-import { expect } from 'chai';
 import { userDataSelector } from 'selectors/commonSelectors';
 import { call, put, select } from 'redux-saga/effects';
 import fetch from 'isomorphic-fetch';
@@ -16,7 +15,7 @@ describe('get user data saga', () => {
     const action = getUserData('userA', 'userB');
     const generator = getUserDataSaga(action);
 
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       select(userDataSelector)
     );
 
@@ -25,7 +24,7 @@ describe('get user data saga', () => {
       userB: { id: 'userB' },
     };
 
-    expect(generator.next(existingUserData).value).to.be.undefined;
+    expect(generator.next(existingUserData).value).toBe(undefined);
   });
 
   it('fetches user data if needed', () => {
@@ -35,7 +34,7 @@ describe('get user data saga', () => {
     generator.next();
     const existingUserData = {};
 
-    expect(generator.next(existingUserData).value).to.deep.equal(
+    expect(generator.next(existingUserData).value).toEqual(
       call(fetch, '/api/users?id=userA,userB')
     );
   });
@@ -52,7 +51,7 @@ describe('get user data saga', () => {
     const generator2 = getUserDataSaga(action);
     generator2.next();
 
-    expect(generator2.next(existingUserData).value).to.be.undefined;
+    expect(generator2.next(existingUserData).value).toBe(undefined);
   });
 
   it('puts success action if fetch is successful', () => {
@@ -73,7 +72,7 @@ describe('get user data saga', () => {
         userB: { id: 'userB', emailHash: '#', username: 'B' },
       },
     };
-    expect(generator.next(json).value).to.deep.equal(
+    expect(generator.next(json).value).toEqual(
       put(getUserDataSuccess(json.users)),
     );
   });

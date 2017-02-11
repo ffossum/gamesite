@@ -15,8 +15,8 @@
     "watch": "concurrently --kill-others \"npm run watch-server\" \"npm run watch-client\"",
     "lint": "eslint src",
     "test": "flow check && npm run lint && npm run coverage",
-    "tdd": "mocha-webpack --watch --require babel-polyfill --webpack-config configs/webpack.server.js \"src/**/*.spec.js\"",
-    "coverage": "NODE_ENV=test nyc mocha-webpack --require babel-polyfill --webpack-config configs/webpack.server.js \"src/**/*.spec.js\""
+    "coverage": "jest --coverage",
+    "jest": "jest"
   },
   "nyc": {
     "reporter": [
@@ -34,7 +34,10 @@
     "moduleNameMapper": {
       "\\.css$": "identity-obj-proxy"
     },
-    "moduleDirectories": ["node_modules", "src"]
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
   },
   "author": "Fredrik Fossum <fredrik.fossum@gmail.com>",
   "license": "MIT",
@@ -85,9 +88,10 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-react-hmre": "^1.0.1",
     "babel-preset-stage-2": "^6.22.0",
-    "chai": "^3.5.0",
     "concurrently": "^3.1.0",
     "css-loader": "^0.23.1",
+    "enzyme": "^2.7.1",
+    "enzyme-to-json": "^1.4.5",
     "eslint": "^3.14.0",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-plugin-flowtype": "^2.30.0",
@@ -99,12 +103,10 @@
     "glob": "^7.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^18.1.0",
-    "mocha": "^3.2.0",
-    "mocha-webpack": "^0.7.0",
-    "nyc": "^10.1.2",
     "postcss-cssnext": "^2.4.0",
     "postcss-import": "^9.0.0",
     "postcss-loader": "^1.0.0",
+    "react-addons-test-utils": "^15.4.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1"

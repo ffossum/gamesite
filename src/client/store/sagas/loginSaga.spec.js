@@ -1,15 +1,13 @@
 /* @flow */
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
+/* eslint-env jest */
 import fetch from 'isomorphic-fetch';
 import { logInSaga, logOutSaga } from './loginSaga';
 import { logIn, logOut, logInFailure } from 'actions/login';
 import { call, put } from 'redux-saga/effects';
-import { expect } from 'chai';
 import { reloadPage } from 'client/util/clientUtils';
 
 describe('login saga', () => {
-  it('calls login api', () => {
+  test('calls login api', () => {
     const action = logIn({
       username: 'Bob',
       password: 'hunter2',
@@ -17,7 +15,7 @@ describe('login saga', () => {
     });
     const generator = logInSaga(action);
 
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       call(fetch, '/api/login', {
         method: 'post',
         headers: {
@@ -30,7 +28,7 @@ describe('login saga', () => {
     );
   });
 
-  it('reloads page after successful login', () => {
+  test('reloads page after successful login', () => {
     const action = logIn({
       username: 'Bob',
       password: 'hunter2',
@@ -38,12 +36,12 @@ describe('login saga', () => {
     });
     const generator = logInSaga(action);
     generator.next();
-    expect(generator.next({ ok: true }).value).to.deep.equal(
+    expect(generator.next({ ok: true }).value).toEqual(
       call(reloadPage)
     );
   });
 
-  it('dispatches loginFailure action if login is not successful', () => {
+  test('dispatches loginFailure action if login is not successful', () => {
     const action = logIn({
       username: 'Bob',
       password: 'hunter2',
@@ -51,30 +49,30 @@ describe('login saga', () => {
     });
     const generator = logInSaga(action);
     generator.next();
-    expect(generator.next({ ok: false }).value).to.deep.equal(
+    expect(generator.next({ ok: false }).value).toEqual(
       put(logInFailure())
     );
   });
 });
 
 describe('logout saga', () => {
-  it('calls logout api', () => {
+  test('calls logout api', () => {
     const action = logOut();
     const generator = logOutSaga(action);
 
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       call(fetch, '/api/logout', {
         method: 'post',
         credentials: 'same-origin',
       })
     );
   });
-  it('always reloads page after', () => {
+  test('always reloads page after', () => {
     const action = logOut();
     const generator = logOutSaga(action);
 
     generator.next();
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       call(reloadPage)
     );
   });

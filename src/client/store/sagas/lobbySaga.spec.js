@@ -1,7 +1,5 @@
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
+/* eslint-env jest */
 import { call, put, select } from 'redux-saga/effects';
-import { expect } from 'chai';
 import {
   refreshLobbySaga,
   joinLobbySaga,
@@ -22,7 +20,7 @@ import { userIdSelector } from 'selectors/commonSelectors';
 import socket from 'client/socket';
 
 describe('lobby saga', () => {
-  it('fetches user data when lobby is refreshed', () => {
+  test('fetches user data when lobby is refreshed', () => {
     const games = {
       game1: {
         id: 'game1',
@@ -34,47 +32,47 @@ describe('lobby saga', () => {
       games,
     });
     const generator = refreshLobbySaga(action);
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       put(getUserData('user1', 'user2'))
     );
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       put(refreshLobbySuccess({ games }))
     );
   });
 
-  it('refreshes lobby and subscribes to lobby events when user enters lobby', () => {
+  test('refreshes lobby and subscribes to lobby events when user enters lobby', () => {
     const action = joinLobby();
     const generator = joinLobbySaga(action);
 
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       call(socket.rpc, action.type)
     );
 
     const games = { game1: { id: 'game1' } };
-    expect(generator.next({ games }).value).to.deep.equal(
+    expect(generator.next({ games }).value).toEqual(
       put(refreshLobby({ games }))
     );
 
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       call(socket.subscribe, 'lobby')
     );
   });
 
-  it('unsubscribes to lobby events when user leaves lobby', () => {
+  test('unsubscribes to lobby events when user leaves lobby', () => {
     const generator = leaveLobbySaga();
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       call(socket.unsubscribe, 'lobby')
     );
   });
 
   describe('game creation request', () => {
-    it('is sent to server if user is logged in', () => {
+    test('is sent to server if user is logged in', () => {
       const action = createGame({ comment: 'hello' });
       const generator = createGameSaga(action);
-      expect(generator.next().value).to.deep.equal(
+      expect(generator.next().value).toEqual(
         select(userIdSelector)
       );
-      expect(generator.next('user id').value).to.deep.equal(
+      expect(generator.next('user id').value).toEqual(
         call(socket.rpc, action.type, {
           game: { comment: 'hello' },
           user: { id: 'user id' },
@@ -84,23 +82,23 @@ describe('lobby saga', () => {
         comment: 'hello',
         id: 'game id',
       };
-      expect(generator.next(createdGame).value).to.deep.equal(
+      expect(generator.next(createdGame).value).toEqual(
         put(createGameSuccess(createdGame))
       );
     });
 
-    it('is not sent if user is not logged in', () => {
+    test('is not sent if user is not logged in', () => {
       const action = createGame({ comment: 'hello' });
       const generator = createGameSaga(action);
       generator.next();
-      expect(generator.next(null).value).to.be.undefined;
+      expect(generator.next(null).value).toBeUndefined();
     });
   });
 
-  it('fetches user data when a new game appears', () => {
+  test('fetches user data when a new game appears', () => {
     const action = gameCreated({ id: 'game id', users: ['a', 'b'] });
     const generator = gameCreatedSaga(action);
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       put(getUserData('a', 'b'))
     );
   });

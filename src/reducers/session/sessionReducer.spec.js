@@ -1,8 +1,5 @@
 // @flow
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
-
-import { expect } from 'chai';
+/* eslint-env jest */
 import sessionReducer from './sessionReducer';
 import { logInSuccess, logOut } from 'actions/login';
 
@@ -10,7 +7,7 @@ describe('session reducer', () => {
   it('initializes userId to null', () => {
     const initialState = sessionReducer(undefined, { type: '@@INIT' });
 
-    expect(initialState.userId).to.be.null;
+    expect(initialState.userId).toBe(null);
   });
 
   it('holds user id after successful login', () => {
@@ -20,7 +17,7 @@ describe('session reducer', () => {
     };
     const state = sessionReducer(initialState, action);
 
-    expect(state.userId).to.equal('12345');
+    expect(state.userId).toBe('12345');
   });
 
   it('reverts back to null after logout', () => {
@@ -29,6 +26,6 @@ describe('session reducer', () => {
     };
     const state = sessionReducer(initialState, logOut());
 
-    expect(state.userId).to.be.null;
+    expect(state.userId).toBe(null);
   });
 });

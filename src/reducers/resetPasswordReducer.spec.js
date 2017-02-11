@@ -1,19 +1,17 @@
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
-
+/* @flow */
+/* eslint-env jest */
 import reducer from './resetPasswordReducer';
 import {
   resetPassword,
   resetPasswordSuccess,
   resetPasswordFailure,
 } from 'actions/resetPasswordActions';
-import { expect } from 'chai';
 
 describe('reset password reduer', () => {
   it('is initially not pending, not successful and has no errors', () => {
     const initialState = reducer(undefined, { type: 'INIT' });
 
-    expect(initialState).to.deep.equal({
+    expect(initialState).toEqual({
       errors: {},
       pending: false,
       success: false,
@@ -33,7 +31,7 @@ describe('reset password reduer', () => {
       password: 'hunter2',
       repeatPassword: 'hunter2',
     }));
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       errors: {},
       pending: true,
       success: false,
@@ -53,7 +51,7 @@ describe('reset password reduer', () => {
       password: 'hunter2',
       repeatPassword: 'hunter2',
     }));
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       errors: {},
       pending: true,
       success: false,
@@ -68,7 +66,7 @@ describe('reset password reduer', () => {
     };
 
     const state = reducer(initialState, resetPasswordSuccess());
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       errors: {},
       pending: false,
       success: true,
@@ -83,7 +81,7 @@ describe('reset password reduer', () => {
     };
 
     const state = reducer(initialState, resetPasswordFailure({ password: 'invalid password' }));
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       errors: { password: 'invalid password' },
       pending: false,
       success: false,

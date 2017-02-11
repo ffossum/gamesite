@@ -1,6 +1,5 @@
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
-import { expect } from 'chai';
+/* @flow */
+/* eslint-env jest */
 import fetch from 'isomorphic-fetch';
 import { call, put } from 'redux-saga/effects';
 import errorTypes from 'constants/errorType';
@@ -20,7 +19,7 @@ describe('register user saga', () => {
       remember: true,
     });
     const generator = registerUserRequestSaga(action);
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       put(registerUserFailure({
         repeatPassword: errorTypes.PASSWORDS_DO_NOT_MATCH,
       }))
@@ -35,7 +34,7 @@ describe('register user saga', () => {
       remember: true,
     });
     const generator = registerUserRequestSaga(action);
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       put(registerUserFailure({
         email: errorTypes.INVALID_EMAIL,
       }))
@@ -50,7 +49,7 @@ describe('register user saga', () => {
       remember: true,
     });
     const generator = registerUserRequestSaga(action);
-    expect(generator.next().value).to.deep.equal(
+    expect(generator.next().value).toEqual(
       call(fetch, '/api/register', {
         method: 'post',
         headers: {
@@ -77,9 +76,8 @@ describe('register user saga', () => {
     });
     const generator = registerUserRequestSaga(action);
     generator.next();
-    expect(generator.next({ ok: true }).value).to.deep.equal(
+    expect(generator.next({ ok: true }).value).toEqual(
       call(reloadPage)
     );
   });
-
 });

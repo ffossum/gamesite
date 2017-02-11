@@ -1,0 +1,54 @@
+exports[`Nav renders correctly 1`] = `
+<nav
+  className="navbar">
+  <ul
+    className="navgroup">
+    <li>
+      <IndexLink
+        className="navlink"
+        to="/">
+        Main
+      </IndexLink>
+    </li>
+    <li>
+      <Link
+        activeClassName="active"
+        className="navlink"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/play">
+        Play
+      </Link>
+    </li>
+    <li>
+      <Link
+        activeClassName="active"
+        className="navlink"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/about">
+        About
+      </Link>
+    </li>
+  </ul>
+  <ul
+    className="navgroup">
+    <li>
+      <a
+        className="navlink"
+        href=""
+        onClick={[Function]}>
+        Log in
+      </a>
+    </li>
+    <li>
+      <a
+        className="navlink"
+        href=""
+        onClick={[Function]}>
+        Register
+      </a>
+    </li>
+  </ul>
+</nav>
+`;

@@ -1,7 +1,6 @@
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
+/* @flow */
+/* eslint-env jest */
 
-import { expect } from 'chai';
 import usersReducer from './usersReducer';
 import { logInSuccess } from 'actions/login';
 import { GET_USER_DATA_SUCCESS } from 'actions/userData';
@@ -10,7 +9,7 @@ import { size } from 'lodash/fp';
 describe('data/users reducer', () => {
   it('initializes to empty map', () => {
     const initialState = usersReducer(undefined, { type: '@@INIT' });
-    expect(initialState).to.be.empty;
+    expect(initialState).toEqual({});
   });
 
   it('adds user info on login', () => {
@@ -21,7 +20,7 @@ describe('data/users reducer', () => {
 
     const initialState = {};
     const state = usersReducer(initialState, action);
-    expect(state['12345'].username).to.equal('Jack');
+    expect(state['12345'].username).toBe('Jack');
   });
 
   it('adds user data after fetching', () => {
@@ -29,8 +28,8 @@ describe('data/users reducer', () => {
       type: GET_USER_DATA_SUCCESS,
       payload: {
         users: {
-          1: { username: 'Jack' },
-          2: { username: 'Bob' },
+          '1': { username: 'Jack' },
+          '2': { username: 'Bob' },
         },
       },
     };
@@ -38,7 +37,7 @@ describe('data/users reducer', () => {
     const initialState = {};
     const state = usersReducer(initialState, action);
 
-    expect(size(state)).to.equal(2);
-    expect(state['2'].username).to.equal('Bob');
+    expect(size(state)).toBe(2);
+    expect(state['2'].username).toBe('Bob');
   });
 });

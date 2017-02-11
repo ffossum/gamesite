@@ -1,12 +1,17 @@
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
+/* @flow */
+/* eslint-env jest */
 
+import React from 'react';
 import Nav from './Nav';
-import { expect } from 'chai';
+import { shallow } from 'enzyme';
+import toJSON from 'enzyme-to-json';
+
+const logOut = () => {};
+const openModal = () => {};
 
 describe('Nav', () => {
-  it('works', () => {
-    expect(Nav).not.to.be.null;
-    // TODO
+  test('renders correctly', () => {
+    const component = shallow(<Nav logOut={logOut} openModal={openModal} />);
+    expect(toJSON(component)).toMatchSnapshot();
   });
 });

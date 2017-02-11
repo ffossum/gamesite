@@ -1,6 +1,4 @@
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
-import { expect } from 'chai';
+/* eslint-env jest */
 import {
   PLAYER_JOINED, playerJoined,
   PLAYER_LEFT, playerLeft,
@@ -8,37 +6,32 @@ import {
 import gameReducer from './gameReducer';
 
 describe('data/games/[gameId] reducer', () => {
-  it('initializes to empty object', () => {
-    const initialState = gameReducer(undefined, { type: '@@INIT' });
-    expect(initialState).to.be.empty;
-  });
-
   describe('when player joins game', () => {
     const initialState = {
       users: ['a'],
       messages: [],
     };
 
-    it('adds new player to user list', () => {
+    test('adds new player to user list', () => {
       const action = playerJoined('gameId', 'b');
       const state = gameReducer(initialState, action);
-      expect(state.users.length).to.equal(2);
-      expect(state.users).to.include('b');
+      expect(state.users.length).toBe(2);
+      expect(state.users).toContain('b');
     });
 
-    it('adds informative message', () => {
+    test('adds informative message', () => {
       const action = playerJoined('gameId', 'b');
       const state = gameReducer(initialState, action);
-      expect(state.messages.length).to.equal(1);
-      expect(state.messages[0].key).to.equal(PLAYER_JOINED);
+      expect(state.messages.length).toBe(1);
+      expect(state.messages[0].key).toBe(PLAYER_JOINED);
     });
 
-    it('does not add existing player', () => {
+    test('does not add existing player', () => {
       const action = playerJoined('gameId', 'a');
       const state = gameReducer(initialState, action);
-      expect(state.users.length).to.equal(1);
-      expect(state.users).to.include('a');
-      expect(state.messages.length).to.equal(0);
+      expect(state.users.length).toBe(1);
+      expect(state.users).toContain('a');
+      expect(state.messages.length).toBe(0);
     });
   });
 
@@ -48,18 +41,18 @@ describe('data/games/[gameId] reducer', () => {
       messages: [],
     };
 
-    it('it removes player from users list', () => {
+    test('it removes player from users list', () => {
       const action = playerLeft('gameId', 'a');
       const state = gameReducer(initialState, action);
-      expect(state.users.length).to.equal(1);
-      expect(state.users).not.to.include('a');
+      expect(state.users.length).toBe(1);
+      expect(state.users).not.toContain('a');
     });
 
-    it('adds informative message', () => {
+    test('adds informative message', () => {
       const action = playerLeft('gameId', 'a');
       const state = gameReducer(initialState, action);
-      expect(state.messages.length).to.equal(1);
-      expect(state.messages[0].key).to.equal(PLAYER_LEFT);
+      expect(state.messages.length).toBe(1);
+      expect(state.messages[0].key).toBe(PLAYER_LEFT);
     });
   });
 });

@@ -1,8 +1,6 @@
-// @flow
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
+/* @flow */
+/* eslint-env jest */
 import reducer from './modalReducer';
-import { expect } from 'chai';
 import {
   openModal,
   closeModal,
@@ -14,16 +12,16 @@ import {
 describe('modal reducer', () => {
   it('is null initially', () => {
     const initialState = reducer(undefined, { type: '@@INIT' });
-    expect(initialState).to.be.null;
+    expect(initialState).toBeNull();
   });
   it('holds the type of the currently open modal', () => {
     const initialState = null;
     const state = reducer(initialState, openModal(LOGIN_MODAL));
-    expect(state).to.equal(LOGIN_MODAL);
+    expect(state).toBe(LOGIN_MODAL);
   });
   it('is back to null again closing modal', () => {
     const initialState = LOGIN_MODAL;
     const state = reducer(initialState, closeModal());
-    expect(state).to.be.null;
+    expect(state).toBeNull();
   });
 });

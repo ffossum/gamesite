@@ -1,8 +1,5 @@
-// @flow
-/* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
-
-import { expect } from 'chai';
+/* @flow */
+/* eslint-env jest */
 import { every, find } from 'lodash/fp';
 import {
   getInitialState,
@@ -18,32 +15,32 @@ describe('rock paper scissors', () => {
   it('players start with score 0', () => {
     const state = getInitialState(['1', '2']);
     const allZero = every(player => player.score === 0, state.players);
-    expect(allZero).to.be.true;
+    expect(allZero).toBe(true);
   });
 
   it('players take their turns simultaneously', () => {
     const state = getInitialState(['1', '2']);
 
-    expect(state.active).to.have.length(2);
-    expect(state.active).to.include('1');
-    expect(state.active).to.include('2');
+    expect(state.active).toHaveLength(2);
+    expect(state.active).toContain('1');
+    expect(state.active).toContain('2');
   });
 
   it('a player chooses rock, paper or scissors', () => {
     let state = getInitialState(['1', '2']);
     state = getNextState(state, '1', ROCK);
 
-    expect(state.active).to.have.length(1);
+    expect(state.active).toHaveLength(1);
 
     const player = find({ id: '1' }, state.players);
-    expect(player.action).to.equal(ROCK);
+    expect(player.action).toBe(ROCK);
   });
 
   describe('game state object', () => {
     it('is not mutated', () => {
       const initialState = getInitialState(['1', '2']);
       const nextState = getNextState(initialState, '1', ROCK);
-      expect(initialState).not.to.equal(nextState);
+      expect(initialState).not.toBe(nextState);
     });
   });
 
@@ -52,8 +49,8 @@ describe('rock paper scissors', () => {
     state = getNextState(state, '1', ROCK);
     state = getNextState(state, '2', SCISSORS);
 
-    expect(state.players['1'].score).to.equal(1);
-    expect(state.players['2'].score).to.equal(0);
+    expect(state.players['1'].score).toBe(1);
+    expect(state.players['2'].score).toBe(0);
   });
 
   it('paper wraps rock', () => {
@@ -61,8 +58,8 @@ describe('rock paper scissors', () => {
     state = getNextState(state, '1', ROCK);
     state = getNextState(state, '2', PAPER);
 
-    expect(state.players['1'].score).to.equal(0);
-    expect(state.players['2'].score).to.equal(1);
+    expect(state.players['1'].score).toBe(0);
+    expect(state.players['2'].score).toBe(1);
   });
 
   it('scissors cut paper', () => {
@@ -70,18 +67,18 @@ describe('rock paper scissors', () => {
     state = getNextState(state, '1', ROCK);
     state = getNextState(state, '2', PAPER);
 
-    expect(state.players['1'].score).to.equal(0);
-    expect(state.players['2'].score).to.equal(1);
+    expect(state.players['1'].score).toBe(0);
+    expect(state.players['2'].score).toBe(1);
   });
 
   it('game ends when a player reaches required score', () => {
     let state = getInitialState(['1', '2']);
     const options = { firstTo: 1 };
     state = getNextState(state, '1', ROCK);
-    expect(isGameOver({ state, options })).to.equal(false);
+    expect(isGameOver({ state, options })).toBe(false);
 
     state = getNextState(state, '2', PAPER);
-    expect(isGameOver({ state, options })).to.equal(true);
+    expect(isGameOver({ state, options })).toBe(true);
   });
 
   describe('as viewed by players', () => {
@@ -89,18 +86,18 @@ describe('rock paper scissors', () => {
       let state = getInitialState(['1', '2']);
       state = getNextState(state, '1', ROCK);
 
-      expect(state.players['1'].action).to.equal(ROCK);
+      expect(state.players['1'].action).toBe(ROCK);
       const viewedState = asViewedBy(state, '2');
-      expect(viewedState.players['2'].action).to.be.undefined;
+      expect(viewedState.players['2'].action).toBe(undefined);
     });
 
     it('lets users see their own actions', () => {
       let state = getInitialState(['1', '2']);
       state = getNextState(state, '1', ROCK);
 
-      expect(state.players['1'].action).to.equal(ROCK);
+      expect(state.players['1'].action).toBe(ROCK);
       const viewedState = asViewedBy(state, '1');
-      expect(viewedState.players['1'].action).to.equal(ROCK);
+      expect(viewedState.players['1'].action).toBe(ROCK);
     });
   });
 });
