@@ -82,7 +82,6 @@
     "babel-core": "^6.4.5",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.1",
-    "babel-plugin-istanbul": "^3.1.2",
     "babel-polyfill": "^6.3.14",
     "babel-preset-latest": "^6.22.0",
     "babel-preset-react": "^6.3.13",
