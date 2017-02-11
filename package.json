@@ -30,6 +30,12 @@
       "**/*.spec.js"
     ]
   },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.css$": "identity-obj-proxy"
+    },
+    "moduleDirectories": ["node_modules", "src"]
+  },
   "author": "Fredrik Fossum <fredrik.fossum@gmail.com>",
   "license": "MIT",
   "dependencies": {
@@ -91,6 +97,8 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "flow-bin": "^0.38.0",
     "glob": "^7.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^18.1.0",
     "mocha": "^3.2.0",
     "mocha-webpack": "^0.7.0",
     "nyc": "^10.1.2",
