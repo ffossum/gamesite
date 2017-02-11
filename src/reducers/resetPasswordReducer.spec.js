@@ -8,7 +8,7 @@ import {
 } from 'actions/resetPasswordActions';
 
 describe('reset password reduer', () => {
-  it('is initially not pending, not successful and has no errors', () => {
+  test('is initially not pending, not successful and has no errors', () => {
     const initialState = reducer(undefined, { type: 'INIT' });
 
     expect(initialState).toEqual({
@@ -18,7 +18,7 @@ describe('reset password reduer', () => {
     });
   });
 
-  it('is pending after making request', () => {
+  test('is pending after making request', () => {
     const initialState = {
       errors: {},
       pending: false,
@@ -38,7 +38,7 @@ describe('reset password reduer', () => {
     });
   });
 
-  it('clears errors and success when making request', () => {
+  test('clears errors and success when making request', () => {
     const initialState = {
       errors: { password: 'invalid' },
       pending: false,
@@ -58,7 +58,7 @@ describe('reset password reduer', () => {
     });
   });
 
-  it('is not pending, and has no errors after success', () => {
+  test('is not pending, and has no errors after success', () => {
     const initialState = {
       errors: { password: 'invalid' },
       pending: true,
@@ -73,7 +73,7 @@ describe('reset password reduer', () => {
     });
   });
 
-  it('is not pending, and has errors after failure', () => {
+  test('is not pending, and has errors after failure', () => {
     const initialState = {
       errors: {},
       pending: true,

@@ -10,7 +10,7 @@ import { call, put, select } from 'redux-saga/effects';
 import fetch from 'isomorphic-fetch';
 
 describe('get user data saga', () => {
-  it('does nothing if user data is already available', () => {
+  test('does nothing if user data is already available', () => {
     const getUserDataSaga = createGetUserDataSaga();
     const action = getUserData('userA', 'userB');
     const generator = getUserDataSaga(action);
@@ -27,7 +27,7 @@ describe('get user data saga', () => {
     expect(generator.next(existingUserData).value).toBe(undefined);
   });
 
-  it('fetches user data if needed', () => {
+  test('fetches user data if needed', () => {
     const getUserDataSaga = createGetUserDataSaga();
     const action = getUserData('userA', 'userB');
     const generator = getUserDataSaga(action);
@@ -39,7 +39,7 @@ describe('get user data saga', () => {
     );
   });
 
-  it('does nothing if requested user data is already being fetched', () => {
+  test('does nothing if requested user data is already being fetched', () => {
     const getUserDataSaga = createGetUserDataSaga();
     const action = getUserData('userA', 'userB');
     const existingUserData = {};
@@ -54,7 +54,7 @@ describe('get user data saga', () => {
     expect(generator2.next(existingUserData).value).toBe(undefined);
   });
 
-  it('puts success action if fetch is successful', () => {
+  test('puts success action if fetch is successful', () => {
     const getUserDataSaga = createGetUserDataSaga();
     const action = getUserData('userA', 'userB');
     const generator = getUserDataSaga(action);

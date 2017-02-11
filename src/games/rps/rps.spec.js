@@ -12,13 +12,13 @@ import {
 } from './constants';
 
 describe('rock paper scissors', () => {
-  it('players start with score 0', () => {
+  test('players start with score 0', () => {
     const state = getInitialState(['1', '2']);
     const allZero = every(player => player.score === 0, state.players);
     expect(allZero).toBe(true);
   });
 
-  it('players take their turns simultaneously', () => {
+  test('players take their turns simultaneously', () => {
     const state = getInitialState(['1', '2']);
 
     expect(state.active).toHaveLength(2);
@@ -26,7 +26,7 @@ describe('rock paper scissors', () => {
     expect(state.active).toContain('2');
   });
 
-  it('a player chooses rock, paper or scissors', () => {
+  test('a player chooses rock, paper or scissors', () => {
     let state = getInitialState(['1', '2']);
     state = getNextState(state, '1', ROCK);
 
@@ -37,14 +37,14 @@ describe('rock paper scissors', () => {
   });
 
   describe('game state object', () => {
-    it('is not mutated', () => {
+    test('is not mutated', () => {
       const initialState = getInitialState(['1', '2']);
       const nextState = getNextState(initialState, '1', ROCK);
       expect(initialState).not.toBe(nextState);
     });
   });
 
-  it('rock crushes scissors', () => {
+  test('rock crushes scissors', () => {
     let state = getInitialState(['1', '2']);
     state = getNextState(state, '1', ROCK);
     state = getNextState(state, '2', SCISSORS);
@@ -53,7 +53,7 @@ describe('rock paper scissors', () => {
     expect(state.players['2'].score).toBe(0);
   });
 
-  it('paper wraps rock', () => {
+  test('paper wraps rock', () => {
     let state = getInitialState(['1', '2']);
     state = getNextState(state, '1', ROCK);
     state = getNextState(state, '2', PAPER);
@@ -62,7 +62,7 @@ describe('rock paper scissors', () => {
     expect(state.players['2'].score).toBe(1);
   });
 
-  it('scissors cut paper', () => {
+  test('scissors cut paper', () => {
     let state = getInitialState(['1', '2']);
     state = getNextState(state, '1', ROCK);
     state = getNextState(state, '2', PAPER);
@@ -71,7 +71,7 @@ describe('rock paper scissors', () => {
     expect(state.players['2'].score).toBe(1);
   });
 
-  it('game ends when a player reaches required score', () => {
+  test('game ends when a player reaches required score', () => {
     let state = getInitialState(['1', '2']);
     const options = { firstTo: 1 };
     state = getNextState(state, '1', ROCK);
@@ -82,7 +82,7 @@ describe('rock paper scissors', () => {
   });
 
   describe('as viewed by players', () => {
-    it('hides actions by other players', () => {
+    test('hides actions by other players', () => {
       let state = getInitialState(['1', '2']);
       state = getNextState(state, '1', ROCK);
 
@@ -91,7 +91,7 @@ describe('rock paper scissors', () => {
       expect(viewedState.players['2'].action).toBe(undefined);
     });
 
-    it('lets users see their own actions', () => {
+    test('lets users see their own actions', () => {
       let state = getInitialState(['1', '2']);
       state = getNextState(state, '1', ROCK);
 

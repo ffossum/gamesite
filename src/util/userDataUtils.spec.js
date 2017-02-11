@@ -12,7 +12,7 @@ describe('getPublicUserData', () => {
     password: 'super secret',
   };
 
-  it('strips away non-public data from user object', () => {
+  test('strips away non-public data from user object', () => {
     const publicData = getPublicUserData(user);
     expect(publicData).toEqual({
       username: 'asdf',
@@ -21,7 +21,7 @@ describe('getPublicUserData', () => {
     });
   });
 
-  it('does not mutate the original object', () => {
+  test('does not mutate the original object', () => {
     getPublicUserData(user);
     expect(user).toEqual({
       username: 'asdf',

@@ -7,12 +7,12 @@ import { GET_USER_DATA_SUCCESS } from 'actions/userData';
 import { size } from 'lodash/fp';
 
 describe('data/users reducer', () => {
-  it('initializes to empty map', () => {
+  test('initializes to empty map', () => {
     const initialState = usersReducer(undefined, { type: '@@INIT' });
     expect(initialState).toEqual({});
   });
 
-  it('adds user info on login', () => {
+  test('adds user info on login', () => {
     const action = logInSuccess({
       id: '12345',
       username: 'Jack',
@@ -23,7 +23,7 @@ describe('data/users reducer', () => {
     expect(state['12345'].username).toBe('Jack');
   });
 
-  it('adds user data after fetching', () => {
+  test('adds user data after fetching', () => {
     const action = {
       type: GET_USER_DATA_SUCCESS,
       payload: {

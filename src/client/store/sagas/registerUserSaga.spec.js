@@ -10,7 +10,7 @@ import {
   registerUser,
 } from 'actions/registerUser';
 describe('register user saga', () => {
-  it('yields an error if password and repeated password do not match', () => {
+  test('yields an error if password and repeated password do not match', () => {
     const action = registerUser({
       email: 'asdf@asdf.com',
       username: 'asdf',
@@ -25,7 +25,7 @@ describe('register user saga', () => {
       }))
     );
   });
-  it('yields and error if an invalid email is entered', () => {
+  test('yields and error if an invalid email is entered', () => {
     const action = registerUser({
       email: 'asdf@asdf',
       username: 'asdf',
@@ -40,7 +40,7 @@ describe('register user saga', () => {
       }))
     );
   });
-  it('performs a POST if entered data is valid', () => {
+  test('performs a POST if entered data is valid', () => {
     const action = registerUser({
       email: 'asdf@asdf.com',
       username: 'asdf',
@@ -66,7 +66,7 @@ describe('register user saga', () => {
       })
     );
   });
-  it('reloads the page if registration is successful', () => {
+  test('reloads the page if registration is successful', () => {
     const action = registerUser({
       email: 'asdf@asdf.com',
       username: 'asdf',

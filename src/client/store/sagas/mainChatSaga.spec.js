@@ -8,7 +8,7 @@ import { userIdSelector } from 'selectors/commonSelectors';
 import socket from 'client/socket';
 
 describe('main chat saga', () => {
-  it('publishes message to socket if user is logged in', () => {
+  test('publishes message to socket if user is logged in', () => {
     const action = sendMessage('message text');
     const generator = sendMessageSaga(action);
     expect(generator.next().value).toEqual(
@@ -23,7 +23,7 @@ describe('main chat saga', () => {
     );
   });
 
-  it('does not publish message if user is not logged in', () => {
+  test('does not publish message if user is not logged in', () => {
     const action = sendMessage('message text');
     const generator = sendMessageSaga(action);
     expect(generator.next().value).toEqual(
@@ -33,7 +33,7 @@ describe('main chat saga', () => {
     expect(generator.next(null).value).toBeUndefined();
   });
 
-  it('dispatches action to fetch user data when it receives message', () => {
+  test('dispatches action to fetch user data when it receives message', () => {
     const action = newMessage({
       user: { id: 'user id' },
       text: 'message text',
