@@ -1,3 +1,4 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -12,21 +13,16 @@ import { uniqueId } from 'util/uniqueId';
 import styles from './form.css';
 
 class LoginForm extends React.Component {
+  state: {
+    username: string,
+    password: string,
+  }
   constructor(props) {
     super(props);
     this.state = {
       username: props.formState.username,
       password: props.formState.password,
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleUsernameChange = this.handleChange.bind(this, 'username');
-    this.handleUsernameBlur = this.handleBlur.bind(this, 'username');
-    this.handlePasswordChange = this.handleChange.bind(this, 'password');
-    this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
-    this.handleRememberMeChange = this.handleCheckboxChange.bind(this, 'remember');
-    this.handleRegisterClicked = this.handleModalLinkClicked.bind(this, REGISTER_MODAL);
-    this.handleResetClicked = this.handleModalLinkClicked.bind(this, REQUEST_PASSWORD_RESET_MODAL);
   }
   componentWillReceiveProps(nextProps) {
     const { username, password } = nextProps.formState;
@@ -35,6 +31,14 @@ class LoginForm extends React.Component {
       password,
     });
   }
+  handleSubmit = this.handleSubmit.bind(this);
+  handleUsernameChange = this.handleChange.bind(this, 'username');
+  handleUsernameBlur = this.handleBlur.bind(this, 'username');
+  handlePasswordChange = this.handleChange.bind(this, 'password');
+  handlePasswordBlur = this.handleBlur.bind(this, 'password');
+  handleRememberMeChange = this.handleCheckboxChange.bind(this, 'remember');
+  handleRegisterClicked = this.handleModalLinkClicked.bind(this, REGISTER_MODAL);
+  handleResetClicked = this.handleModalLinkClicked.bind(this, REQUEST_PASSWORD_RESET_MODAL);
   handleSubmit(e) {
     e.preventDefault();
     const { logIn, formState } = this.props;
@@ -135,5 +139,5 @@ export default connect(
     formState: get(['forms', 'login'], state),
     sessionUserId: get(['session', 'userId'], state),
   }),
-  dispatch => bindActionCreators({ ...actions, ...modalActions }, dispatch),
+  (dispatch: Dispatch<*>) => bindActionCreators({ ...actions, ...modalActions }, dispatch),
 )(LoginForm);

@@ -1,3 +1,4 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,16 +11,20 @@ import errorTypes from 'constants/errorType';
 import styles from './form.css';
 
 class ResetPasswordForm extends React.Component {
+  state: {
+    password: string,
+    repeatPassword: string,
+  }
   constructor() {
     super();
     this.state = {
       password: '',
       repeatPassword: '',
     };
-    this.handlePasswordChange = this.handleChange.bind(this, 'password');
-    this.handleRepeatPasswordChange = this.handleChange.bind(this, 'repeatPassword');
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
+  handlePasswordChange = this.handleChange.bind(this, 'password');
+  handleRepeatPasswordChange = this.handleChange.bind(this, 'repeatPassword');
+  handleSubmit = this.handleSubmit.bind(this);
   handleChange(field, e) {
     this.setState({
       [field]: e.target.value,
@@ -99,7 +104,7 @@ ResetPasswordForm.propTypes = {
 
 export default connect(
   state => state,
-  dispatch => bindActionCreators(actions, dispatch),
+  (dispatch: Dispatch<*>) => bindActionCreators(actions, dispatch),
   (stateProps, dispatchProps, ownProps) => ({
     ...stateProps,
     ...dispatchProps,

@@ -1,3 +1,4 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -13,6 +14,12 @@ import { uniqueId } from 'util/uniqueId';
 import styles from './form.css';
 
 class RegisterUserForm extends React.Component {
+  state: {
+    email: string,
+    username: string,
+    password: string,
+    repeatPassword: string,
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -21,18 +28,6 @@ class RegisterUserForm extends React.Component {
       password: props.formState.password,
       repeatPassword: props.formState.repeatPassword,
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleEmailChange = this.handleChange.bind(this, 'email');
-    this.handleEmailBlur = this.handleBlur.bind(this, 'email');
-    this.handleUsernameChange = this.handleChange.bind(this, 'username');
-    this.handleUsernameBlur = this.handleBlur.bind(this, 'username');
-    this.handlePasswordChange = this.handleChange.bind(this, 'password');
-    this.handlePasswordBlur = this.handleBlur.bind(this, 'password');
-    this.handleRepeatPasswordChange = this.handleChange.bind(this, 'repeatPassword');
-    this.handleRepeatPasswordBlur = this.handleBlur.bind(this, 'repeatPassword');
-    this.handleRememberMeChange = this.handleCheckboxChange.bind(this, 'remember');
-    this.openLoginModal = this.openLoginModal.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     const { email, username, password, repeatPassword } = nextProps.formState;
@@ -43,6 +38,17 @@ class RegisterUserForm extends React.Component {
       repeatPassword,
     });
   }
+  handleSubmit = this.handleSubmit.bind(this);
+  handleEmailChange = this.handleChange.bind(this, 'email');
+  handleEmailBlur = this.handleBlur.bind(this, 'email');
+  handleUsernameChange = this.handleChange.bind(this, 'username');
+  handleUsernameBlur = this.handleBlur.bind(this, 'username');
+  handlePasswordChange = this.handleChange.bind(this, 'password');
+  handlePasswordBlur = this.handleBlur.bind(this, 'password');
+  handleRepeatPasswordChange = this.handleChange.bind(this, 'repeatPassword');
+  handleRepeatPasswordBlur = this.handleBlur.bind(this, 'repeatPassword');
+  handleRememberMeChange = this.handleCheckboxChange.bind(this, 'remember');
+  openLoginModal = this.openLoginModal.bind(this);
   handleSubmit(e) {
     e.preventDefault();
     const { registerUser, formState } = this.props;
@@ -182,5 +188,5 @@ export default connect(
     formState: get(['forms', 'registerUser'], state),
     sessionUserId: get(['session', 'userId'], state),
   }),
-  dispatch => bindActionCreators({ ...actions, ...modalActions }, dispatch),
+  (dispatch: Dispatch<*>) => bindActionCreators({ ...actions, ...modalActions }, dispatch),
 )(RegisterUserForm);

@@ -1,3 +1,4 @@
+/* @flow */
 import { LOGIN_MODAL, REGISTER_MODAL } from 'constants/modalType';
 import modalActions from 'actions/modalActions';
 import forgotPasswordActions from 'actions/forgotPasswordActions';
@@ -11,20 +12,26 @@ import { get } from 'lodash';
 import styles from './form.css';
 
 class ForgotPasswordForm extends React.Component {
+  state: {
+    email: string,
+    submittedEmail: ?string,
+  }
   constructor() {
     super();
     this.state = {
       email: '',
       submittedEmail: null,
     };
-    this.handleRegisterClicked = this.handleModalLinkClicked.bind(this, REGISTER_MODAL);
-    this.handleLogInClicked = this.handleModalLinkClicked.bind(this, LOGIN_MODAL);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentWillUnmount() {
     this.props.clearForm();
   }
+
+  handleRegisterClicked = this.handleModalLinkClicked.bind(this, REGISTER_MODAL);
+  handleLogInClicked = this.handleModalLinkClicked.bind(this, LOGIN_MODAL);
+  handleEmailChange = this.handleEmailChange.bind(this);
+  handleSubmit = this.handleSubmit.bind(this);
+
   handleModalLinkClicked(modalType, e) {
     e.preventDefault();
     this.props.openModal(modalType);
@@ -99,5 +106,5 @@ ForgotPasswordForm.propTypes = {
 
 export default connect(
   state => get(state, ['forms', 'forgotPassword']),
-  dispatch => bindActionCreators({ ...forgotPasswordActions, ...modalActions }, dispatch),
+  (dispatch: Dispatch<*>) => bindActionCreators({ ...forgotPasswordActions, ...modalActions }, dispatch),
 )(ForgotPasswordForm);
