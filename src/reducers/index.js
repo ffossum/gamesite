@@ -1,7 +1,6 @@
 // @flow
 
 import { combineReducers } from 'redux';
-import { routerReducer as routing } from 'react-router-redux';
 import forms from './forms';
 import session from './session/sessionReducer';
 import data from './data/dataReducer';
@@ -15,7 +14,6 @@ import type { ModalState } from './modal/modalReducer';
 import type { MainChatState } from './mainChat/';
 
 export type State = {
-  routing: any,
   data: any,
   mainChat: MainChatState,
   forms: any,
@@ -24,7 +22,6 @@ export type State = {
 }
 
 const reducer: Reducer<State, Action> = combineReducers({
-  routing,
   data,
   mainChat,
   forms,

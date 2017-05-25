@@ -5,9 +5,6 @@ import {
   browserHistory,
   match,
 } from 'react-router';
-import {
-  syncHistoryWithStore,
-} from 'react-router-redux';
 import routes from '../routes/';
 import {
   Provider,
@@ -19,8 +16,6 @@ import './client.css';
 
 match({ history: browserHistory, routes }, (error, redirectLocation, renderProps) => {
   socket.init(store);
-
-  const history = syncHistoryWithStore(browserHistory, store);
 
   ReactDOM.render(
     <Provider store={store}>
