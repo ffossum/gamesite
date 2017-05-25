@@ -17,7 +17,6 @@
 }
 
 .backdrop {
-  animation-duration: 150ms;
   filter: blur(2px);
 }
 
@@ -31,36 +30,4 @@
   border-radius: 3px;
   box-shadow: var(--box-shadow);
   background-color: white;
-}
-
-:global(.modal-enter) {
-  opacity: 0.01;
-  & .modal {
-    transform: scale(0.75, 0.75);
-  }
-}
-
-:global(.modal-enter.modal-enter-active) {
-  opacity: 1;
-  transition: opacity 150ms ease-in;
-
-  & .modal {
-    transform: scale(1, 1);
-    transition: transform 150ms ease-in;
-  }
-}
-
-:global(.modal-leave) {
-  opacity: 1;
-  transform: scale(1, 1);
-}
-
-:global(.modal-leave.modal-leave-active) {
-  opacity: 0.01;
-  transition: opacity 150ms ease-in;
-
-  & .modal {
-    transform: scale(0.75, 0.75);
-    transition: transform 150ms ease-in;
-  }
 }

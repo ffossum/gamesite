@@ -47,7 +47,6 @@ module.exports = {
     "moment": "moment",
     "react": "React",
     "react-dom": "ReactDOM",
-    "react-addons-css-transition-group": "React.addons.CSSTransitionGroup",
   },
   resolve: {
     modulesDirectories: [

@@ -1,3 +1,4 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -8,7 +9,6 @@ import RegisterUserForm from './forms/RegisterUserForm';
 import ForgotPasswordForm from './forms/ForgotPasswordForm';
 import UserSettingsContainer from './UserSettingsContainer';
 import modalActions from 'actions/modalActions';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import {
   LOGIN_MODAL,
@@ -31,6 +31,11 @@ function getModalContent(modalType) {
 }
 
 class Root extends React.Component {
+  props: {
+    modal?: string,
+    children?: any,
+    closeModal: Function,
+  }
   render() {
     const { modal, closeModal } = this.props;
 
@@ -42,31 +47,19 @@ class Root extends React.Component {
             {this.props.children}
           </main>
         </div>
-        <ReactCSSTransitionGroup
-          transitionName="modal"
-          transitionEnterTimeout={150}
-          transitionLeaveTimeout={150}
-        >
-          {
-            modal &&
-              <Modal key={modal} onClose={closeModal}>
-                {getModalContent(modal)}
-              </Modal>
-          }
-        </ReactCSSTransitionGroup>
+        {
+          modal &&
+            <Modal key={modal} onClose={closeModal}>
+              {getModalContent(modal)}
+            </Modal>
+        }
       </div>
     );
   }
 }
 
-Root.propTypes = {
-  modal: PropTypes.string,
-  children: PropTypes.node,
-  closeModal: PropTypes.func.isRequired,
-};
-
 export default connect(
   state => ({ modal: state.modal }),
-  dispatch => bindActionCreators(modalActions, dispatch)
+  (dispatch: Dispatch<*>) => bindActionCreators(modalActions, dispatch)
 )(Root);
 
