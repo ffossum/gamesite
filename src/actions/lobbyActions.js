@@ -113,24 +113,12 @@ type CreateGameSuccessAction = {
   payload: {
     game: Game,
   },
-  meta: {
-    history: {
-      method: 'push',
-      args: string[],
-    }
-  }
 }
 export function createGameSuccess(game: Game): Action {
   return {
     type: CREATE_GAME_SUCCESS,
     payload: {
       game,
-    },
-    meta: {
-      history: {
-        method: 'push',
-        args: [`/game/${game.id}`],
-      },
     },
   };
 }

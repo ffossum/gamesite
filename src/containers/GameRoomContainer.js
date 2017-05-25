@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+/* @flow */
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -11,13 +11,26 @@ import {
 
 import { gameRoomSelector } from 'selectors';
 
+type Props = {
+  match: {
+    params: { id: string },
+  },
+  user: Object,
+  game: Object,
+  joinGame: Function,
+  leaveGame: Function,
+  enterRoom: Function,
+  leaveRoom: Function,
+  sendGameMessage: Function,
+}
 class GameRoomContainer extends React.Component {
+  props: Props;
   componentDidMount() {
-    this.props.enterRoom(this.props.params.id);
+    this.props.enterRoom(this.props.match.params.id);
   }
   componentWillReceiveProps(nextProps) {
-    const previousGameId = this.props.params.id;
-    const newGameId = nextProps.params.id;
+    const previousGameId = this.props.match.params.id;
+    const newGameId = nextProps.match.params.id;
 
     if (previousGameId !== newGameId) {
       this.props.leaveRoom(previousGameId);
@@ -25,7 +38,7 @@ class GameRoomContainer extends React.Component {
     }
   }
   componentWillUnmount() {
-    this.props.leaveRoom(this.props.params.id);
+    this.props.leaveRoom(this.props.match.params.id);
   }
   render() {
     const { game } = this.props;
@@ -41,19 +54,6 @@ class GameRoomContainer extends React.Component {
   }
 }
 
-GameRoomContainer.propTypes = {
-  params: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }).isRequired,
-  user: PropTypes.object,
-  game: PropTypes.object,
-  joinGame: PropTypes.func.isRequired,
-  leaveGame: PropTypes.func.isRequired,
-  enterRoom: PropTypes.func.isRequired,
-  leaveRoom: PropTypes.func.isRequired,
-  sendGameMessage: PropTypes.func.isRequired,
-};
-
 const actions = {
   ...gameRoomActions,
   ...gameChatActions,
@@ -61,5 +61,5 @@ const actions = {
 
 export default connect(
   gameRoomSelector,
-  dispatch => bindActionCreators(actions, dispatch)
+  (dispatch: Dispatch<*>) => bindActionCreators(actions, dispatch)
 )(GameRoomContainer);

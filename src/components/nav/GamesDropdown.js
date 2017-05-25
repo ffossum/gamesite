@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Dropdown, { CloseDropdown } from 'components/common/dropdown/';
 import Gravatar from 'components/common/Gravatar';
 import gameStatusText from 'constants/gameStatusText';

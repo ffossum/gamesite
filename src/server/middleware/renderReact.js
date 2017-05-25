@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { match, RouterContext } from 'react-router';
+import { StaticRouter } from 'react-router';
 import { logInSuccess } from 'actions/loginActions';
 import { getUserDataSuccess } from 'actions/userDataActions';
 import { resetMessages } from 'actions/mainChatActions';
@@ -15,7 +15,7 @@ import { getUsersByIds } from '../db/users';
 import { getLobbyGames, getUserGames } from '../db/games';
 import { flatten, flow, isEmpty, keyBy, map, uniq } from 'lodash/fp';
 import resetPasswordReducer from '../../reducers/resetPasswordReducer';
-import resetPasswordRoutes from '../../routes/resetPasswordRoutes';
+import ResetPasswordRoutes from '../../routes/resetPasswordRoutes';
 import resetPasswordTemplate from '../views/resetPasswordTemplate';
 
 import type { Context } from 'koa';
@@ -29,7 +29,7 @@ type PassportContext = Context & {
 const messageCache = getMessageCacheInstance();
 
 let reducer = require('../../reducers').default;
-let appRoutes = require('../../routes').default;
+let AppRoutes = require('../../routes').default;
 let template = require('../views/template').default;
 
 if (module.hot) {
@@ -37,22 +37,10 @@ if (module.hot) {
     reducer = require('../../reducers').default;
   });
   module.hot.accept('../../routes', () => {
-    appRoutes = require('../../routes').default;
+    AppRoutes = require('../../routes').default;
   });
   module.hot.accept('../views/template', () => {
     template = require('../views/template').default;
-  });
-}
-
-function matchRoutes(routes, location) {
-  return new Promise((resolve, reject) => {
-    match({ routes, location }, (error, redirectLocation, renderProps) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve({ redirectLocation, renderProps });
-      }
-    });
   });
 }
 
@@ -95,36 +83,39 @@ export async function initializeReduxStore(ctx: PassportContext, next: () => Pro
 }
 
 export async function renderReact(ctx: Context, next: () => Promise<void>) {
-  const { renderProps } = await matchRoutes(appRoutes, ctx.url);
-  if (renderProps) {
-    const { store } = ctx.state;
+  const { store } = ctx.state;
 
-    resetCounter();
-    const reactString = renderToString(
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>
-    );
+  const routerContext = {};
 
-    ctx.body = template({
-      reactString,
-      initialState: JSON.stringify(store.getState()),
-    });
-  }
+  resetCounter();
+  const reactString = renderToString(
+    <Provider store={store}>
+      <StaticRouter location={ctx.url} context={routerContext}>
+        <AppRoutes />
+      </StaticRouter>
+    </Provider>
+  );
+
+  ctx.body = template({
+    reactString,
+    initialState: JSON.stringify(store.getState()),
+  });
+
   await next();
 }
 
 export async function renderResetPasswordPage(ctx: Context) {
-  const { renderProps } = await matchRoutes(resetPasswordRoutes, ctx.url);
-  if (renderProps) {
-    const store = createStore(resetPasswordReducer);
-    resetCounter();
-    const reactString = renderToString(
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>
-    );
+  const store = createStore(resetPasswordReducer);
+  const routerContext = {};
 
-    ctx.body = resetPasswordTemplate({ reactString });
-  }
+  resetCounter();
+  const reactString = renderToString(
+    <Provider store={store}>
+      <StaticRouter location={ctx.url} context={routerContext}>
+        <ResetPasswordRoutes />
+      </StaticRouter>
+    </Provider>
+  );
+
+  ctx.body = resetPasswordTemplate({ reactString });
 }

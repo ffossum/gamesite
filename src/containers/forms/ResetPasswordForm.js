@@ -6,8 +6,8 @@ import { bindActionCreators } from 'redux';
 import TextInput from 'components/common/TextInput';
 import Button from 'components/common/Button';
 import actions from 'actions/resetPasswordActions';
-import { get } from 'lodash/fp';
 import errorTypes from 'constants/errorType';
+import queryString from 'query-string';
 
 import styles from './form.css';
 
@@ -101,7 +101,18 @@ ResetPasswordForm.propTypes = {
   pending: PropTypes.bool.isRequired,
   success: PropTypes.bool.isRequired,
   errors: PropTypes.objectOf(PropTypes.string).isRequired,
+  location: PropTypes.object,
 };
+
+function getQueryParams(ownProps) {
+  const { location = {} } = ownProps;
+  const { id: userId, token } = queryString.parse(location.search);
+
+  return {
+    userId,
+    token,
+  };
+}
 
 export default connect(
   state => state,
@@ -109,8 +120,7 @@ export default connect(
   (stateProps, dispatchProps, ownProps) => ({
     ...stateProps,
     ...dispatchProps,
-    userId: get('location.query.id', ownProps),
-    token: get('location.query.token', ownProps),
+    ...getQueryParams(ownProps),
   }),
 )(ResetPasswordForm);
 

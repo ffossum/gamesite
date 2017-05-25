@@ -47,7 +47,7 @@ export const navSelector = createSelector(
 );
 
 export const gameRoomSelector = createSelector(
-  (state, props) => gameByIdSelector(state, get(['params', 'id'], props)),
+  (state, props) => gameByIdSelector(state, get('match.params.id', props)),
   userDataSelector,
   userSelector,
   (game, userData, user) => {

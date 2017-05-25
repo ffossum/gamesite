@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { IndexLink, Link } from 'react-router';
+import { Link, NavLink } from 'react-router-dom';
 import GamesDropdown from './GamesDropdown';
 import UserDropdown from './UserDropdown';
 import {
@@ -31,24 +31,24 @@ export default class Nav extends React.Component {
       <nav className={styles.navbar}>
         <ul className={styles.navgroup}>
           <li>
-            <IndexLink
+            <Link
               to="/"
               className={styles.navlink}
-            >Main</IndexLink>
+            >Main</Link>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/play"
               activeClassName={styles.active}
               className={styles.navlink}
-            >Play</Link>
+            >Play</NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/about"
               activeClassName={styles.active}
               className={styles.navlink}
-            >About</Link>
+            >About</NavLink>
           </li>
         </ul>
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  Router,
-  browserHistory,
-  match,
-} from 'react-router';
-import routes from '../routes/';
+  BrowserRouter as Router,
+} from 'react-router-dom';
+
+import Routes from '../routes/';
 import {
   Provider,
 } from 'react-redux';
@@ -14,15 +13,13 @@ import socket from './socket/';
 
 import './client.css';
 
-match({ history: browserHistory, routes }, (error, redirectLocation, renderProps) => {
-  socket.init(store);
+socket.init(store);
 
-  ReactDOM.render(
-    <Provider store={store}>
-      <Router history={history} {...renderProps} >
-        {routes}
-      </Router>
-    </Provider>,
-    document.getElementById('root')
-  );
-});
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>
+      <Routes />
+    </Router>
+  </Provider>,
+  document.getElementById('root')
+);

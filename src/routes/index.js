@@ -4,47 +4,33 @@ if (typeof require.ensure !== 'function') {
 }
 
 import React from 'react';
-import { IndexRoute, Route } from 'react-router';
+import {
+  Route,
+  Switch,
+} from 'react-router-dom';
 import Root from 'containers/RootContainer';
 
-function getMainPage(location, cb) {
-  require.ensure([], require => {
-    cb(null, require('containers/MainPageContainer').default);
-  });
-}
+import MainPage from 'containers/MainPageContainer';
+import Play from 'containers/PlayContainer';
+import About from 'components/About';
+import CreateGame from 'containers/CreateGameContainer';
+import GameRoom from 'containers/GameRoomContainer';
 
-function getPlay(location, cb) {
-  require.ensure([], require => {
-    cb(null, require('containers/PlayContainer').default);
-  });
-}
+export default function Routes() {
+  return (
+    <Root>
+      <Switch>
+        <Route exact path="/" component={MainPage} />
+        <Route path="/play" render={() => (
+          <Play>
+            <Route exact path="/play/create" component={CreateGame} />
+          </Play>
+        )} />
+        <Route path="/game/:id" component={GameRoom} />
+        <Route path="/about" component={About} />
 
-function getAbout(location, cb) {
-  require.ensure([], require => {
-    cb(null, require('components/About').default);
-  });
+        <Route component={About} />
+      </Switch>
+    </Root>
+  );
 }
-
-function getCreateGame(location, cb) {
-  require.ensure([], require => {
-    cb(null, require('containers/CreateGameContainer').default);
-  });
-}
-
-function getGameRoom(location, cb) {
-  require.ensure([], require => {
-    cb(null, require('containers/GameRoomContainer').default);
-  });
-}
-
-export default (
-  <Route path="/" component={Root}>
-    <IndexRoute getComponent={getMainPage} />
-    <Route path="play" getComponent={getPlay}>
-      <Route path="create" getComponent={getCreateGame} />
-    </Route>
-    <Route path="game/:id" getComponent={getGameRoom} />
-    <Route path="about" getComponent={getAbout} />
-    <Route path="*" getComponent={getAbout} />
-  </Route>
-);

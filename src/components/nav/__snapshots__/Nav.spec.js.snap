@@ -4,31 +4,28 @@ exports[`Nav renders correctly 1`] = `
   <ul
     className="navgroup">
     <li>
-      <IndexLink
+      <Link
         className="navlink"
+        replace={false}
         to="/">
         Main
-      </IndexLink>
+      </Link>
     </li>
     <li>
-      <Link
+      <NavLink
         activeClassName="active"
         className="navlink"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/play">
         Play
-      </Link>
+      </NavLink>
     </li>
     <li>
-      <Link
+      <NavLink
         activeClassName="active"
         className="navlink"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/about">
         About
-      </Link>
+      </NavLink>
     </li>
   </ul>
   <ul
