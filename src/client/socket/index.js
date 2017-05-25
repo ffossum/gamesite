@@ -63,10 +63,8 @@ function init(store) {
     }
     const state = currentStore.getState();
     const userId = userIdSelector(state);
-    // TODO use jwt cookie to send user data
-    currentDeepstream = deepstream(`${host}/deepstream`).login({
-      id: userId,
-    }, () => {
+
+    currentDeepstream = deepstream(`${host}/deepstream`).login({}, () => {
       subscribe('mainchat');
       if (userId) {
         subscribe(getUserChannelName(userId));
