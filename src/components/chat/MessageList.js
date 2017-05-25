@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Message from './Message';
 import InfoMessage from './InfoMessage';
 import groupAdjacentBy from 'util/groupAdjacentBy';

@@ -2,7 +2,8 @@
 import { LOGIN_MODAL, REGISTER_MODAL } from 'constants/modalType';
 import modalActions from 'actions/modalActions';
 import forgotPasswordActions from 'actions/forgotPasswordActions';
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import TextInput from 'components/common/TextInput';
 import Button from 'components/common/Button';
 import { bindActionCreators } from 'redux';

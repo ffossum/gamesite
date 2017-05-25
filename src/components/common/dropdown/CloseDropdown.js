@@ -1,4 +1,5 @@
-import { cloneElement, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import { cloneElement } from 'react';
 
 export default function CloseDropdown(props, context) {
   return cloneElement(props.children, {

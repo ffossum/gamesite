@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import TextInput from 'components/common/TextInput';
 import Button from 'components/common/Button';
 import { isEmpty } from 'lodash/fp';

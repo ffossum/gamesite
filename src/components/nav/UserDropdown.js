@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Dropdown, { CloseDropdown } from 'components/common/dropdown/';
 import Gravatar from 'components/common/Gravatar';
 

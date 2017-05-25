@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { map, zip } from 'lodash/fp';
 import Hand from './hands/Hand';
 import Gravatar from 'components/common/Gravatar';

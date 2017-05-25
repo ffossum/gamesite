@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import AccountSettings from './account/AccountSettings';
 import LocaleSettings from './locale/LocaleSettings';
 import classnames from 'classnames';

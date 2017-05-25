@@ -1,6 +1,6 @@
 // @flow
-
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { isFunction } from 'lodash/fp';
 import Incrementer from 'components/common/incrementer/Incrementer';
 import formStyles from 'containers/forms/form.css';

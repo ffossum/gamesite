@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Chat from 'components/chat/Chat';
 import Gravatar from 'components/common/Gravatar';
 import { includes, map, maxBy, toArray } from 'lodash/fp';

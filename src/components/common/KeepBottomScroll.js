@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { findDOMNode } from 'react-dom';
 
 export default class KeepBottomScroll extends React.Component {

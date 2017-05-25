@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import DownArrow from './DownArrow';
 import classnames from 'classnames';
 import onClickOutside from 'react-onclickoutside';

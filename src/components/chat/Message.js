@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Gravatar from 'components/common/Gravatar';
 import getTimestamp from 'util/getTimestamp';
 import styles from './message.css';

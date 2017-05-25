@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Button from 'components/common/Button';
 import { isNumber } from 'lodash/fp';
 import styles from './incrementer.css';
