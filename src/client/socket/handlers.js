@@ -2,7 +2,7 @@
 import {
   SEND_MESSAGE,
   newMessage,
-} from 'actions/mainChat';
+} from 'actions/mainChatActions';
 import {
   GAME_CREATED, gameCreated,
   UPDATE_GAME, updateGame,
@@ -13,14 +13,14 @@ import {
   GAME_STARTED, gameStarted,
   GAME_ENDED, gameEnded,
   GAME_CANCELED, gameCanceled,
-} from 'actions/gameRoom';
+} from 'actions/gameRoomActions';
 import {
   newGameMessage,
   SEND_GAME_MESSAGE,
-} from 'actions/gameChat';
+} from 'actions/gameChatActions';
 import {
   NEW_ACTION, newAction,
-} from 'actions/game';
+} from 'actions/gameActions';
 
 import type { Store } from '../store';
 

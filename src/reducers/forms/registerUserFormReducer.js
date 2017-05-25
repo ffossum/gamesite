@@ -5,7 +5,7 @@ import {
   UPDATE_FORM,
   REGISTER_USER_FAILURE,
   REGISTER_USER_REQUEST,
-} from 'actions/registerUser';
+} from 'actions/registerUserActions';
 
 type RegisterUserFormState = {
   errors: any,

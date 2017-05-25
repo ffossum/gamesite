@@ -1,15 +1,9 @@
-// @flow
-type LoginRequestType = 'login: request';
-type LoginSuccessType = 'login: success';
-type LoginFailureType = 'login: failure';
-type LogoutType = 'logout';
-type UpdateFormType = 'login: update form';
-
-export const LOG_IN_REQUEST: LoginRequestType = 'login: request';
-export const LOG_IN_SUCCESS: LoginSuccessType = 'login: success';
-export const LOG_IN_FAILURE: LoginFailureType = 'login: failure';
-export const LOG_OUT: LogoutType = 'logout';
-export const UPDATE_FORM: UpdateFormType = 'login: update form';
+/* @flow */
+export const LOG_IN_REQUEST = 'login: request';
+export const LOG_IN_SUCCESS = 'login: success';
+export const LOG_IN_FAILURE = 'login: failure';
+export const LOG_OUT = 'logout';
+export const UPDATE_FORM = 'login: update form';
 
 type LogInFormValues = {
   username: string,
@@ -25,25 +19,25 @@ type OwnUserData = {
 }
 
 type UpdateLoginFormAction = {
-  type: UpdateFormType,
+  type: 'login: update form',
   payload: {
     values: LogInFormValues,
   }
 }
 type LogInSuccessAction = {
-  type: LoginSuccessType,
+  type: 'login: success',
   payload: {
     user: OwnUserData,
   }
 }
 type LogInFailureAction = {
-  type: LoginFailureType,
+  type: 'login: failure',
 }
 type LogOutAction = {
-  type: LogoutType,
+  type: 'logout',
 }
 type LogInRequestAction = {
-  type: LoginRequestType,
+  type: 'login: request',
   payload: LogInFormValues,
 }
 export type LoginAction =

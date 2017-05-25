@@ -14,16 +14,16 @@ import {
   GAME_NOT_FOUND,
   GAME_ENDED,
   GAME_CANCELED,
-} from 'actions/gameRoom';
+} from 'actions/gameRoomActions';
 import {
   NEW_GAME_MESSAGE,
   CLEAR_CHAT,
-} from 'actions/gameChat';
+} from 'actions/gameChatActions';
 import {
   PERFORM_ACTION,
   NEW_ACTION,
   ACTION_REJECTED,
-} from 'actions/game';
+} from 'actions/gameActions';
 import {
   mapValues,
 } from 'lodash/fp';

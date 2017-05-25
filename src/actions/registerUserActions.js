@@ -1,12 +1,9 @@
-// @flow
+/* @flow */
 import type { Action } from './types';
-type UpdateFormType = 'register user: update form';
-type RegisterRequestType = 'register user: request';
-type RegisterFailureType = 'register user: failure';
 
-export const UPDATE_FORM: UpdateFormType = 'register user: update form';
-export const REGISTER_USER_REQUEST: RegisterRequestType = 'register user: request';
-export const REGISTER_USER_FAILURE: RegisterFailureType = 'register user: failure';
+export const UPDATE_FORM = 'register user: update form';
+export const REGISTER_USER_REQUEST = 'register user: request';
+export const REGISTER_USER_FAILURE = 'register user: failure';
 
 type RegisterUserFormValues = {
   email: string,
@@ -25,17 +22,17 @@ type UpdateFormValues = {
 }
 
 type UpdateFormAction = {
-  type: UpdateFormType,
+  type: 'register user: update form',
   payload: {
     values: UpdateFormValues,
   }
 }
 type RegisterRequestAction = {
-  type: RegisterRequestType,
+  type: 'register user: request',
   payload: RegisterUserFormValues,
 }
 type RegisterFailureAction = {
-  type: RegisterFailureType,
+  type: 'register user: failure',
   payload: {
     errors: any,
   }

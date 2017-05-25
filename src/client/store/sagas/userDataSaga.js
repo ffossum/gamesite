@@ -7,7 +7,7 @@ import {
 } from 'lodash/fp';
 import { userDataSelector } from 'selectors/commonSelectors';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
-import { GET_USER_DATA_REQUEST, getUserDataSuccess } from 'actions/userData';
+import { GET_USER_DATA_REQUEST, getUserDataSuccess } from 'actions/userDataActions';
 
 import type { Action } from 'actions/types';
 

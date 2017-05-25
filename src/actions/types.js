@@ -1,13 +1,13 @@
 /* @flow */
-import type { ModalAction } from './modal';
-import type { RegisterUserAction } from './registerUser';
-import type { LoginAction } from './login';
-import type { MainChatAction } from './mainChat';
-import type { GameChatAction } from './gameChat';
+import type { ModalAction } from './modalActions';
+import type { RegisterUserAction } from './registerUserActions';
+import type { LoginAction } from './loginActions';
+import type { MainChatAction } from './mainChatActions';
+import type { GameChatAction } from './gameChatActions';
 import type { LobbyAction } from './lobbyActions';
-import type { GameRoomAction } from './gameRoom';
-import type { GameAction } from './game';
-import type { UserDataAction } from './userData';
+import type { GameRoomAction } from './gameRoomActions';
+import type { GameAction } from './gameActions';
+import type { UserDataAction } from './userDataActions';
 import type { ForgotPasswordAction } from './forgotPasswordActions';
 
 export type Action =

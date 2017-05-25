@@ -1,5 +1,5 @@
-import { LOG_IN_SUCCESS } from 'actions/login';
-import { GET_USER_DATA_SUCCESS } from 'actions/userData';
+import { LOG_IN_SUCCESS } from 'actions/loginActions';
+import { GET_USER_DATA_SUCCESS } from 'actions/userDataActions';
 
 const initialState = {};
 

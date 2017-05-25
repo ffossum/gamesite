@@ -3,23 +3,23 @@ import { get, memoize } from 'lodash/fp';
 import Deepstream, { constants as C } from 'deepstream.io';
 import {
   PERFORM_ACTION,
-} from 'actions/game';
+} from 'actions/gameActions';
 import {
   SEND_GAME_MESSAGE,
-} from 'actions/gameChat';
+} from 'actions/gameChatActions';
 import {
   ENTER_ROOM,
   JOIN_GAME,
   LEAVE_GAME,
   START_GAME,
   CANCEL_GAME,
-} from 'actions/gameRoom';
+} from 'actions/gameRoomActions';
 import {
   CREATE_GAME,
 } from 'actions/lobbyActions';
 import {
   SEND_MESSAGE,
-} from 'actions/mainChat';
+} from 'actions/mainChatActions';
 
 const convertTyped = memoize(Deepstream.prototype.convertTyped);
 

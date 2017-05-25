@@ -4,7 +4,7 @@ import reducer from './modalReducer';
 import {
   openModal,
   closeModal,
-} from 'actions/modal';
+} from 'actions/modalActions';
 import {
   LOGIN_MODAL,
 } from 'constants/modalType';

@@ -1,24 +1,14 @@
-// @flow
-type JoinLobbyType = 'lobby: join';
-type LeaveLobbyType = 'lobby: leave';
-type RefreshRequestType = 'lobby: refresh request';
-type RefreshSuccessType = 'lobby: refresh success';
+/* @flow */
+export const JOIN_LOBBY = 'lobby: join';
+export const LEAVE_LOBBY = 'lobby: leave';
+export const REFRESH_LOBBY_REQUEST = 'lobby: refresh request';
+export const REFRESH_LOBBY_SUCCESS = 'lobby: refresh success';
 
-export const JOIN_LOBBY: JoinLobbyType = 'lobby: join';
-export const LEAVE_LOBBY: LeaveLobbyType = 'lobby: leave';
-export const REFRESH_LOBBY_REQUEST: RefreshRequestType = 'lobby: refresh request';
-export const REFRESH_LOBBY_SUCCESS: RefreshSuccessType = 'lobby: refresh success';
-
-type CreateGameType = 'lobby: create game request';
-type CreateGameSuccessType = 'lobby: create game success';
-type GameCreatedType = 'lobby: game created';
-type UpdateGameType = 'lobby: update game';
-type GamesUpdatedType = 'lobby: games updated';
-export const CREATE_GAME: CreateGameType = 'lobby: create game request';
-export const CREATE_GAME_SUCCESS: CreateGameSuccessType =  'lobby: create game success';
-export const GAME_CREATED: GameCreatedType = 'lobby: game created';
-export const UPDATE_GAME: UpdateGameType = 'lobby: update game';
-export const GAMES_UPDATED: GamesUpdatedType = 'lobby: games updated';
+export const CREATE_GAME = 'lobby: create game request';
+export const CREATE_GAME_SUCCESS =  'lobby: create game success';
+export const GAME_CREATED = 'lobby: game created';
+export const UPDATE_GAME = 'lobby: update game';
+export const GAMES_UPDATED = 'lobby: games updated';
 
 import type { Action } from './types';
 import type { GameStatus } from 'constants/gameStatus';
@@ -34,7 +24,7 @@ type GameUpdates = {
 }
 
 type UpdateGameAction = {
-  type: UpdateGameType,
+  type: 'lobby: update game',
   payload: {
     game: GameUpdate,
   }
@@ -50,7 +40,7 @@ export function updateGame(game: GameUpdate): Action {
 }
 
 type GamesUpdatedAction = {
-  type: GamesUpdatedType,
+  type: 'lobby: games updated',
   payload: {
     games: GameUpdates,
   }
@@ -75,7 +65,7 @@ type RefreshLobbyData = {
   }
 }
 type RefreshLobbySuccessAction = {
-  type: RefreshSuccessType,
+  type: 'lobby: refresh success',
   payload: RefreshLobbyData,
 }
 export function refreshLobbySuccess({ games }: RefreshLobbyData): Action {
@@ -88,7 +78,7 @@ export function refreshLobbySuccess({ games }: RefreshLobbyData): Action {
 }
 
 type RefreshLobbyAction = {
-  type: RefreshRequestType,
+  type: 'lobby: refresh request',
   payload: RefreshLobbyData,
 }
 export function refreshLobby({ games }: RefreshLobbyData): Action {
@@ -101,7 +91,7 @@ export function refreshLobby({ games }: RefreshLobbyData): Action {
 }
 
 type JoinLobbyAction = {
-  type: JoinLobbyType,
+  type: 'lobby: join',
 }
 export function joinLobby(): Action {
   return {
@@ -110,7 +100,7 @@ export function joinLobby(): Action {
 }
 
 type LeaveLobbyAction = {
-  type: LeaveLobbyType,
+  type: 'lobby: leave',
 }
 export function leaveLobby(): Action {
   return {
@@ -119,7 +109,7 @@ export function leaveLobby(): Action {
 }
 
 type CreateGameSuccessAction = {
-  type: CreateGameSuccessType,
+  type: 'lobby: create game success',
   payload: {
     game: Game,
   },
@@ -151,7 +141,7 @@ type GameCreationData = {
   options: Object,
 }
 type CreateGameAction = {
-  type: CreateGameType,
+  type: 'lobby: create game request',
   payload: {
     game: GameCreationData,
   }
@@ -166,7 +156,7 @@ export function createGame(data: GameCreationData): Action {
 }
 
 type GameCreatedAction = {
-  type: GameCreatedType,
+  type: 'lobby: game created',
   payload: {
     game: Game,
   }

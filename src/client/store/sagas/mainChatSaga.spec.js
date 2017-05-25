@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint-env jest */
-import { sendMessage, newMessage } from 'actions/mainChat';
-import { getUserData } from 'actions/userData';
+import { sendMessage, newMessage } from 'actions/mainChatActions';
+import { getUserData } from 'actions/userDataActions';
 import { call, put, select } from 'redux-saga/effects';
 import { sendMessageSaga, newMessageSaga } from './mainChatSaga';
 import { userIdSelector } from 'selectors/commonSelectors';

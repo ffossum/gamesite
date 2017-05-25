@@ -1,13 +1,10 @@
 /* @flow */
-type PerformActionType = 'game/ACTION';
-type NewActionType = 'game/NEW_ACTION';
-type ActionRejectedType = 'game/ACTION_REJECTED';
-export const PERFORM_ACTION: PerformActionType = 'game/ACTION';
-export const NEW_ACTION: NewActionType = 'game/NEW_ACTION';
-export const ACTION_REJECTED: ActionRejectedType = 'game/ACTION_REJECTED';
+export const NEW_ACTION = 'game/NEW_ACTION';
+export const ACTION_REJECTED = 'game/ACTION_REJECTED';
+export const PERFORM_ACTION = 'game/ACTION';
 
 type NewActionAction = {
-  type: NewActionType,
+  type: 'game/NEW_ACTION',
   payload: {
     game: GameWithId,
     patch: Object[],
@@ -24,7 +21,7 @@ export function newAction(game: GameWithId, patch: Object[]): NewActionAction {
 }
 
 type ActionRejectedAction = {
-  type: ActionRejectedType,
+  type: 'game/ACTION_REJECTED',
   payload: {
     game: GameWithId,
   }
@@ -37,7 +34,7 @@ export function actionRejected(game: GameWithId): ActionRejectedAction {
 }
 
 type PerformActionAction = {
-  type: PerformActionType,
+  type: 'game/ACTION',
   payload: {
     action: any,
     game: GameWithId,

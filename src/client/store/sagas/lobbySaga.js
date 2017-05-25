@@ -1,4 +1,4 @@
-import { getUserData } from 'actions/userData';
+import { getUserData } from 'actions/userDataActions';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import {
   JOIN_LOBBY,

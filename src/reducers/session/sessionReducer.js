@@ -4,7 +4,7 @@ import type { Action } from 'actions/types';
 import {
   LOG_IN_SUCCESS,
   LOG_OUT,
-} from 'actions/login';
+} from 'actions/loginActions';
 
 export type Session = {
   userId: ?string,

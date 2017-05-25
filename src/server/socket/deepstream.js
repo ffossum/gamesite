@@ -3,7 +3,7 @@ import server from './deepstreamServer';
 import deepstreamClient from './deepstreamClient';
 import { getMessageCacheInstance } from './messageCache';
 import { once, forEach } from 'lodash/fp';
-import { SEND_MESSAGE } from 'actions/mainChat';
+import { SEND_MESSAGE } from 'actions/mainChatActions';
 import {
   JOIN_LOBBY,
   CREATE_GAME,
@@ -21,11 +21,11 @@ import {
   CANCEL_GAME,
   GAME_CANCELED,
   GAME_ENDED,
-} from 'actions/gameRoom';
+} from 'actions/gameRoomActions';
 import {
   PERFORM_ACTION,
   NEW_ACTION,
-} from 'actions/game';
+} from 'actions/gameActions';
 import {
   IN_PROGRESS,
   CANCELED,

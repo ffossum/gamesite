@@ -5,7 +5,7 @@ import {
   UPDATE_FORM,
   LOG_IN_REQUEST,
   LOG_IN_FAILURE,
- } from 'actions/login';
+ } from 'actions/loginActions';
 
 type LoginFormState = {
   pending: boolean,

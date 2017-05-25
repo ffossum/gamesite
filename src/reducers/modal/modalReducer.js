@@ -5,7 +5,7 @@ import type { Action } from 'actions/types';
 import {
   OPEN_MODAL,
   CLOSE_MODAL,
-} from 'actions/modal';
+} from 'actions/modalActions';
 
 export type ModalState = ModalType | null;
 

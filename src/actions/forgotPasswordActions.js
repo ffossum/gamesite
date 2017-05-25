@@ -1,17 +1,13 @@
 /* @flow */
-type RequestType = 'forgot/REQUEST';
-type SuccessType = 'forgot/SUCCESS';
-type FailureType = 'forgot/FAILURE';
-type ClearType = 'forgot/CLEAR';
-export const FORGOT_PASSWORD_REQUEST: RequestType = 'forgot/REQUEST';
-export const FORGOT_PASSWORD_SUCCESS: SuccessType = 'forgot/SUCCESS';
-export const FORGOT_PASSWORD_FAILURE: FailureType = 'forgot/FAILURE';
-export const FORGOT_PASSWORD_CLEAR: ClearType = 'forgot/CLEAR';
+export const FORGOT_PASSWORD_REQUEST = 'forgot/REQUEST';
+export const FORGOT_PASSWORD_SUCCESS = 'forgot/SUCCESS';
+export const FORGOT_PASSWORD_FAILURE = 'forgot/FAILURE';
+export const FORGOT_PASSWORD_CLEAR = 'forgot/CLEAR';
 
 import type { ErrorType } from 'constants/errorType';
 
 type RequestAction = {
-  type: RequestType,
+  type: 'forgot/REQUEST',
   payload: {
     email: string,
   }
@@ -26,7 +22,7 @@ export function forgotPassword(email: string): RequestAction {
 }
 
 type SuccessAction = {
-  type: SuccessType,
+  type: 'forgot/SUCCESS',
 }
 export function forgotPasswordSuccess(): SuccessAction {
   return {
@@ -35,7 +31,7 @@ export function forgotPasswordSuccess(): SuccessAction {
 }
 
 type FailureAction = {
-  type: FailureType,
+  type: 'forgot/FAILURE',
   payload: {
     errors: {
       [key: string]: ErrorType
@@ -52,7 +48,7 @@ export function forgotPasswordFailure(errors: { [key: string]: ErrorType }): Fai
 }
 
 type ClearAction = {
-  type: ClearType,
+  type: 'forgot/CLEAR',
 }
 export function clearForm(): ClearAction {
   return {

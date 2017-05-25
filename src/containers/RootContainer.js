@@ -7,7 +7,7 @@ import LoginForm from './forms/LoginForm';
 import RegisterUserForm from './forms/RegisterUserForm';
 import ForgotPasswordForm from './forms/ForgotPasswordForm';
 import UserSettingsContainer from './UserSettingsContainer';
-import modalActions from 'actions/modal';
+import modalActions from 'actions/modalActions';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import {

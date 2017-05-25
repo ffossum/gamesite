@@ -4,7 +4,7 @@ import reducer from './messagesReducer';
 import {
   newMessage,
   resetMessages,
-} from 'actions/mainChat';
+} from 'actions/mainChatActions';
 
 describe('main chat messages reducer', () => {
   test('inits as empty list', () => {

@@ -8,7 +8,7 @@ import { reloadPage } from 'client/util/clientUtils';
 import {
   registerUserFailure,
   registerUser,
-} from 'actions/registerUser';
+} from 'actions/registerUserActions';
 describe('register user saga', () => {
   test('yields an error if password and repeated password do not match', () => {
     const action = registerUser({

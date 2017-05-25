@@ -2,7 +2,7 @@
 /* eslint-env jest */
 import fetch from 'isomorphic-fetch';
 import { logInSaga, logOutSaga } from './loginSaga';
-import { logIn, logOut, logInFailure } from 'actions/login';
+import { logIn, logOut, logInFailure } from 'actions/loginActions';
 import { call, put } from 'redux-saga/effects';
 import { reloadPage } from 'client/util/clientUtils';
 

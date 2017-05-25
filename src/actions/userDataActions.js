@@ -1,6 +1,4 @@
 /* @flow */
-type GetUserDataRequestType = 'userData/REQUEST';
-type GetUserDataSuccessType = 'userData/SUCCESS';
 export const GET_USER_DATA_REQUEST = 'userData/REQUEST';
 export const GET_USER_DATA_SUCCESS = 'userData/SUCCESS';
 
@@ -8,7 +6,7 @@ type PublicUserDataObject = {
   [key: UserId]: PublicUserData,
 }
 type GetUserDataSuccessAction = {
-  type: GetUserDataSuccessType,
+  type: 'userData/SUCCESS',
   payload: {
     users: PublicUserDataObject,
   }
@@ -23,7 +21,7 @@ export function getUserDataSuccess(users: PublicUserDataObject): GetUserDataSucc
 }
 
 type GetUserDataRequestAction = {
-  type: GetUserDataRequestType,
+  type: 'userData/REQUEST',
   payload: UserId[],
 }
 export function getUserData(...userIds: UserId[]): GetUserDataRequestAction {

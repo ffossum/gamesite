@@ -1,6 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { userIdSelector } from 'selectors/commonSelectors';
-import { PERFORM_ACTION, actionRejected } from 'actions/game';
+import { PERFORM_ACTION, actionRejected } from 'actions/gameActions';
 import socket from 'client/socket';
 
 export function* performActionSaga(action) {

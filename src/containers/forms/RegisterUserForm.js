@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import actions from 'actions/registerUser';
+import actions from 'actions/registerUserActions';
 import errorTypes from 'constants/errorType';
-import modalActions from 'actions/modal';
+import modalActions from 'actions/modalActions';
 import { LOGIN_MODAL } from 'constants/modalType';
 import Button from 'components/common/Button';
 import TextInput from 'components/common/TextInput';

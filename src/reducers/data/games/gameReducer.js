@@ -2,7 +2,7 @@
 import {
   NEW_GAME_MESSAGE,
   CLEAR_CHAT,
-} from 'actions/gameChat';
+} from 'actions/gameChatActions';
 import {
   PLAYER_JOINED,
   PLAYER_LEFT,
@@ -11,7 +11,7 @@ import {
   GAME_ENDED,
   GAME_CANCELED,
   REFRESH_GAME,
-} from 'actions/gameRoom';
+} from 'actions/gameRoomActions';
 import {
   IN_PROGRESS,
   ENDED,
@@ -22,7 +22,7 @@ import {
   PERFORM_ACTION,
   NEW_ACTION,
   ACTION_REJECTED,
-} from 'actions/game';
+} from 'actions/gameActions';
 import {
   cloneDeep,
   union,

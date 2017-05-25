@@ -7,7 +7,7 @@ import errorTypes from 'constants/errorType';
 import {
   REGISTER_USER_REQUEST,
   registerUserFailure,
-} from 'actions/registerUser';
+} from 'actions/registerUserActions';
 
 export function* registerUserRequestSaga(action) {
   const {

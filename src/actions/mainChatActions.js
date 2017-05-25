@@ -1,24 +1,20 @@
-// @flow
+/* @flow */
 import type { Action } from 'actions/types';
 
-type SendMessageType = 'main chat: send message';
-type NewMessageType = 'main chat: new message';
-type ResetMessagesType = 'main chat: reset messages';
-
-export const SEND_MESSAGE: SendMessageType = 'main chat: send message';
-export const NEW_MESSAGE: NewMessageType = 'main chat: new message';
-export const RESET_MESSAGES: ResetMessagesType = 'main chat: reset messages';
+export const SEND_MESSAGE = 'main chat: send message';
+export const NEW_MESSAGE = 'main chat: new message';
+export const RESET_MESSAGES = 'main chat: reset messages';
 
 type NewMessageAction = {
-  type: NewMessageType,
+  type: 'main chat: new message',
   payload: UserMessage,
 }
 type SendMessageAction = {
-  type: SendMessageType,
+  type: 'main chat: send message',
   payload: { text: string },
 }
 type ResetMessagesAction = {
-  type: ResetMessagesType,
+  type: 'main chat: reset messages',
   payload: UserMessage[],
 }
 export type MainChatAction =

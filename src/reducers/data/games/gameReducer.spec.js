@@ -2,7 +2,7 @@
 import {
   PLAYER_JOINED, playerJoined,
   PLAYER_LEFT, playerLeft,
-} from 'actions/gameRoom';
+} from 'actions/gameRoomActions';
 import gameReducer from './gameReducer';
 
 describe('data/games/[gameId] reducer', () => {

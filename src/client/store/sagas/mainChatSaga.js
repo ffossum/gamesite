@@ -1,6 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
-import { getUserData } from 'actions/userData';
-import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChat';
+import { getUserData } from 'actions/userDataActions';
+import { SEND_MESSAGE, NEW_MESSAGE } from 'actions/mainChatActions';
 import socket from 'client/socket';
 import { userIdSelector } from 'selectors/commonSelectors';
 

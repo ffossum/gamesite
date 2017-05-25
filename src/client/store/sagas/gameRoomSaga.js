@@ -1,10 +1,10 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
-import { getUserData } from 'actions/userData';
+import { getUserData } from 'actions/userDataActions';
 import { gameByIdSelector, userIdSelector } from 'selectors/commonSelectors';
 import { includes } from 'lodash/fp';
 import socket from 'client/socket';
 import { getGameChannelName, getSpectatorChannelName } from 'util/channelUtils';
-import { clearChat } from 'actions/gameChat';
+import { clearChat } from 'actions/gameChatActions';
 
 import {
   REFRESH_GAME,
@@ -17,7 +17,7 @@ import {
   LEAVE_GAME,
   CANCEL_GAME,
   START_GAME,
-} from 'actions/gameRoom';
+} from 'actions/gameRoomActions';
 
 export function* refreshGameSaga(action) {
   const { game } = action.payload;

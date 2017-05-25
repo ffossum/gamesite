@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import gameRoomActions from 'actions/gameRoom';
-import gameChatActions from 'actions/gameChat';
+import gameRoomActions from 'actions/gameRoomActions';
+import gameChatActions from 'actions/gameChatActions';
 import GameRoom from 'components/gameRoom/GameRoom';
 import {
   CANCELED,

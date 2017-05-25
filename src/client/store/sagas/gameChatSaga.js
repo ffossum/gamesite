@@ -1,8 +1,8 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { getGameChannelName } from 'util/channelUtils';
-import { getUserData } from 'actions/userData';
+import { getUserData } from 'actions/userDataActions';
 import { userIdSelector } from 'selectors/commonSelectors';
-import { NEW_GAME_MESSAGE, SEND_GAME_MESSAGE } from 'actions/gameChat';
+import { NEW_GAME_MESSAGE, SEND_GAME_MESSAGE } from 'actions/gameChatActions';
 import socket from 'client/socket';
 
 export function* newGameMessageSaga(action) {

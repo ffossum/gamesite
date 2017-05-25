@@ -1,26 +1,23 @@
-// @flow
+/* @flow */
 import type { ModalType } from '../constants/modalType';
 import type { Action } from './types';
 
-type OpenModalActionType = 'modal: open';
-type CloseModalActionType = 'modal: close';
+export const OPEN_MODAL = 'modal: open';
+export const CLOSE_MODAL = 'modal: close';
 
 type OpenModalAction = {
-  type: OpenModalActionType,
+  type: 'modal: open',
   payload: {
     modalType: ModalType,
   }
 }
 type CloseModalAction = {
-  type: CloseModalActionType,
+  type: 'modal: close',
 }
 export type ModalAction =
   | OpenModalAction
   | CloseModalAction
   ;
-
-export const OPEN_MODAL: OpenModalActionType = 'modal: open';
-export const CLOSE_MODAL: CloseModalActionType = 'modal: close';
 
 export function openModal(modalType: ModalType): Action {
   return {

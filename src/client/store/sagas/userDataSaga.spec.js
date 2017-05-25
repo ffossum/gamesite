@@ -3,7 +3,7 @@
 import {
   getUserData,
   getUserDataSuccess,
-} from 'actions/userData';
+} from 'actions/userDataActions';
 import { createGetUserDataSaga } from './userDataSaga';
 import { userDataSelector } from 'selectors/commonSelectors';
 import { call, put, select } from 'redux-saga/effects';

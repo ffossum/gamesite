@@ -2,7 +2,7 @@
 import {
   NEW_MESSAGE,
   RESET_MESSAGES,
-} from 'actions/mainChat';
+} from 'actions/mainChatActions';
 import type { Action } from 'actions/types';
 
 export type MessagesState = UserMessage[];

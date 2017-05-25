@@ -1,5 +1,5 @@
 import { LOGIN_MODAL, REGISTER_MODAL } from 'constants/modalType';
-import modalActions from 'actions/modal';
+import modalActions from 'actions/modalActions';
 import forgotPasswordActions from 'actions/forgotPasswordActions';
 import React, { PropTypes } from 'react';
 import TextInput from 'components/common/TextInput';

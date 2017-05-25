@@ -1,7 +1,7 @@
 // @flow
 /* eslint-env jest */
 import sessionReducer from './sessionReducer';
-import { logInSuccess, logOut } from 'actions/login';
+import { logInSuccess, logOut } from 'actions/loginActions';
 
 describe('session reducer', () => {
   test('initializes userId to null', () => {

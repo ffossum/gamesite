@@ -15,7 +15,7 @@ import {
   createGameSuccess,
   gameCreated,
 } from 'actions/lobbyActions';
-import { getUserData } from 'actions/userData';
+import { getUserData } from 'actions/userDataActions';
 import { userIdSelector } from 'selectors/commonSelectors';
 import socket from 'client/socket';
 

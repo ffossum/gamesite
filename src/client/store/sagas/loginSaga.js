@@ -4,7 +4,7 @@ import {
   LOG_IN_REQUEST,
   logInFailure,
   LOG_OUT,
-} from 'actions/login';
+} from 'actions/loginActions';
 import { reloadPage } from 'client/util/clientUtils';
 
 export function* logInSaga(action) {

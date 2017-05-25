@@ -1,10 +1,7 @@
 /* @flow */
-type SendGameMessageType = 'gameChat/SEND_MSG';
-type NewGameMessageType = 'gameChat/NEW_MSG';
-type ClearChatType = 'gameChat/CLEAR_CHAT';
-export const SEND_GAME_MESSAGE: SendGameMessageType = 'gameChat/SEND_MSG';
-export const NEW_GAME_MESSAGE: NewGameMessageType = 'gameChat/NEW_MSG';
-export const CLEAR_CHAT: ClearChatType = 'gameChat/CLEAR_CHAT';
+export const SEND_GAME_MESSAGE = 'gameChat/SEND_MSG';
+export const NEW_GAME_MESSAGE = 'gameChat/NEW_MSG';
+export const CLEAR_CHAT = 'gameChat/CLEAR_CHAT';
 
 type SendMessagePayload = {
   game: GameWithId,
@@ -15,7 +12,7 @@ type NewGameMessageData = SendMessagePayload & {
 }
 
 type NewGameMessageAction = {
-  type: NewGameMessageType,
+  type: 'gameChat/NEW_MSG',
   payload: {
     game: GameWithId,
     message: UserMessage,
@@ -40,7 +37,7 @@ export function newGameMessage({ user, game, text }: NewGameMessageData): NewGam
 }
 
 type SendGameMessageAction = {
-  type: SendGameMessageType,
+  type: 'gameChat/SEND_MSG',
   payload: {
     game: GameWithId,
     text: string,
@@ -57,7 +54,7 @@ export function sendGameMessage(gameId: string, text: string): SendGameMessageAc
 }
 
 type ClearChatAction = {
-  type: ClearChatType,
+  type: 'gameChat/CLEAR_CHAT',
   payload: {
     game: GameWithId,
   },

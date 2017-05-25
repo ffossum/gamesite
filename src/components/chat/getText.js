@@ -3,7 +3,7 @@ import {
   PLAYER_LEFT,
   GAME_STARTED,
   GAME_ENDED,
-} from 'actions/gameRoom';
+} from 'actions/gameRoomActions';
 
 const texts = {
   [PLAYER_JOINED]: player => `${player} joined the game.`,

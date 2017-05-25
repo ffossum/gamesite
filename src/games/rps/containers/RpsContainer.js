@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import actions from 'actions/game';
+import actions from 'actions/gameActions';
 import {
   get,
   mapValues,

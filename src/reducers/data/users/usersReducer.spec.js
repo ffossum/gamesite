@@ -2,8 +2,8 @@
 /* eslint-env jest */
 
 import usersReducer from './usersReducer';
-import { logInSuccess } from 'actions/login';
-import { GET_USER_DATA_SUCCESS } from 'actions/userData';
+import { logInSuccess } from 'actions/loginActions';
+import { GET_USER_DATA_SUCCESS } from 'actions/userDataActions';
 import { size } from 'lodash/fp';
 
 describe('data/users reducer', () => {
